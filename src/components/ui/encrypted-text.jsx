@@ -32,12 +32,17 @@ export const EncryptedText = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [isMounted, setIsMounted] = useState(false);
 
   const [revealCount, setRevealCount] = useState(0);
   const animationFrameRef = useRef(null);
   const startTimeRef = useRef(0);
   const lastFlipTimeRef = useRef(0);
   const scrambleCharsRef = useRef(text ? generateGibberishPreservingSpaces(text, charset).split("") : []);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isInView) return;
@@ -96,6 +101,15 @@ export const EncryptedText = ({
   }, [isInView, text, revealDelayMs, charset, flipDelayMs]);
 
   if (!text) return null;
+
+  // Show plain text during SSR to avoid hydration errors
+  if (!isMounted) {
+    return (
+      <span ref={ref} className={cn(className)} aria-label={text} role="text">
+        {text}
+      </span>
+    );
+  }
 
   return (
     <motion.span ref={ref} className={cn(className)} aria-label={text} role="text">

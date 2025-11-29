@@ -1,449 +1,192 @@
-import React from 'react';
-import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
+import React, { useState, useEffect, useRef } from 'react';
+import { useCountUp } from '../../hooks/useCountUp';
+import { motion, useScroll, useTransform } from 'motion/react';
 
-// Optimized Official Partner Section with reduced animations
-const OfficialPartnerSection = () => {
-    const sectionRef = useQuantumScrollAnim(0.1);
+// Word Component with Motion
+const Word = ({ children, range, progress }) => {
+    const opacity = useTransform(progress, range, [0.2, 1]);
 
     return (
-        <div
-            ref={sectionRef}
-            className="py-16 bg-slate-900 quantum-anim partner-section relative overflow-hidden"
-            style={{
-                willChange: 'transform',
-                contain: 'layout style paint'
-            }}
+        <motion.span
+            style={{ opacity }}
+            className="inline-block mr-[0.25em]"
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div className="text-center mb-16">
-                    <div
-                        className="section-connector mb-8"
-                        style={{ willChange: 'transform' }}
-                    >
-                        <div className="connector-line"></div>
-                        <div className="connector-dot"></div>
-                        <div className="connector-line"></div>
-                    </div>
-                    <div className="section-title-container">
-                        <h2 className="section-title-enhanced partnership-title">
-                            Official UK Partner
-                        </h2>
-                        <div className="title-accent-line"></div>
-                    </div>
+            {children}
+        </motion.span>
+    );
+};
+
+// Scroll Reveal Text Component - Multiple Lines with Word Opacity
+const ScrollRevealText = ({ lines }) => {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 0.9", "start 0.25"]
+    });
+
+    // Divide ogni linea in parole e calcola l'opacità per ogni parola
+    const renderLine = (line, lineIndex) => {
+        const words = line.split(' ');
+        const totalWords = lines.reduce((acc, l) => acc + l.split(' ').length, 0);
+        let wordIndex = lines.slice(0, lineIndex).reduce((acc, l) => acc + l.split(' ').length, 0);
+
+        return (
+            <h3
+                key={lineIndex}
+                className="text-3xl md:text-5xl lg:text-6xl font-bold font-inter text-center leading-tight text-white"
+            >
+                {words.map((word, i) => {
+                    const start = wordIndex / totalWords;
+                    const end = (wordIndex + 1) / totalWords;
+                    wordIndex++;
+
+                    return (
+                        <Word key={i} range={[start, end]} progress={scrollYProgress}>
+                            {word}
+                        </Word>
+                    );
+                })}
+            </h3>
+        );
+    };
+
+    return (
+        <div ref={ref} className="relative py-16 md:py-24 space-y-4 md:space-y-6">
+            {lines.map((line, index) => renderLine(line, index))}
+        </div>
+    );
+};
+
+// Animated Stat Component
+const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => setIsVisible(true), delay);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [delay]);
+
+    const animatedValue = useCountUp(value, 2000, isVisible);
+
+    return (
+        <div ref={ref} className="text-center">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent font-inter mb-2">
+                {prefix}{animatedValue}{suffix}
+            </div>
+            <div className="text-sm md:text-base text-gray-400 uppercase tracking-wider font-semibold">
+                {label}
+            </div>
+        </div>
+    );
+};
+
+// Official Partner Section - Show, Don't Tell
+const OfficialPartnerSection = () => {
+    return (
+        <section className="relative py-20 md:py-32 overflow-hidden" style={{ background: '#020617' }}>
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Title */}
+                <div className="mb-12 flex items-center gap-3 justify-end">
+                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
+                        3)
+                    </span>
+                    <span className="text-white font-mono text-sm tracking-wide">
+                        Our Trusted Partners
+                    </span>
+                    <span className="text-gray-500 font-mono text-sm tracking-wide">
+                        [Official]
+                    </span>
                 </div>
 
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    {/* Left: Partnership Info */}
-                    <div
-                        className="partnership-info"
-                        style={{ willChange: 'transform' }}
+                {/* Partner Logos */}
+                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 mb-12">
+                    <motion.a
+                        href="https://marketiseme.com/en/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group transition-transform duration-300 hover:-translate-y-1"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0 }}
                     >
-                        <div
-                            className="partner-logo-container mb-8"
-                            style={{ contain: 'layout style paint' }}
-                        >
-                            <div className="logo-glow-effect">
-                                <a
-                                    href="https://marketiseme.com/en/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="partner-logo-link"
-                                >
-                                    <img
-                                        src="/images/partners/marketise-me-logo.svg"
-                                        alt="Marketise Me"
-                                        className="partner-logo"
-                                        loading="lazy"
-                                    />
-                                </a>
-                            </div>
-                        </div>
+                        <img
+                            src="/images/partners/marketise-me-logo.svg"
+                            alt="Marketise Me"
+                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
+                            loading="lazy"
+                        />
+                    </motion.a>
 
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-4 font-inter text-center">
-                            Growth Through
-                            <span className="text-[#B8FFFA]"> Strategic Partnership</span>
-                        </h3>
-
-                        <p className="text-base text-gray-300 leading-relaxed mb-6 text-center max-w-md mx-auto">
-                            We have partnered with Marketise Me to deliver proven strategies across 4 continents.
-                            Average ROAS of 9.5x with €200M+ in managed ad spend.
-                        </p>
-
-                        <div
-                            className="partnership-benefits"
-                            style={{ contain: 'layout style' }}
-                        >
-                            <div className="benefit-item">
-                                <div className="benefit-icon">
-                                    <div className="benefit-dot"></div>
-                                </div>
-                                <div>
-                                    <h4 className="text-white font-semibold text-lg">10+ Years Experience</h4>
-                                    <p className="text-gray-400">Proven track record across multiple markets</p>
-                                </div>
-                            </div>
-
-                            <div className="benefit-item">
-                                <div className="benefit-icon">
-                                    <div className="benefit-dot"></div>
-                                </div>
-                                <div>
-                                    <h4 className="text-white font-semibold text-lg">Data-Driven Strategy</h4>
-                                    <p className="text-gray-400">Every campaign backed by comprehensive analytics</p>
-                                </div>
-                            </div>
-
-                            <div className="benefit-item">
-                                <div className="benefit-icon">
-                                    <div className="benefit-dot"></div>
-                                </div>
-                                <div>
-                                    <h4 className="text-white font-semibold text-lg">Long-Term Partnership</h4>
-                                    <p className="text-gray-400">We focus on sustainable growth, not quick wins</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right: Platform Partners */}
-                    <div
-                        className="platform-partners"
-                        style={{ willChange: 'transform' }}
+                    <motion.div
+                        className="group transition-transform duration-300 hover:-translate-y-1"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <div className="partners-header mb-8">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 font-inter text-center">
-                                Official Partners of
-                            </h3>
-                        </div>
+                        <img
+                            src="/images/partners/partners logos/google-partner-logo-min.svg"
+                            alt="Google Partner"
+                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
+                            loading="lazy"
+                        />
+                    </motion.div>
 
-                        <div
-                            className="partner-logos-grid"
-                            style={{ contain: 'layout style' }}
-                        >
-                            <div className="partner-logo-item">
-                                <img
-                                    src="/images/partners/partners logos/google-partner-logo-min.svg"
-                                    alt="Google Partner"
-                                    className="platform-logo"
-                                    loading="lazy"
-                                />
-                            </div>
+                    <motion.div
+                        className="group transition-transform duration-300 hover:-translate-y-1"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        <img
+                            src="/images/partners/partners logos/meta_partner_logo.png"
+                            alt="Meta Business Partner"
+                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
+                            loading="lazy"
+                        />
+                    </motion.div>
+                </div>
 
-                            <div className="partner-logo-item">
-                                <img
-                                    src="/images/partners/partners logos/meta_partner_logo.png"
-                                    alt="Meta Business Partner"
-                                    className="platform-logo"
-                                    loading="lazy"
-                                />
-                            </div>
-                        </div>
+                {/* Scroll Reveal Intermezzo */}
+                <ScrollRevealText
+                    lines={[
+                        "Proven Track Record",
+                        "Data-Driven Strategy",
+                        "Long-Term Partnership"
+                    ]}
+                />
 
-                        <div
-                            className="trust-stats"
-                            style={{ contain: 'layout style paint' }}
-                        >
-                            <div className="stat-item">
-                                <div className="stat-number">9.5x</div>
-                                <div className="stat-label">Average ROAS</div>
-                            </div>
-                            <div className="stat-divider"></div>
-                            <div className="stat-item">
-                                <div className="stat-number">€200M+</div>
-                                <div className="stat-label">Ad Spend Managed</div>
-                            </div>
-                            <div className="stat-divider"></div>
-                            <div className="stat-item">
-                                <div className="stat-number">4</div>
-                                <div className="stat-label">Continents</div>
-                            </div>
-                        </div>
-                    </div>
+                {/* Main Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
+                    <AnimatedStat value={9} suffix=".5x" label="Avg ROAS" delay={0} />
+                    <AnimatedStat value={200} prefix="€" suffix="M+" label="Ad Spend" delay={100} />
+                    <AnimatedStat value={10} suffix="+" label="Years Exp" delay={200} />
+                    <AnimatedStat value={4} label="Continents" delay={300} />
                 </div>
             </div>
-
-            <style jsx>{`
-                .partner-section {
-                    background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-                    position: relative;
-                }
-
-                .partner-section::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 1px;
-                    background: linear-gradient(90deg, transparent, #B8FFFA, transparent);
-                    opacity: 0.3;
-                }
-
-                .section-connector {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 1rem;
-                }
-
-                .connector-line {
-                    width: 3rem;
-                    height: 1px;
-                    background: linear-gradient(90deg, transparent, #B8FFFA, transparent);
-                }
-
-                .connector-dot {
-                    width: 8px;
-                    height: 8px;
-                    background: #B8FFFA;
-                    border-radius: 50%;
-                    box-shadow: 0 0 20px rgba(184, 255, 250, 0.5);
-                    animation: simplePulse 3s ease-in-out infinite;
-                }
-
-                @keyframes simplePulse {
-                    0%, 100% { transform: scale3d(1, 1, 1); opacity: 1; }
-                    50% { transform: scale3d(1.1, 1.1, 1); opacity: 0.8; }
-                }
-
-                .partnership-title {
-                    background: linear-gradient(135deg, #ffffff 0%, #B8FFFA 50%, #ffffff 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    letter-spacing: -0.025em;
-                    text-shadow: 0 0 30px rgba(184, 255, 250, 0.3);
-                }
-
-                .partner-logo-container {
-                    display: flex;
-                    justify-content: center;
-                    position: relative;
-                }
-
-                .logo-glow-effect {
-                    position: relative;
-                    padding: 2rem;
-                    border-radius: 20px;
-                    background: rgba(30, 41, 59, 0.3);
-                    border: 1px solid rgba(75, 85, 99, 0.3);
-                    transition: all 0.2s ease;
-                }
-
-                .logo-glow-effect:hover {
-                    border-color: rgba(184, 255, 250, 0.4);
-                    background: rgba(30, 41, 59, 0.5);
-                    box-shadow: 0 0 20px rgba(184, 255, 250, 0.05);
-                }
-
-                .partner-logo-link {
-                    display: inline-block;
-                    transition: transform 0.2s ease;
-                }
-
-                .partner-logo-link:hover {
-                    transform: scale3d(1.02, 1.02, 1);
-                }
-
-                .partner-logo {
-                    height: 5rem;
-                    width: auto;
-                    opacity: 0.95;
-                    filter: brightness(1.1) contrast(1.1);
-                    transition: all 0.2s ease;
-                }
-
-                .partner-logo:hover {
-                    opacity: 1;
-                }
-
-                .partnership-benefits {
-                    display: grid;
-                    gap: 1.5rem;
-                    margin-top: 2rem;
-                }
-
-                .benefit-item {
-                    display: flex;
-                    align-items: flex-start;
-                    gap: 1.5rem;
-                    padding: 1.5rem;
-                    background: rgba(30, 41, 59, 0.3);
-                    border-radius: 16px;
-                    border: 1px solid rgba(75, 85, 99, 0.3);
-                    transition: all 0.2s ease;
-                    position: relative;
-                    overflow: hidden;
-                }
-
-                .benefit-item::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 1px;
-                    background: linear-gradient(90deg, transparent, #B8FFFA, transparent);
-                    opacity: 0;
-                    transition: opacity 0.2s ease;
-                }
-
-                .benefit-item:hover {
-                    border-color: rgba(184, 255, 250, 0.4);
-                    background: rgba(30, 41, 59, 0.5);
-                    transform: translate3d(0, -1px, 0);
-                }
-
-                .benefit-item:hover::before {
-                    opacity: 0.5;
-                }
-
-                .benefit-icon {
-                    width: 48px;
-                    height: 48px;
-                    background: rgba(184, 255, 250, 0.1);
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-shrink: 0;
-                    border: 1px solid rgba(184, 255, 250, 0.2);
-                }
-
-                .benefit-dot {
-                    width: 12px;
-                    height: 12px;
-                    background: #B8FFFA;
-                    border-radius: 50%;
-                    box-shadow: 0 0 15px rgba(184, 255, 250, 0.5);
-                    animation: simplePulse 3s ease-in-out infinite;
-                }
-
-                .partners-header {
-                    text-align: center;
-                }
-
-                .partner-logos-grid {
-                    display: flex;
-                    justify-content: center;
-                    gap: 3rem;
-                    margin-bottom: 3rem;
-                }
-
-                .partner-logo-item {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 1rem;
-                    background: transparent;
-                    border-radius: 0;
-                    border: none;
-                    transition: all 0.2s ease;
-                    position: relative;
-                    overflow: visible;
-                    min-width: auto;
-                    min-height: auto;
-                }
-
-                .partner-logo-item::before {
-                    display: none;
-                }
-
-                .partner-logo-item:hover {
-                    background: transparent;
-                    transform: translate3d(0, -2px, 0);
-                    box-shadow: none;
-                }
-
-                .partner-logo-item:hover::before {
-                    display: none;
-                }
-
-                .partner-logo-item .platform-logo {
-                    height: 6rem;
-                    width: auto;
-                    opacity: 0.95;
-                    transition: all 0.2s ease;
-                    filter: brightness(1.1) contrast(1.05);
-                }
-
-                .partner-logo-item:hover .platform-logo {
-                    opacity: 1;
-                    transform: scale3d(1.05, 1.05, 1);
-                    filter: brightness(1.2) contrast(1.1);
-                }
-
-                .trust-stats {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 2rem;
-                    background: rgba(184, 255, 250, 0.05);
-                    border-radius: 16px;
-                    border: 1px solid rgba(184, 255, 250, 0.1);
-                    backdrop-filter: blur(5px);
-                }
-
-                .stat-item {
-                    text-align: center;
-                    flex: 1;
-                }
-
-                .stat-divider {
-                    width: 1px;
-                    height: 3rem;
-                    background: linear-gradient(180deg, transparent, #B8FFFA, transparent);
-                    margin: 0 1rem;
-                }
-
-                .stat-number {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    color: #B8FFFA;
-                    font-family: 'Inter', sans-serif;
-                    margin-bottom: 0.5rem;
-                    display: block;
-                }
-
-                .stat-label {
-                    font-size: 0.875rem;
-                    color: #9CA3AF;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    font-weight: 500;
-                }
-
-                @media (min-width: 768px) {
-                    .partner-logo { height: 6rem; }
-                    .stat-number { font-size: 1.75rem; }
-                }
-
-                @media (max-width: 768px) {
-                    .partner-logos-grid {
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 1.5rem;
-                    }
-                    .partner-logo-item {
-                        min-width: 100px;
-                        min-height: 100px;
-                        padding: 1.5rem;
-                    }
-                }
-
-                @media (max-width: 1024px) {
-                    .trust-stats {
-                        flex-direction: column;
-                        gap: 2rem;
-                    }
-                    .stat-divider {
-                        width: 3rem;
-                        height: 1px;
-                        margin: 0;
-                    }
-                }
-            `}</style>
-        </div>
+        </section>
     );
 };
 
