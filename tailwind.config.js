@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		spacing: {
+  			'screen': '100vh'
+  		},
   		keyframes: {
   			'fade-in': {
   				'0%': {
@@ -18,10 +21,28 @@ module.exports = {
   					opacity: '1',
   					transform: 'translateY(0)'
   				}
+  			},
+  			scroll: {
+  				'0%': {
+  					transform: 'translateX(0)'
+  				},
+  				'100%': {
+  					transform: 'translateX(calc(-100% - 1rem))'
+  				}
+  			},
+  			shimmer: {
+  				from: {
+  					backgroundPosition: '0 0'
+  				},
+  				to: {
+  					backgroundPosition: '-200% 0'
+  				}
   			}
   		},
   		animation: {
-  			'fade-in': 'fade-in 1s ease-out forwards'
+  			'fade-in': 'fade-in 1s ease-out forwards',
+  			scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
+  			shimmer: 'shimmer 2s linear infinite'
   		},
   		backgroundImage: {
   			'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

@@ -44,14 +44,13 @@ export default function Document() {
                 --dark-bg: #0f172a;
               }
 
-              html { scroll-behavior: smooth; }
+              html { }
               body {
                 margin: 0; padding: 0;
                 background: var(--dark-bg);
                 color: #e5e7eb;
                 /* Fallback font stack for immediate rendering */
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                overflow-x: hidden;
               }
               
               /* Apply Inter when loaded */
@@ -63,7 +62,6 @@ export default function Document() {
                 position: relative;
                 background: var(--dark-bg);
                 min-height: 100vh;
-                overflow-x: hidden;
               }
               
               /* Critical Hero Styles */

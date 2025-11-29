@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/layout';
 import GlobalStyles from '../components/globalsyles';
@@ -14,6 +14,7 @@ import NeuralContact from '../components/home/NeuralContact';
 
 // Main App Component
 const ByltMediaLandingPageV8 = () => {
+    const [carouselHeight, setCarouselHeight] = useState(0);
     return (
         <Layout>
             <Head>
@@ -137,8 +138,10 @@ const ByltMediaLandingPageV8 = () => {
             </Head>
             <GlobalStyles />
 
-            <FuturisticHero />
-            <SharedPortfolioCarousel />
+            <div className="relative hero-carousel-wrapper" style={{ height: carouselHeight ? `calc(100vh + ${carouselHeight}px)` : '100vh' }}>
+                <FuturisticHero />
+                <SharedPortfolioCarousel onHeightChange={setCarouselHeight} />
+            </div>
             <OfficialPartnerSection />
             <NeuralServices />
             <QuantumProcess />

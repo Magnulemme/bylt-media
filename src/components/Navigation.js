@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-    Menu, X, Briefcase, Workflow, Star, Mail, ChevronDown, Search, Users, Globe,
-    BarChart, Bot, TestTube, MousePointer, TrendingUp, Database
-} from 'lucide-react';
-import SpinningBorderButton from './ui/spinning-border-button';
-import { EncryptedText } from './ui/encrypted-text';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 const Navigation = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,23 +13,22 @@ const Navigation = () => {
     const menuItems = [
         {
             name: 'Services',
-            icon: <Briefcase size={16} />,
             subItems: [
-                { name: 'Paid Search (PPC)', href: '/paidsearch', icon: <Search size={14} /> },
-                { name: 'SEO Services', href: '/seo', icon: <TrendingUp size={14} /> },
-                { name: 'Social Media Marketing', href: '/socialmedia', icon: <Users size={14} /> },
-                { name: 'Analytics & Reporting', href: '/analytics', icon: <BarChart size={14} /> },
-                { name: 'Programmatic Advertising', href: '/programmatic', icon: <MousePointer size={14} /> },
-                { name: 'Website Development', href: '/websites', icon: <Globe size={14} /> },
-                { name: 'Email Marketing', href: '/emailmarketing', icon: <Mail size={14} /> },
-                { name: 'Data Science & Analytics', href: '/datascience', icon: <Database size={14} /> },
-                { name: 'AI Solutions', href: '/aisolutions', icon: <Bot size={14} /> },
-                { name: 'CRO & UX Audits', href: '/croandux', icon: <TestTube size={14} /> },
+                { name: 'Paid Search (PPC)', href: '/paidsearch' },
+                { name: 'SEO Services', href: '/seo' },
+                { name: 'Social Media Marketing', href: '/socialmedia' },
+                { name: 'Analytics & Reporting', href: '/analytics' },
+                { name: 'Programmatic Advertising', href: '/programmatic' },
+                { name: 'Website Development', href: '/websites' },
+                { name: 'Email Marketing', href: '/emailmarketing' },
+                { name: 'Data Science & Analytics', href: '/datascience' },
+                { name: 'AI Solutions', href: '/aisolutions' },
+                { name: 'CRO & UX Audits', href: '/croandux' },
             ],
         },
-        { name: 'About', href: '/about', icon: <Users size={16} /> },
-        { name: 'Case Studies', href: '/casestudies', icon: <Star size={16} /> },
-        { name: 'Contact', href: '/contact', icon: <Mail size={16} /> },
+        { name: 'About', href: '/about' },
+        { name: 'Case Studies', href: '/casestudies' },
+        { name: 'Contact', href: '/contact' },
     ];
 
     useEffect(() => {
@@ -64,7 +58,7 @@ const Navigation = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="flex justify-between items-center h-20 w-full">
                     <div className="flex-shrink-0 min-w-0">
-                        <Link href="/" className="text-3xl font-bold tracking-wider font-inter">
+                        <Link href="/" className="text-2xl font-bold tracking-wider font-inter">
                             <span style={{ 
                                 background: 'linear-gradient(45deg, #B8FFFA 0%, #B8FFB8 50%, #B8FFFA 100%)',
                                 WebkitBackgroundClip: 'text',
@@ -98,17 +92,15 @@ const Navigation = () => {
                                                 : 'text-gray-300 hover:text-[#B8FFFA]'
                                         }`}
                                     >
-                                        {item.icon}
-                                        <span className="ml-2">{item.name}</span>
-                                        {item.subItems && <ChevronDown size={16} className="ml-1 transition-transform group-hover:rotate-180" />}
+                                        {item.name}
+                                        {item.subItems && <ChevronDown size={14} className="ml-1 transition-transform group-hover:rotate-180" />}
                                     </Link>
                                 ) : (
                                     <span
                                         className="flex items-center px-3 lg:px-4 py-2 text-sm font-medium transition-colors duration-300 whitespace-nowrap text-gray-300 hover:text-[#B8FFFA] cursor-pointer"
                                     >
-                                        {item.icon}
-                                        <span className="ml-2">{item.name}</span>
-                                        {item.subItems && <ChevronDown size={16} className="ml-1 transition-transform group-hover:rotate-180" />}
+                                        {item.name}
+                                        {item.subItems && <ChevronDown size={14} className="ml-1 transition-transform group-hover:rotate-180" />}
                                     </span>
                                 )}
                                 {item.subItems && (
@@ -119,10 +111,11 @@ const Navigation = () => {
                                                     <Link
                                                         key={subItem.name}
                                                         href={subItem.href}
-                                                        className="flex items-center px-4 py-3 text-sm text-gray-300 hover:bg-gray-800/50 hover:text-[#B8FFFA] transition-all duration-200 rounded-md"
+                                                        className="group/item flex items-center px-4 py-3 text-sm font-medium text-gray-300 hover:bg-gray-800/50 hover:text-[#B8FFFA] transition-all duration-200 rounded-md relative"
                                                         style={{ animationDelay: `${subIndex * 30}ms` }}
                                                     >
-                                                        <span className="text-[#B8FFFA] mr-3">{subItem.icon}</span>
+                                                        <span className="text-cyan-400 mr-2 group-hover/item:opacity-0 transition-opacity duration-200">→</span>
+                                                        <span className="text-cyan-400 mr-2 absolute left-4 opacity-0 group-hover/item:opacity-100 transition-opacity duration-200">{'{'}</span>
                                                         {subItem.name}
                                                     </Link>
                                                 ))}
@@ -135,9 +128,12 @@ const Navigation = () => {
                     </div>
                     
                     <div className="hidden md:block flex-shrink-0">
-                        <SpinningBorderButton href="/free-audit" className="h-12 text-sm lg:text-base">
-                            {(isHovered) => isHovered ? <EncryptedText text="FREE AUDIT" /> : 'FREE AUDIT'}
-                        </SpinningBorderButton>
+                        <a
+                            href="/free-audit"
+                            className="inline-flex items-center justify-center h-11 px-6 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient rounded-lg transition-transform duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                        >
+                            FREE AUDIT
+                        </a>
                     </div>
 
                     <div className="md:hidden">
@@ -163,13 +159,11 @@ const Navigation = () => {
                                         className="flex items-center px-3 py-2 text-base font-medium text-gray-200 hover:text-[#B8FFFA] transition-colors"
                                         onClick={() => !item.subItems && setIsOpen(false)}
                                     >
-                                        {item.icon}
-                                        <span className="ml-2">{item.name}</span>
+                                        {item.name}
                                     </Link>
                                 ) : (
                                     <span className="flex items-center px-3 py-2 text-base font-medium text-gray-200 hover:text-[#B8FFFA] transition-colors">
-                                        {item.icon}
-                                        <span className="ml-2">{item.name}</span>
+                                        {item.name}
                                     </span>
                                 )}
                                 {item.subItems && (
@@ -181,7 +175,7 @@ const Navigation = () => {
                                                 className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-[#B8FFFA] transition-colors"
                                                 onClick={() => setIsOpen(false)}
                                             >
-                                                <span className="text-[#B8FFFA] mr-2">{subItem.icon}</span>
+                                                <span className="text-cyan-400 mr-2">→</span>
                                                 {subItem.name}
                                             </Link>
                                         ))}
@@ -190,24 +184,25 @@ const Navigation = () => {
                             </div>
                         ))}
                         <div className="mt-4 flex justify-center">
-                            <SpinningBorderButton
+                            <a
                                 href="/free-audit"
-                                className="w-full max-w-xs"
+                                className="inline-flex items-center justify-center h-11 px-6 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient rounded-lg transition-transform duration-300 shadow-lg hover:shadow-xl w-full max-w-xs"
                                 onClick={() => setIsOpen(false)}
                             >
-                                {(isHovered) => isHovered ? <EncryptedText text="FREE AUDIT" /> : 'FREE AUDIT'}
-                            </SpinningBorderButton>
+                                FREE AUDIT
+                            </a>
                         </div>
                     </div>
                 </div>
             )}
 
             <style jsx>{`
-                .nav-transparent { 
-                    background: transparent; 
+                .nav-transparent {
+                    background: rgba(2, 6, 23, 0.95);
+                    backdrop-filter: blur(20px);
                 }
                 .nav-scrolled {
-                    background: rgba(15, 23, 42, 0.95);
+                    background: rgba(2, 6, 23, 0.98);
                     backdrop-filter: blur(20px);
                     border-bottom: 1px solid rgba(55, 65, 81, 0.5);
                     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
