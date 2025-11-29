@@ -11,6 +11,7 @@ import NeuralServices from '../components/home/NeuralServices';
 import QuantumProcess from '../components/home/QuantumProcess';
 import FuturisticTestimonials from '../components/home/FuturisticTestimonials';
 import NeuralContact from '../components/home/NeuralContact';
+import ClientsIntermezzo from '@/components/home/ClientsIntermezzo';
 
 // Main App Component
 const ByltMediaLandingPageV8 = () => {
@@ -142,6 +143,7 @@ const ByltMediaLandingPageV8 = () => {
                 <FuturisticHero />
                 <SharedPortfolioCarousel onHeightChange={setCarouselHeight} />
             </div>
+            <ClientsIntermezzo />
             <OfficialPartnerSection />
             <NeuralServices />
             <QuantumProcess />

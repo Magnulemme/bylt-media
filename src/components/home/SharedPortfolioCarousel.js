@@ -112,7 +112,7 @@ const SharedPortfolioCarousel = ({ onHeightChange }) => {
                         sectionRef.current = el;
                     }
                 }}
-                className="py-16 overflow-hidden quantum-anim"
+                className="pt-16 overflow-hidden quantum-anim"
                 style={{
                     background: '#020617',
                     zIndex: 0,
