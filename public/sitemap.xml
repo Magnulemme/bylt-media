@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.byltmedia.com/</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://www.byltmedia.com/about</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Services Pages -->
+  <url>
+    <loc>https://www.byltmedia.com/paidsearch</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/seo</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/socialmedia</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/programmatic</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/analytics</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/datascience</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/aisolutions</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/websites</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/websitedevelopment</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/emailmarketing</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/croandux</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Case Studies -->
+  <url>
+    <loc>https://www.byltmedia.com/casestudies</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-parfium</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/parfium.bg-case-study.webp</image:loc>
+      <image:caption>Parfium.bg Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-cska</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/cska-case-study.webp</image:loc>
+      <image:caption>CSKA Sofia 1948 Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-happy</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/happy-case-study.webp</image:loc>
+      <image:caption>Happy Bar & Grill Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-brickell</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/brickell-case-study.webp</image:loc>
+      <image:caption>Brickell Automotive Group Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-napudreni</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/napudreni-case-study.webp</image:loc>
+      <image:caption>Napudreni Fashion Brand Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/case-studies-nissan</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.byltmedia.com/images/casestudy/nissan-case-study.webp</image:loc>
+      <image:caption>Nissan Bulgaria Case Study</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Contact and Legal -->
+  <url>
+    <loc>https://www.byltmedia.com/contact</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/free-audit</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/privacy-policy</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://www.byltmedia.com/terms-and-conditions</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

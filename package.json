@@ -1,0 +1,37 @@
+{
+  "name": "my-next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test:forms": "node test-forms-offline.js",
+    "test:forms:interactive": "node test-forms-offline.js --interactive",
+    "test:forms:html": "open test-forms-offline.html"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "autoprefixer": "^10.4.21",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.525.0",
+    "motion": "^12.23.24",
+    "next": "^16.0.5",
+    "react": "^18",
+    "react-cookie-consent": "^9.0.0",
+    "react-dom": "^18",
+    "simplex-noise": "^4.0.3",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.178.0"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "eslint": "^9.39.1",
+    "eslint-config-next": "^16.0.5",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
