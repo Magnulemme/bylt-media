@@ -100,7 +100,7 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => 
 // Official Partner Section - Show, Don't Tell
 const OfficialPartnerSection = () => {
     return (
-        <section className="relative py-20 md:py-32 overflow-hidden" style={{ background: '#020617' }}>
+        <section className="relative pt-20 md:pt-32 pb-8 md:pb-12 overflow-hidden" style={{ background: '#020617' }}>
             {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
 

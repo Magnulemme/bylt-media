@@ -73,7 +73,7 @@ const FuturisticHero = () => {
     return (
         <section
             id="home"
-            className="relative h-screen flex items-center justify-center overflow-hidden hero-section p-4 pt-20"
+            className="relative h-screen flex items-center justify-center overflow-hidden hero-section p-4 pt-24"
             data-hero-section
             style={{
                 background: '#020617',

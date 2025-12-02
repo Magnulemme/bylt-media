@@ -52,7 +52,7 @@ export const InfiniteMovingCards = ({
       } else if (speed === "normal") {
         containerRef.current.style.setProperty("--animation-duration", "40s");
       } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
+        containerRef.current.style.setProperty("--animation-duration", "120s");
       }
     }
   };
@@ -73,15 +73,38 @@ export const InfiniteMovingCards = ({
         )}>
         {items.map((item, idx) => (
           <li
-            className="relative w-fit max-w-full shrink-0 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-sm hover:border-cyan-400/40 transition-all duration-300 shadow-[0_4px_20px_rgba(6,182,212,0.1)]"
+            className="relative w-fit max-w-full shrink-0 rounded-2xl border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-400/40 transition-all duration-300 shadow-[0_4px_20px_rgba(6,182,212,0.1)]"
             key={`${item.name}-${idx}`}
             style={{
               transform: 'scale(var(--card-scale, 1))',
               transformOrigin: 'center center',
-              transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
             }}
           >
-            {item.logo ? (
+            {item.logo && item.metric && item.quote ? (
+              // Success story card format with logo, metric, industry, and quote
+              <div className="px-6 py-6 w-72 max-w-full">
+                {/* Logo */}
+                <div className="w-full h-20 md:h-24 flex items-center justify-center mb-4 p-2">
+                  <img
+                    src={item.logo}
+                    alt={item.name}
+                    className="max-w-full max-h-full object-contain opacity-90"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://placehold.co/120x80/1e293b/FFFFFF?text=Logo';
+                    }}
+                  />
+                </div>
+
+                {/* Quote */}
+                <p className="text-sm leading-relaxed text-gray-300 italic">
+                  "{item.quote}"
+                </p>
+              </div>
+            ) : item.logo ? (
               // Logo card format
               <div className="relative w-40 h-28 md:w-48 md:h-32 flex items-center justify-center p-6">
                 <img

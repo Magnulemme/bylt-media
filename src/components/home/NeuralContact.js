@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
+import { motion } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import { Mail, MoveRight, X } from 'lucide-react';
+import { BackgroundBeams } from '../ui/background-beams';
 
 const NeuralContact = () => {
     const sectionRef = useQuantumScrollAnim();
@@ -57,20 +59,35 @@ ${formData.message}
     };
 
     return (
-        <section id="contact" ref={sectionRef} className="py-24 bg-slate-900/30 quantum-anim relative overflow-hidden">
-            <div className="absolute inset-0 contact-neural-grid"></div>
+        <section id="contact" className="py-24 relative overflow-hidden" style={{ background: '#020617' }}>
+            <BackgroundBeams className="absolute inset-0 z-0" />
+            <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
+                {/* Section Title - Above header */}
+                <div className="flex items-center gap-3 mb-12">
+                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
+                        7)
+                    </span>
+                    <span className="text-white font-mono text-sm tracking-wide">
+                        Let's Build Your Future
+                    </span>
+                    <span className="text-gray-500 font-mono text-sm tracking-wide">
+                        [Contact]
+                    </span>
+                </div>
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div className="text-center mb-12">
-                    <div className="section-title-container">
-                        <h2 className="section-title-enhanced">
-                            Let's Build Your Future
-                        </h2>
-                        <div className="title-accent-line"></div>
-                    </div>
-                    <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                        Ready to start your next project? Tell us about your vision and we'll turn it into reality.
-                    </p>
+                {/* Bridge Header */}
+                <div className="text-center mb-16 max-w-4xl mx-auto">
+                    <motion.h2
+                        className="text-3xl md:text-5xl font-bold font-inter text-white mb-6"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        They built their future with us.
+                        <br />
+                        <span className="text-cyan-400">Now it's your turn.</span>
+                    </motion.h2>
                 </div>
 
                 <div className="contact-form-container">
@@ -200,27 +217,28 @@ ${formData.message}
                 </div>
             </div>
             <style jsx>{`
-                .contact-neural-grid {
-                    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                                      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-                    background-size: 40px 40px;
-                }
 
                 .contact-form-container {
                     position: relative;
                     max-width: 800px;
                     margin: 0 auto 3rem auto;
-                    padding: 2px;
-                    background: linear-gradient(45deg, #4b5563, #1e293b);
-                    border-radius: 24px;
                 }
 
                 .contact-form {
-                    background: #1e293b;
-                    border-radius: 22px;
+                    background: rgba(15, 23, 42, 0.8);
+                    backdrop-filter: blur(12px);
+                    border: 2px solid rgba(34, 211, 238, 0.3);
+                    border-radius: 16px;
                     padding: 3rem;
                     position: relative;
                     z-index: 2;
+                    box-shadow: 8px 8px 0px rgba(34, 211, 238, 0.4);
+                    transition: all 0.3s ease;
+                }
+
+                .contact-form:hover {
+                    box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
+                    transform: translate(2px, 2px);
                 }
 
                 .form-grid {
@@ -248,9 +266,9 @@ ${formData.message}
                 .form-input, .form-textarea {
                     width: 100%;
                     padding: 1rem 1.25rem;
-                    background: rgba(30, 41, 59, 0.5);
-                    border: 1px solid #374151;
-                    border-radius: 12px;
+                    background: rgba(30, 41, 59, 0.6);
+                    border: 2px solid rgba(100, 116, 139, 0.3);
+                    border-radius: 8px;
                     color: #e5e7eb;
                     font-family: 'Inter', sans-serif;
                     font-size: 1rem;
@@ -260,9 +278,10 @@ ${formData.message}
 
                 .form-input:focus, .form-textarea:focus {
                     outline: none;
-                    border-color: #B8FFFA;
-                    background: rgba(30, 41, 59, 0.8);
-                    box-shadow: 0 0 0 2px rgba(184, 255, 250, 0.1);
+                    border-color: rgba(34, 211, 238, 0.6);
+                    background: rgba(30, 41, 59, 0.9);
+                    box-shadow: 4px 4px 0px rgba(34, 211, 238, 0.2);
+                    transform: translate(-2px, -2px);
                 }
 
                 .form-input::placeholder, .form-textarea::placeholder {
@@ -285,24 +304,32 @@ ${formData.message}
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 1.25rem 2.5rem;
-                    font-weight: 700;
-                    font-size: 1.125rem;
-                    color: #1e293b;
-                    background: #B8FFFA;
-                    border: none;
-                    border-radius: 15px;
+                    height: 3.5rem;
+                    padding: 0 2rem;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: white;
+                    background: linear-gradient(to right, #06b6d4, #3b82f6, #06b6d4);
+                    background-size: 200% 200%;
+                    animation: gradient 3s ease infinite;
+                    border: 1px solid rgba(6, 182, 212, 0.5);
+                    border-radius: 0.5rem;
                     font-family: 'Inter', sans-serif;
                     text-decoration: none;
-                    transition: all 0.4s ease;
+                    transition: all 0.3s ease;
                     cursor: pointer;
                     min-width: 180px;
                 }
 
                 .neural-submit-button:hover:not(:disabled) {
-                    transform: translateY(-3px) scale(1.05);
-                    box-shadow: 0 10px 30px rgba(184, 255, 250, 0.3);
-                    background: #9DFFF8;
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
+                }
+
+                @keyframes gradient {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
                 }
 
                 .neural-submit-button:disabled {
