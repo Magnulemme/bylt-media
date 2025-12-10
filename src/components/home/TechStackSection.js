@@ -1,0 +1,78 @@
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
+import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+
+const TechStackSection = () => {
+  const tools = [
+    // SEO
+    { name: "Semrush", logo: "/logos/Semrush.png", tag: "SEO" },
+    { name: "Ahrefs", logo: "/logos/Ahrefs_id5KWlBICs_0.svg", tag: "SEO" },
+    { name: "Google Search Console", logo: "https://www.gstatic.com/images/branding/product/2x/search_console_512dp.png", tag: "SEO" },
+
+    // Paid Media
+    { name: "Google Ads", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg", tag: "Paid Media" },
+    { name: "Meta Ads", logo: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png", tag: "Paid Media" },
+    { name: "LinkedIn Ads", logo: "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png", tag: "Paid Media" },
+    { name: "Google Analytics", logo: "https://upload.wikimedia.org/wikipedia/commons/7/77/GAnalytics.svg", tag: "Paid Media" },
+
+    // Web Development
+    { name: "Next.js", logo: "https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_light_background.png", tag: "Web Dev" },
+    { name: "WordPress", logo: "https://upload.wikimedia.org/wikipedia/commons/9/98/WordPress_blue_logo.svg", tag: "Web Dev" },
+    { name: "Shopify", logo: "https://cdn.worldvectorlogo.com/logos/shopify.svg", tag: "Web Dev" },
+    { name: "Webflow", logo: "/logos/webflow.png", tag: "Web Dev" },
+  ];
+
+  return (
+    <section className="relative py-24 overflow-hidden" style={{ background: '#020617' }}>
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="text-sm font-semibold text-purple-400 tracking-wider uppercase mb-3 block">
+            2)
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Powered by Industry Leaders
+          </h2>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            The tools and platforms we use to deliver exceptional results
+          </p>
+        </motion.div>
+
+        {/* Infinite Moving Cards */}
+        <div className="mb-8">
+          <InfiniteMovingCards
+            items={tools}
+            direction="left"
+            speed="slow"
+            pauseOnHover={true}
+          />
+        </div>
+
+        {/* Bottom text */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="text-center"
+        >
+          <p className="text-gray-400 text-sm">
+            And many more tools tailored to your needs
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default TechStackSection;

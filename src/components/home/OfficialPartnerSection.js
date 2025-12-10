@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCountUp } from '../../hooks/useCountUp';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { Star, Globe, Award, Zap } from 'lucide-react';
 
 // Word Component with Motion
 const Word = ({ children, range, progress }) => {
@@ -119,7 +120,7 @@ const OfficialPartnerSection = () => {
                 </div>
 
                 {/* Partner Logos */}
-                <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 mb-12">
+                <div className="flex flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 mb-12">
                     <motion.a
                         href="https://marketiseme.com/en/"
                         target="_blank"

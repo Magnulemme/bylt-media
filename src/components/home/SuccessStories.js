@@ -9,6 +9,8 @@ const SuccessStories = () => {
             industry: 'Restaurant Chain',
             metric: '+45% Brand Engagement',
             quote: 'The campaigns they create on a monthly basis significantly increase brand engagement and traffic to our website.',
+            rating: 5,
+            author: 'Marketing Director'
         },
         {
             name: 'Napudreni',
@@ -16,6 +18,8 @@ const SuccessStories = () => {
             industry: 'Fashion Brand',
             metric: '75% Traffic Growth',
             quote: 'They are creative and have quite a lot of knowledge about all the new things in marketing.',
+            rating: 5,
+            author: 'Founder'
         },
         {
             name: 'Nissan',
@@ -23,6 +27,8 @@ const SuccessStories = () => {
             industry: 'Automotive Group',
             metric: 'All Time High Sales',
             quote: 'We achieved an All Time High in the sale of cars from an online campaign.',
+            rating: 5,
+            author: 'Sales Manager'
         },
         {
             name: 'Peugeot',
@@ -30,6 +36,8 @@ const SuccessStories = () => {
             industry: 'Automotive Brand',
             metric: '+60% Quality Inquiries',
             quote: 'We\'ve been able to increase the volume of quality inquiries that come from digital ads.',
+            rating: 5,
+            author: 'Digital Lead'
         },
         {
             name: 'Smart Consultants',
@@ -37,18 +45,20 @@ const SuccessStories = () => {
             industry: 'Business Consulting',
             metric: '3 Project Success',
             quote: 'We achieved serious sales volumes on three different projects. Quick response, flexibility and expertise.',
+            rating: 5,
+            author: 'CEO'
         },
     ];
 
     return (
         <section
             id="success-stories"
-            className="relative py-20 overflow-hidden"
+            className="relative pt-20 pb-4 overflow-hidden"
             style={{ background: '#020617' }}
         >
             {/* Section Title - Above cards */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-                <div className="flex items-center gap-3">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                <div className="flex items-center gap-3 mb-8">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         6)
                     </span>
@@ -59,16 +69,27 @@ const SuccessStories = () => {
                         [Partners]
                     </span>
                 </div>
+
+                {/* Intro Text - Prepares for contact */}
+                <div className="max-w-3xl">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                        Real Results from Real Partners
+                    </h2>
+                    <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
+                        See why leading brands trust us to drive their growth. Ready to join them?
+                    </p>
+                </div>
             </div>
 
-            {/* Infinite Moving Cards */}
-            <InfiniteMovingCards
-                items={stories}
-                direction="left"
-                speed="slow"
-                pauseOnHover={false}
-                className="py-4"
-            />
+            {/* Infinite Moving Cards - con padding verticale per gli shadow */}
+            <div className="py-4">
+                <InfiniteMovingCards
+                    items={stories}
+                    direction="left"
+                    speed="slow"
+                    pauseOnHover={false}
+                />
+            </div>
         </section>
     );
 };

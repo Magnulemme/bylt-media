@@ -29,7 +29,8 @@
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.178.0"
+    "three": "^0.178.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",

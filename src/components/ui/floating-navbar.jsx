@@ -225,7 +225,7 @@ export const FloatingNav = ({
     <motion.div
       ref={navbarRef}
       className={cn(
-        "top-2 w-full z-[5000]",
+        "top-2 w-full z-[5000] hidden md:block",
         isFloating ? "fixed" : "absolute"
       )}
       animate={{
@@ -238,8 +238,9 @@ export const FloatingNav = ({
       }}
     >
       <div className={cn(
-        "flex inset-x-0 mx-auto border border-gray-700/50 rounded-md shadow-2xl items-center justify-between px-6 py-3 max-w-6xl",
+        "flex inset-x-0 mx-auto rounded-md shadow-2xl items-center justify-between px-6 py-3 max-w-6xl",
         "bg-[rgba(2,6,23,0.95)] backdrop-blur-xl",
+        isFloating && "border border-gray-700/50",
         className
       )}>
         {navContent}

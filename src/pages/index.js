@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import Layout from '../components/layout';
 import GlobalStyles from '../components/globalsyles';
 
 // Import all home page components
 import FuturisticHero from '../components/home/FuturisticHero';
+import TechStackSection from '../components/home/TechStackSection';
 import SharedPortfolioCarousel from '../components/home/SharedPortfolioCarousel';
 import OfficialPartnerSection from '../components/home/OfficialPartnerSection';
 import NeuralServices from '../components/home/NeuralServices';
@@ -16,7 +17,6 @@ import ClientsIntermezzo from '@/components/home/ClientsIntermezzo';
 
 // Main App Component
 const ByltMediaLandingPageV8 = () => {
-    const [carouselHeight, setCarouselHeight] = useState(0);
     return (
         <Layout>
             <Head>
@@ -140,10 +140,8 @@ const ByltMediaLandingPageV8 = () => {
             </Head>
             <GlobalStyles />
 
-            <div className="relative hero-carousel-wrapper" style={{ height: carouselHeight ? `calc(100vh + ${carouselHeight}px)` : '100vh' }}>
-                <FuturisticHero />
-                <SharedPortfolioCarousel onHeightChange={setCarouselHeight} />
-            </div>
+            <FuturisticHero />
+            <SharedPortfolioCarousel />
             <ClientsIntermezzo />
             <OfficialPartnerSection />
             <NeuralServices />

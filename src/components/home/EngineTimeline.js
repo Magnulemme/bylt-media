@@ -43,6 +43,29 @@ const ScrollRevealText = ({ text, className }) => {
 };
 
 const EngineTimeline = () => {
+    const containerRef = useRef(null);
+    const cardRef = useRef(null);
+    const [cardHeight, setCardHeight] = React.useState(0);
+
+    // Mobile scroll progress per il card switching
+    const { scrollYProgress: mobileScrollProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    // Calcola l'altezza della card per il posizionamento sticky
+    React.useEffect(() => {
+        const updateCardHeight = () => {
+            if (cardRef.current) {
+                const height = cardRef.current.offsetHeight;
+                setCardHeight(height);
+            }
+        };
+
+        updateCardHeight();
+        window.addEventListener('resize', updateCardHeight);
+        return () => window.removeEventListener('resize', updateCardHeight);
+    }, []);
 
     // Step Component with scroll-driven spotlight activation
     const ProcessStep = ({ step, index }) => {
@@ -94,6 +117,21 @@ const EngineTimeline = () => {
 
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
+        // Log per debug scale del glow
+        React.useEffect(() => {
+            const unsubscribeActive = isActive.on('change', (v) => {
+                console.log(`Step ${step.step} - isActive:`, v.toFixed(3));
+            });
+            const unsubscribeScale = glowScale.on('change', (v) => {
+                console.log(`Step ${step.step} - glowScale:`, v.toFixed(3));
+            });
+
+            return () => {
+                unsubscribeActive();
+                unsubscribeScale();
+            };
+        }, [isActive, glowScale, step.step]);
+
         // Card movement - slide right when active
         const cardX = useTransform(isActive, [0, 1], [0, 20]);
 
@@ -103,7 +141,7 @@ const EngineTimeline = () => {
                 className="relative flex items-center justify-center gap-6 md:gap-8 mb-16"
             >
                 {/* Step Number Circle - centered vertically to card */}
-                <div className="relative flex-shrink-0">
+                <div className="relative flex-shrink-0 rounded-full overflow-visible">
                     <motion.div
                         className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
                         style={{
@@ -131,24 +169,26 @@ const EngineTimeline = () => {
                             {step.step}
                         </motion.span>
                     </motion.div>
-                    {/* Luminous glow effect around circle */}
+                    {/* Luminous glow effect around circle - Safari fix with will-change */}
                     <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none -z-10"
                         style={{
                             background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
-                            filter: 'blur(20px)',
+                            filter: useTransform(glowScale, (s) => `blur(${15 + s * 5}px)`),
                             opacity: isActive,
-                            scale: glowScale
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
                         }}
                     />
-                    {/* Outer glow ring */}
+                    {/* Outer glow ring - Safari fix with will-change */}
                     <motion.div
                         className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                         style={{
                             background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
-                            filter: 'blur(25px)',
+                            filter: useTransform(glowScale, (s) => `blur(${20 + s * 5}px)`),
                             opacity: isActive,
-                            scale: glowScale
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
                         }}
                     />
                 </div>
@@ -278,28 +318,90 @@ const EngineTimeline = () => {
         }
     ];
 
-    return (
-        <section
-            id="process"
-            className="relative overflow-hidden pt-12 pb-32"
-            style={{ background: '#020617' }}
-        >
-            <div className="relative z-10">
-                    {/* Minimal mono title */}
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                        <div className="flex items-center gap-3">
-                            <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                                5)
-                            </span>
-                            <span className="text-white font-mono text-sm tracking-wide">
-                                The BYLT Engine
-                            </span>
-                            <span className="text-gray-500 font-mono text-sm tracking-wide">
-                                [Process]
-                            </span>
+    // Mobile Card Component - singola card con numero e contenuto
+    const MobileCard = ({ step, cardRef }) => {
+        return (
+            <div ref={cardRef} className="flex-shrink-0 w-full px-4 flex flex-col items-center justify-center">
+                {/* Step Number Circle */}
+                <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 border-cyan-400/80 bg-slate-900/80 backdrop-blur-lg">
+                    <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                        {step.step}
+                    </span>
+                    {/* Glow effect */}
+                    <div
+                        className="absolute inset-0 rounded-full pointer-events-none -z-10"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
+                            filter: 'blur(20px)',
+                        }}
+                    />
+                </div>
+
+                {/* Card Content */}
+                <div className="w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border border-cyan-400/50">
+                    {/* Icon & Title */}
+                    <div className="flex items-start gap-4 mb-4">
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-cyan-400 text-slate-900">
+                            {step.icon}
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-xl font-bold text-white font-inter mb-1">
+                                {step.title}
+                            </h3>
+                            <p className="text-sm text-cyan-400 font-medium">
+                                {step.subtitle}
+                            </p>
                         </div>
                     </div>
 
+                    {/* Description */}
+                    <p className="text-gray-300 leading-relaxed mb-4 text-sm">
+                        {step.description}
+                    </p>
+
+                    {/* Details */}
+                    <div className="space-y-2">
+                        {step.details.map((detail, i) => (
+                            <div
+                                key={i}
+                                className="flex items-center gap-3 bg-white/[0.03] rounded-lg p-2"
+                            >
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                                <span className="text-xs text-gray-200">
+                                    {detail}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <section
+            id="process"
+            className="relative pt-12 pb-32"
+            style={{ background: '#020617' }}
+        >
+            <div className="relative z-10">
+                {/* Minimal mono title */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+                    <div className="flex items-center gap-3">
+                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
+                            5)
+                        </span>
+                        <span className="text-white font-mono text-sm tracking-wide">
+                            The BYLT Engine
+                        </span>
+                        <span className="text-gray-500 font-mono text-sm tracking-wide">
+                            [Process]
+                        </span>
+                    </div>
+                </div>
+
+                {/* Desktop Version - unchanged */}
+                <div className="hidden md:block">
                     {/* Content container */}
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
                         <ScrollRevealText
@@ -327,6 +429,51 @@ const EngineTimeline = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
+                <div className="md:hidden">
+                    {/* Title - static */}
+                    <div className="px-4 mb-8">
+                        <h2 className="text-2xl font-bold font-inter text-center leading-tight text-white mb-4">
+                            Our proven process ensures clarity, efficiency, and exceptional results
+                        </h2>
+                        <p className="text-gray-400 text-base text-center">
+                            Every stage is designed to deliver measurable impact, from strategy to scale
+                        </p>
+                    </div>
+
+                    {/* Tall container for vertical scroll space */}
+                    <div style={{ height: '500vh' }} ref={containerRef}>
+                        {/* Sticky wrapper - stays in viewport while scrolling */}
+                        <div
+                            className="sticky flex items-center overflow-hidden"
+                            style={{
+                                top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px)` : '50%'
+                            }}
+                        >
+                            {/* Horizontal scrolling cards container */}
+                            <motion.div
+                                className="flex items-center w-full"
+                                style={{
+                                    x: useTransform(
+                                        mobileScrollProgress,
+                                        [0, 1],
+                                        ['0%', `-${(processSteps.length - 1) * 100}%`]
+                                    )
+                                }}
+                            >
+                                {processSteps.map((step, index) => (
+                                    <MobileCard
+                                        key={step.step}
+                                        step={step}
+                                        cardRef={index === 0 ? cardRef : null}
+                                    />
+                                ))}
+                            </motion.div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };

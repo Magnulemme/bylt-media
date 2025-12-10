@@ -1,11 +1,17 @@
-import { useState, useRef } from 'react';
-import { motion } from 'motion/react';
+import { useState, useRef, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import { Mail, MoveRight, X } from 'lucide-react';
 import { BackgroundBeams } from '../ui/background-beams';
+import { useFooterStore } from '../../store/footerStore';
 
 const NeuralContact = () => {
     const sectionRef = useQuantumScrollAnim();
+    const containerRef = useRef(null);
+    const setScrollProgress = useFooterStore((state) => state.setScrollProgress);
+    const footerHeight = useFooterStore((state) => state.footerHeight);
+    const [viewportOffset, setViewportOffset] = useState(0);
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -15,6 +21,57 @@ const NeuralContact = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState(null);
+
+    // Calcola viewport height - footerHeight
+    useEffect(() => {
+        const calculateOffset = () => {
+            if (footerHeight > 0) {
+                const offset = window.innerHeight - footerHeight;
+                setViewportOffset(offset);
+                console.log('📐 [NeuralContact] Viewport offset calculated:', {
+                    offset: `${offset}px`,
+                    windowHeight: `${window.innerHeight}px`,
+                    footerHeight: `${footerHeight}px`,
+                    formula: `${window.innerHeight} - ${footerHeight} = ${offset}`
+                });
+            }
+        };
+
+        calculateOffset();
+        window.addEventListener('resize', calculateOffset);
+        return () => window.removeEventListener('resize', calculateOffset);
+    }, [footerHeight]);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: [
+            "end end",                      // Inizia: bottom section = bottom viewport (progress = 0)
+            `end ${viewportOffset}px`       // Finisce: bottom section = vh - footerHeight (progress = 1)
+        ]
+    });
+
+    useTransform(scrollYProgress, (latest) => {
+        if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionBottom = rect.bottom;
+
+            console.log('📊 [NeuralContact] Scroll Progress Update:', {
+                rawProgress: latest.toFixed(4),
+                progressPercentage: `${(latest * 100).toFixed(2)}%`,
+                footerHeight: `${footerHeight}px`,
+                viewportOffset: `${viewportOffset}px`,
+                offsetStart: 'end end',
+                offsetEnd: `end ${viewportOffset}px`,
+                sectionBottom: `${sectionBottom.toFixed(0)}px`,
+                windowHeight: `${windowHeight}px`,
+                targetPosition: `${windowHeight - viewportOffset}px from bottom`,
+                currentScale: (0.7 + (latest * 0.3)).toFixed(3)
+            });
+        }
+        setScrollProgress(latest);
+        return latest;
+    });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,7 +87,6 @@ const NeuralContact = () => {
         setSubmitStatus(null);
 
         try {
-            // Create mailto link with form data
             const subject = encodeURIComponent(`New Contact Form Submission from ${formData.firstName} ${formData.lastName}`);
             const body = encodeURIComponent(`
 Name: ${formData.firstName} ${formData.lastName}
@@ -59,10 +115,15 @@ ${formData.message}
     };
 
     return (
-        <section id="contact" className="py-24 relative overflow-hidden" style={{ background: '#020617' }}>
+        <section 
+            ref={containerRef} 
+            id="contact" 
+            className="pt-32 pb-24 relative overflow-hidden" 
+            style={{ background: '#020617' }}
+        >
             <BackgroundBeams className="absolute inset-0 z-0" />
             <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
-                {/* Section Title - Above header */}
+                {/* Section Title */}
                 <div className="flex items-center gap-3 mb-12">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         7)
@@ -90,11 +151,20 @@ ${formData.message}
                     </motion.h2>
                 </div>
 
-                <div className="contact-form-container">
-                    <form onSubmit={handleSubmit} className="contact-form">
-                        <div className="form-grid">
-                            <div className="form-group">
-                                <label htmlFor="firstName" className="form-label">
+                {/* Contact Form Container */}
+                <div className="relative max-w-3xl mx-auto mb-12">
+                    <form 
+                        onSubmit={handleSubmit} 
+                        className="relative z-[2] bg-slate-900/80 backdrop-blur-xl border-2 border-cyan-400/30 rounded-2xl p-8 md:p-12 shadow-[8px_8px_0px_rgba(34,211,238,0.4)] transition-all duration-300 hover:shadow-[6px_6px_0px_rgba(34,211,238,0.4)] hover:translate-x-0.5 hover:translate-y-0.5"
+                    >
+                        {/* Form Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                            {/* First Name */}
+                            <div className="relative">
+                                <label 
+                                    htmlFor="firstName" 
+                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                >
                                     First Name *
                                 </label>
                                 <input
@@ -104,13 +174,17 @@ ${formData.message}
                                     value={formData.firstName}
                                     onChange={handleInputChange}
                                     required
-                                    className="form-input"
+                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
                                     placeholder="Enter your first name"
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="lastName" className="form-label">
+                            {/* Last Name */}
+                            <div className="relative">
+                                <label 
+                                    htmlFor="lastName" 
+                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                >
                                     Last Name *
                                 </label>
                                 <input
@@ -120,13 +194,17 @@ ${formData.message}
                                     value={formData.lastName}
                                     onChange={handleInputChange}
                                     required
-                                    className="form-input"
+                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
                                     placeholder="Enter your last name"
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="email" className="form-label">
+                            {/* Email */}
+                            <div className="relative">
+                                <label 
+                                    htmlFor="email" 
+                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                >
                                     Email Address *
                                 </label>
                                 <input
@@ -136,13 +214,17 @@ ${formData.message}
                                     value={formData.email}
                                     onChange={handleInputChange}
                                     required
-                                    className="form-input"
+                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
                                     placeholder="your.email@company.com"
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="company" className="form-label">
+                            {/* Company */}
+                            <div className="relative">
+                                <label 
+                                    htmlFor="company" 
+                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                >
                                     Company
                                 </label>
                                 <input
@@ -151,14 +233,18 @@ ${formData.message}
                                     name="company"
                                     value={formData.company}
                                     onChange={handleInputChange}
-                                    className="form-input"
+                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
                                     placeholder="Your company name"
                                 />
                             </div>
                         </div>
 
-                        <div className="form-group">
-                            <label htmlFor="message" className="form-label">
+                        {/* Message */}
+                        <div className="relative mb-8">
+                            <label 
+                                htmlFor="message" 
+                                className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                            >
                                 Message *
                             </label>
                             <textarea
@@ -168,20 +254,21 @@ ${formData.message}
                                 onChange={handleInputChange}
                                 required
                                 rows={6}
-                                className="form-textarea"
+                                className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 resize-y min-h-[120px] focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
                                 placeholder="Tell us about your project, goals, and how we can help you build your digital future..."
                             />
                         </div>
 
-                        <div className="form-submit">
+                        {/* Submit Button */}
+                        <div className="flex justify-center">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="neural-submit-button"
+                                className="group relative inline-flex items-center justify-center h-14 px-8 min-w-[180px] font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-[length:200%_200%] animate-[gradient_3s_ease_infinite] border border-cyan-500/50 rounded-lg font-inter transition-all duration-300 hover:not-disabled:-translate-y-0.5 hover:not-disabled:shadow-[0_10px_30px_rgba(6,182,212,0.5)] disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? (
                                     <>
-                                        <div className="submit-spinner"></div>
+                                        <div className="w-5 h-5 border-2 border-transparent border-t-slate-800 rounded-full animate-spin mr-3" />
                                         <span>Sending...</span>
                                     </>
                                 ) : (
@@ -193,15 +280,17 @@ ${formData.message}
                             </button>
                         </div>
 
+                        {/* Success Message */}
                         {submitStatus === 'success' && (
-                            <div className="status-message success">
+                            <div className="flex items-center gap-3 px-5 py-4 mt-6 bg-green-500/10 border border-green-500/30 rounded-xl font-inter text-sm font-medium text-green-500">
                                 <Mail className="w-5 h-5" />
                                 <span>Thank you! Your message has been sent successfully.</span>
                             </div>
                         )}
 
+                        {/* Error Message */}
                         {submitStatus === 'error' && (
-                            <div className="status-message error">
+                            <div className="flex items-center gap-3 px-5 py-4 mt-6 bg-red-500/10 border border-red-500/30 rounded-xl font-inter text-sm font-medium text-red-500">
                                 <X className="w-5 h-5" />
                                 <span>There was an error sending your message. Please try again.</span>
                             </div>
@@ -209,210 +298,20 @@ ${formData.message}
                     </form>
                 </div>
 
-                <div className="contact-details">
-                    <div className="contact-detail-item">
-                        <Mail className="w-5 h-5 text-gray-400" />
+                {/* Contact Details */}
+                <div className="flex justify-center items-center gap-12 flex-wrap">
+                    <div className="flex items-center gap-3 text-gray-400 font-inter text-sm">
+                        <Mail className="w-5 h-5" />
                         <span>info@byltmedia.com</span>
                     </div>
                 </div>
             </div>
+
             <style jsx>{`
-
-                .contact-form-container {
-                    position: relative;
-                    max-width: 800px;
-                    margin: 0 auto 3rem auto;
-                }
-
-                .contact-form {
-                    background: rgba(15, 23, 42, 0.8);
-                    backdrop-filter: blur(12px);
-                    border: 2px solid rgba(34, 211, 238, 0.3);
-                    border-radius: 16px;
-                    padding: 3rem;
-                    position: relative;
-                    z-index: 2;
-                    box-shadow: 8px 8px 0px rgba(34, 211, 238, 0.4);
-                    transition: all 0.3s ease;
-                }
-
-                .contact-form:hover {
-                    box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
-                    transform: translate(2px, 2px);
-                }
-
-                .form-grid {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 1.5rem;
-                    margin-bottom: 1.5rem;
-                }
-
-                .form-group {
-                    position: relative;
-                }
-
-                .form-label {
-                    display: block;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 0.875rem;
-                    font-weight: 600;
-                    color: #e5e7eb;
-                    margin-bottom: 0.5rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                }
-
-                .form-input, .form-textarea {
-                    width: 100%;
-                    padding: 1rem 1.25rem;
-                    background: rgba(30, 41, 59, 0.6);
-                    border: 2px solid rgba(100, 116, 139, 0.3);
-                    border-radius: 8px;
-                    color: #e5e7eb;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 1rem;
-                    transition: all 0.3s ease;
-                    backdrop-filter: blur(8px);
-                }
-
-                .form-input:focus, .form-textarea:focus {
-                    outline: none;
-                    border-color: rgba(34, 211, 238, 0.6);
-                    background: rgba(30, 41, 59, 0.9);
-                    box-shadow: 4px 4px 0px rgba(34, 211, 238, 0.2);
-                    transform: translate(-2px, -2px);
-                }
-
-                .form-input::placeholder, .form-textarea::placeholder {
-                    color: #9ca3af;
-                }
-
-                .form-textarea {
-                    resize: vertical;
-                    min-height: 120px;
-                }
-
-                .form-submit {
-                    display: flex;
-                    justify-content: center;
-                    margin-top: 2rem;
-                }
-
-                .neural-submit-button {
-                    position: relative;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: 3.5rem;
-                    padding: 0 2rem;
-                    font-weight: 600;
-                    font-size: 1rem;
-                    color: white;
-                    background: linear-gradient(to right, #06b6d4, #3b82f6, #06b6d4);
-                    background-size: 200% 200%;
-                    animation: gradient 3s ease infinite;
-                    border: 1px solid rgba(6, 182, 212, 0.5);
-                    border-radius: 0.5rem;
-                    font-family: 'Inter', sans-serif;
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                    min-width: 180px;
-                }
-
-                .neural-submit-button:hover:not(:disabled) {
-                    transform: translateY(-2px);
-                    box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
-                }
-
                 @keyframes gradient {
                     0% { background-position: 0% 50%; }
                     50% { background-position: 100% 50%; }
                     100% { background-position: 0% 50%; }
-                }
-
-                .neural-submit-button:disabled {
-                    opacity: 0.7;
-                    cursor: not-allowed;
-                    transform: none;
-                }
-
-                .submit-spinner {
-                    width: 20px;
-                    height: 20px;
-                    border: 2px solid transparent;
-                    border-top: 2px solid #1e293b;
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
-                    margin-right: 0.75rem;
-                }
-
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-
-                .status-message {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    padding: 1rem 1.25rem;
-                    margin-top: 1.5rem;
-                    border-radius: 12px;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 0.875rem;
-                    font-weight: 500;
-                }
-
-                .status-message.success {
-                    background: rgba(34, 197, 94, 0.1);
-                    border: 1px solid rgba(34, 197, 94, 0.3);
-                    color: #22c55e;
-                }
-
-                .status-message.error {
-                    background: rgba(239, 68, 68, 0.1);
-                    border: 1px solid rgba(239, 68, 68, 0.3);
-                    color: #ef4444;
-                }
-
-                .contact-details {
-                    display: flex;
-                    justify-content: center;
-                    gap: 3rem;
-                    flex-wrap: wrap;
-                }
-
-                .contact-detail-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    color: #9ca3af;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 0.875rem;
-                }
-
-                @media (max-width: 768px) {
-                    .form-grid {
-                        grid-template-columns: 1fr;
-                        gap: 1rem;
-                    }
-
-                    .contact-form {
-                        padding: 2rem;
-                    }
-
-                    .contact-details {
-                        flex-direction: column;
-                        gap: 1rem;
-                        align-items: center;
-                    }
-
-                    .neural-submit-button {
-                        padding: 1rem 2rem;
-                        font-size: 1rem;
-                    }
                 }
             `}</style>
         </section>

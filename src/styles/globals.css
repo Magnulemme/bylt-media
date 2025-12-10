@@ -114,3 +114,112 @@
 .animate-gradient {
   animation: gradient-shift 3s ease infinite;
 }
+
+
+/* InvertedCard.css - Stili per l'effetto inverted border radius */
+
+/* ========================================
+   INVERTED CORNERS - BOTTOM RIGHT (Price Tag)
+   ======================================== */
+
+/* Angolo superiore destro del price tag */
+.inverted-corner-top-right::before {
+  content: "";
+  position: absolute;
+  width: 1.125rem;
+  height: 1.25rem;
+  background-color: transparent;
+  right: 0.5rem;
+  top: -1.75rem;
+  border-bottom-right-radius: 0.5rem;
+  box-shadow: 0.375rem 0.375rem var(--card-border-color, #4a4e69);
+}
+
+.inverted-corner-top-right::after {
+  content: "";
+  position: absolute;
+  width: 1.125rem;
+  height: 1.125rem;
+  background-color: transparent;
+  top: -1.125rem;
+  right: 0;
+  border-bottom-right-radius: 0.8rem;
+  box-shadow: 0.375rem 0.375rem var(--card-bg-color, #22223b);
+}
+
+/* Angolo sinistro esterno del price tag */
+.inverted-corner-bottom-left-outer {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: transparent;
+  left: 45%;
+  bottom: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  box-shadow: 0.375rem 0.375rem var(--card-border-color, #4a4e69);
+}
+
+/* Angolo sinistro interno del price tag */
+.inverted-corner-bottom-left-inner {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: transparent;
+  left: 47%;
+  bottom: 0;
+  border-bottom-right-radius: 0.8rem;
+  box-shadow: 0.375rem 0.375rem var(--card-bg-color, #22223b);
+}
+
+/* ========================================
+   INVERTED CORNERS - TOP LEFT (Title Tag)
+   ======================================== */
+
+/* Angolo destro del title tag */
+.inverted-corner-top-left::before {
+  content: "";
+  position: absolute;
+  width: 1.125rem;
+  height: 1.25rem;
+  background-color: transparent;
+  right: -1.625rem;
+  top: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  box-shadow: -0.375rem -0.375rem var(--card-border-color, #4a4e69);
+}
+
+.inverted-corner-top-left::after {
+  content: "";
+  position: absolute;
+  width: 1.125rem;
+  height: 1.125rem;
+  background-color: transparent;
+  top: 0;
+  right: -1.125rem;
+  border-top-left-radius: 0.8rem;
+  box-shadow: -0.375rem -0.375rem var(--card-bg-color, #22223b);
+}
+
+/* Angolo sinistro esterno del title tag */
+.inverted-corner-title-left-outer {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: transparent;
+  top: 15%;
+  left: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  box-shadow: -0.375rem -0.375rem var(--card-border-color, #4a4e69);
+}
+
+/* Angolo sinistro interno del title tag */
+.inverted-corner-title-left-inner {
+  position: absolute;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: transparent;
+  top: 13%;
+  left: 0;
+  border-top-left-radius: 0.8rem;
+  box-shadow: -0.375rem -0.375rem var(--card-bg-color, #22223b);
+}
