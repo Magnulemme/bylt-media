@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import { EncryptedText } from '../ui/encrypted-text';
-import { BrutalistButton } from '../ui/brutalist-button';
+import { BrutalistButton } from '../ui/brutalist-button.jsx';
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {

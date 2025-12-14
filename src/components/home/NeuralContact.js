@@ -4,6 +4,47 @@ import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import { Mail, MoveRight, X } from 'lucide-react';
 import { BackgroundBeams } from '../ui/background-beams';
 import { useFooterStore } from '../../store/footerStore';
+import { Button as MovingBorderButton } from '../ui/moving-border.jsx';
+
+// Word Component for text reveal effect
+const Word = ({ children, range, progress }) => {
+    const opacity = useTransform(progress, range, [0.2, 1]);
+
+    return (
+        <motion.span
+            style={{ opacity }}
+            className="inline-block mr-[0.25em]"
+        >
+            {children}
+        </motion.span>
+    );
+};
+
+// Scroll Reveal Text Component
+const ScrollRevealText = ({ text, className }) => {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 0.9", "start 0.5"]
+    });
+
+    const words = text.split(' ');
+
+    return (
+        <span ref={ref} className={className}>
+            {words.map((word, i) => {
+                const start = i / words.length;
+                const end = (i + 1) / words.length;
+
+                return (
+                    <Word key={i} range={[start, end]} progress={scrollYProgress}>
+                        {word}
+                    </Word>
+                );
+            })}
+        </span>
+    );
+};
 
 const NeuralContact = () => {
     const sectionRef = useQuantumScrollAnim();
@@ -28,12 +69,6 @@ const NeuralContact = () => {
             if (footerHeight > 0) {
                 const offset = window.innerHeight - footerHeight;
                 setViewportOffset(offset);
-                console.log('📐 [NeuralContact] Viewport offset calculated:', {
-                    offset: `${offset}px`,
-                    windowHeight: `${window.innerHeight}px`,
-                    footerHeight: `${footerHeight}px`,
-                    formula: `${window.innerHeight} - ${footerHeight} = ${offset}`
-                });
             }
         };
 
@@ -51,24 +86,6 @@ const NeuralContact = () => {
     });
 
     useTransform(scrollYProgress, (latest) => {
-        if (containerRef.current) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const sectionBottom = rect.bottom;
-
-            console.log('📊 [NeuralContact] Scroll Progress Update:', {
-                rawProgress: latest.toFixed(4),
-                progressPercentage: `${(latest * 100).toFixed(2)}%`,
-                footerHeight: `${footerHeight}px`,
-                viewportOffset: `${viewportOffset}px`,
-                offsetStart: 'end end',
-                offsetEnd: `end ${viewportOffset}px`,
-                sectionBottom: `${sectionBottom.toFixed(0)}px`,
-                windowHeight: `${windowHeight}px`,
-                targetPosition: `${windowHeight - viewportOffset}px from bottom`,
-                currentScale: (0.7 + (latest * 0.3)).toFixed(3)
-            });
-        }
         setScrollProgress(latest);
         return latest;
     });
@@ -115,16 +132,16 @@ ${formData.message}
     };
 
     return (
-        <section 
-            ref={containerRef} 
-            id="contact" 
-            className="pt-32 pb-24 relative overflow-hidden" 
+        <section
+            ref={containerRef}
+            id="contact"
+            className="pt-32 pb-24 relative overflow-hidden"
             style={{ background: '#020617' }}
         >
             <BackgroundBeams className="absolute inset-0 z-0" />
             <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
                 {/* Section Title */}
-                <div className="flex items-center gap-3 mb-12">
+                <div className="flex items-center gap-3 mb-12 justify-start">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         7)
                     </span>
@@ -138,32 +155,32 @@ ${formData.message}
 
                 {/* Bridge Header */}
                 <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <motion.h2
-                        className="text-3xl md:text-5xl font-bold font-inter text-white mb-6"
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        They built their future with us.
+                    <div className="text-3xl md:text-5xl font-bold font-inter mb-6">
+                        <ScrollRevealText
+                            text="They built their future with us."
+                            className="text-white"
+                        />
                         <br />
-                        <span className="text-cyan-400">Now it's your turn.</span>
-                    </motion.h2>
+                        <ScrollRevealText
+                            text="Now it's your turn."
+                            className="text-cyan-400"
+                        />
+                    </div>
                 </div>
 
                 {/* Contact Form Container */}
                 <div className="relative max-w-3xl mx-auto mb-12">
-                    <form 
-                        onSubmit={handleSubmit} 
+                    <form
+                        onSubmit={handleSubmit}
                         className="relative z-[2] bg-slate-900/80 backdrop-blur-xl border-2 border-cyan-400/30 rounded-2xl p-8 md:p-12 shadow-[8px_8px_0px_rgba(34,211,238,0.4)] transition-all duration-300 hover:shadow-[6px_6px_0px_rgba(34,211,238,0.4)] hover:translate-x-0.5 hover:translate-y-0.5"
                     >
                         {/* Form Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
                             {/* First Name */}
                             <div className="relative">
-                                <label 
-                                    htmlFor="firstName" 
-                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                <label
+                                    htmlFor="firstName"
+                                    className="block font-mono text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest"
                                 >
                                     First Name *
                                 </label>
@@ -174,16 +191,16 @@ ${formData.message}
                                     value={formData.firstName}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
+                                    className="w-full px-5 py-4 bg-slate-950/95 border-2 border-slate-700/80 rounded-lg text-white font-inter transition-all duration-300 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-black focus:shadow-[0_0_20px_rgba(34,211,238,0.3)] focus:ring-2 focus:ring-cyan-400/20"
                                     placeholder="Enter your first name"
                                 />
                             </div>
 
                             {/* Last Name */}
                             <div className="relative">
-                                <label 
-                                    htmlFor="lastName" 
-                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                <label
+                                    htmlFor="lastName"
+                                    className="block font-mono text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest"
                                 >
                                     Last Name *
                                 </label>
@@ -194,16 +211,16 @@ ${formData.message}
                                     value={formData.lastName}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
+                                    className="w-full px-5 py-4 bg-slate-950/95 border-2 border-slate-700/80 rounded-lg text-white font-inter transition-all duration-300 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-black focus:shadow-[0_0_20px_rgba(34,211,238,0.3)] focus:ring-2 focus:ring-cyan-400/20"
                                     placeholder="Enter your last name"
                                 />
                             </div>
 
                             {/* Email */}
                             <div className="relative">
-                                <label 
-                                    htmlFor="email" 
-                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                <label
+                                    htmlFor="email"
+                                    className="block font-mono text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest"
                                 >
                                     Email Address *
                                 </label>
@@ -214,16 +231,16 @@ ${formData.message}
                                     value={formData.email}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
+                                    className="w-full px-5 py-4 bg-slate-950/95 border-2 border-slate-700/80 rounded-lg text-white font-inter transition-all duration-300 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-black focus:shadow-[0_0_20px_rgba(34,211,238,0.3)] focus:ring-2 focus:ring-cyan-400/20"
                                     placeholder="your.email@company.com"
                                 />
                             </div>
 
                             {/* Company */}
                             <div className="relative">
-                                <label 
-                                    htmlFor="company" 
-                                    className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                                <label
+                                    htmlFor="company"
+                                    className="block font-mono text-xs font-bold text-slate-400 mb-3 uppercase tracking-widest"
                                 >
                                     Company
                                 </label>
@@ -233,7 +250,7 @@ ${formData.message}
                                     name="company"
                                     value={formData.company}
                                     onChange={handleInputChange}
-                                    className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
+                                    className="w-full px-5 py-4 bg-slate-950/95 border-2 border-slate-700/80 rounded-lg text-white font-inter transition-all duration-300 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 focus:bg-black focus:shadow-[0_0_20px_rgba(34,211,238,0.3)] focus:ring-2 focus:ring-cyan-400/20"
                                     placeholder="Your company name"
                                 />
                             </div>
@@ -241,9 +258,9 @@ ${formData.message}
 
                         {/* Message */}
                         <div className="relative mb-8">
-                            <label 
-                                htmlFor="message" 
-                                className="block font-inter text-sm font-semibold text-gray-200 mb-2 uppercase tracking-wider"
+                            <label
+                                htmlFor="message"
+                                className="block font-mono text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest"
                             >
                                 Message *
                             </label>
@@ -254,30 +271,34 @@ ${formData.message}
                                 onChange={handleInputChange}
                                 required
                                 rows={6}
-                                className="w-full px-5 py-4 bg-slate-700/60 border-2 border-slate-500/30 rounded-lg text-gray-200 font-inter transition-all duration-300 backdrop-blur-lg placeholder:text-gray-400 resize-y min-h-[120px] focus:outline-none focus:border-cyan-400/60 focus:bg-slate-700/90 focus:shadow-[4px_4px_0px_rgba(34,211,238,0.2)] focus:-translate-x-0.5 focus:-translate-y-0.5"
+                                className="w-full px-5 py-4 bg-slate-950/95 border-2 border-slate-700/80 rounded-lg text-white font-inter transition-all duration-300 placeholder:text-slate-500 resize-y min-h-[140px] focus:outline-none focus:border-cyan-400 focus:bg-black focus:shadow-[0_0_20px_rgba(34,211,238,0.3)] focus:ring-2 focus:ring-cyan-400/20"
                                 placeholder="Tell us about your project, goals, and how we can help you build your digital future..."
                             />
                         </div>
 
                         {/* Submit Button */}
                         <div className="flex justify-center">
-                            <button
+                            <MovingBorderButton
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="group relative inline-flex items-center justify-center h-14 px-8 min-w-[180px] font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500 bg-[length:200%_200%] animate-[gradient_3s_ease_infinite] border border-cyan-500/50 rounded-lg font-inter transition-all duration-300 hover:not-disabled:-translate-y-0.5 hover:not-disabled:shadow-[0_10px_30px_rgba(6,182,212,0.5)] disabled:opacity-70 disabled:cursor-not-allowed"
+                                borderRadius="0.75rem"
+                                containerClassName="min-w-[240px] h-16"
+                                borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                className="bg-slate-950/95 border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                                duration={2500}
                             >
                                 {isSubmitting ? (
-                                    <>
-                                        <div className="w-5 h-5 border-2 border-transparent border-t-slate-800 rounded-full animate-spin mr-3" />
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-5 h-5 border-2 border-transparent border-t-cyan-400 rounded-full animate-spin" />
                                         <span>Sending...</span>
-                                    </>
+                                    </div>
                                 ) : (
-                                    <>
+                                    <div className="flex items-center gap-3">
                                         <span>Send Message</span>
-                                        <MoveRight className="ml-3 transition-transform duration-300" />
-                                    </>
+                                        <MoveRight className="w-5 h-5" />
+                                    </div>
                                 )}
-                            </button>
+                            </MovingBorderButton>
                         </div>
 
                         {/* Success Message */}
@@ -296,14 +317,6 @@ ${formData.message}
                             </div>
                         )}
                     </form>
-                </div>
-
-                {/* Contact Details */}
-                <div className="flex justify-center items-center gap-12 flex-wrap">
-                    <div className="flex items-center gap-3 text-gray-400 font-inter text-sm">
-                        <Mail className="w-5 h-5" />
-                        <span>info@byltmedia.com</span>
-                    </div>
                 </div>
             </div>
 
