@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import { EncryptedText } from '../ui/encrypted-text';
+import { BrutalistButton } from '../ui/brutalist-button';
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -49,165 +50,184 @@ const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pause
 
 // Optimized Hero Section with typing effect and side-by-side layout
 const FuturisticHero = () => {
-    const texts = [
+    // Memoize texts array to prevent recreation
+    const texts = useMemo(() => [
         "Digital Futures",
         "Performance",
         "AI Solutions",
         "Growth"
-    ];
+    ], []);
 
     const displayText = useTypingEffect(texts, 120, 60, 2500);
 
-    // Alternating text with EncryptedText component
-    const cryptoTexts = ['x² + y² + z² = r²', 'Scroll to explore ↓'];
+    // Memoize crypto texts array to prevent recreation on every render
+    const cryptoTexts = useMemo(() => ['x² + y² + z² = r²', 'Scroll to explore ↓'], []);
     const [currentCryptoIndex, setCurrentCryptoIndex] = useState(0);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    // Use ref to store interval ID for proper cleanup
+    const cryptoIntervalRef = useRef(null);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        cryptoIntervalRef.current = setInterval(() => {
             setCurrentCryptoIndex((prev) => (prev + 1) % cryptoTexts.length);
         }, 4000);
 
-        return () => clearInterval(interval);
-    }, []);
+        return () => {
+            if (cryptoIntervalRef.current) {
+                clearInterval(cryptoIntervalRef.current);
+            }
+        };
+    }, [cryptoTexts.length]);
+
+    // Scroll listener to hide the scroll indicator
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50 && !isScrolled) {
+                setIsScrolled(true);
+            } else if (window.scrollY <= 50 && isScrolled) {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isScrolled]);
+
+    // Memoize EncryptedText to avoid recalculation on every render
+    const encryptedTextComponent = useMemo(() => (
+        <EncryptedText
+            text={cryptoTexts[currentCryptoIndex]}
+            className="text-white/60 font-mono"
+        />
+    ), [cryptoTexts, currentCryptoIndex]);
 
     return (
         <section
             id="home"
-            className="relative h-screen flex items-center justify-center overflow-hidden hero-section p-4 pt-24"
+            className="hero-section"
             data-hero-section
             style={{
                 background: '#020617',
                 zIndex: 10
             }}
         >
-            <div
-                className="relative h-full w-full rounded-2xl flex items-center justify-center overflow-hidden"
-                style={{
-                    background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
-                }}
-            >
+            <div className="hero-inner bg-hero">
                 {/* Gradient overlay */}
-                <div
-                    className="absolute inset-0 z-10 pointer-events-none"
-                    style={{
-                        background: 'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15), transparent 50%), radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15), transparent 50%)',
-                        contain: 'paint'
-                    }}
-                ></div>
+                <div className="gradient-overlay"></div>
 
-                <div className="relative z-20 w-full max-w-7xl mx-auto px-4 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Section Header - Mobile & Tablet - Absolute positioned */}
+                <div className="absolute top-12 right-6 sm:right-8 md:right-12 z-30 lg:hidden">
+                    <div className="flex items-center gap-3">
+                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
+                            1)
+                        </span>
+                        <span className="text-white font-mono text-sm tracking-wide">
+                            Your Solution
+                        </span>
+                        <span className="text-gray-500 font-mono text-sm tracking-wide">
+                            [Tech & Marketing]
+                        </span>
+                    </div>
+                </div>
+
+                {/* Scroll Indicator - Mobile (if viewport tall enough), Tablet - Absolute positioned */}
+                <div className={`encrypted-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-500 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    {encryptedTextComponent}
+                </div>
+
+                <div className="container-centered">
+                <div className="hero-grid">
                     {/* Left side - Text content */}
-                    <div className="text-white space-y-8">
-                        <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold font-inter">
-                            <div className="text-white mb-4">
+                    <div className="hero-content">
+                        <h1 className="hero-title font-inter relative z-20">
+                            <div className="text-white mb-6 md:mb-4">
                                 We Build
                             </div>
-                            <div className="min-h-[80px] md:min-h-[100px] lg:min-h-[120px] whitespace-nowrap text-italic" style={{ lineHeight: '1.2' }}>
-                                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animated-gradient">
+                            <div className="animated-text-container">
+                                <span className="text-gradient animated-gradient">
                                     {displayText}
-                                    <span
-                                        className="typing-cursor"
-                                        style={{
-                                            display: 'inline-block',
-                                            width: '4px',
-                                            height: '0.9em',
-                                            backgroundColor: '#60a5fa',
-                                            marginLeft: '4px',
-                                            animation: 'blink 1s step-end infinite',
-                                            verticalAlign: 'baseline',
-                                            transform: 'translateY(0.1em)'
-                                        }}
-                                    ></span>
+                                    <span className="typing-cursor"></span>
                                 </span>
                             </div>
                         </h1>
 
-                        <div className="max-w-xl hidden lg:block">
-                            <fieldset
-                                className="border-2 border-white/30 p-6 bg-white/5 backdrop-blur-sm rounded-lg"
-                                style={{
-                                    boxShadow: '8px 8px 0px rgba(34, 211, 238, 0.8)'
-                                }}
-                            >
-                                <legend className="px-2 text-base text-white font-semibold tracking-wide">
-                                    The Formula
-                                </legend>
-                                <p className="text-base text-gray-400 leading-relaxed">
-                                    A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
-                                </p>
-                            </fieldset>
-                        </div>
+                        {/* Description - Mobile & Tablet */}
+                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto space-y-8 md:space-y-10">
+                            {/* 3D Sphere as background */}
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] opacity-40 pointer-events-none">
+                                <DataVisualization3D />
+                            </div>
 
-                        {/* Desktop CTAs */}
-                        <div className="hidden lg:flex flex-row gap-4 pt-8">
-                            <a
-                                href="/free-audit"
-                                className="inline-flex h-14 items-center justify-center rounded-lg border border-cyan-500/50 bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient px-8 text-base font-semibold text-white transition-transform duration-300 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-cyan-500/50"
-                            >
-                                Get Free Audit
-                            </a>
-                            <a
-                                href="#services"
-                                className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 px-8 text-base font-semibold text-white transition-all duration-300 backdrop-blur-sm hover:translate-y-[-2px]"
-                            >
-                                <span>Explore Services</span>
-                                <span className="text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">→</span>
-                            </a>
-                        </div>
+                            {/* Description Text */}
+                            <p className="relative z-10 text-base md:text-lg text-gray-300 leading-relaxed text-center max-w-lg mx-auto">
+                                A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
+                            </p>
 
-                        {/* Mobile CTAs and description */}
-                        <div className="lg:hidden space-y-6">
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <a
+                            {/* CTAs - Mobile & Tablet */}
+                            <div className="pt-8 flex flex-col gap-10 relative z-10 md:max-w-sm md:mx-auto items-center">
+                                <BrutalistButton
                                     href="/free-audit"
-                                    className="inline-flex h-14 items-center justify-center rounded-lg border border-cyan-500/50 bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient px-8 text-base font-semibold text-white transition-transform duration-300 hover:shadow-lg hover:shadow-cyan-500/50"
+                                    className="w-full"
                                 >
-                                    Get Free Audit
-                                </a>
+                                    <span>Get Free Audit</span>
+                                </BrutalistButton>
                                 <a
                                     href="#services"
-                                    className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 px-8 text-base font-semibold text-white transition-all duration-300 backdrop-blur-sm"
+                                    className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"
                                 >
                                     <span>Explore Services</span>
-                                    <span className="text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                    <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
                                 </a>
                             </div>
-                            <div className="max-w-xl">
-                                <fieldset
-                                    className="border-2 border-white/30 p-6 bg-white/5 backdrop-blur-sm rounded-lg"
-                                    style={{
-                                        boxShadow: '8px 8px 0px rgba(34, 211, 238, 0.8)'
-                                    }}
-                                >
-                                    <legend className="px-2 text-base text-white font-semibold tracking-wide">
-                                        The Formula
-                                    </legend>
-                                    <p className="text-base text-gray-400 leading-relaxed">
-                                        A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
-                                    </p>
-                                </fieldset>
-                            </div>
+                        </div>
+
+                        {/* Description - Desktop only */}
+                        <p className="hidden lg:block text-lg text-gray-300 leading-relaxed max-w-xl">
+                            A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
+                        </p>
+
+                        {/* CTAs - Desktop */}
+                        <div className="hidden lg:flex flex-row items-center gap-16 pt-8">
+                            <BrutalistButton href="/free-audit">
+                                <span>Get Free Audit</span>
+                            </BrutalistButton>
+                            <a
+                                href="#services"
+                                className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"
+                            >
+                                <span>Explore Services</span>
+                                <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                            </a>
                         </div>
                     </div>
 
-                    {/* Right side - 3D Data Visualization */}
-                    <div className="relative h-[500px] lg:h-[600px] hidden lg:block">
+                    {/* Right side - 3D Data Visualization - Desktop only */}
+                    <div className="hidden lg:block relative h-[600px]">
                         <div className="absolute top-0 right-0 text-sm tracking-wide z-10">
-                            <span className="text-cyan-400 font-mono">f(BYLT.Media) = Your Tech & Marketing Solution</span>
+                            <div className="flex items-center gap-3">
+                                <span className="text-cyan-400 font-mono tracking-wide">
+                                    1)
+                                </span>
+                                <span className="text-white font-mono tracking-wide">
+                                    Your Solution
+                                </span>
+                                <span className="text-gray-500 font-mono tracking-wide">
+                                    [Tech & Marketing]
+                                </span>
+                            </div>
                         </div>
                         <div className="absolute inset-x-0 top-6 bottom-0">
                             <DataVisualization3D />
                         </div>
-                        <div className="absolute bottom-0 left-0 text-sm z-10">
-                            <EncryptedText
-                                text={cryptoTexts[currentCryptoIndex]}
-                                className="text-white/60 font-mono"
-                            />
-                        </div>
-                     </div>
+                    </div>
                 </div>
             </div>
+            </div>
+
+            {/* Scroll Indicator - Desktop - Ancorato a hero-section */}
+            <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-sm z-30 hidden lg:block transition-opacity duration-500 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                {encryptedTextComponent}
             </div>
         </section>
     );

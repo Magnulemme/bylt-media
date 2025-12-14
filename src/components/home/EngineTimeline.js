@@ -45,13 +45,38 @@ const ScrollRevealText = ({ text, className }) => {
 const EngineTimeline = () => {
     const containerRef = useRef(null);
     const cardRef = useRef(null);
+    const mobileTitleRef = useRef(null);
+    const sectionRef = useRef(null);
     const [cardHeight, setCardHeight] = React.useState(0);
+    const [isMounted, setIsMounted] = React.useState(false);
 
     // Mobile scroll progress per il card switching
     const { scrollYProgress: mobileScrollProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
+
+    // Scroll progress per gestire la scomparsa del glow alla fine
+    const { scrollYProgress: sectionExitProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end start"]
+    });
+
+    // Forza un re-render dopo il mount per inizializzare useScroll correttamente
+    React.useEffect(() => {
+        setIsMounted(true);
+
+        // Forza un piccolo scroll per attivare i calcoli di Framer Motion
+        const timer = setTimeout(() => {
+            if (containerRef.current) {
+                const currentScroll = window.scrollY;
+                window.scrollTo({ top: currentScroll + 1, behavior: 'instant' });
+                window.scrollTo({ top: currentScroll, behavior: 'instant' });
+            }
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     // Calcola l'altezza della card per il posizionamento sticky
     React.useEffect(() => {
@@ -117,14 +142,19 @@ const EngineTimeline = () => {
 
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
-        // Log per debug scale del glow
+        // Log per debug scale del glow e blur
         React.useEffect(() => {
             const unsubscribeActive = isActive.on('change', (v) => {
-                console.log(`Step ${step.step} - isActive:`, v.toFixed(3));
+                console.log(`📍 Step ${step.step} - isActive:`, v.toFixed(3));
             });
             const unsubscribeScale = glowScale.on('change', (v) => {
-                console.log(`Step ${step.step} - glowScale:`, v.toFixed(3));
+                const innerBlur = 15 + v * 5;
+                const outerBlur = 20 + v * 5;
+                console.log(`✨ Step ${step.step} - glowScale: ${v.toFixed(3)} | innerBlur: ${innerBlur.toFixed(1)}px | outerBlur: ${outerBlur.toFixed(1)}px`);
             });
+
+            // Log iniziale
+            console.log(`🚀 Step ${step.step} initialized - Device: ${navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}`);
 
             return () => {
                 unsubscribeActive();
@@ -174,7 +204,11 @@ const EngineTimeline = () => {
                         className="absolute inset-0 rounded-full pointer-events-none -z-10"
                         style={{
                             background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
-                            filter: useTransform(glowScale, (s) => `blur(${15 + s * 5}px)`),
+                            filter: useTransform(glowScale, (s) => {
+                                const blur = 15 + s * 5;
+                                console.log(`🔵 Inner glow blur for Step ${step.step}:`, blur.toFixed(1) + 'px');
+                                return `blur(${blur}px)`;
+                            }),
                             opacity: isActive,
                             transform: useTransform(glowScale, (s) => `scale(${s})`),
                             willChange: 'transform, filter, opacity'
@@ -185,7 +219,11 @@ const EngineTimeline = () => {
                         className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                         style={{
                             background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
-                            filter: useTransform(glowScale, (s) => `blur(${20 + s * 5}px)`),
+                            filter: useTransform(glowScale, (s) => {
+                                const blur = 20 + s * 5;
+                                console.log(`🟣 Outer glow blur for Step ${step.step}:`, blur.toFixed(1) + 'px');
+                                return `blur(${blur}px)`;
+                            }),
                             opacity: isActive,
                             transform: useTransform(glowScale, (s) => `scale(${s})`),
                             willChange: 'transform, filter, opacity'
@@ -228,18 +266,18 @@ const EngineTimeline = () => {
                     </p>
 
                     {/* Details Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {step.details.map((detail, i) => (
                             <motion.div
                                 key={i}
-                                className="flex items-center gap-3 bg-white/[0.03] rounded-lg p-3"
+                                className="flex items-start gap-3"
                                 initial={{ opacity: 0, x: -10 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 + i * 0.05 }}
                             >
-                                <div className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0" />
-                                <span className="text-sm text-gray-200">
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
+                                <span className="text-sm text-gray-200 leading-relaxed">
                                     {detail}
                                 </span>
                             </motion.div>
@@ -319,31 +357,136 @@ const EngineTimeline = () => {
     ];
 
     // Mobile Card Component - singola card con numero e contenuto
-    const MobileCard = ({ step, cardRef }) => {
+    const MobileCard = ({ step, cardRef, index, totalSteps, scrollProgress, exitProgress }) => {
+        // Calcola quando questa card è al centro dello schermo
+        // Per 5 card: card 0 al centro quando progress = 0, card 1 quando = 0.25, ecc.
+        const cardCenterProgress = index / (totalSteps - 1);
+
+        // Range di attivazione del glow - aumentato per durare di più
+        const glowRange = 0.18;
+
+        const isLastCard = index === totalSteps - 1;
+
+        // Ultima card: rimane attiva dopo aver raggiunto il centro
+        // Altre card: comportamento normale con range lungo
+        const baseActive = useTransform(
+            scrollProgress,
+            isLastCard
+                ? [
+                    Math.max(0, cardCenterProgress - glowRange),
+                    cardCenterProgress,
+                    1  // Rimane a 1 fino alla fine
+                ]
+                : [
+                    Math.max(0, cardCenterProgress - glowRange),
+                    cardCenterProgress,
+                    Math.min(1, cardCenterProgress + glowRange)
+                ],
+            isLastCard
+                ? [0, 1, 1]  // Sale a 1 e ci rimane
+                : [0, 1, 0]  // Sale e scende
+        );
+
+        // Per l'ultima card, riduci l'attivazione quando la sezione sta per finire
+        // Il glow è in cima, quindi inizia a scomparire quando la sezione esce dal viewport
+        const exitFade = useTransform(
+            exitProgress,
+            [0.7, 0.85],  // Inizia a scomparire dal 70% all'85% dello scroll
+            [1, 0]
+        );
+
+        // Combina baseActive con exitFade solo per l'ultima card
+        const isActive = isLastCard
+            ? useTransform([baseActive, exitFade], ([active, fade]) => active * fade)
+            : baseActive;
+
+        const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
+
         return (
-            <div ref={cardRef} className="flex-shrink-0 w-full px-4 flex flex-col items-center justify-center">
+            <div ref={cardRef} className="flex-shrink-0 w-full h-full px-4 flex flex-col items-center justify-center">
                 {/* Step Number Circle */}
-                <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 border-cyan-400/80 bg-slate-900/80 backdrop-blur-lg">
-                    <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg flex-shrink-0"
+                    style={{
+                        borderColor: useTransform(
+                            isActive,
+                            [0, 1],
+                            ['rgba(103, 232, 249, 0.3)', 'rgba(103, 232, 249, 0.8)']
+                        )
+                    }}
+                >
+                    {/* Number - gray when inactive */}
+                    <motion.span
+                        className="absolute text-gray-400"
+                        style={{
+                            opacity: useTransform(isActive, [0, 1], [1, 0])
+                        }}
+                    >
                         {step.step}
-                    </span>
-                    {/* Glow effect */}
-                    <div
+                    </motion.span>
+                    {/* Number - gradient when active */}
+                    <motion.span
+                        className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
+                        style={{
+                            opacity: isActive
+                        }}
+                    >
+                        {step.step}
+                    </motion.span>
+
+                    {/* Inner glow effect */}
+                    <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none -z-10"
                         style={{
                             background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
-                            filter: 'blur(20px)',
+                            filter: useTransform(glowScale, (s) => `blur(${15 + s * 5}px)`),
+                            opacity: isActive,
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
+                        }}
+                    />
+                    {/* Outer glow ring */}
+                    <motion.div
+                        className="absolute -inset-4 rounded-full pointer-events-none -z-20"
+                        style={{
+                            background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
+                            filter: useTransform(glowScale, (s) => `blur(${20 + s * 5}px)`),
+                            opacity: isActive,
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
                         }}
                     />
                 </div>
 
                 {/* Card Content */}
-                <div className="w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border border-cyan-400/50">
+                <motion.div
+                    className="w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border flex flex-col flex-1"
+                    style={{
+                        borderColor: useTransform(
+                            isActive,
+                            [0, 1],
+                            ['rgba(71, 85, 105, 0.5)', '#67e8f9']
+                        )
+                    }}
+                >
                     {/* Icon & Title */}
-                    <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-cyan-400 text-slate-900">
+                    <div className="flex items-start gap-4 mb-4 flex-shrink-0">
+                        <motion.div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                            style={{
+                                background: useTransform(
+                                    isActive,
+                                    [0, 0.3, 0.7, 1],
+                                    ['rgba(51, 65, 85, 0.4)', 'rgba(51, 65, 85, 0.4)', '#67e8f9', '#67e8f9']
+                                ),
+                                color: useTransform(
+                                    isActive,
+                                    [0, 0.3, 0.7, 1],
+                                    ['rgba(209, 213, 219, 1)', 'rgba(209, 213, 219, 1)', '#0f172a', '#0f172a']
+                                )
+                            }}
+                        >
                             {step.icon}
-                        </div>
+                        </motion.div>
                         <div className="flex-1">
                             <h3 className="text-xl font-bold text-white font-inter mb-1">
                                 {step.title}
@@ -355,12 +498,12 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-4 text-sm">
+                    <p className="text-gray-300 leading-relaxed mb-4 text-sm flex-shrink-0">
                         {step.description}
                     </p>
 
                     {/* Details */}
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1 flex flex-col justify-start">
                         {step.details.map((detail, i) => (
                             <div
                                 key={i}
@@ -373,13 +516,14 @@ const EngineTimeline = () => {
                             </div>
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </div>
         );
     };
 
     return (
         <section
+            ref={sectionRef}
             id="process"
             className="relative pt-12 pb-32"
             style={{ background: '#020617' }}
@@ -387,7 +531,7 @@ const EngineTimeline = () => {
             <div className="relative z-10">
                 {/* Minimal mono title */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 justify-end">
                         <span className="text-cyan-400 font-mono text-sm tracking-wide">
                             5)
                         </span>
@@ -420,7 +564,7 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Steps Container */}
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                    <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-8 relative">
                         {/* Steps */}
                         <div>
                             {processSteps.map((step, index) => (
@@ -433,7 +577,7 @@ const EngineTimeline = () => {
                 {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
                 <div className="md:hidden">
                     {/* Title - static */}
-                    <div className="px-4 mb-8">
+                    <div ref={mobileTitleRef} className="px-4 mb-8">
                         <h2 className="text-2xl font-bold font-inter text-center leading-tight text-white mb-4">
                             Our proven process ensures clarity, efficiency, and exceptional results
                         </h2>
@@ -446,14 +590,14 @@ const EngineTimeline = () => {
                     <div style={{ height: '500vh' }} ref={containerRef}>
                         {/* Sticky wrapper - stays in viewport while scrolling */}
                         <div
-                            className="sticky flex items-center overflow-hidden"
+                            className="sticky flex items-center overflow-x-clip py-12"
                             style={{
-                                top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px)` : '50%'
+                                top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px - 3rem)` : 'calc(50% - 3rem)'
                             }}
                         >
                             {/* Horizontal scrolling cards container */}
                             <motion.div
-                                className="flex items-center w-full"
+                                className="flex items-stretch w-full"
                                 style={{
                                     x: useTransform(
                                         mobileScrollProgress,
@@ -466,6 +610,10 @@ const EngineTimeline = () => {
                                     <MobileCard
                                         key={step.step}
                                         step={step}
+                                        index={index}
+                                        totalSteps={processSteps.length}
+                                        scrollProgress={mobileScrollProgress}
+                                        exitProgress={sectionExitProgress}
                                         cardRef={index === 0 ? cardRef : null}
                                     />
                                 ))}
