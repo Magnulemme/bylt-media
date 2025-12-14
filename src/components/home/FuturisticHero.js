@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import { EncryptedText } from '../ui/encrypted-text';
-import { BrutalistButton } from '../ui/brutalist-button.jsx';
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -166,12 +165,12 @@ const FuturisticHero = () => {
 
                             {/* CTAs - Mobile & Tablet */}
                             <div className="pt-8 flex flex-col gap-10 relative z-10 md:max-w-sm md:mx-auto items-center">
-                                <BrutalistButton
+                                <a
                                     href="/free-audit"
-                                    className="w-full"
+                                    className="brutalist-button w-full"
                                 >
                                     <span>Get Free Audit</span>
-                                </BrutalistButton>
+                                </a>
                                 <a
                                     href="#services"
                                     className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"
@@ -189,9 +188,9 @@ const FuturisticHero = () => {
 
                         {/* CTAs - Desktop */}
                         <div className="hidden lg:flex flex-row items-center gap-16 pt-8">
-                            <BrutalistButton href="/free-audit">
+                            <a href="/free-audit" className="brutalist-button">
                                 <span>Get Free Audit</span>
-                            </BrutalistButton>
+                            </a>
                             <a
                                 href="#services"
                                 className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"

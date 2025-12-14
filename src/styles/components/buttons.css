@@ -1,0 +1,41 @@
+/* ========================================
+   BUTTON COMPONENTS
+   ======================================== */
+
+/* Button Primary - Bottone principale con gradiente cyan */
+.btn-primary {
+  @apply inline-flex h-14 items-center justify-center rounded-lg;
+  @apply border border-cyan-500/50;
+  @apply bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600;
+  @apply px-8 text-base font-semibold text-white;
+  @apply transition-all duration-300;
+  @apply hover:translate-y-[-2px] hover:shadow-lg hover:shadow-cyan-500/50;
+  background-size: 200% 100%;
+  animation: gradient-shift 8s ease-in-out infinite;
+}
+
+/* Button Secondary - Bottone outline glass effect */
+.btn-secondary {
+  @apply inline-flex h-14 items-center justify-center gap-2 rounded-lg;
+  @apply border border-white/20 hover:border-white/40;
+  @apply bg-white/5 hover:bg-white/10;
+  @apply px-8 text-base font-semibold text-white;
+  @apply transition-all duration-300 backdrop-blur-sm;
+  @apply hover:translate-y-[-2px];
+}
+
+/* Brutalist Button - Bottone con shadow offset e effetto 3D */
+.brutalist-button {
+  @apply relative inline-flex items-center justify-center px-8 py-4;
+  @apply font-bold text-white;
+  @apply bg-white/5 backdrop-blur-sm;
+  @apply border-2 border-white/30 hover:border-cyan-400/60;
+  @apply rounded-lg;
+  @apply transition-all duration-300;
+  box-shadow: 8px 8px 0px rgba(34, 211, 238, 1);
+}
+
+.brutalist-button:hover {
+  @apply translate-x-[2px] translate-y-[2px];
+  box-shadow: 6px 6px 0px rgba(34, 211, 238, 1);
+}
