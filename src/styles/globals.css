@@ -241,7 +241,7 @@
     /* Animated Text Container - Container per testo animato con typing */
     .animated-text-container {
       @apply min-h-[60px] md:min-h-[100px] lg:min-h-[120px];
-      @apply whitespace-nowrap font-space font-bold;
+      @apply whitespace-nowrap font-bold;
       line-height: 1.1;
       letter-spacing: -0.02em;
     }
