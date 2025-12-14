@@ -56,12 +56,6 @@ const EngineTimeline = () => {
         offset: ["start start", "end end"]
     });
 
-    // Scroll progress per gestire la scomparsa del glow alla fine
-    const { scrollYProgress: sectionExitProgress } = useScroll({
-        target: sectionRef,
-        offset: ["start start", "end start"]
-    });
-
     // Forza un re-render dopo il mount per inizializzare useScroll correttamente
     React.useEffect(() => {
         setIsMounted(true);
@@ -142,19 +136,14 @@ const EngineTimeline = () => {
 
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
-        // Log per debug scale del glow e blur
+        // Debug scale del glow e blur
         React.useEffect(() => {
             const unsubscribeActive = isActive.on('change', (v) => {
-                console.log(`📍 Step ${step.step} - isActive:`, v.toFixed(3));
+                // Track active state changes
             });
             const unsubscribeScale = glowScale.on('change', (v) => {
-                const innerBlur = 15 + v * 5;
-                const outerBlur = 20 + v * 5;
-                console.log(`✨ Step ${step.step} - glowScale: ${v.toFixed(3)} | innerBlur: ${innerBlur.toFixed(1)}px | outerBlur: ${outerBlur.toFixed(1)}px`);
+                // Track glow scale changes
             });
-
-            // Log iniziale
-            console.log(`🚀 Step ${step.step} initialized - Device: ${navigator.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}`);
 
             return () => {
                 unsubscribeActive();
@@ -206,7 +195,6 @@ const EngineTimeline = () => {
                             background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
                             filter: useTransform(glowScale, (s) => {
                                 const blur = 15 + s * 5;
-                                console.log(`🔵 Inner glow blur for Step ${step.step}:`, blur.toFixed(1) + 'px');
                                 return `blur(${blur}px)`;
                             }),
                             opacity: isActive,
@@ -221,7 +209,6 @@ const EngineTimeline = () => {
                             background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
                             filter: useTransform(glowScale, (s) => {
                                 const blur = 20 + s * 5;
-                                console.log(`🟣 Outer glow blur for Step ${step.step}:`, blur.toFixed(1) + 'px');
                                 return `blur(${blur}px)`;
                             }),
                             opacity: isActive,
@@ -357,7 +344,12 @@ const EngineTimeline = () => {
     ];
 
     // Mobile Card Component - singola card con numero e contenuto
-    const MobileCard = ({ step, cardRef, index, totalSteps, scrollProgress, exitProgress }) => {
+    const MobileCard = ({ step, cardRef, index, totalSteps, scrollProgress }) => {
+        const thisCardRef = useRef(null);
+        const isLastCard = index === totalSteps - 1;
+        const [cardExitProgress, setCardExitProgress] = React.useState(0);
+        const startPositionRef = useRef(null);
+
         // Calcola quando questa card è al centro dello schermo
         // Per 5 card: card 0 al centro quando progress = 0, card 1 quando = 0.25, ecc.
         const cardCenterProgress = index / (totalSteps - 1);
@@ -365,45 +357,114 @@ const EngineTimeline = () => {
         // Range di attivazione del glow - aumentato per durare di più
         const glowRange = 0.18;
 
-        const isLastCard = index === totalSteps - 1;
+        // Per l'ultima card: traccia quando esce dal viewport con scroll listener
+        React.useEffect(() => {
+            if (!isLastCard) return;
 
-        // Ultima card: rimane attiva dopo aver raggiunto il centro
-        // Altre card: comportamento normale con range lungo
+            console.log('🎯 Last card effect mounted');
+
+            const handleScroll = () => {
+                if (!thisCardRef.current) {
+                    console.log('⚠️ thisCardRef.current is null');
+                    return;
+                }
+
+                // Ottieni il progresso orizzontale corrente
+                const currentHorizontalProgress = scrollProgress.get();
+
+                const rect = thisCardRef.current.getBoundingClientRect();
+                const currentTop = rect.top;
+
+                // Salva la posizione iniziale SOLO quando lo scroll orizzontale è completo (= 1)
+                if (startPositionRef.current === null && currentHorizontalProgress >= 0.99) {
+                    startPositionRef.current = currentTop;
+                    console.log('📍 Start position saved:', currentTop, 'at horizontalProgress:', currentHorizontalProgress);
+                }
+
+                // Se non abbiamo ancora la posizione iniziale, non calcolare nulla
+                if (startPositionRef.current === null) {
+                    console.log('⏳ Waiting for horizontal scroll to complete...');
+                    return;
+                }
+
+                // Calcola il progress: da posizione iniziale (0) a top = 0 (1)
+                const startPos = startPositionRef.current;
+                const distance = startPos; // Distanza da percorrere fino a top = 0
+                const traveled = startPos - currentTop; // Quanto è salita la card
+
+                const progress = distance > 0 ? Math.min(1, Math.max(0, traveled / distance)) : 0;
+
+                console.log('📊 Card Exit Progress:', {
+                    currentTop: currentTop.toFixed(2),
+                    startPos: startPos.toFixed(2),
+                    distance: distance.toFixed(2),
+                    traveled: traveled.toFixed(2),
+                    progress: progress.toFixed(3)
+                });
+
+                setCardExitProgress(progress);
+            };
+
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Chiamata iniziale
+
+            return () => {
+                console.log('🧹 Cleaning up scroll listener');
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, [isLastCard, scrollProgress]);
+
+        // Comportamento standard per tutte le card: glow sale e scende
         const baseActive = useTransform(
             scrollProgress,
-            isLastCard
-                ? [
-                    Math.max(0, cardCenterProgress - glowRange),
-                    cardCenterProgress,
-                    1  // Rimane a 1 fino alla fine
-                ]
-                : [
-                    Math.max(0, cardCenterProgress - glowRange),
-                    cardCenterProgress,
-                    Math.min(1, cardCenterProgress + glowRange)
-                ],
-            isLastCard
-                ? [0, 1, 1]  // Sale a 1 e ci rimane
-                : [0, 1, 0]  // Sale e scende
+            [
+                Math.max(0, cardCenterProgress - glowRange),
+                cardCenterProgress,
+                Math.min(1, cardCenterProgress + glowRange)
+            ],
+            [0, 1, 0]  // Sale e scende
         );
 
-        // Per l'ultima card, riduci l'attivazione quando la sezione sta per finire
-        // Il glow è in cima, quindi inizia a scomparire quando la sezione esce dal viewport
-        const exitFade = useTransform(
-            exitProgress,
-            [0.7, 0.85],  // Inizia a scomparire dal 70% all'85% dello scroll
-            [1, 0]
-        );
-
-        // Combina baseActive con exitFade solo per l'ultima card
+        // Per l'ultima card: glow resta a 1 dopo il centro, poi diminuisce quando la card esce
         const isActive = isLastCard
-            ? useTransform([baseActive, exitFade], ([active, fade]) => active * fade)
+            ? useTransform(
+                scrollProgress,
+                (horizontalProgress) => {
+                    // Fase 1: Glow sale normalmente fino al centro (scroll orizzontale)
+                    if (horizontalProgress < cardCenterProgress) {
+                        const normalizedProgress = (horizontalProgress - (cardCenterProgress - glowRange)) / glowRange;
+                        const result = Math.max(0, Math.min(1, normalizedProgress));
+                        console.log('✨ Phase 1 - Rising:', { horizontalProgress: horizontalProgress.toFixed(3), result: result.toFixed(3) });
+                        return result;
+                    }
+
+                    // Fase 2: Glow rimane a 1 durante tutto lo scroll orizzontale
+                    if (horizontalProgress < 1) {
+                        console.log('✨ Phase 2 - Plateau:', { horizontalProgress: horizontalProgress.toFixed(3), result: 1 });
+                        return 1;
+                    }
+
+                    // Fase 3: Scroll orizzontale finito (horizontalProgress = 1)
+                    // Usa cardExitProgress dallo stato (calcolato con JS listener)
+                    // exitProgress: 0 = card ancora visibile, 1 = top card al top schermo
+                    // Glow diminuisce mentre la card sale e esce
+                    const result = Math.max(0, 1 - cardExitProgress);
+                    console.log('✨ Phase 3 - Exit:', { horizontalProgress: horizontalProgress.toFixed(3), cardExitProgress: cardExitProgress.toFixed(3), result: result.toFixed(3) });
+                    return result;
+                }
+            )
             : baseActive;
 
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
         return (
-            <div ref={cardRef} className="flex-shrink-0 w-full h-full px-4 flex flex-col items-center justify-center">
+            <div
+                ref={(el) => {
+                    thisCardRef.current = el;
+                    if (cardRef) cardRef.current = el;
+                }}
+                className="flex-shrink-0 w-full px-4 flex flex-col items-center justify-center self-stretch"
+            >
                 {/* Step Number Circle */}
                 <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg flex-shrink-0"
                     style={{
@@ -469,7 +530,7 @@ const EngineTimeline = () => {
                     }}
                 >
                     {/* Icon & Title */}
-                    <div className="flex items-start gap-4 mb-4 flex-shrink-0">
+                    <div className="flex items-start gap-4 mb-6 flex-shrink-0">
                         <motion.div
                             className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
                             style={{
@@ -498,19 +559,19 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-4 text-sm flex-shrink-0">
+                    <p className="text-gray-300 leading-relaxed mb-6 text-sm flex-shrink-0">
                         {step.description}
                     </p>
 
                     {/* Details */}
-                    <div className="space-y-2 flex-1 flex flex-col justify-start">
+                    <div className="space-y-3 flex-grow flex flex-col justify-end">
                         {step.details.map((detail, i) => (
                             <div
                                 key={i}
-                                className="flex items-center gap-3 bg-white/[0.03] rounded-lg p-2"
+                                className="flex items-start gap-3"
                             >
-                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
-                                <span className="text-xs text-gray-200">
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
+                                <span className="text-sm text-gray-200 leading-relaxed">
                                     {detail}
                                 </span>
                             </div>
@@ -613,7 +674,6 @@ const EngineTimeline = () => {
                                         index={index}
                                         totalSteps={processSteps.length}
                                         scrollProgress={mobileScrollProgress}
-                                        exitProgress={sectionExitProgress}
                                         cardRef={index === 0 ? cardRef : null}
                                     />
                                 ))}
