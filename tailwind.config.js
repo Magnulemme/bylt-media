@@ -8,8 +8,17 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			inter: ['Inter', 'sans-serif'],
+  			space: ['"Space Grotesk"', 'sans-serif'],
+  		},
   		spacing: {
   			'screen': '100vh'
+  		},
+  		backgroundImage: {
+  			'hero-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+  			'text-gradient': 'linear-gradient(to right, #22D3EE, #3B82F6, #A855F7)',
+  			'button-gradient': 'linear-gradient(to right, #22D3EE, #3B82F6, #22D3EE)',
   		},
   		keyframes: {
   			'fade-in': {

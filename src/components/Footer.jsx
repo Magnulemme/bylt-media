@@ -87,7 +87,7 @@ const Content = () => {
                     </div>
                 </div>
 
-                <div className="pt-8 border-t border-gray-700/50 mt-auto">
+                <div className="mt-4 pt-8 border-t border-gray-700/50">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-500 text-xs">
                             © {new Date().getFullYear()} BYLT Media. All Rights Reserved.
@@ -128,27 +128,15 @@ export default function Footer() {
             const footerElement = document.querySelector('footer');
             if (footerElement) {
                 const height = footerElement.offsetHeight;
-                console.log('📏 [Footer] Height calculated and saved to store:', {
-                    height: `${height}px`,
-                    boundingRect: footerElement.getBoundingClientRect(),
-                    computedStyle: {
-                        padding: window.getComputedStyle(footerElement).padding,
-                        height: window.getComputedStyle(footerElement).height
-                    }
-                });
                 setFooterHeight(height);
-            } else {
-                console.warn('⚠️ [Footer] Footer element not found in DOM');
             }
         };
 
-        console.log('🚀 [Footer] Initializing height calculation...');
         updateFooterHeight();
         window.addEventListener('resize', updateFooterHeight);
 
         // Ritarda per assicurarsi che il DOM sia completamente renderizzato
         const timer = setTimeout(() => {
-            console.log('⏰ [Footer] Delayed height recalculation...');
             updateFooterHeight();
         }, 100);
 
@@ -163,21 +151,18 @@ export default function Footer() {
         motionValue.set(scrollProgress);
     }, [scrollProgress, motionValue]);
 
-    // Effetti 2.5D entrance - leggermente più aggressivi ma eleganti
-    const scaleEntrance = useTransform(motionValue, [0, 0.8], [0.96, 1]);
-    const blurEntrance = useTransform(motionValue, [0, 0.8], [10, 0]);
-
-    // Translate Y leggero per dare profondità
-    const y = useTransform(motionValue, [0, 1], [30, 0]);
+    // 3D entrance effect - footer si avvicina lungo l'asse Z
+    const translateZ = useTransform(motionValue, [0, 0.5], [-100, 0]);
+    const opacity = useTransform(motionValue, [0, 0.5], [0.7, 1]);
+    const transform = useTransform(translateZ, (z) => `translateZ(${z}px)`);
 
     return (
         <div className="sticky bottom-0 -z-50 p-4" style={{ background: '#020617', perspective: '1000px' }}>
             <motion.div
                 className="rounded-2xl overflow-hidden"
                 style={{
-                    scale: scaleEntrance,
-                    filter: blurEntrance,
-                    y,
+                    transform,
+                    opacity,
                     transformStyle: 'preserve-3d'
                 }}
             >

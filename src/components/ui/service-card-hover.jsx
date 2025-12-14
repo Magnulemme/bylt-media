@@ -142,14 +142,12 @@ export const CardCTA = ({ className, href = "#", children }) => {
     <a
       href={href}
       className={cn(
-        "mt-auto pt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-400 transition-all duration-200 group/cta flex-shrink-0",
-        "group-hover:scale-105 group-hover:text-cyan-300", // subtle effect on card hover
-        "hover:!scale-110 hover:!text-cyan-200 hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]", // pronounced effect on direct hover
+        "group/cta inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-cyan-400 transition-colors duration-300 mt-auto",
         className
       )}
     >
       {children}
-      <span className="transition-transform duration-200 group-hover/cta:translate-x-1">→</span>
+      <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
     </a>
   );
 };

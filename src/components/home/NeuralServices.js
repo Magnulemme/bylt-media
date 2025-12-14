@@ -15,35 +15,34 @@ const NeuralServices = () => {
         offset: ["start end", "end start"]
     });
 
-    // 2.5D entrance effect - breve e sottile
-    const scaleEntrance = useTransform(scrollYProgress, [0, 0.15], [0.95, 1]);
-    const blurEntrance = useTransform(scrollYProgress, [0, 0.15], [8, 0]);
+    // 3D entrance effect - card si avvicina lungo l'asse Z
+    const translateZEntrance = useTransform(scrollYProgress, [0, 0.08], [-100, 0]);
+    const opacityEntrance = useTransform(scrollYProgress, [0, 0.08], [0.7, 1]);
 
-    // 2.5D exit effect - speculare all'entrata (inizia più tardi)
-    const scaleExit = useTransform(scrollYProgress, [0.77, 0.92], [1, 0.95]);
-    const blurExit = useTransform(scrollYProgress, [0.77, 0.92], [0, 8]);
+    // 3D exit effect - card si allontana lungo l'asse Z (solo parte finale)
+    const translateZExit = useTransform(scrollYProgress, [0.92, 1], [0, -100]);
+    const opacityExit = useTransform(scrollYProgress, [0.92, 1], [1, 0.7]);
 
     // Combina entrata e uscita
-    const scale = useTransform(scrollYProgress, (progress) => {
-        if (progress <= 0.15) {
-            return scaleEntrance.get();
-        } else if (progress >= 0.77) {
-            return scaleExit.get();
-        }
-        return 1;
-    });
-
-    const blur = useTransform(scrollYProgress, (progress) => {
-        if (progress <= 0.15) {
-            return blurEntrance.get();
-        } else if (progress >= 0.77) {
-            return blurExit.get();
+    const translateZ = useTransform(scrollYProgress, (progress) => {
+        if (progress <= 0.08) {
+            return translateZEntrance.get();
+        } else if (progress >= 0.92) {
+            return translateZExit.get();
         }
         return 0;
     });
 
-    // Parallax continuo - ridotto
-    const y = useTransform(scrollYProgress, [0, 1], [0, -80]);
+    const opacity = useTransform(scrollYProgress, (progress) => {
+        if (progress <= 0.08) {
+            return opacityEntrance.get();
+        } else if (progress >= 0.92) {
+            return opacityExit.get();
+        }
+        return 1;
+    });
+
+    const transform = useTransform(translateZ, (z) => `translateZ(${z}px)`);
 
     const services = [
         {
@@ -105,22 +104,21 @@ const NeuralServices = () => {
     };
 
     return (
-        <section id="services" className="relative flex items-center justify-center overflow-hidden p-4 pt-24 pb-24" style={{ background: '#020617', perspective: '1000px' }}>
+        <section id="services" className="relative flex items-center justify-center overflow-hidden p-4 py-16" style={{ background: '#020617', perspective: '1000px' }}>
             <motion.div
                 ref={containerRef}
                 className="relative h-full w-full rounded-2xl py-24 overflow-hidden"
                 style={{
                     background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
-                    y,
-                    scale,
-                    filter: `blur(${blur}px)`,
+                    transform,
+                    opacity,
                     transformStyle: 'preserve-3d'
                 }}
             >
                 <div ref={sectionRef} className="relative z-10 quantum-anim">
                 {/* Minimal mono title - wider container like SharedPortfolio */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 justify-start">
                         <span className="text-cyan-400 font-mono text-sm tracking-wide">
                             4)
                         </span>

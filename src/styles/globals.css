@@ -108,13 +108,14 @@
       background-size: 200% 100%;
       animation: gradient-shift 8s ease-in-out infinite;
     }
-  
+
+
     /* Button Secondary - Bottone outline glass effect */
     .btn-secondary {
       @apply inline-flex h-14 items-center justify-center gap-2 rounded-lg;
       @apply border border-white/20 hover:border-white/40;
       @apply bg-white/5 hover:bg-white/10;
-      @apply px-8 text-base font-semibold text-white;
+      @apply px-8 text-base font-semibold text-white hover:text-cyan-400;
       @apply transition-all duration-300 backdrop-blur-sm;
       @apply hover:translate-y-[-2px];
     }

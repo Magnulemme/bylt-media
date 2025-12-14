@@ -518,12 +518,37 @@ const DataVisualization3D = () => {
             window.removeEventListener('resize', handleResize);
             currentMount.removeEventListener('mousemove', handleMouseMove);
             currentMount.removeEventListener('mouseleave', handleMouseLeave);
+
+            // Cancel animation frame
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
             }
+
+            // Dispose all Three.js resources to prevent memory leaks
+            nodes.forEach((nodeData) => {
+                if (nodeData.mesh.geometry) {
+                    nodeData.mesh.geometry.dispose();
+                }
+                if (nodeData.mesh.material) {
+                    nodeData.mesh.material.dispose();
+                }
+            });
+
+            connections.forEach((conn) => {
+                if (conn.line.geometry) {
+                    conn.line.geometry.dispose();
+                }
+                if (conn.line.material) {
+                    conn.line.material.dispose();
+                }
+            });
+
+            // Remove DOM element
             if (currentMount && renderer.domElement) {
                 currentMount.removeChild(renderer.domElement);
             }
+
+            // Dispose renderer
             renderer.dispose();
         };
     }, []);

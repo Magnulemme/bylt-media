@@ -1,0 +1,16 @@
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+
+/* Formula Card - Box glass con shadow offset */
+.formula-card {
+  @apply border-2 border-white/30 p-4 md:p-5 lg:p-6;
+  @apply bg-white/5 backdrop-blur-sm rounded-lg;
+  box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.8);
+}
+
+@media (min-width: 1024px) {
+  .formula-card {
+    box-shadow: 8px 8px 0px rgba(34, 211, 238, 0.8);
+  }
+}

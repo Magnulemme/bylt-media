@@ -63,19 +63,16 @@ export default async function handler(req, res) {
         const result = await web3Response.json();
 
         if (web3Response.ok && result.success) {
-            console.log('✅ Web3Forms contact submission successful:', result);
-            res.status(200).json({ 
-                success: true, 
+            res.status(200).json({
+                success: true,
                 message: 'Your message has been sent successfully! We\'ll get back to you within 24 hours.',
             });
         } else {
-            console.error('❌ Web3Forms contact submission failed:', result);
             throw new Error(`Web3Forms error: ${result.message || 'Unknown error'}`);
         }
 
     } catch (error) {
-        console.error('Contact form submission error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to send message',
             details: 'Please try again or contact us directly at info@byltmedia.com'
         });

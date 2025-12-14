@@ -61,19 +61,16 @@ export default async function handler(req, res) {
         const result = await web3Response.json();
 
         if (web3Response.ok && result.success) {
-            console.log('✅ Web3Forms submission successful:', result);
-            res.status(200).json({ 
-                success: true, 
+            res.status(200).json({
+                success: true,
                 message: 'Your audit request has been submitted successfully! We\'ll contact you within 24 hours.',
             });
         } else {
-            console.error('❌ Web3Forms submission failed:', result);
             throw new Error(`Web3Forms error: ${result.message || 'Unknown error'}`);
         }
 
     } catch (error) {
-        console.error('Form submission error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to submit audit request',
             details: 'Please try again or contact us directly at info@byltmedia.com'
         });

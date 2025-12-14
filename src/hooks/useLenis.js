@@ -4,6 +4,8 @@ import Lenis from 'lenis';
 let lenisInstance = null;
 
 export default function useLenis() {
+    const rafIdRef = useRef(null);
+
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.2,
@@ -20,12 +22,16 @@ export default function useLenis() {
 
         function raf(time) {
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            rafIdRef.current = requestAnimationFrame(raf);
         }
 
-        requestAnimationFrame(raf);
+        rafIdRef.current = requestAnimationFrame(raf);
 
         return () => {
+            // Cancel the animation frame to stop the loop
+            if (rafIdRef.current) {
+                cancelAnimationFrame(rafIdRef.current);
+            }
             lenis.destroy();
             lenisInstance = null;
         };

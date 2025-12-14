@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { FloatingNav } from './ui/floating-navbar';
 import { BackToTop } from './ui/back-to-top';
+import { MovingBorderButton } from './ui/moving-border-button';
 
 const Navigation = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,27 +31,24 @@ const Navigation = () => {
 
     return (
         <>
-            {/* Desktop: FloatingNav */}
-            <FloatingNav />
+            {/* Desktop only: FloatingNav */}
+            <div className="hidden lg:block">
+                <FloatingNav />
+            </div>
 
-            {/* Mobile: Simple navbar */}
-            <div className="md:hidden bg-[rgba(2,6,23,0.95)] backdrop-blur-xl border-b border-gray-700/50">
-                <div className="flex items-center justify-between px-4 py-3">
+            {/* Mobile + Tablet: Simple navbar */}
+            <div
+                className="lg:hidden relative z-[5000] backdrop-blur-xl"
+                style={{
+                    background: '#020617'
+                }}
+            >
+                <div className="flex items-center justify-between px-4 h-[70px]" >
                     {/* Logo */}
                     <Link href="/" className="text-lg font-bold tracking-wider font-inter">
-                        <span style={{
-                            background: 'linear-gradient(45deg, #B8FFFA 0%, #B8FFB8 50%, #B8FFFA 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
-                        }}>BYLT</span>
+                        <span className="logo-gradient-bylt">BYLT</span>
                         <span className="text-gray-400">.</span>
-                        <span style={{
-                            background: 'linear-gradient(45deg, #B8FFB8 0%, #B8FFFA 50%, #B8FFB8 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
-                        }}>MEDIA</span>
+                        <span className="logo-gradient-media">MEDIA</span>
                     </Link>
 
                     {/* Menu Button */}
@@ -65,14 +63,14 @@ const Navigation = () => {
 
                 {/* Mobile Menu Dropdown */}
                 {mobileMenuOpen && (
-                    <div className="border-t border-gray-700/50 max-h-[80vh] overflow-y-auto">
+                    <div className="max-h-[80vh] overflow-y-auto">
                         <div className="px-4 py-4 space-y-2">
                             {menuItems.map((item) => (
                                 <div key={item.name}>
                                     {item.href ? (
                                         <Link
                                             href={item.href}
-                                            className="block px-3 py-2 text-base font-medium text-gray-200 hover:text-[#B8FFFA] transition-colors rounded-md"
+                                            className="mobile-menu-link"
                                             onClick={() => setMobileMenuOpen(false)}
                                         >
                                             {item.name}
@@ -88,7 +86,7 @@ const Navigation = () => {
                                                         <Link
                                                             key={subItem.name}
                                                             href={subItem.href}
-                                                            className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-[#B8FFFA] transition-colors"
+                                                            className="mobile-submenu-link"
                                                             onClick={() => setMobileMenuOpen(false)}
                                                         >
                                                             <span className="text-cyan-400 mr-2">→</span>
@@ -102,13 +100,18 @@ const Navigation = () => {
                                 </div>
                             ))}
                             <div className="pt-2">
-                                <a
+                                <MovingBorderButton
+                                    as="a"
                                     href="/free-audit"
-                                    className="block w-full text-center py-3 px-6 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient rounded-md shadow-lg"
+                                    borderRadius="0.75rem"
+                                    containerClassName="w-full h-12"
+                                    borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                    className="bg-slate-950/95 border-2 border-slate-700/80 text-white font-bold text-sm"
+                                    duration={2500}
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     FREE AUDIT
-                                </a>
+                                </MovingBorderButton>
                             </div>
                         </div>
                     </div>

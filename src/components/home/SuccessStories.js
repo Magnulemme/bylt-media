@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
 
 const SuccessStories = () => {
@@ -58,7 +59,7 @@ const SuccessStories = () => {
         >
             {/* Section Title - Above cards */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-                <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center gap-3 mb-8 justify-end">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         6)
                     </span>
@@ -72,12 +73,24 @@ const SuccessStories = () => {
 
                 {/* Intro Text - Prepares for contact */}
                 <div className="max-w-3xl">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                    <motion.h2
+                        className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
                         Real Results from Real Partners
-                    </h2>
-                    <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
+                    </motion.h2>
+                    <motion.p
+                        className="text-lg md:text-xl text-gray-400 leading-relaxed"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    >
                         See why leading brands trust us to drive their growth. Ready to join them?
-                    </p>
+                    </motion.p>
                 </div>
             </div>
 

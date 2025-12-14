@@ -49,12 +49,12 @@ const ProjectsShowcase = () => {
 
     return (
         <section
-            className="relative py-20 overflow-hidden"
+            className="relative pb-20 overflow-hidden"
             style={{ background: '#020617' }}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Title */}
-                <div className="flex items-center gap-3 mb-12">
+                <div className="flex items-center gap-3 mb-12 justify-start">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         5.5)
                     </span>
@@ -184,7 +184,7 @@ const ProjectsShowcase = () => {
                 >
                     <a
                         href="/casestudies"
-                        className="group inline-flex h-14 items-center justify-center gap-2 rounded-lg border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 px-8 text-base font-semibold text-white transition-all duration-300 backdrop-blur-sm hover:translate-y-[-2px]"
+                        className="btn-secondary group"
                     >
                         <span>View All Projects</span>
                         <span className="text-cyan-400 transition-transform duration-300 group-hover:translate-x-1">→</span>

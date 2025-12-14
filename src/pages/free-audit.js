@@ -951,9 +951,7 @@ const FreeAuditForm = () => {
   useEffect(() => {
     try {
       initEmailJS();
-      console.log('✅ EmailJS initialized on free-audit page mount');
     } catch (error) {
-      console.error('❌ Failed to initialize EmailJS:', error);
       setSubmitError('Email service initialization failed. Please refresh the page.');
     }
   }, []);
@@ -975,13 +973,11 @@ const FreeAuditForm = () => {
       if (validationError) {
         setSubmitStatus('error');
         setSubmitError(validationError);
-        console.error('❌ Validation error:', validationError);
         setIsSubmitting(false); // Reset submitting state
         return;
       }
 
       // Send email via EmailJS (already initialized on mount)
-      console.log('📧 Attempting to send audit email...');
       const result = await sendAuditEmail(formData);
 
       if (result.success) {
@@ -1014,10 +1010,8 @@ const FreeAuditForm = () => {
       } else {
         setSubmitStatus('error');
         setSubmitError(result.message || result.error || 'Failed to send audit request');
-        console.error('EmailJS Audit Error:', result.error);
       }
     } catch (error) {
-      console.error('Form submission error:', error);
       setSubmitStatus('error');
       setSubmitError(error.message || 'An unexpected error occurred');
     } finally {

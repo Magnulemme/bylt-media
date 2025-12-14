@@ -8,6 +8,7 @@ import {
 } from "motion/react";
 import { cn } from "@/lib/utils";
 import { ChevronDown, Menu, X } from "lucide-react";
+import { MovingBorderButton } from "./moving-border-button";
 
 export const FloatingNav = ({
   className
@@ -151,13 +152,18 @@ export const FloatingNav = ({
       </div>
 
       {/* FREE AUDIT Button - Desktop */}
-      <div className="hidden md:block flex-shrink-0">
-        <a
+      <div className="hidden md:flex justify-center">
+        <MovingBorderButton
+          as="a"
           href="/free-audit"
-          className="inline-flex items-center justify-center h-10 px-5 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient rounded-md transition-transform duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+          borderRadius="0.75rem"
+          containerClassName="min-w-[160px] h-12"
+          borderClassName="h-12 w-12 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+          className="bg-slate-950/95 border-2 border-slate-700/80 text-white font-bold text-sm"
+          duration={2500}
         >
           FREE AUDIT
-        </a>
+        </MovingBorderButton>
       </div>
 
       {/* Mobile Menu Button */}
@@ -207,13 +213,18 @@ export const FloatingNav = ({
               </div>
             ))}
             <div className="pt-2">
-              <a
+              <MovingBorderButton
+                as="a"
                 href="/free-audit"
-                className="block w-full text-center h-11 leading-11 px-6 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-600 bg-[length:200%_200%] animate-gradient rounded-md shadow-lg"
+                borderRadius="0.75rem"
+                containerClassName="w-full h-12"
+                borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                className="bg-slate-950/95 border-2 border-slate-700/80 text-white font-bold text-sm"
+                duration={2500}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 FREE AUDIT
-              </a>
+              </MovingBorderButton>
             </div>
           </div>
         </div>

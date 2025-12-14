@@ -10,14 +10,6 @@ const EMAILJS_CONFIG = {
 
 // Debug function to check configuration
 export const debugEmailJSConfig = () => {
-  console.log('EmailJS Configuration Check:', {
-    serviceId: EMAILJS_CONFIG.SERVICE_ID,
-    contactTemplateId: EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
-    auditTemplateId: EMAILJS_CONFIG.AUDIT_TEMPLATE_ID,
-    publicKey: EMAILJS_CONFIG.PUBLIC_KEY ? `${EMAILJS_CONFIG.PUBLIC_KEY.substring(0, 10)}...` : 'NOT_SET',
-    hasServiceId: EMAILJS_CONFIG.SERVICE_ID !== 'service_YOUR_ID',
-    hasPublicKey: EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY'
-  });
   return EMAILJS_CONFIG;
 };
 
@@ -26,14 +18,12 @@ export const debugEmailJSConfig = () => {
  */
 export const initEmailJS = () => {
   const config = debugEmailJSConfig();
-  
+
   if (config.PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-    console.error('EmailJS: Public key not configured! Check your environment variables.');
     throw new Error('EmailJS configuration error: Public key not set');
   }
-  
+
   emailjs.init(config.PUBLIC_KEY);
-  console.log('EmailJS initialized successfully');
 };
 
 /**
@@ -71,19 +61,11 @@ export const sendContactEmail = async (formData) => {
       submission_time: new Date().toLocaleTimeString('en-GB')
     };
 
-    console.log('Sending email with config:', {
-      serviceId: config.SERVICE_ID,
-      templateId: config.CONTACT_TEMPLATE_ID,
-      from: templateParams.from_email
-    });
-
     const response = await emailjs.send(
       config.SERVICE_ID,
       config.CONTACT_TEMPLATE_ID,
       templateParams
     );
-
-    console.log('EmailJS Response:', response);
 
     return {
       success: true,
@@ -91,18 +73,6 @@ export const sendContactEmail = async (formData) => {
       message: 'Thank you for your message! We\'ll get back to you within 24 hours.'
     };
   } catch (error) {
-    // Enhanced error logging - log complete error structure
-    console.error('❌ EmailJS Contact Error - Full Details:', {
-      errorObject: error,
-      errorText: error.text,
-      errorMessage: error.message,
-      errorStatus: error.status,
-      errorResponse: error.response,
-      errorStack: error.stack,
-      errorName: error.name,
-      fullError: JSON.stringify(error, Object.getOwnPropertyNames(error))
-    });
-    
     let errorMessage = 'Something went wrong. Please try again or contact us directly at info@byltmedia.com';
     
     if (error.text) {
@@ -152,19 +122,11 @@ export const sendAuditEmail = async (formData) => {
       submission_time: new Date().toLocaleTimeString('en-GB')
     };
 
-    console.log('📧 Sending audit email with config:', {
-      serviceId: config.SERVICE_ID,
-      templateId: config.AUDIT_TEMPLATE_ID,
-      from: templateParams.from_email
-    });
-
     const response = await emailjs.send(
       config.SERVICE_ID,
       config.AUDIT_TEMPLATE_ID,
       templateParams
     );
-
-    console.log('✅ EmailJS Audit Response:', response);
 
     return {
       success: true,
@@ -172,18 +134,6 @@ export const sendAuditEmail = async (formData) => {
       message: 'Thank you for requesting a free audit! We\'ll analyze your requirements and send you a detailed report within 48 hours.'
     };
   } catch (error) {
-    // Enhanced error logging
-    console.error('❌ EmailJS Audit Error - Full Details:', {
-      errorObject: error,
-      errorText: error.text,
-      errorMessage: error.message,
-      errorStatus: error.status,
-      errorResponse: error.response,
-      errorStack: error.stack,
-      errorName: error.name,
-      fullError: JSON.stringify(error, Object.getOwnPropertyNames(error))
-    });
-    
     let errorMessage = 'Something went wrong. Please try again or contact us directly at info@byltmedia.com';
     
     if (error.text) {

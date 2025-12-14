@@ -35,7 +35,7 @@ const SharedPortfolioCarousel = () => {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Section Title */}
-                <div className="mb-8 flex items-center gap-3">
+                <div className="mb-8 flex items-center gap-3 justify-start">
                     <span className="text-cyan-400 font-mono text-sm tracking-wide">
                         2)
                     </span>

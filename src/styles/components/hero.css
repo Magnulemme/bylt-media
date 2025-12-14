@@ -1,0 +1,128 @@
+/* ========================================
+   HERO SECTION COMPONENTS
+   ======================================== */
+
+/* Hero Background - Sfondo hero section */
+.bg-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+}
+
+/* Hero Section Container - Wrapper principale hero */
+.hero-section {
+  @apply relative flex items-center justify-center overflow-hidden;
+  @apply px-4;
+}
+
+@media (min-width: 1024px) {
+  .hero-section {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop))
+  }
+}
+
+/* Gradient Overlay - Overlay radial per depth */
+.gradient-overlay {
+  @apply absolute inset-0 z-10 pointer-events-none;
+  background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15), transparent 50%),
+              radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15), transparent 50%);
+  contain: paint;
+}
+
+/* Container Centered - Container centrato max-width */
+.container-centered {
+  @apply relative z-20 w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8;
+}
+
+/* Hero Inner - Container interno hero con rounded e bg */
+.hero-inner {
+  @apply relative w-full rounded-2xl;
+  @apply flex items-center justify-center;
+  @apply pt-2 pb-2 lg:pt-16 lg:pb-24;
+  @apply mt-2 mb-2 lg:mt-0 lg:mb-0;
+  min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+@media (min-width: 1024px) {
+  .hero-inner {
+    min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
+  }
+}
+
+/* Hero Grid - Layout grid 2 colonne hero */
+.hero-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-12 items-center;
+}
+
+/* Hero Grid - Centra elementi su tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-grid {
+    @apply justify-items-center;
+  }
+}
+
+/* Hero Content - Contenitore contenuto hero */
+.hero-content {
+  @apply relative text-white space-y-10 md:space-y-8 lg:space-y-8;
+  @apply text-center lg:text-left;
+}
+
+/* Hero Content - Centra elementi su tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-content {
+    @apply max-w-2xl mx-auto;
+  }
+}
+
+/* Hero Title - Titolo principale hero */
+.hero-title {
+  @apply text-4xl md:text-7xl lg:text-8xl font-bold;
+}
+
+/* Hero Title - Enfatizza su tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title {
+    letter-spacing: -0.03em;
+    text-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Animated Text Container - Container per testo animato con typing */
+.animated-text-container {
+  @apply min-h-[60px] md:min-h-[100px] lg:min-h-[120px];
+  @apply whitespace-nowrap font-space font-bold;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Animated Text - Enfatizza su tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .animated-text-container {
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Typing Cursor - Cursore animato per typing effect */
+.typing-cursor {
+  display: inline-block;
+  width: 4px;
+  height: 0.9em;
+  background-color: #60a5fa;
+  margin-left: 4px;
+  animation: blink 1s step-end infinite;
+  vertical-align: baseline;
+  transform: translateY(0.1em);
+}
+
+/* Encrypted Scroll Indicator - Visible on mobile only if enough height, always on tablet */
+.encrypted-scroll-indicator {
+  display: none;
+}
+
+/* Mobile + Tablet: show only if viewport height >= 700px */
+@media (max-width: 1023px) and (min-height: 700px) {
+  .encrypted-scroll-indicator {
+    display: block;
+  }
+}

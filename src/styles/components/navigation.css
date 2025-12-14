@@ -1,0 +1,31 @@
+/* ========================================
+   NAVIGATION COMPONENTS
+   ======================================== */
+
+/* Logo Gradient BYLT - Gradiente per logo BYLT */
+.logo-gradient-bylt {
+  background: linear-gradient(45deg, #B8FFFA 0%, #B8FFB8 50%, #B8FFFA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Logo Gradient MEDIA - Gradiente per logo MEDIA */
+.logo-gradient-media {
+  background: linear-gradient(45deg, #B8FFB8 0%, #B8FFFA 50%, #B8FFB8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Mobile Menu Link - Link menu mobile */
+.mobile-menu-link {
+  @apply block px-3 py-2 text-base font-medium text-gray-200;
+  @apply hover:text-[#B8FFFA] transition-colors rounded-md;
+}
+
+/* Mobile Submenu Link - Link submenu mobile */
+.mobile-submenu-link {
+  @apply flex items-center px-3 py-2 text-sm font-medium text-gray-300;
+  @apply hover:text-[#B8FFFA] transition-colors;
+}

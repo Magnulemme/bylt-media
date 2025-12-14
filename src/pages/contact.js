@@ -532,14 +532,9 @@ const ContactFormSection = () => {
 
     // Initialize EmailJS when component mounts
     useEffect(() => {
-        console.log('🔵 CONTACT PAGE LOADED - useEffect running');
-        console.warn('⚠️ TESTING CONSOLE OUTPUT');
-        console.error('🔴 ERROR LEVEL TEST');
         try {
             initEmailJS();
-            console.log('✅ EmailJS initialized on component mount');
         } catch (error) {
-            console.error('❌ Failed to initialize EmailJS:', error);
             setSubmitError('Email service initialization failed. Please refresh the page.');
         }
     }, []);
@@ -550,10 +545,7 @@ const ContactFormSection = () => {
     };
 
     const handleSubmit = async (e) => {
-        console.log('🟢 FORM SUBMIT TRIGGERED');
-        console.warn('⚠️ Form submission started');
         e.preventDefault();
-        console.log('🟢 preventDefault called');
         setIsSubmitting(true);
         setSubmitStatus('');
         setSubmitError('');
@@ -564,13 +556,11 @@ const ContactFormSection = () => {
             if (validationError) {
                 setSubmitStatus('error');
                 setSubmitError(validationError);
-                console.error('❌ Validation error:', validationError);
                 setIsSubmitting(false); // Reset submitting state
                 return;
             }
 
             // Send email via EmailJS (already initialized on mount)
-            console.log('📧 Attempting to send email...');
             const result = await sendContactEmail(formData);
 
             if (result.success) {
@@ -602,10 +592,8 @@ const ContactFormSection = () => {
             } else {
                 setSubmitStatus('error');
                 setSubmitError(result.message || result.error || 'Failed to send message');
-                console.error('EmailJS Contact Error:', result.error);
             }
         } catch (error) {
-            console.error("Contact form submission error:", error);
             setSubmitStatus('error');
             setSubmitError(error.message || 'An unexpected error occurred');
         } finally {
