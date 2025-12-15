@@ -45,10 +45,10 @@ const Navigation = () => {
             >
                 <div className="flex items-center justify-between px-4 h-[70px]" >
                     {/* Logo */}
-                    <Link href="/" className="text-lg font-bold tracking-wider font-inter">
+                    <Link href="/" className="text-lg font-bold tracking-wide font-mono transition-opacity duration-300 active:opacity-70">
                         <span className="logo-gradient-bylt">BYLT</span>
-                        <span className="text-gray-400">.</span>
-                        <span className="logo-gradient-media">MEDIA</span>
+                        <span className="text-gray-500">.</span>
+                        <span className="text-white">MEDIA</span>
                     </Link>
 
                     {/* Menu Button */}

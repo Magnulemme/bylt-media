@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import { TrendingUp, Search, Code, BrainCircuit, ChevronDown } from 'lucide-react';
 import { ServiceHoverEffect } from '../ui/service-card-hover';
+import ShaderBackground from './ShaderBackground';
 
 const NeuralServices = () => {
     const [openService, setOpenService] = useState(null);
@@ -109,12 +110,15 @@ const NeuralServices = () => {
                 ref={containerRef}
                 className="relative h-full w-full rounded-2xl py-24 overflow-hidden"
                 style={{
-                    background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+                    background: '#020617',
                     transform,
                     opacity,
                     transformStyle: 'preserve-3d'
                 }}
             >
+                {/* Shader Background */}
+                <ShaderBackground />
+
                 <div ref={sectionRef} className="relative z-10 quantum-anim">
                 {/* Minimal mono title - wider container like SharedPortfolio */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
@@ -191,74 +195,93 @@ const NeuralServices = () => {
 
                     {/* Mobile Accordion */}
                     <div className="flex flex-col gap-4 md:hidden">
-                    {services.map((service) => (
+                    {services.map((service, index) => (
                         <div
                             key={service.id}
-                            className={`bg-slate-800/50 rounded-xl border transition-all duration-300 backdrop-blur-lg ${
-                                openService === service.id
-                                    ? 'border-cyan-300 bg-cyan-400/5'
-                                    : 'border-gray-700/50'
-                            }`}
+                            className="pb-2 pr-2"
                         >
-                            <button
-                                className="flex justify-between items-center w-full p-5 px-6 text-left cursor-pointer bg-transparent border-none text-white"
-                                onClick={() => toggleService(service.id)}
-                                aria-expanded={openService === service.id}
-                                aria-controls={`content-${service.id}`}
-                            >
-                                <div className="flex items-center gap-5">
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                                        openService === service.id
-                                            ? 'bg-cyan-300 text-gray-900'
-                                            : 'bg-gray-600/50 text-white'
-                                    }`}>
-                                        {service.icon}
-                                    </div>
-                                    <div className="text-left">
-                                        <h3 className="text-lg font-semibold font-inter">{service.title}</h3>
-                                        <p className="text-sm text-gray-400 mt-0.5">{service.subtitle}</p>
-                                    </div>
-                                </div>
-                                <div className={`transition-transform duration-300 ${
-                                    openService === service.id ? 'rotate-180 text-cyan-300' : ''
-                                }`}>
-                                    <ChevronDown size={24} />
-                                </div>
-                            </button>
                             <div
-                                id={`content-${service.id}`}
-                                className="overflow-hidden transition-all duration-500"
-                                style={{ maxHeight: openService === service.id ? '1000px' : '0px' }}
+                                className={`rounded-lg bg-white/5 backdrop-blur-sm border-2 transition-all duration-300 ${
+                                    openService === service.id
+                                        ? 'border-cyan-400/60 translate-x-[2px] translate-y-[2px]'
+                                        : 'border-white/30'
+                                }`}
+                                style={{
+                                    boxShadow: openService === service.id
+                                        ? '4px 4px 0px rgba(34, 211, 238, 1)'
+                                        : '6px 6px 0px rgba(34, 211, 238, 1)',
+                                    transition: 'all 0.3s ease'
+                                }}
                             >
-                                <div className="px-6 pb-6 text-gray-300 text-base leading-relaxed">
-                                    <p>{service.description}</p>
-                                    <div className="mt-6 border-t border-gray-700/50 pt-6">
-                                        <h4 className="text-base font-semibold text-white mb-6 uppercase tracking-wider">
-                                            Capability Matrix
-                                        </h4>
-                                        <ul className="list-none p-0 grid grid-cols-2 gap-4">
-                                            {service.capabilities.map((cap, i) => (
-                                                <li
-                                                    key={i}
-                                                    className={`transition-all duration-500 ${
-                                                        openService === service.id ? 'opacity-100' : 'opacity-0'
-                                                    }`}
-                                                    style={{
-                                                        animationDelay: `${(i + 1) * 0.1}s`,
-                                                        animation: openService === service.id ? 'fadeInItem 0.5s ease forwards' : 'none'
-                                                    }}
-                                                >
-                                                    <div className="flex items-center p-4 gap-3 bg-white/[0.03] rounded-xl">
-                                                        <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center relative flex-shrink-0">
-                                                            <div className="w-2 h-2 bg-cyan-300 rounded-full animate-[pulseDot_2s_ease-in-out_infinite]"></div>
-                                                        </div>
-                                                        <span className="text-[0.95rem] font-medium text-gray-200 flex-grow">
-                                                            {cap.name}
-                                                        </span>
+                                <div className="relative">
+                                    <button
+                                        className="flex justify-between items-start gap-3 w-full p-5 text-left cursor-pointer bg-transparent border-none text-white"
+                                        onClick={() => toggleService(service.id)}
+                                        aria-expanded={openService === service.id}
+                                        aria-controls={`content-${service.id}`}
+                                    >
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="text-xl font-bold text-white font-inter m-0 leading-tight">
+                                                {service.title}
+                                            </h3>
+                                            <p className="text-sm text-gray-400 m-0 mt-1">{service.subtitle}</p>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                                            <div className="relative text-3xl font-bold font-inter leading-none">
+                                                {/* Static number - always visible */}
+                                                <span className={`bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.12] bg-clip-text text-transparent transition-opacity duration-500 ${
+                                                    openService === service.id ? 'opacity-0' : 'opacity-100'
+                                                }`}>
+                                                    0{index + 1}
+                                                </span>
+                                                {/* Animated gradient when open */}
+                                                <span className={`absolute top-0 left-0 bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%] ${
+                                                    openService === service.id ? 'opacity-100' : 'opacity-0'
+                                                }`}>
+                                                    0{index + 1}
+                                                </span>
+                                            </div>
+                                            <div
+                                                className={`transition-all duration-300 ${
+                                                    openService === service.id ? 'rotate-180 text-cyan-400' : 'text-white'
+                                                }`}
+                                            >
+                                                <ChevronDown size={24} strokeWidth={2.5} />
+                                            </div>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div
+                                    id={`content-${service.id}`}
+                                    className="overflow-hidden transition-all duration-500"
+                                    style={{ maxHeight: openService === service.id ? '1000px' : '0px' }}
+                                >
+                                    <div className="px-5 pb-5 flex flex-col gap-4">
+                                        <p className="text-sm text-gray-300 leading-relaxed">{service.description}</p>
+                                        <div className="border-t border-white/10 pt-4">
+                                            <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-3">Key Capabilities</p>
+                                            <div className="space-y-2">
+                                                {service.capabilities.map((cap, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="flex items-start gap-2 text-xs text-gray-400"
+                                                    >
+                                                        <span className="text-cyan-400 mt-0.5">•</span>
+                                                        <span className="leading-tight">{cap.name}</span>
                                                     </div>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <a
+                                            href="#contact"
+                                            className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-cyan-400 transition-colors duration-300 mt-2"
+                                        >
+                                            {service.id === 'paid-media' && 'Scale Your Campaigns'}
+                                            {service.id === 'seo' && 'Drive Organic Traffic'}
+                                            {service.id === 'web-dev' && 'Build Your Platform'}
+                                            {service.id === 'ai-solutions' && 'Deploy AI Solutions'}
+                                            <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

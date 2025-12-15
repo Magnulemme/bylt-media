@@ -55,6 +55,7 @@ const TechStackSection = () => {
             direction="left"
             speed="slow"
             pauseOnHover={true}
+            cardSize="compact"
           />
         </div>
 

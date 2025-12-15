@@ -54,6 +54,7 @@ const SharedPortfolioCarousel = () => {
                     speed="slow"
                     pauseOnHover={false}
                     className="py-4"
+                    cardSize="compact"
                 />
             </div>
         </section>

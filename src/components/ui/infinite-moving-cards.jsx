@@ -9,7 +9,8 @@ export const InfiniteMovingCards = ({
   direction = "left",
   speed = "fast",
   pauseOnHover = true,
-  className
+  className,
+  cardSize = "default" // "default" or "compact"
 }) => {
   const containerRef = React.useRef(null);
   const scrollerRef = React.useRef(null);
@@ -167,9 +168,17 @@ export const InfiniteMovingCards = ({
               </div>
             ) : item.logo && item.tag ? (
               // Tech Stack card format - clean: solo logo + nome
-              <div className="relative w-[220px] h-[200px] bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl group overflow-visible transition-all duration-300 flex flex-col items-center justify-center gap-4 p-6">
+              <div className={cn(
+                "relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl group overflow-visible transition-all duration-300 flex flex-col items-center justify-center",
+                cardSize === "compact"
+                  ? "w-[120px] h-[110px] md:w-[180px] md:h-[160px] gap-2 md:gap-3 p-3 md:p-5"
+                  : "w-[220px] h-[200px] gap-4 p-6"
+              )}>
                 {/* Logo - protagonista */}
-                <div className="w-24 h-24 flex items-center justify-center">
+                <div className={cn(
+                  "flex items-center justify-center",
+                  cardSize === "compact" ? "w-12 h-12 md:w-20 md:h-20" : "w-24 h-24"
+                )}>
                   <img
                     src={item.logo}
                     alt={item.name}
@@ -183,7 +192,10 @@ export const InfiniteMovingCards = ({
                 </div>
 
                 {/* Name - sottotitolo discreto */}
-                <p className="text-gray-400 font-normal text-sm text-center group-hover:text-gray-300 transition-colors">
+                <p className={cn(
+                  "text-gray-400 font-normal text-center group-hover:text-gray-300 transition-colors",
+                  cardSize === "compact" ? "text-xs md:text-sm" : "text-sm"
+                )}>
                   {item.name}
                 </p>
               </div>

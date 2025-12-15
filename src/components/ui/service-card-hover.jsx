@@ -80,7 +80,7 @@ export const CardNumber = ({ className, children }) => {
 
 export const CardIcon = ({ className, children }) => {
   return (
-    <div className={cn("w-14 h-14 rounded-lg bg-cyan-400/10 border-2 border-cyan-400/30 flex items-center justify-center text-cyan-300 [&>svg]:w-7 [&>svg]:h-7", className)}>
+    <div className={cn("w-14 h-14 rounded-lg bg-cyan-400/10 border-2 border-cyan-400/30 flex items-center justify-center text-cyan-300 [&>svg]:w-7 [&>svg]:h-7 transition-all duration-300 group-hover:bg-cyan-400/20 group-hover:border-cyan-400/50", className)}>
       {children}
     </div>
   );
@@ -112,7 +112,7 @@ export const CardSubtitle = ({ className, children }) => {
 
 export const CardDescription = ({ className, children }) => {
   return (
-    <p className={cn("text-sm text-gray-400 leading-relaxed flex-1", className)}>
+    <p className={cn("text-sm text-gray-300 leading-relaxed flex-1", className)}>
       {children}
     </p>
   );
@@ -121,12 +121,12 @@ export const CardDescription = ({ className, children }) => {
 export const CardCapabilities = ({ capabilities, label = "Key Capabilities", className }) => {
   return (
     <div className={cn("space-y-3 border-t border-white/10 pt-4 flex-shrink-0", className)}>
-      <p className="text-xs text-white/60 font-semibold uppercase tracking-wider">{label}</p>
+      <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">{label}</p>
       <div className="grid grid-cols-2 gap-2">
         {capabilities.slice(0, 4).map((cap, idx) => (
           <div
             key={idx}
-            className="flex items-start gap-2 text-xs text-gray-300"
+            className="flex items-start gap-2 text-xs text-gray-400"
           >
             <span className="text-cyan-400 mt-0.5">•</span>
             <span className="leading-tight">{cap.name}</span>

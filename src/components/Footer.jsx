@@ -2,21 +2,18 @@ import Link from 'next/link';
 import { motion, useTransform, useMotionValue } from 'motion/react';
 import { useFooterStore } from '../store/footerStore';
 import { useEffect } from 'react';
+import ShaderBackground from './home/ShaderBackground';
 
 const Content = () => {
     return (
         <footer
-            className="w-full overflow-hidden"
+            className="w-full overflow-hidden relative"
             style={{
-                background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+                background: '#020617',
             }}
         >
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1), transparent 70%)',
-                }}
-            />
+            {/* Shader Background */}
+            <ShaderBackground />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 h-full flex flex-col justify-between">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">

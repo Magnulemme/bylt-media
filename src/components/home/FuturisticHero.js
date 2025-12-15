@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import DataVisualization3D from './DataVisualization3D';
-import { EncryptedText } from '../ui/encrypted-text';
+import ShaderBackground from './ShaderBackground';
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -49,57 +49,39 @@ const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pause
 
 // Optimized Hero Section with typing effect and side-by-side layout
 const FuturisticHero = () => {
-    // Memoize texts array to prevent recreation
-    const texts = useMemo(() => [
-        "Digital Futures",
-        "Performance",
-        "AI Solutions",
-        "Growth"
-    ], []);
+    // Determine if mobile/tablet
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 640);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Memoize texts array to prevent recreation - shorter on mobile
+    const texts = useMemo(() => {
+        if (isMobile) {
+            return [
+                "Digital",
+                "Performance",
+                "AI Solutions",
+                "Growth"
+            ];
+        }
+        return [
+            "Digital Futures",
+            "Performance",
+            "AI Solutions",
+            "Growth"
+        ];
+    }, [isMobile]);
 
     const displayText = useTypingEffect(texts, 120, 60, 2500);
 
-    // Memoize crypto texts array to prevent recreation on every render
-    const cryptoTexts = useMemo(() => ['x² + y² + z² = r²', 'Scroll to explore ↓'], []);
-    const [currentCryptoIndex, setCurrentCryptoIndex] = useState(0);
-    const [isScrolled, setIsScrolled] = useState(false);
-
-    // Use ref to store interval ID for proper cleanup
-    const cryptoIntervalRef = useRef(null);
-
-    useEffect(() => {
-        cryptoIntervalRef.current = setInterval(() => {
-            setCurrentCryptoIndex((prev) => (prev + 1) % cryptoTexts.length);
-        }, 4000);
-
-        return () => {
-            if (cryptoIntervalRef.current) {
-                clearInterval(cryptoIntervalRef.current);
-            }
-        };
-    }, [cryptoTexts.length]);
-
-    // Scroll listener to hide the scroll indicator
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 50 && !isScrolled) {
-                setIsScrolled(true);
-            } else if (window.scrollY <= 50 && isScrolled) {
-                setIsScrolled(false);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [isScrolled]);
-
-    // Memoize EncryptedText to avoid recalculation on every render
-    const encryptedTextComponent = useMemo(() => (
-        <EncryptedText
-            text={cryptoTexts[currentCryptoIndex]}
-            className="text-white/60 font-mono"
-        />
-    ), [cryptoTexts, currentCryptoIndex]);
 
     return (
         <section
@@ -112,28 +94,8 @@ const FuturisticHero = () => {
             }}
         >
             <div className="hero-inner bg-hero">
-                {/* Gradient overlay */}
-                <div className="gradient-overlay"></div>
-
-                {/* Section Header - Mobile & Tablet - Absolute positioned */}
-                <div className="absolute top-12 right-6 sm:right-8 md:right-12 z-30 lg:hidden">
-                    <div className="flex items-center gap-3">
-                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                            1)
-                        </span>
-                        <span className="text-white font-mono text-sm tracking-wide">
-                            Your Solution
-                        </span>
-                        <span className="text-gray-500 font-mono text-sm tracking-wide">
-                            [Tech & Marketing]
-                        </span>
-                    </div>
-                </div>
-
-                {/* Scroll Indicator - Mobile (if viewport tall enough), Tablet - Absolute positioned */}
-                <div className={`encrypted-scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-500 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                    {encryptedTextComponent}
-                </div>
+                {/* Shader Background */}
+                <ShaderBackground />
 
                 <div className="container-centered">
                 <div className="hero-grid">
@@ -203,7 +165,7 @@ const FuturisticHero = () => {
 
                     {/* Right side - 3D Data Visualization - Desktop only */}
                     <div className="hidden lg:block relative h-[600px]">
-                        <div className="absolute top-0 right-0 text-sm tracking-wide z-10">
+                        <div className="absolute top-0 right-0 text-sm tracking-wide z-10 hidden lg:block">
                             <div className="flex items-center gap-3">
                                 <span className="text-cyan-400 font-mono tracking-wide">
                                     1)
@@ -222,11 +184,6 @@ const FuturisticHero = () => {
                     </div>
                 </div>
             </div>
-            </div>
-
-            {/* Scroll Indicator - Desktop - Ancorato a hero-section */}
-            <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 text-sm z-30 hidden lg:block transition-opacity duration-500 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-                {encryptedTextComponent}
             </div>
         </section>
     );

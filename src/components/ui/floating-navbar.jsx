@@ -85,20 +85,15 @@ export const FloatingNav = ({
   const navContent = (
     <>
       {/* Logo */}
-      <Link href="/" className="text-xl font-bold tracking-wider font-inter flex-shrink-0">
+      <Link href="/" className="text-xl font-bold tracking-wide font-mono flex-shrink-0 transition-opacity duration-300 hover:opacity-80">
         <span style={{
-          background: 'linear-gradient(45deg, #B8FFFA 0%, #B8FFB8 50%, #B8FFFA 100%)',
+          background: 'linear-gradient(90deg, #22d3ee 0%, #3b82f6 50%, #a855f7 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text'
         }}>BYLT</span>
-        <span className="text-gray-400">.</span>
-        <span style={{
-          background: 'linear-gradient(45deg, #B8FFB8 0%, #B8FFFA 50%, #B8FFB8 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }}>MEDIA</span>
+        <span className="text-gray-500">.</span>
+        <span className="text-white">MEDIA</span>
       </Link>
 
       {/* Desktop Menu */}
