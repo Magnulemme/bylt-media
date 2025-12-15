@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const KPICards = ({ kpis }) => {
   return (
-    <div className="grid grid-cols-1 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-1 gap-3 md:gap-6 lg:gap-3">
       {kpis.map((kpi, i) => (
         <motion.div
           key={i}

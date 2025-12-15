@@ -1,6 +1,11 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import RevenueChart from './PerformanceMetrics/RevenueChart';
 import KPICards from './PerformanceMetrics/KPICards';
 import TrafficDistributionChart from './PerformanceMetrics/TrafficDistributionChart';
@@ -109,29 +114,90 @@ const PerformanceMetrics = () => {
           </p>
         </motion.div>
 
-        {/* Top row: 3 columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8">
-
-          {/* Revenue Growth Chart */}
-          <RevenueChart data={performanceData} />
-
-          {/* KPI Cards */}
-          <KPICards kpis={kpis} />
-
-          {/* Traffic Sources Chart */}
-          <TrafficDistributionChart data={trafficMixData} />
-
+        {/* Mobile: Swiper Carousel */}
+        <div className="block md:hidden mb-6 relative">
+          <style jsx global>{`
+            .performance-metrics-swiper .swiper-pagination-bullet {
+              background: rgba(255, 255, 255, 0.3);
+              opacity: 1;
+            }
+            .performance-metrics-swiper .swiper-pagination-bullet-active {
+              background: #22d3ee;
+            }
+            .performance-metrics-swiper .swiper-button-prev,
+            .performance-metrics-swiper .swiper-button-next {
+              color: #22d3ee;
+              width: 40px;
+              height: 40px;
+            }
+            .performance-metrics-swiper .swiper-button-prev::after,
+            .performance-metrics-swiper .swiper-button-next::after {
+              font-size: 20px;
+              font-weight: bold;
+            }
+          `}</style>
+          <Swiper
+            modules={[Pagination, Navigation]}
+            spaceBetween={16}
+            slidesPerView={1}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            className="performance-metrics-swiper pb-12 px-8"
+          >
+            <SwiperSlide>
+              <RevenueChart data={performanceData} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <KPICards kpis={kpis} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <TrafficDistributionChart data={trafficMixData} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ROASTrendChart data={roasData} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <ConversionTrendChart data={channelPerformanceData} />
+            </SwiperSlide>
+          </Swiper>
         </div>
 
-        {/* Second row: 2 columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
+        {/* Tablet: Optimized Grid Layout (2 + 3 KPI cards + 2) */}
+        <div className="hidden md:block lg:hidden mb-6 md:mb-8">
+          {/* First row: Revenue + Traffic (2 cols) */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            <RevenueChart data={performanceData} />
+            <TrafficDistributionChart data={trafficMixData} />
+          </div>
 
-          {/* ROAS Trend */}
-          <ROASTrendChart data={roasData} />
+          {/* Second row: KPI Cards horizontal (1 row, 3 cards) */}
+          <div className="mb-6">
+            <KPICards kpis={kpis} />
+          </div>
 
-          {/* Channel Performance */}
-          <ConversionTrendChart data={channelPerformanceData} />
+          {/* Third row: ROAS + Channel Performance (2 cols) */}
+          <div className="grid grid-cols-2 gap-6">
+            <ROASTrendChart data={roasData} />
+            <ConversionTrendChart data={channelPerformanceData} />
+          </div>
+        </div>
 
+        {/* Desktop: Original Grid Layout */}
+        <div className="hidden lg:block">
+          {/* Top row: 3 columns */}
+          <div className="grid grid-cols-3 gap-8 mb-8">
+            <RevenueChart data={performanceData} />
+            <KPICards kpis={kpis} />
+            <TrafficDistributionChart data={trafficMixData} />
+          </div>
+
+          {/* Second row: 2 columns */}
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            <ROASTrendChart data={roasData} />
+            <ConversionTrendChart data={channelPerformanceData} />
+          </div>
         </div>
 
         {/* CTA */}
