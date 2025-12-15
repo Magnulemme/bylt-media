@@ -53,6 +53,16 @@ export const ServiceSlider = ({ items, className }) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
+        onReachEnd={(swiper) => {
+          setIsEnd(true);
+        }}
+        onReachBeginning={(swiper) => {
+          setIsBeginning(true);
+        }}
+        onFromEdge={(swiper) => {
+          setIsBeginning(swiper.isBeginning);
+          setIsEnd(swiper.isEnd);
+        }}
         className="!pb-0"
       >
         {items.map((item, idx) => (
