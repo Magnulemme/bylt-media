@@ -10,10 +10,10 @@ import ConversionTrendChart from './PerformanceMetrics/ConversionTrendChart';
 const PerformanceMetrics = () => {
   // Dati reali di performance marketing
   const performanceData = [
-    { name: 'Month 1', value: 12500 },
-    { name: 'Month 2', value: 18200 },
-    { name: 'Month 3', value: 24800 },
-    { name: 'Month 4', value: 31500 },
+    { name: 'Month 1', revenue: 10500, cost: 2000 },
+    { name: 'Month 2', revenue: 15400, cost: 2800 },
+    { name: 'Month 3', revenue: 21200, cost: 3600 },
+    { name: 'Month 4', revenue: 26900, cost: 4600 },
   ];
 
   const roasData = [

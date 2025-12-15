@@ -17,6 +17,8 @@ const CustomTooltip = ({ active, payload, label }) => {
           // Traduci i nomi tecnici in etichette leggibili
           const nameMap = {
             'value': 'Revenue',
+            'revenue': 'Revenue',
+            'cost': 'Ad Spend',
             'actual': 'Realizzato',
             'target': 'Obiettivo',
             'organic': 'Organic SEO',
@@ -33,8 +35,8 @@ const CustomTooltip = ({ active, payload, label }) => {
           // Formatta il valore in base al tipo di dato
           let formattedValue = entry.value;
           if (typeof entry.value === 'number') {
-            if (dataName === 'value') {
-              // Revenue in euro
+            if (dataName === 'value' || dataName === 'revenue' || dataName === 'cost') {
+              // Revenue/Cost in euro
               formattedValue = `€${entry.value.toLocaleString('it-IT')}`;
             } else if (dataName === 'actual' || dataName === 'target') {
               // ROAS con decimale
@@ -60,6 +62,8 @@ const CustomTooltip = ({ active, payload, label }) => {
           // Mappa colori per ogni tipo di dato
           const colorMap = {
             'value': '#22d3ee',
+            'revenue': '#22d3ee',
+            'cost': '#fb923c',
             'actual': '#3b82f6',
             'target': '#6b7280',
             'organic': '#a855f7',
