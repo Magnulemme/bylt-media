@@ -10,20 +10,21 @@ import 'swiper/css/navigation';
 export const ServiceSlider = ({ items, className }) => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const getMaskImage = () => {
     if (isBeginning && isEnd) {
       // Single slide or all slides visible
       return 'none';
     } else if (isBeginning) {
-      // At the start - no fade on left
-      return 'linear-gradient(to right, black, black calc(100% - 128px), transparent)';
+      // At the start - no fade on left, minimal fade on right edge only
+      return 'linear-gradient(to right, black 0%, black calc(100% - 80px), transparent 100%)';
     } else if (isEnd) {
-      // At the end - no fade on right
-      return 'linear-gradient(to right, transparent, black 128px, black)';
+      // At the end - minimal fade on left edge only, no fade on right
+      return 'linear-gradient(to right, transparent 0%, black 80px, black 100%)';
     } else {
-      // In the middle - fade on both sides
-      return 'linear-gradient(to right, transparent, black 128px, black calc(100% - 128px), transparent)';
+      // In the middle - minimal fade on both edges
+      return 'linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%)';
     }
   };
 
@@ -40,12 +41,15 @@ export const ServiceSlider = ({ items, className }) => {
         modules={[Navigation]}
         spaceBetween={24}
         slidesPerView="auto"
+        centeredSlides={true}
+        centeredSlidesBounds={true}
         navigation={{
           nextEl: '.swiper-button-next-custom',
           prevEl: '.swiper-button-prev-custom',
           enabled: true,
         }}
         onSwiper={(swiper) => {
+          setSwiperInstance(swiper);
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}

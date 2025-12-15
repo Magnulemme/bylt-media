@@ -2,8 +2,9 @@ import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import { TrendingUp, Search, Code, BrainCircuit, ChevronDown } from 'lucide-react';
-import { ServiceHoverEffect } from '../ui/service-card-hover';
+import { ServiceSlider } from '../ui/service-slider';
 import ShaderBackground from './ShaderBackground';
+import PerformanceMetrics from './PerformanceMetrics';
 
 const NeuralServices = () => {
     const [openService, setOpenService] = useState(null);
@@ -160,9 +161,9 @@ const NeuralServices = () => {
 
                 {/* Services container */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Desktop & Tablet Grid with Hover Effect */}
+                    {/* Desktop & Tablet Slider */}
                     <div className="hidden md:block">
-                        <ServiceHoverEffect
+                        <ServiceSlider
                             items={services.map((service, index) => {
                                 const ctaTexts = {
                                     'paid-media': 'Scale Your Campaigns',
@@ -189,7 +190,7 @@ const NeuralServices = () => {
                                     ctaHref: "#contact"
                                 };
                             })}
-                            className="gap-4 py-0"
+                            className="py-0"
                         />
                     </div>
 
@@ -289,6 +290,9 @@ const NeuralServices = () => {
                     ))}
                     </div>
                 </div>
+
+                {/* Performance Metrics Section */}
+                <PerformanceMetrics />
             </div>
             </motion.div>
             <style jsx>{`

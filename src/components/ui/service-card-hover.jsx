@@ -17,7 +17,7 @@ export const ServiceHoverEffect = ({ items, className }) => {
             ease: "easeOut"
           }}
         >
-          <Card>
+          <Card href={item.ctaHref || "#contact"}>
             {item.number && <CardNumber>{item.number}</CardNumber>}
             {item.icon && <CardIcon>{item.icon}</CardIcon>}
             <CardContent>
@@ -28,7 +28,7 @@ export const ServiceHoverEffect = ({ items, className }) => {
                 <CardCapabilities capabilities={item.capabilities} label={item.capabilitiesLabel} />
               )}
             </CardContent>
-            <CardCTA href={item.ctaHref || "#contact"}>
+            <CardCTA>
               {item.ctaText || "Learn More"}
             </CardCTA>
           </Card>
@@ -38,11 +38,12 @@ export const ServiceHoverEffect = ({ items, className }) => {
   );
 };
 
-export const Card = ({ className, children }) => {
+export const Card = ({ className, children, href = "#" }) => {
   return (
-    <div
+    <a
+      href={href}
       className={cn(
-        "rounded-lg h-full w-full p-5 bg-white/5 backdrop-blur-sm border-2 border-white/30 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px]",
+        "rounded-lg h-full w-full p-5 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
         className
       )}
       style={{
@@ -57,7 +58,7 @@ export const Card = ({ className, children }) => {
       }}
     >
       {children}
-    </div>
+    </a>
   );
 };
 
@@ -66,11 +67,11 @@ export const CardNumber = ({ className, children }) => {
     <div className={cn("absolute top-6 right-6 text-7xl font-bold font-inter leading-none", className)}>
       <div className="relative">
         {/* Static number - always visible */}
-        <span className="bg-gradient-to-br from-cyan-400/[0.06] to-purple-600/[0.04] bg-clip-text text-transparent group-hover:opacity-0 transition-opacity duration-500">
+        <span className="bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.10] bg-clip-text text-transparent group-hover:opacity-0 transition-opacity duration-500">
           {children}
         </span>
         {/* Animated gradient on hover */}
-        <span className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%]">
+        <span className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-cyan-400/40 via-blue-500/40 to-purple-600/40 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%]">
           {children}
         </span>
       </div>
@@ -88,7 +89,7 @@ export const CardIcon = ({ className, children }) => {
 
 export const CardContent = ({ className, children }) => {
   return (
-    <div className={cn("relative z-10 flex flex-col gap-3.5 flex-1", className)}>
+    <div className={cn("relative z-10 flex flex-col gap-3.5 flex-1 mb-4", className)}>
       {children}
     </div>
   );
@@ -137,17 +138,16 @@ export const CardCapabilities = ({ capabilities, label = "Key Capabilities", cla
   );
 };
 
-export const CardCTA = ({ className, href = "#", children }) => {
+export const CardCTA = ({ className, children }) => {
   return (
-    <a
-      href={href}
+    <div
       className={cn(
-        "group/cta inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-cyan-400 transition-colors duration-300 mt-auto",
+        "inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300 mt-auto pointer-events-none",
         className
       )}
     >
       {children}
-      <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-    </a>
+      <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+    </div>
   );
 };

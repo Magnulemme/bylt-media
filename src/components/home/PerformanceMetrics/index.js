@@ -3,3 +3,4 @@ export { default as KPICards } from './KPICards';
 export { default as RevenueChart } from './RevenueChart';
 export { default as TrafficDistributionChart } from './TrafficDistributionChart';
 export { default as ROASTrendChart } from './ROASTrendChart';
+export { default as ConversionTrendChart } from './ConversionTrendChart';

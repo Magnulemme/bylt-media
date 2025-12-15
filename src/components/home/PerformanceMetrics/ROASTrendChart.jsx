@@ -15,17 +15,17 @@ const ROASTrendChart = ({ data }) => {
       <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 lg:p-8">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h3 className="text-sm font-medium text-gray-400 mb-1">ROAS Trend</h3>
-            <p className="text-xs text-gray-600">Return on Ad Spend nel tempo - Actual vs Target</p>
+            <h3 className="text-sm font-medium text-gray-400 mb-1">Ritorno sulla Spesa Pubblicitaria</h3>
+            <p className="text-xs text-gray-600">Performance ROAS nell'ultimo semestre</p>
           </div>
           <div className="flex gap-4 text-xs">
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-blue-400" />
-              <span className="text-gray-400">Actual</span>
+              <span className="text-gray-400">Realizzato</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-gray-600" />
-              <span className="text-gray-400">Target</span>
+              <span className="text-gray-400">Obiettivo</span>
             </div>
           </div>
         </div>
@@ -84,8 +84,22 @@ const ROASTrendChart = ({ data }) => {
           </LineChart>
         </ResponsiveContainer>
         <div className="mt-4 pt-4 border-t border-white/5">
-          <p className="text-xs text-gray-500">
-            Superamento costante degli obiettivi - ogni euro investito genera <span className="text-cyan-400 font-semibold">€6.80</span> di ritorno
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-gray-500 mb-1">Performance attuale</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">6.8x</span>
+                <span className="text-xs text-gray-500">ROAS</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-gray-500 mb-1">vs Obiettivo</p>
+              <p className="text-sm font-bold text-green-400">+36% sopra target</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-3">
+            Ogni euro investito in advertising genera <span className="text-cyan-400 font-semibold">€6.80</span> di revenue.
+            Performance costantemente superiore agli obiettivi prefissati.
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import RevenueChart from './PerformanceMetrics/RevenueChart';
 import KPICards from './PerformanceMetrics/KPICards';
 import TrafficDistributionChart from './PerformanceMetrics/TrafficDistributionChart';
 import ROASTrendChart from './PerformanceMetrics/ROASTrendChart';
+import ConversionTrendChart from './PerformanceMetrics/ConversionTrendChart';
 
 const PerformanceMetrics = () => {
   // Dati reali di performance marketing
@@ -22,6 +23,14 @@ const PerformanceMetrics = () => {
     { name: 'Apr', actual: 5.2, target: 4.0 },
     { name: 'May', actual: 6.1, target: 4.5 },
     { name: 'Jun', actual: 6.8, target: 5.0 },
+  ];
+
+  const channelPerformanceData = [
+    { channel: 'Google Ads', performance: 95 },
+    { channel: 'Meta Ads', performance: 92 },
+    { channel: 'LinkedIn', performance: 78 },
+    { channel: 'TikTok', performance: 85 },
+    { channel: 'YouTube', performance: 88 },
   ];
 
   // Dati per Radial Bar Chart - Traffic Mix
@@ -114,8 +123,16 @@ const PerformanceMetrics = () => {
 
         </div>
 
-        {/* ROAS Trend */}
-        <ROASTrendChart data={roasData} />
+        {/* Second row: 2 columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-6 lg:mb-8">
+
+          {/* ROAS Trend */}
+          <ROASTrendChart data={roasData} />
+
+          {/* Channel Performance */}
+          <ConversionTrendChart data={channelPerformanceData} />
+
+        </div>
 
         {/* CTA */}
         <motion.div

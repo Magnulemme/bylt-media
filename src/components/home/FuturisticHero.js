@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackground from './ShaderBackground';
+import { MovingBorderButton } from '../ui/moving-border-button'; 
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -150,9 +151,18 @@ const FuturisticHero = () => {
 
                         {/* CTAs - Desktop */}
                         <div className="hidden lg:flex flex-row items-center gap-16 pt-8">
-                            <a href="/free-audit" className="brutalist-button">
-                                <span>Get Free Audit</span>
-                            </a>
+                        <div className="flex justify-center">
+                            <MovingBorderButton
+                                type="submit"
+                                borderRadius="0.75rem"
+                                containerClassName="min-w-[240px] h-16"
+                                borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                                duration={2500}
+                            >
+                                Get Free Audit
+                            </MovingBorderButton>
+                        </div>
                             <a
                                 href="#services"
                                 className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"

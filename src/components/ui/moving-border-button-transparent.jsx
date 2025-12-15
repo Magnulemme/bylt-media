@@ -100,7 +100,7 @@ const MovingBorder = ({
   );
 };
 
-export const MovingBorderButton = ({
+export const MovingBorderButtonTransparent = ({
   borderRadius = "1.75rem",
   children,
   as: Component = "button",
@@ -108,14 +108,13 @@ export const MovingBorderButton = ({
   borderClassName,
   duration,
   className,
-  hoverColor = "#0ea5e9",
   ...otherProps
 }) => {
   const [isReady, setIsReady] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   // Pre-warm il blur layer
   useEffect(() => {
+    // Force reflow per attivare il blur
     requestAnimationFrame(() => {
       setIsReady(true);
     });
@@ -124,36 +123,16 @@ export const MovingBorderButton = ({
   return (
     <Component
       className={cn(
-        "relative h-16 w-40 bg-transparent p-[1px] text-xl",
+        "relative h-16 w-40 overflow-hidden bg-transparent p-[1px] text-xl",
         containerClassName
       )}
       style={{
         borderRadius: borderRadius,
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       {...otherProps}>
-      {/* Glow effect on hover - sottile e solo in basso */}
       <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-        style={{
-          borderRadius: borderRadius,
-          opacity: isHovered ? 0.6 : 0,
-          boxShadow: `0 8px 16px -4px ${hoverColor}`,
-        }}
-      />
-
-      {/* Moving border con CSS mask per mostrare solo l'anello */}
-      <div
-        className="absolute inset-0 pointer-events-none p-[1px] overflow-hidden"
-        style={{
-          borderRadius: borderRadius,
-          WebkitMask:
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
-          mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          maskComposite: "exclude",
-        }}>
+        className="absolute inset-0"
+        style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}>
         <MovingBorder duration={duration} rx="30%" ry="30%">
           <div
             className={cn(
@@ -162,11 +141,9 @@ export const MovingBorderButton = ({
             )} />
         </MovingBorder>
       </div>
-
-      {/* Button content - background trasparente + blur overlay */}
       <div
         className={cn(
-          "relative z-10 flex h-full w-full items-center justify-center text-sm text-white antialiased",
+          "relative flex h-full w-full items-center justify-center border border-slate-800 text-sm text-white antialiased",
           className
         )}
         style={{

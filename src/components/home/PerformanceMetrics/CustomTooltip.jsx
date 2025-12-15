@@ -17,10 +17,14 @@ const CustomTooltip = ({ active, payload, label }) => {
           // Traduci i nomi tecnici in etichette leggibili
           const nameMap = {
             'value': 'Revenue',
-            'actual': 'Actual ROAS',
-            'target': 'Target ROAS',
+            'actual': 'Realizzato',
+            'target': 'Obiettivo',
             'organic': 'Organic SEO',
             'paid': 'Paid Ads',
+            'conversions': 'Conversioni',
+            'cpa': 'CPA',
+            'cvr': 'Conversion Rate',
+            'performance': 'Performance Score',
             'rate': entry.payload?.name?.includes('W') ? 'Bounce Rate' : 'Engagement Rate'
           };
 
@@ -35,9 +39,18 @@ const CustomTooltip = ({ active, payload, label }) => {
             } else if (dataName === 'actual' || dataName === 'target') {
               // ROAS con decimale
               formattedValue = `${entry.value.toFixed(1)}x`;
-            } else if (dataName === 'rate') {
-              // Bounce Rate percentuale
+            } else if (dataName === 'cpa') {
+              // CPA in euro
+              formattedValue = `€${entry.value.toFixed(2)}`;
+            } else if (dataName === 'cvr' || dataName === 'rate') {
+              // CVR o Rate in percentuale
               formattedValue = `${entry.value}%`;
+            } else if (dataName === 'performance') {
+              // Performance score
+              formattedValue = `${entry.value}/100`;
+            } else if (dataName === 'conversions') {
+              // Conversioni numero intero
+              formattedValue = entry.value.toLocaleString('it-IT');
             } else {
               // Altri numeri generici
               formattedValue = entry.value.toLocaleString('it-IT');
@@ -51,6 +64,10 @@ const CustomTooltip = ({ active, payload, label }) => {
             'target': '#6b7280',
             'organic': '#a855f7',
             'paid': '#22d3ee',
+            'conversions': '#10b981',
+            'cpa': '#fb923c',
+            'cvr': '#10b981',
+            'performance': '#a855f7',
             'rate': '#10b981'
           };
 
