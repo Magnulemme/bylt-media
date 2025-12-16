@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
+import { SectionIntro } from '../ui/section-headers';
 
 const SuccessStories = () => {
     const stories = [
@@ -57,41 +57,16 @@ const SuccessStories = () => {
             className="relative pt-20 pb-4 overflow-hidden"
             style={{ background: '#020617' }}
         >
-            {/* Section Title - Above cards */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-                <div className="flex items-center gap-3 mb-8 justify-end">
-                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                        6)
-                    </span>
-                    <span className="text-white font-mono text-sm tracking-wide">
-                        Trusted By
-                    </span>
-                    <span className="text-gray-500 font-mono text-sm tracking-wide">
-                        [Partners]
-                    </span>
-                </div>
-
-                {/* Intro Text - Prepares for contact */}
-                <div className="max-w-3xl">
-                    <motion.h2
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        Real Results from Real Partners
-                    </motion.h2>
-                    <motion.p
-                        className="text-lg md:text-xl text-gray-400 leading-relaxed"
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    >
-                        See why leading brands trust us to drive their growth. Ready to join them?
-                    </motion.p>
-                </div>
+            {/* Section intro */}
+            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+                <SectionIntro
+                    title="Real Results from Real Partners"
+                    subtitle="See why leading brands trust us to drive their growth. Ready to join them?"
+                    align="left"
+                    maxWidth="3xl"
+                    size="xl"
+                    variant="blur"
+                />
             </div>
 
             {/* Infinite Moving Cards - con padding verticale per gli shadow */}

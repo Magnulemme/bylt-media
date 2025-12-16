@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
+import SectionHeader from '../ui/SectionHeader';
 
 const ProjectsShowcase = () => {
     const [hoveredProject, setHoveredProject] = useState(null);
@@ -52,20 +53,7 @@ const ProjectsShowcase = () => {
             className="relative pb-20 overflow-hidden"
             style={{ background: '#020617' }}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Section Title */}
-                <div className="flex items-center gap-3 mb-12 justify-start">
-                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                        5.5)
-                    </span>
-                    <span className="text-white font-mono text-sm tracking-wide">
-                        Featured Projects
-                    </span>
-                    <span className="text-gray-500 font-mono text-sm tracking-wide">
-                        [Selected Work]
-                    </span>
-                </div>
-
+            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Projects List */}
                 <div
                     className="relative"

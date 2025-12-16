@@ -8,6 +8,7 @@ import TrafficDistributionChart from './PerformanceMetrics/TrafficDistributionCh
 import ROASTrendChart from './PerformanceMetrics/ROASTrendChart';
 import ConversionTrendChart from './PerformanceMetrics/ConversionTrendChart';
 import { MovingBorderButton } from '../ui/moving-border-button';
+import { SectionIntro } from '../ui/section-headers';
 
 const PerformanceMetrics = () => {
   const containerRef = useRef(null);
@@ -116,50 +117,16 @@ const PerformanceMetrics = () => {
   return (
     <div className="relative z-10 py-20 md:py-28">{/* Rimosse le gradient overlays perché condivise con lo shader background */}
 
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Header Section - Top Right Aligned */}
-        <div className="flex justify-end mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                4.5)
-              </span>
-              <span className="text-white font-mono text-sm tracking-wide">
-                Data-Driven Performance
-              </span>
-              <span className="text-gray-500 font-mono text-sm tracking-wide">
-                [Charts]
-              </span>
-            </div>
-          </motion.div>
-        </div>
-
-                        <div className="max-w-3xl mb-16">
-                            <motion.h2
-                                className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
-                                initial={{ opacity: 0, filter: "blur(10px)" }}
-                                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
-                            >
-                                I Numeri Parlano Chiaro
-                            </motion.h2>
-                            <motion.p
-                                className="text-lg md:text-xl text-gray-400 leading-relaxed"
-                                initial={{ opacity: 0, filter: "blur(10px)" }}
-                                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                            >
-                                Trasparenza totale sulle performance. Ogni metrica è tracciata, analizzata e ottimizzata per massimizzare il tuo ritorno sull'investimento.
-                            </motion.p>
-                        </div>
+                        {/* Section intro */}
+                        <SectionIntro
+                            title="I Numeri Parlano Chiaro"
+                            subtitle="Trasparenza totale sulle performance. Ogni metrica è tracciata, analizzata e ottimizzata per massimizzare il tuo ritorno sull'investimento."
+                            align="right"
+                            maxWidth="3xl"
+                            variant="blur"
+                        />
 
         {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
         <div className="md:hidden">

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Star, TrendingUp, Globe, Award, Zap, Users } from 'lucide-react';
 import { useCountUp } from '../../hooks/useCountUp';
+import SectionHeader from '../ui/SectionHeader';
 
 // Animated Counter Component
 const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
@@ -45,27 +46,9 @@ const SocialProofBento = () => {
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
                 <div className="mb-12 text-center">
-                    <motion.div
-                        className="inline-flex items-center gap-3 mb-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                            4)
-                        </span>
-                        <span className="text-white font-mono text-sm tracking-wide">
-                            Social Proof
-                        </span>
-                        <span className="text-gray-500 font-mono text-sm tracking-wide">
-                            [Verified]
-                        </span>
-                    </motion.div>
-
                     <motion.h2
                         className="text-3xl md:text-5xl font-bold text-white mb-4"
                         initial={{ opacity: 0, y: 20 }}

@@ -5,6 +5,7 @@ import { TrendingUp, Search, Code, BrainCircuit, ChevronDown } from 'lucide-reac
 import { ServiceSlider } from '../ui/service-slider';
 import ShaderBackground from './ShaderBackground';
 import PerformanceMetrics from './PerformanceMetrics';
+import { SectionIntro } from '../ui/section-headers';
 
 const NeuralServices = () => {
     const [openService, setOpenService] = useState(null);
@@ -106,10 +107,10 @@ const NeuralServices = () => {
     };
 
     return (
-        <section id="services" className="relative flex items-center justify-center overflow-hidden p-4 py-16" style={{ background: '#020617', perspective: '1000px' }}>
+        <section id="services" className="relative flex items-center justify-center p-4 py-16" style={{ background: '#020617', perspective: '1000px' }}>
             <motion.div
                 ref={containerRef}
-                className="relative h-full w-full rounded-2xl py-24 overflow-hidden"
+                className="relative h-full w-full rounded-2xl py-24"
                 style={{
                     background: '#020617',
                     transform,
@@ -121,46 +122,19 @@ const NeuralServices = () => {
                 <ShaderBackground />
 
                 <div ref={sectionRef} className="relative z-10 quantum-anim">
-                {/* Minimal mono title - wider container like SharedPortfolio */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                    <div className="flex items-center gap-3 justify-start">
-                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                            4)
-                        </span>
-                        <span className="text-white font-mono text-sm tracking-wide">
-                            Integrated Services
-                        </span>
-                        <span className="text-gray-500 font-mono text-sm tracking-wide">
-                            [Core]
-                        </span>
-                    </div>
-                </div>
-
-                {/* Content container - narrower */}
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-                    {/* Blur-to-focus description */}
-                    <motion.h3
-                        className="text-2xl md:text-4xl font-bold font-inter text-center leading-tight text-white mb-6"
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                    >
-                        A synergistic approach to digital dominance
-                    </motion.h3>
-                    <motion.p
-                        className="text-gray-400 text-lg max-w-2xl mx-auto text-center"
-                        initial={{ opacity: 0, filter: "blur(10px)" }}
-                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    >
-                        Each service is a component of a greater strategy, designed to deliver comprehensive and exponential results
-                    </motion.p>
+                {/* Section intro */}
+                <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+                    <SectionIntro
+                        title="A synergistic approach to digital dominance"
+                        subtitle="Each service is a component of a greater strategy, designed to deliver comprehensive and exponential results"
+                        variant="blur"
+                        maxWidth="5xl"
+                        align="left"
+                    />
                 </div>
 
                 {/* Services container */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Desktop & Tablet Slider */}
                     <div className="hidden md:block">
                         <ServiceSlider

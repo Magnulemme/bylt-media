@@ -1,6 +1,5 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { motion } from "motion/react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { useState } from 'react';
@@ -10,46 +9,28 @@ import 'swiper/css/navigation';
 export const ServiceSlider = ({ items, className }) => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
-  const [swiperInstance, setSwiperInstance] = useState(null);
-
-  const getMaskImage = () => {
-    if (isBeginning && isEnd) {
-      // Single slide or all slides visible
-      return 'none';
-    } else if (isBeginning) {
-      // At the start - no fade on left, minimal fade on right edge only
-      return 'linear-gradient(to right, black 0%, black calc(100% - 80px), transparent 100%)';
-    } else if (isEnd) {
-      // At the end - minimal fade on left edge only, no fade on right
-      return 'linear-gradient(to right, transparent 0%, black 80px, black 100%)';
-    } else {
-      // In the middle - minimal fade on both edges
-      return 'linear-gradient(to right, transparent 0%, black 80px, black calc(100% - 80px), transparent 100%)';
-    }
-  };
 
   return (
     <div className={cn("relative py-10 pb-12 px-20", className)}>
-      <div
-        className="relative transition-all duration-300"
-        style={{
-          maskImage: getMaskImage(),
-          WebkitMaskImage: getMaskImage(),
-        }}
-      >
       <Swiper
         modules={[Navigation]}
         spaceBetween={24}
-        slidesPerView="auto"
-        centeredSlides={true}
-        centeredSlidesBounds={true}
+        slidesPerView={3}
+        centeredSlides={false}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
         navigation={{
           nextEl: '.swiper-button-next-custom',
           prevEl: '.swiper-button-prev-custom',
           enabled: true,
         }}
         onSwiper={(swiper) => {
-          setSwiperInstance(swiper);
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
         }}
@@ -70,17 +51,8 @@ export const ServiceSlider = ({ items, className }) => {
         className="!pb-0"
       >
         {items.map((item, idx) => (
-          <SwiperSlide key={idx} className="h-auto !w-[380px]">
-            <motion.div
-              className="relative group block h-full w-full pb-2 pr-2"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                ease: "easeOut"
-              }}
-            >
+          <SwiperSlide key={idx} className="h-auto">
+            <div className="relative group block h-full w-full pb-2 pr-2">
               <Card href={item.ctaHref || "#contact"}>
                 {item.number && <CardNumber>{item.number}</CardNumber>}
                 {item.icon && <CardIcon>{item.icon}</CardIcon>}
@@ -96,11 +68,10 @@ export const ServiceSlider = ({ items, className }) => {
                   {item.ctaText || "Learn More"}
                 </CardCTA>
               </Card>
-            </motion.div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
-      </div>
 
       {/* Custom Navigation Buttons */}
       <div className={cn(
@@ -137,7 +108,7 @@ export const Card = ({ className, children, href = "#" }) => {
     <a
       href={href}
       className={cn(
-        "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
+        "rounded-lg h-full w-full p-6 bg-slate-800/70 backdrop-blur-sm border-2 border-slate-600/30 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
         className
       )}
       style={{

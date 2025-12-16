@@ -15,6 +15,9 @@ module.exports = {
   		spacing: {
   			'screen': '100vh'
   		},
+  		maxWidth: {
+  			'content': '1440px',
+  		},
   		backgroundImage: {
   			'hero-gradient': 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
   			'text-gradient': 'linear-gradient(to right, #22D3EE, #3B82F6, #A855F7)',

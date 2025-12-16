@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackground from './ShaderBackground';
-import { MovingBorderButton } from '../ui/moving-border-button'; 
+import { MovingBorderButton } from '../ui/moving-border-button';
+import SectionHeader from '../ui/SectionHeader'; 
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -175,22 +176,7 @@ const FuturisticHero = () => {
 
                     {/* Right side - 3D Data Visualization - Desktop only */}
                     <div className="hidden lg:block relative h-[600px]">
-                        <div className="absolute top-0 right-0 text-sm tracking-wide z-10 hidden lg:block">
-                            <div className="flex items-center gap-3">
-                                <span className="text-cyan-400 font-mono tracking-wide">
-                                    1)
-                                </span>
-                                <span className="text-white font-mono tracking-wide">
-                                    Your Solution
-                                </span>
-                                <span className="text-gray-500 font-mono tracking-wide">
-                                    [Tech & Marketing]
-                                </span>
-                            </div>
-                        </div>
-                        <div className="absolute inset-x-0 top-6 bottom-0">
-                            <DataVisualization3D />
-                        </div>
+                        <DataVisualization3D />
                     </div>
                 </div>
             </div>

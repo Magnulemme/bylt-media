@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCountUp } from '../../hooks/useCountUp';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Star, Globe, Award, Zap } from 'lucide-react';
 
 // Word Component with Motion
 const Word = ({ children, range, progress }) => {
@@ -101,75 +100,11 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => 
 // Official Partner Section - Show, Don't Tell
 const OfficialPartnerSection = () => {
     return (
-        <section className="relative pt-20 md:pt-32 pb-8 md:pb-12 overflow-hidden" style={{ background: '#020617' }}>
+        <section className="relative pb-8 md:pb-12 overflow-hidden" style={{ background: '#020617' }}>
             {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Title */}
-                <div className="mb-12 flex items-center gap-3 justify-end">
-                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                        3)
-                    </span>
-                    <span className="text-white font-mono text-sm tracking-wide">
-                        Our Trusted Partners
-                    </span>
-                    <span className="text-gray-500 font-mono text-sm tracking-wide">
-                        [Official]
-                    </span>
-                </div>
-
-                {/* Partner Logos */}
-                <div className="flex flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16 mb-12">
-                    <motion.a
-                        href="https://marketiseme.com/en/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group transition-transform duration-300 hover:-translate-y-1"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0 }}
-                    >
-                        <img
-                            src="/images/partners/marketise-me-logo.svg"
-                            alt="Marketise Me"
-                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
-                            loading="lazy"
-                        />
-                    </motion.a>
-
-                    <motion.div
-                        className="group transition-transform duration-300 hover:-translate-y-1"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                    >
-                        <img
-                            src="/images/partners/partners logos/google-partner-logo-min.svg"
-                            alt="Google Partner"
-                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
-                            loading="lazy"
-                        />
-                    </motion.div>
-
-                    <motion.div
-                        className="group transition-transform duration-300 hover:-translate-y-1"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                    >
-                        <img
-                            src="/images/partners/partners logos/meta_partner_logo.png"
-                            alt="Meta Business Partner"
-                            className="h-16 md:h-20 w-auto opacity-90 group-hover:opacity-100 transition-opacity duration-300 brightness-110"
-                            loading="lazy"
-                        />
-                    </motion.div>
-                </div>
-
+            <div className="relative max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Scroll Reveal Intermezzo */}
                 <ScrollRevealText
                     lines={[

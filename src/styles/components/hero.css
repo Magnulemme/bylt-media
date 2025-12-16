@@ -30,7 +30,7 @@
 
 /* Container Centered - Container centrato max-width */
 .container-centered {
-  @apply relative z-20 w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8;
+  @apply relative z-20 w-full max-w-content mx-auto px-4 sm:px-6 lg:px-8;
 }
 
 /* Hero Inner - Container interno hero con rounded e bg */

@@ -28,7 +28,7 @@ const TechStackSection = () => {
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4">
+      <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -37,9 +37,6 @@ const TechStackSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="text-sm font-semibold text-purple-400 tracking-wider uppercase mb-3 block">
-            2)
-          </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Powered by Industry Leaders
           </h2>

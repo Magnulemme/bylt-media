@@ -72,7 +72,7 @@ const ClientsScroll = () => {
             ></div>
 
             <div
-                className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+                className="relative z-10 max-w-content mx-auto px-4 sm:px-6 lg:px-8"
                 style={{
                     transform: `scale(${scale})`,
                     willChange: 'transform'

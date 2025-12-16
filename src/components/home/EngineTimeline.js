@@ -586,29 +586,14 @@ const EngineTimeline = () => {
         <section
             ref={sectionRef}
             id="process"
-            className="relative pt-12 pb-32"
+            className="relative pb-32"
             style={{ background: '#020617' }}
         >
             <div className="relative z-10">
-                {/* Minimal mono title */}
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                    <div className="flex items-center gap-3 justify-end">
-                        <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                            5)
-                        </span>
-                        <span className="text-white font-mono text-sm tracking-wide">
-                            The BYLT Engine
-                        </span>
-                        <span className="text-gray-500 font-mono text-sm tracking-wide">
-                            [Process]
-                        </span>
-                    </div>
-                </div>
-
-                {/* Desktop Version - unchanged */}
+                {/* Desktop Version */}
                 <div className="hidden md:block">
                     {/* Content container */}
-                    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                    <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 mb-16">
                         <ScrollRevealText
                             text="Our proven process ensures clarity, efficiency, and exceptional results"
                             className="text-2xl md:text-4xl font-bold font-inter text-center leading-tight text-white mb-6"
@@ -625,7 +610,7 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Steps Container */}
-                    <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-8 relative">
+                    <div className="max-w-content mx-auto px-6 md:px-12 lg:px-8 relative">
                         {/* Steps */}
                         <div>
                             {processSteps.map((step, index) => (

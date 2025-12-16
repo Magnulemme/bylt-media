@@ -5,6 +5,7 @@ import { Mail, MoveRight, X } from 'lucide-react';
 import { BackgroundBeams } from '../ui/background-beams';
 import { useFooterStore } from '../../store/footerStore';
 import { cn } from '@/lib/utils';
+import SectionHeader from '../ui/SectionHeader';
 
 // Moving Border Button Component (inline to avoid import issues)
 const MovingBorder = ({
@@ -282,20 +283,7 @@ ${formData.message}
             style={{ background: '#020617' }}
         >
             <BackgroundBeams className="absolute inset-0 z-0" />
-            <div ref={sectionRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
-                {/* Section Title */}
-                <div className="flex items-center gap-3 mb-12 justify-start">
-                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                        7)
-                    </span>
-                    <span className="text-white font-mono text-sm tracking-wide">
-                        Let's Build Your Future
-                    </span>
-                    <span className="text-gray-500 font-mono text-sm tracking-wide">
-                        [Contact]
-                    </span>
-                </div>
-
+            <div ref={sectionRef} className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
                 {/* Bridge Header */}
                 <div className="text-center mb-16 max-w-4xl mx-auto">
                     <div className="text-3xl md:text-5xl font-bold font-inter mb-6">

@@ -18,7 +18,7 @@ const QuantumProcess = () => {
         <section id="process" ref={sectionRef} className="py-24 quantum-process-section quantum-anim relative overflow-hidden">
             <div className="absolute inset-0 quantum-grid-animation"></div>
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="text-center mb-20">
                     <div className="section-title-container">
                         <h2 className="section-title-enhanced">

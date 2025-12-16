@@ -28,6 +28,10 @@ const ShaderBackground = () => {
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(containerRef.current.offsetWidth, containerRef.current.offsetHeight);
+
+        // Apply border-radius directly to canvas
+        renderer.domElement.style.borderRadius = '1rem';
+
         containerRef.current.appendChild(renderer.domElement);
         rendererRef.current = renderer;
 

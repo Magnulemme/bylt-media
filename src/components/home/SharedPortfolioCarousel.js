@@ -1,5 +1,7 @@
 import React from 'react';
 import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
+import SectionHeader from '../ui/SectionHeader';
+import ClientsIntermezzo from './ClientsIntermezzo';
 
 // Shared Portfolio Carousel using CSS sticky positioning
 const SharedPortfolioCarousel = () => {
@@ -33,19 +35,8 @@ const SharedPortfolioCarousel = () => {
                 clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)"
             }}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {/* Section Title */}
-                <div className="mb-8 flex items-center gap-3 justify-start">
-                    <span className="text-cyan-400 font-mono text-sm tracking-wide">
-                        2)
-                    </span>
-                    <span className="text-white font-mono text-sm tracking-wide">
-                        Our Stack
-                    </span>
-                    <span className="text-gray-500 font-mono text-sm tracking-wide">
-                        [Performance]
-                    </span>
-                </div>
+            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <ClientsIntermezzo />
 
                 {/* Infinite Moving Cards */}
                 <InfiniteMovingCards

@@ -5,15 +5,14 @@ import GlobalStyles from '../components/globalsyles';
 
 // Import all home page components
 import FuturisticHero from '../components/home/FuturisticHero';
-import TechStackSection from '../components/home/TechStackSection';
-import SharedPortfolioCarousel from '../components/home/SharedPortfolioCarousel';
+import TechStackSection from '../components/home/SharedPortfolioCarousel';
 import OfficialPartnerSection from '../components/home/OfficialPartnerSection';
 import NeuralServices from '../components/home/NeuralServices';
 import EngineTimeline from '../components/home/EngineTimeline';
 import ProjectsShowcase from '../components/home/ProjectsShowcase';
 import SuccessStories from '../components/home/SuccessStories';
 import NeuralContact from '../components/home/NeuralContact';
-import ClientsIntermezzo from '@/components/home/ClientsIntermezzo';
+import DemoReveal from '@/components/home/DemoReveal';
 
 // Main App Component
 const ByltMediaLandingPageV8 = () => {
@@ -141,8 +140,7 @@ const ByltMediaLandingPageV8 = () => {
             <GlobalStyles />
 
             <FuturisticHero />
-            <SharedPortfolioCarousel />
-            <ClientsIntermezzo />
+            <DemoReveal />
             <OfficialPartnerSection />
             <NeuralServices />
             <EngineTimeline />
