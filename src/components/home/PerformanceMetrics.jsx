@@ -1,18 +1,40 @@
 "use client";
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import RevenueChart from './PerformanceMetrics/RevenueChart';
 import KPICards from './PerformanceMetrics/KPICards';
 import TrafficDistributionChart from './PerformanceMetrics/TrafficDistributionChart';
 import ROASTrendChart from './PerformanceMetrics/ROASTrendChart';
 import ConversionTrendChart from './PerformanceMetrics/ConversionTrendChart';
+import { MovingBorderButton } from '../ui/moving-border-button';
 
 const PerformanceMetrics = () => {
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  // Mobile scroll progress
+  const { scrollYProgress: mobileScrollProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  // Forza un re-render dopo il mount per inizializzare useScroll correttamente
+  React.useEffect(() => {
+    setIsMounted(true);
+
+    // Forza un piccolo scroll per attivare i calcoli di Framer Motion
+    const timer = setTimeout(() => {
+      if (containerRef.current) {
+        const currentScroll = window.scrollY;
+        window.scrollTo({ top: currentScroll + 1, behavior: 'instant' });
+        window.scrollTo({ top: currentScroll, behavior: 'instant' });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
   // Dati reali di performance marketing
   const performanceData = [
     { name: 'Month 1', revenue: 10500, cost: 2000 },
@@ -92,76 +114,147 @@ const PerformanceMetrics = () => {
   ];
 
   return (
-    <div className="relative z-10 py-20 md:py-28 overflow-hidden">{/* Rimosse le gradient overlays perché condivise con lo shader background */}
+    <div className="relative z-10 py-20 md:py-28">{/* Rimosse le gradient overlays perché condivise con lo shader background */}
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
 
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="text-cyan-400 text-sm font-semibold tracking-wider uppercase">Performance Analytics</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mt-3 mb-4">
-            Metriche che Contano
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Monitoriamo costantemente le KPI fondamentali per massimizzare il tuo ROI.
-            Ogni campagna viene ottimizzata in base a dati real-time e obiettivi di business.
-          </p>
-        </motion.div>
-
-        {/* Mobile: Swiper Carousel */}
-        <div className="block md:hidden mb-6 relative">
-          <style jsx global>{`
-            .performance-metrics-swiper .swiper-pagination-bullet {
-              background: rgba(255, 255, 255, 0.3);
-              opacity: 1;
-            }
-            .performance-metrics-swiper .swiper-pagination-bullet-active {
-              background: #22d3ee;
-            }
-            .performance-metrics-swiper .swiper-button-prev,
-            .performance-metrics-swiper .swiper-button-next {
-              color: #22d3ee;
-              width: 40px;
-              height: 40px;
-            }
-            .performance-metrics-swiper .swiper-button-prev::after,
-            .performance-metrics-swiper .swiper-button-next::after {
-              font-size: 20px;
-              font-weight: bold;
-            }
-          `}</style>
-          <Swiper
-            modules={[Pagination, Navigation]}
-            spaceBetween={16}
-            slidesPerView={1}
-            pagination={{
-              clickable: true,
-            }}
-            navigation={true}
-            className="performance-metrics-swiper pb-12 px-8"
+        {/* Header Section - Top Right Aligned */}
+        <div className="flex justify-end mb-12">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
           >
-            <SwiperSlide>
-              <RevenueChart data={performanceData} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <KPICards kpis={kpis} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <TrafficDistributionChart data={trafficMixData} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ROASTrendChart data={roasData} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ConversionTrendChart data={channelPerformanceData} />
-            </SwiperSlide>
-          </Swiper>
+            <div className="flex items-center gap-3">
+              <span className="text-cyan-400 font-mono text-sm tracking-wide">
+                4.5)
+              </span>
+              <span className="text-white font-mono text-sm tracking-wide">
+                Data-Driven Performance
+              </span>
+              <span className="text-gray-500 font-mono text-sm tracking-wide">
+                [Charts]
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+                        <div className="max-w-3xl mb-16">
+                            <motion.h2
+                                className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                                initial={{ opacity: 0, filter: "blur(10px)" }}
+                                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                            >
+                                I Numeri Parlano Chiaro
+                            </motion.h2>
+                            <motion.p
+                                className="text-lg md:text-xl text-gray-400 leading-relaxed"
+                                initial={{ opacity: 0, filter: "blur(10px)" }}
+                                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                            >
+                                Trasparenza totale sulle performance. Ogni metrica è tracciata, analizzata e ottimizzata per massimizzare il tuo ritorno sull'investimento.
+                            </motion.p>
+                        </div>
+
+        {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
+        <div className="md:hidden">
+          {/* Tall container for vertical scroll space */}
+          <div
+            style={{ height: '500vh' }}
+            ref={containerRef}
+          >
+            {/* Sticky wrapper - stays in viewport while scrolling */}
+            <div
+              className="sticky overflow-x-clip flex items-center"
+              style={{
+                top: '20vh'
+              }}
+            >
+              {/* Horizontal scrolling charts container - Move RIGHT */}
+              <motion.div
+                className="flex items-stretch w-full"
+                style={{
+                  x: useTransform(
+                    mobileScrollProgress,
+                    [0, 1],
+                    ['-400%', '0%'] // Start from left (-400%) and move to 0%
+                  )
+                }}
+              >
+                  <div className="flex-shrink-0 w-full px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                    <ConversionTrendChart data={channelPerformanceData} />
+                  </div>
+                  <div className="flex-shrink-0 w-full px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                    <ROASTrendChart data={roasData} />
+                  </div>
+                  <div className="flex-shrink-0 w-full px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                    <TrafficDistributionChart data={trafficMixData} />
+                  </div>
+                  <div className="flex-shrink-0 w-full px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                    <RevenueChart data={performanceData} />
+                  </div>
+                  <div className="flex-shrink-0 w-full px-4" ref={cardRef}>
+                    <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
+                      {/* Header */}
+                      <div className="mb-4">
+                        <h3 className="text-sm font-medium text-gray-400 mb-1">Panoramica Performance</h3>
+                        <p className="text-xs text-gray-600">Le metriche chiave del tuo marketing</p>
+                      </div>
+
+                      {/* Mini Area Chart */}
+                      <div className="flex-1 min-h-[100px] mb-6">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={roasData}>
+                            <defs>
+                              <linearGradient id="kpiGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4}/>
+                                <stop offset="100%" stopColor="#22d3ee" stopOpacity={0}/>
+                              </linearGradient>
+                            </defs>
+                            <Area
+                              type="monotone"
+                              dataKey="actual"
+                              stroke="#22d3ee"
+                              strokeWidth={2}
+                              fill="url(#kpiGradient)"
+                              animationDuration={1500}
+                            />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+
+                      {/* KPI Items */}
+                      <div className="flex flex-col gap-4">
+                        {kpis.map((kpi, i) => (
+                          <div key={i} className="flex items-center justify-between">
+                            <div>
+                              <p className="text-xs text-gray-500 mb-0.5">{kpi.label}</p>
+                              <p className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${kpi.color}`}>
+                                {kpi.value}
+                              </p>
+                              <p className="text-xs text-gray-600 mt-0.5">{kpi.description}</p>
+                            </div>
+                            <div className="relative w-14 h-14 flex items-center justify-center">
+                              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${kpi.color} opacity-20 blur-sm`} />
+                              <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-br ${kpi.color} flex items-center justify-center`}>
+                                <div className="text-white">
+                                  {kpi.icon}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
         </div>
 
         {/* Tablet: Optimized Grid Layout (2 + 3 KPI cards + 2) */}
@@ -184,12 +277,72 @@ const PerformanceMetrics = () => {
           </div>
         </div>
 
-        {/* Desktop: Original Grid Layout */}
+        {/* Desktop: Original Grid Layout with mobile-style KPI card */}
         <div className="hidden lg:block">
           {/* Top row: 3 columns */}
           <div className="grid grid-cols-3 gap-8 mb-8">
             <RevenueChart data={performanceData} />
-            <KPICards kpis={kpis} />
+            {/* Desktop KPI Card - Mobile style with chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
+                {/* Header */}
+                <div className="mb-4">
+                  <h3 className="text-sm font-medium text-gray-400 mb-1">Panoramica Performance</h3>
+                  <p className="text-xs text-gray-600">Le metriche chiave del tuo marketing</p>
+                </div>
+
+                {/* Mini Area Chart */}
+                <div className="flex-1 min-h-[100px] mb-6">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={roasData}>
+                      <defs>
+                        <linearGradient id="kpiGradientDesktop" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4}/>
+                          <stop offset="100%" stopColor="#22d3ee" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area
+                        type="monotone"
+                        dataKey="actual"
+                        stroke="#22d3ee"
+                        strokeWidth={2}
+                        fill="url(#kpiGradientDesktop)"
+                        animationDuration={1500}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* KPI Items */}
+                <div className="flex flex-col gap-4">
+                  {kpis.map((kpi, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-gray-500 mb-0.5">{kpi.label}</p>
+                        <p className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${kpi.color}`}>
+                          {kpi.value}
+                        </p>
+                        <p className="text-xs text-gray-600 mt-0.5">{kpi.description}</p>
+                      </div>
+                      <div className="relative w-14 h-14 flex items-center justify-center">
+                        <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${kpi.color} opacity-20 blur-sm`} />
+                        <div className={`relative w-12 h-12 rounded-lg bg-gradient-to-br ${kpi.color} flex items-center justify-center`}>
+                          <div className="text-white">
+                            {kpi.icon}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
             <TrafficDistributionChart data={trafficMixData} />
           </div>
 
@@ -211,12 +364,18 @@ const PerformanceMetrics = () => {
           <p className="text-gray-400 mb-6">
             Vuoi vedere metriche come queste per il tuo business?
           </p>
-          <a
-            href="/free-audit"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white text-sm font-semibold rounded-full hover:shadow-[0_0_40px_rgba(34,211,238,0.3)] transition-all duration-300 hover:scale-105"
-          >
-            Richiedi Analisi Gratuita
-          </a>
+          <div className="flex justify-center">
+                                      <MovingBorderButton
+                                          type="submit"
+                                          borderRadius="0.75rem"
+                                          containerClassName="min-w-[240px] h-16"
+                                          borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                          className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                                          duration={2500}
+                                      >
+                                          Get Free Audit
+                                      </MovingBorderButton>
+                                  </div>
         </motion.div>
       </div>
     </div>
