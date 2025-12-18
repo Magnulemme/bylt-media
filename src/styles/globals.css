@@ -109,6 +109,12 @@
     --spacing-screen: 100vh;
 
     /* ========================================
+       SAFETY MARGINS (margini minimi ai lati)
+       Usati con mx-auto per garantire spazio ai bordi
+       ======================================== */
+    --margin-safe-x: 1rem;  /* 16px - Mobile default */
+
+    /* ========================================
        BREAKPOINTS
        ======================================== */
     --breakpoint-content: 1440px;
@@ -132,6 +138,16 @@
       --spacing-padding-lg: 6rem;    /* 96px */
       --spacing-padding-xl: 8rem;    /* 128px */
       --spacing-padding-2xl: 10rem;  /* 160px */
+
+      /* Safety Margins - Desktop */
+      --margin-safe-x: 1.5rem;  /* 24px - Tablet/Desktop */
+    }
+  }
+
+  @media (min-width: 1440px) {
+    @theme {
+      /* Safety Margins - Large screens */
+      --margin-safe-x: 2rem;  /* 32px - Large desktop */
     }
   }
   
@@ -245,15 +261,26 @@
   
     /* Container Centered - Container centrato max-width */
     .container-centered {
-      @apply relative z-20 w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8;
+      @apply relative z-20 w-full max-w-7xl mx-auto;
+      padding: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .container-centered {
+        padding: var(--spacing-padding-sm);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container-centered {
+        padding: var(--spacing-padding-md);
+      }
     }
   
     /* Hero Inner - Container interno hero con rounded e bg */
     .hero-inner {
       @apply relative w-full rounded-2xl;
       @apply flex items-center justify-center;
-      padding-top: var(--padding-xs);
-      padding-bottom: var(--padding-xs);
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
       min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
@@ -263,8 +290,7 @@
 
     @media (min-width: 1024px) {
       .hero-inner {
-        padding-top: var(--padding-lg);
-        padding-bottom: var(--padding-xl);
+
         margin-top: 0;
         margin-bottom: 0;
         min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
@@ -273,12 +299,12 @@
   
     /* Hero Grid - Layout grid 2 colonne hero */
     .hero-grid {
-      @apply grid grid-cols-1 lg:grid-cols-2 items-center;
-      gap: var(--padding-md);
+      @apply grid grid-cols-1 xl:grid-cols-2 items-center;
+      gap: var(--spacing-section-md);
     }
   
-    /* Hero Grid - Centra elementi su tablet */
-    @media (min-width: 768px) and (max-width: 1023px) {
+    /* Hero Grid - Centra elementi su tablet e lg */
+    @media (min-width: 768px) and (max-width: 1279px) {
       .hero-grid {
         @apply justify-items-center;
       }
@@ -287,20 +313,20 @@
     /* Hero Content - Contenitore contenuto hero */
     .hero-content {
       @apply relative text-white;
-      @apply text-center lg:text-left;
+      @apply text-center xl:text-left;
       display: flex;
       flex-direction: column;
-      gap: var(--padding-xl);
+      gap: var(--spacing-padding-xs);
     }
 
     @media (min-width: 768px) {
       .hero-content {
-        gap: var(--padding-lg);
+        gap: var(--spacing-padding-xs);
       }
     }
   
-    /* Hero Content - Centra elementi su tablet */
-    @media (min-width: 768px) and (max-width: 1023px) {
+    /* Hero Content - Centra elementi su tablet e lg */
+    @media (min-width: 768px) and (max-width: 1279px) {
       .hero-content {
         @apply max-w-2xl mx-auto;
       }
@@ -311,8 +337,8 @@
       @apply text-4xl md:text-7xl lg:text-8xl font-bold;
     }
   
-    /* Hero Title - Enfatizza su tablet */
-    @media (min-width: 768px) and (max-width: 1023px) {
+    /* Hero Title - Enfatizza su tablet e lg */
+    @media (min-width: 768px) and (max-width: 1279px) {
       .hero-title {
         letter-spacing: -0.03em;
         text-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
@@ -321,7 +347,6 @@
   
     /* Animated Text Container - Container per testo animato con typing */
     .animated-text-container {
-      @apply min-h-[60px] md:min-h-[100px] lg:min-h-[120px];
       @apply whitespace-nowrap font-bold;
       line-height: 1.1;
       letter-spacing: -0.02em;
@@ -398,25 +423,54 @@
       background: #020617;
       z-index: 0;
       clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
-      padding-top: var(--padding-md);
+      padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-lg);
     }
 
     @media (min-width: 768px) {
       .demo-reveal-section {
-        padding-top: var(--padding-lg);
+        padding-top: var(--spacing-padding-2xl);
+        padding-bottom: var(--spacing-padding-2xl);
       }
     }
 
-    /* Partners Grid - Griglia responsive per partner */
+    /* Demo Reveal Container - Wrapper con padding orizzontale */
+    .demo-reveal-container {
+      @apply relative z-10 mx-auto;
+      max-width: var(--breakpoint-content);
+      padding-left: var(--spacing-padding-xs);
+      padding-right: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 640px) {
+      .demo-reveal-container {
+        padding-left: var(--spacing-padding-sm);
+        padding-right: var(--spacing-padding-sm);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .demo-reveal-container {
+        padding-left: var(--spacing-padding-md);
+        padding-right: var(--spacing-padding-md);
+      }
+    }
+
+    /* Partners Container - Flex container per partner */
     .partners-grid {
-      @apply grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto;
-      gap: var(--padding-md);
-      margin-bottom: var(--padding-lg);
+      @apply flex flex-col md:flex-row justify-center items-center max-w-5xl mx-auto;
+      gap: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .partners-grid {
+        gap: var(--spacing-padding-lg);
+      }
     }
 
     @media (min-width: 1024px) {
       .partners-grid {
-        gap: var(--padding-lg);
+        gap: var(--spacing-padding-xl);
       }
     }
 
@@ -425,13 +479,144 @@
       @apply text-center;
       display: flex;
       flex-direction: column;
-      gap: var(--padding-xs);
+      gap: var(--spacing-padding-xs);
     }
 
     /* Partner Logos Group - Gruppo loghi partner orizzontale */
     .partner-logos-group {
       @apply flex items-center justify-center;
-      gap: var(--padding-sm);
+      gap: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .partner-logos-group {
+        gap: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Partner Logo - Stile immagine logo partner */
+    .partner-logo {
+      @apply h-16 md:h-20 lg:h-24 w-auto opacity-90 transition-opacity duration-300 brightness-110 mx-auto;
+    }
+
+    .partner-logo:hover {
+      @apply opacity-100;
+    }
+
+    /* ====================================
+       OFFICIAL PARTNER SECTION COMPONENTS
+       ==================================== */
+
+    /* Official Partner Section - Container principale */
+    .official-partner-section {
+      @apply relative overflow-hidden;
+      /* Nessun padding verticale - gestito dalla sezione stessa nel componente se necessario */
+    }
+
+    /* Scroll Reveal Text Wrapper - Wrapper per testo scroll reveal con padding bottom */
+    .scroll-reveal-text-wrapper {
+      @apply relative;
+      padding-bottom: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .scroll-reveal-text-wrapper {
+        padding-bottom: var(--spacing-padding-lg);
+      }
+    }
+
+    /* Official Partner Container - Wrapper con padding orizzontale e safety margins */
+    .official-partner-container {
+      @apply relative z-10;
+      max-width: var(--breakpoint-content);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    }
+
+    @media (min-width: 640px) {
+      .official-partner-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .official-partner-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+      }
+    }
+
+    /* Stats Grid - Grid responsive per le statistiche con safety margins */
+    .stats-grid {
+      @apply grid grid-cols-2 md:grid-cols-4;
+      gap: var(--spacing-padding-sm);
+      max-width: 1200px; /* Limita larghezza per miglior centraggio */
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: var(--margin-safe-x);
+      padding-right: var(--margin-safe-x);
+    }
+
+    @media (min-width: 768px) {
+      .stats-grid {
+        gap: var(--spacing-padding-md);
+      }
+    }
+
+    /* Stats Card - Singola card statistica con gap interno */
+    .stats-card {
+      @apply flex flex-col items-center justify-center text-center;
+      gap: 0.5rem; /* 8px - gap molto ridotto per le stat cards */
+      padding: 0.5rem; /* Padding per evitare che il gradiente venga tagliato */
+    }
+
+    /* Stats Value - Testo gradiente per le statistiche */
+    .stats-value {
+      @apply text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+      font-family: var(--font-family-inter);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      line-height: 1.2; /* Line height più generoso per evitare clipping */
+    }
+
+    /* ====================================
+       GRAINY BG SECTION COMPONENTS
+       ==================================== */
+
+    /* Grainy BG Section - Container principale con effetti 3D */
+    .grainy-bg-section {
+      @apply relative flex items-center justify-center px-4;
+      background: #020617;
+      perspective: 1000px;
+      padding-top: var(--spacing-padding-lg);
+    }
+
+    @media (min-width: 768px) {
+      .grainy-bg-section {
+        padding-top: var(--spacing-padding-2xl);
+      }
+    }
+
+    /* Grainy BG Card - Card con effetto 3D e transform */
+    .grainy-bg-card {
+      @apply relative h-full w-full rounded-2xl;
+      background: #020617;
+      transform-style: preserve-3d;
+      padding-top: var(--spacing-padding-xl);
+    }
+
+    @media (min-width: 768px) {
+      .grainy-bg-card {
+        padding-top: var(--spacing-padding-2xl);
+      }
+    }
+
+    /* Grainy BG Content - Wrapper per contenuti interni */
+    .grainy-bg-content {
+      @apply relative z-10 max-w-7xl mx-auto;
     }
 
     /* UTILITY CLASSES */
