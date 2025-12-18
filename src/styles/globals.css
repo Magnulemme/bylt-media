@@ -695,6 +695,66 @@
       gap: 0.5rem;
     }
 
+    /* ====================================
+       INFINITY PHILOSOPHY SECTION COMPONENTS
+       ==================================== */
+
+    /* Infinity Section - Container principale con padding verticale */
+    .infinity-section {
+      @apply max-w-content mx-auto;
+      padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .infinity-section {
+        padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-lg);
+      }
+    }
+
+    /* Infinity Layout - Flex layout per simbolo e contenuto */
+    .infinity-layout {
+      @apply flex flex-col lg:flex-row items-center;
+      gap: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 1024px) {
+      .infinity-layout {
+        gap: var(--spacing-padding-lg);
+      }
+    }
+
+    /* Infinity Text Container - Container testo con gap verticale */
+    .infinity-text-container {
+      @apply flex-1 flex flex-col;
+      gap: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .infinity-text-container {
+        gap: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Infinity Heading Container - Wrapper per heading */
+    .infinity-heading-container {
+      @apply flex flex-col;
+      gap: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .infinity-heading-container {
+        gap: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Infinity Paragraphs - Container paragrafi descrittivi */
+    .infinity-paragraphs {
+      @apply text-gray-300 text-lg leading-relaxed flex flex-col;
+      gap: var(--spacing-padding-xs);
+    }
+
     /* UTILITY CLASSES */
 
     /* Text Gradient - Testo con gradiente animato */

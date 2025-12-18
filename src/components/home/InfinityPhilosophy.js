@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 const InfinityPhilosophy = () => {
     return (
-        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 md:pt-36 md:pb-20">
+        <div className="infinity-section">
             <div className="max-w-5xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -14,7 +14,7 @@ const InfinityPhilosophy = () => {
                     {/* Background gradient glow */}
                     <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/5 via-transparent to-transparent blur-3xl -z-10" />
 
-                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                    <div className="infinity-layout">
                         {/* Left: Infinity symbol */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -42,16 +42,16 @@ const InfinityPhilosophy = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            className="flex-1 space-y-6"
+                            className="infinity-text-container"
                         >
-                            <div className="space-y-6">
+                            <div className="infinity-heading-container">
                                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
                                     Built to perform,<br />
                                     designed to scale
                                 </h2>
                             </div>
 
-                            <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
+                            <div className="infinity-paragraphs">
                                 <p>
                                     Every campaign we launch is built on a simple principle: <span className="text-white font-semibold">what works today should work even better tomorrow.</span>
                                 </p>
