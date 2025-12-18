@@ -24,27 +24,10 @@ const TechStackSection = () => {
   ];
 
   return (
-    <section className="relative py-24 overflow-hidden" style={{ background: '#020617' }}>
+    <section className="relative overflow-hidden">
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent" />
 
       <div className="relative z-10 max-w-content mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Powered by Industry Leaders
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            The tools and platforms we use to deliver exceptional results
-          </p>
-        </motion.div>
-
         {/* Infinite Moving Cards */}
         <div className="mb-8">
           <InfiniteMovingCards

@@ -64,9 +64,6 @@ export const ServiceSlider = ({ items, className }) => {
                     <CardCapabilities capabilities={item.capabilities} label={item.capabilitiesLabel} />
                   )}
                 </CardContent>
-                <CardCTA>
-                  {item.ctaText || "Learn More"}
-                </CardCTA>
               </Card>
             </div>
           </SwiperSlide>
@@ -108,7 +105,7 @@ export const Card = ({ className, children, href = "#" }) => {
     <a
       href={href}
       className={cn(
-        "rounded-lg h-full w-full p-6 bg-slate-800/70 backdrop-blur-sm border-2 border-slate-600/30 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
+        "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
         className
       )}
       style={{

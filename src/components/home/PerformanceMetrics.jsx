@@ -27,7 +27,8 @@ const DesktopScrollSection = ({
   channelPerformanceData,
   trafficMixData,
   kpis,
-  cardHeight
+  cardHeight,
+  showStickyText
 }) => (
   <div className="hidden md:block">
     <div style={{ height: '500vh' }} ref={containerRef}>
@@ -66,17 +67,19 @@ const DesktopScrollSection = ({
             </motion.div>
           </div>
         </div>
-        {/* Testo descrittivo sotto le card */}
-        <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <div className="text-center max-w-3xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              The Numbers Speak for Themselves
-            </h3>
-            <p className="text-base md:text-lg text-gray-400">
-              Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
-            </p>
+        {/* Testo descrittivo sotto le card - mostrato solo se c'è abbastanza spazio */}
+        {showStickyText && (
+          <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+            <div className="text-center max-w-3xl mx-auto">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                The Numbers Speak for Themselves
+              </h3>
+              <p className="text-base md:text-lg text-gray-400">
+                Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   </div>
@@ -152,6 +155,7 @@ const PerformanceMetrics = () => {
   const [scrollableDistance, setScrollableDistance] = useState(0);
   const [mobileScrollableDistance, setMobileScrollableDistance] = useState(0);
   const [cardHeight, setCardHeight] = useState('auto');
+  const [showStickyText, setShowStickyText] = useState(true);
 
   // Stati per gestire il fade ai bordi
   const [desktopIsBeginning, setDesktopIsBeginning] = useState(false);
@@ -175,14 +179,24 @@ const PerformanceMetrics = () => {
     const marginTop = 64; // mt-16 = 4rem = 64px
 
     // Calcola altezza disponibile per le card
-    const availableHeight = stickyHeight - textHeight - marginTop;
-
-    // Imposta limiti ragionevoli
+    const availableHeightWithText = stickyHeight - textHeight - marginTop;
     const minHeight = 300;
-    const maxHeight = 500; // Max 500px per evitare card troppo grandi
-    const finalHeight = Math.min(Math.max(availableHeight, minHeight), maxHeight);
 
-    setCardHeight(`${finalHeight}px`);
+    // Se non c'è abbastanza spazio per le card con il testo, nascondi il testo
+    if (availableHeightWithText < minHeight) {
+      setShowStickyText(false);
+      // Ricalcola senza il testo
+      const availableHeight = stickyHeight - 32; // Solo un piccolo margine
+      const maxHeight = 500;
+      const finalHeight = Math.min(Math.max(availableHeight, minHeight), maxHeight);
+      setCardHeight(`${finalHeight}px`);
+    } else {
+      setShowStickyText(true);
+      // Calcola con il testo
+      const maxHeight = 500;
+      const finalHeight = Math.min(Math.max(availableHeightWithText, minHeight), maxHeight);
+      setCardHeight(`${finalHeight}px`);
+    }
   }, []);
 
   // Mobile scroll progress
@@ -208,11 +222,11 @@ const PerformanceMetrics = () => {
       const visibleWidth = stickyWrapperRef.current.clientWidth;
       const distance = cardsWidth - visibleWidth;
       setScrollableDistance(distance);
-      // Imposta subito la posizione iniziale (card più a destra visibile)
-      desktopX.set(-distance);
-      // Inizializza gli stati del fade (siamo alla fine)
-      setDesktopIsBeginning(false);
-      setDesktopIsEnd(true);
+      // Imposta subito la posizione iniziale (prima card visibile)
+      desktopX.set(0);
+      // Inizializza gli stati del fade (siamo all'inizio)
+      setDesktopIsBeginning(true);
+      setDesktopIsEnd(false);
     }
 
     // Mobile
@@ -257,17 +271,17 @@ if (mobileCardsRef.current) {
 
     const unsubscribe = desktopScrollProgress.on('change', (progress) => {
       // progress: 0 → 1
-      // x: -scrollableDistance → 0
-      // Quando progress = 0, vedi l'ultima card (x = -scrollableDistance)
-      // Quando progress = 1, vedi la prima card (x = 0)
-      const newX = -scrollableDistance * (1 - progress);
+      // x: 0 → -scrollableDistance (invertito)
+      // Quando progress = 0, vedi la prima card (x = 0)
+      // Quando progress = 1, vedi l'ultima card (x = -scrollableDistance)
+      const newX = -scrollableDistance * progress;
       desktopX.set(newX);
 
       // Aggiorna stati per il fade
-      // All'inizio: progress vicino a 1 (x vicino a 0)
-      setDesktopIsBeginning(progress > 0.999999);
-      // Alla fine: progress vicino a 0 (x vicino a -scrollableDistance)
-      setDesktopIsEnd(progress < 0.000001);
+      // All'inizio: progress vicino a 0 (x vicino a 0)
+      setDesktopIsBeginning(progress < 0.000001);
+      // Alla fine: progress vicino a 1 (x vicino a -scrollableDistance)
+      setDesktopIsEnd(progress > 0.999999);
     });
 
     return unsubscribe;
@@ -315,7 +329,7 @@ if (mobileCardsRef.current) {
   };
 
   return (
-    <div className="relative z-10 py-20 md:py-28">
+    <div className="relative z-10 pb-20 mb:py-28">
       <DesktopScrollSection
         containerRef={desktopContainerRef}
         stickyWrapperRef={stickyWrapperRef}
@@ -329,6 +343,7 @@ if (mobileCardsRef.current) {
         trafficMixData={trafficMixData}
         kpis={kpis}
         cardHeight={cardHeight}
+        showStickyText={showStickyText}
       />
 
       {/* Section intro - only for mobile */}

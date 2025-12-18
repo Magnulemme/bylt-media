@@ -13,8 +13,20 @@ const TrafficDistributionChart = ({ data }) => {
     >
       <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-medium text-gray-400">Traffic Distribution</h3>
-          <span className="text-xs text-gray-500">visitors/month</span>
+          <div>
+            <h3 className="text-sm font-medium text-gray-400 mb-1">Traffic Distribution</h3>
+            <p className="text-xs text-gray-600">visitors/month</p>
+          </div>
+          <div className="flex gap-3 text-xs">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-purple-400" />
+              <span className="text-gray-400">Organic</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-cyan-400" />
+              <span className="text-gray-400">Paid</span>
+            </div>
+          </div>
         </div>
         <div className="flex-1 flex items-center justify-center relative min-h-[200px]" style={{ pointerEvents: 'none' }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -62,7 +74,7 @@ const TrafficDistributionChart = ({ data }) => {
           </div>
         </div>
         <div className="pt-3 border-t border-white/5">
-          <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-2 gap-3 text-xs mb-3">
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-purple-400" />
@@ -84,6 +96,9 @@ const TrafficDistributionChart = ({ data }) => {
               </div>
             </div>
           </div>
+          <p className="text-xs text-gray-500">
+            Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante.
+          </p>
         </div>
       </div>
     </motion.div>
