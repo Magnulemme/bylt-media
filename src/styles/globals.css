@@ -115,9 +115,12 @@
     --margin-safe-x: 1rem;  /* 16px - Mobile default */
 
     /* ========================================
-       BREAKPOINTS
+       BREAKPOINTS & MAX-WIDTH
        ======================================== */
     --breakpoint-content: 1440px;
+
+    /* Custom max-width utility */
+    --max-width-content: 1440px;
   }
 
   /* Desktop/Tablet responsive spacing values */
@@ -150,7 +153,7 @@
       --margin-safe-x: 2rem;  /* 32px - Large desktop */
     }
   }
-  
+
   /* ========================================
      BASE STYLES & RESET
      ======================================== */
