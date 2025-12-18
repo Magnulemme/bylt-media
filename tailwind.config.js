@@ -13,7 +13,21 @@ module.exports = {
   			space: ['"Space Grotesk"', 'sans-serif'],
   		},
   		spacing: {
-  			'screen': '100vh'
+  			'screen': '100vh',
+  			// Section spacing system - tra sezioni (usa: pt-section-md, pb-section-lg)
+  			'section-xs': 'var(--section-xs)',
+  			'section-sm': 'var(--section-sm)',
+  			'section-md': 'var(--section-md)',
+  			'section-lg': 'var(--section-lg)',
+  			'section-xl': 'var(--section-xl)',
+  			'section-2xl': 'var(--section-2xl)',
+  			// Internal padding - dentro sezioni (usa: py-section-md, px-section-lg)
+  			'padding-xs': 'var(--padding-xs)',
+  			'padding-sm': 'var(--padding-sm)',
+  			'padding-md': 'var(--padding-md)',
+  			'padding-lg': 'var(--padding-lg)',
+  			'padding-xl': 'var(--padding-xl)',
+  			'padding-2xl': 'var(--padding-2xl)',
   		},
   		maxWidth: {
   			'content': '1440px',

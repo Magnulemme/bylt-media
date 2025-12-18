@@ -34,6 +34,76 @@
   --navbar-height-desktop: 68px;
   --navbar-margin: 1.5rem;
   --navbar-margin-mobile: 1rem;
+
+  /* ========================================
+     SPACING SYSTEM
+     Sistema centralizzato per padding verticali
+
+     COME USARE:
+
+     1. TRA SEZIONI (spacing verticale):
+        - Usa SOLO padding-top: pt-section-md
+        - La prima sezione NON ha pt (Hero)
+        - L'ultima sezione può avere pb per il footer
+
+     2. DENTRO LE SEZIONI (padding interno):
+        - Usa py-padding-md per padding verticale interno
+        - Usa px-padding-lg per padding orizzontale interno
+
+     SCALE:
+     - xs  = Minimal (48px → 64px)
+     - sm  = Small (80px → 112px)
+     - md  = Medium/DEFAULT (96px → 128px)
+     - lg  = Large (128px → 160px)
+     - xl  = Extra Large (160px → 208px)
+     - 2xl = Huge (192px → 256px)
+
+     ESEMPI:
+     <Hero />                                  // No pt
+     <Section className="pt-section-md" />    // Default spacing
+     <Section className="pt-section-lg" />    // More breathing room
+
+     <div className="py-padding-lg">          // Internal padding
+       Content here
+     </div>
+     ======================================== */
+
+  /* Spacing tra sezioni (padding-top) - Mobile First */
+  --section-xs: 3rem;      /* 48px - Minimal spacing */
+  --section-sm: 5rem;      /* 80px - Small spacing */
+  --section-md: 6rem;      /* 96px - DEFAULT spacing */
+  --section-lg: 8rem;      /* 128px - Large spacing */
+  --section-xl: 10rem;     /* 160px - Extra large spacing */
+  --section-2xl: 12rem;    /* 192px - Huge spacing */
+
+  /* Padding interno sezioni - Mobile First */
+  --padding-xs: 1.5rem;    /* 24px */
+  --padding-sm: 2rem;      /* 32px */
+  --padding-md: 3rem;      /* 48px */
+  --padding-lg: 4rem;      /* 64px */
+  --padding-xl: 6rem;      /* 96px */
+  --padding-2xl: 8rem;     /* 128px */
+}
+
+/* Desktop/Tablet - Spacing più generoso */
+@media (min-width: 768px) {
+  :root {
+    /* Spacing tra sezioni */
+    --section-xs: 4rem;    /* 64px */
+    --section-sm: 7rem;    /* 112px */
+    --section-md: 8rem;    /* 128px */
+    --section-lg: 10rem;   /* 160px */
+    --section-xl: 13rem;   /* 208px */
+    --section-2xl: 16rem;  /* 256px */
+
+    /* Padding interno */
+    --padding-xs: 2rem;    /* 32px */
+    --padding-sm: 3rem;    /* 48px */
+    --padding-md: 4rem;    /* 64px */
+    --padding-lg: 6rem;    /* 96px */
+    --padding-xl: 8rem;    /* 128px */
+    --padding-2xl: 10rem;  /* 160px */
+  }
 }
 
 .dark {
