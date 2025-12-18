@@ -69,24 +69,84 @@
   }
 
   /* ========================================
-     TAILWIND DIRECTIVES
+     TAILWIND V4 THEME CONFIGURATION
      ======================================== */
 
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+  @import "tailwindcss";
+
+  @theme {
+    /* ========================================
+       FONTS
+       ======================================== */
+    --font-family-inter: Inter, sans-serif;
+    --font-family-space: "Space Grotesk", sans-serif;
+
+    /* ========================================
+       SPACING SYSTEM
+
+       In Tailwind v4, custom spacing must use direct values, not var() refs.
+       Mobile-first values, then override with @media in CSS.
+       Usage: pt-section-md, py-padding-lg, etc.
+       ======================================== */
+
+    /* Section spacing (between sections) - Mobile */
+    --spacing-section-xs: 3rem;    /* 48px */
+    --spacing-section-sm: 5rem;    /* 80px */
+    --spacing-section-md: 6rem;    /* 96px */
+    --spacing-section-lg: 8rem;    /* 128px */
+    --spacing-section-xl: 10rem;   /* 160px */
+    --spacing-section-2xl: 12rem;  /* 192px */
+
+    /* Internal padding (inside sections) - Mobile */
+    --spacing-padding-xs: 1.5rem;  /* 24px */
+    --spacing-padding-sm: 2rem;    /* 32px */
+    --spacing-padding-md: 3rem;    /* 48px */
+    --spacing-padding-lg: 4rem;    /* 64px */
+    --spacing-padding-xl: 6rem;    /* 96px */
+    --spacing-padding-2xl: 8rem;   /* 128px */
+
+    /* Other spacing */
+    --spacing-screen: 100vh;
+
+    /* ========================================
+       BREAKPOINTS
+       ======================================== */
+    --breakpoint-content: 1440px;
+  }
+
+  /* Desktop/Tablet responsive spacing values */
+  @media (min-width: 768px) {
+    @theme {
+      /* Section spacing - Desktop */
+      --spacing-section-xs: 4rem;    /* 64px */
+      --spacing-section-sm: 7rem;    /* 112px */
+      --spacing-section-md: 8rem;    /* 128px */
+      --spacing-section-lg: 10rem;   /* 160px */
+      --spacing-section-xl: 13rem;   /* 208px */
+      --spacing-section-2xl: 16rem;  /* 256px */
+
+      /* Internal padding - Desktop */
+      --spacing-padding-xs: 2rem;    /* 32px */
+      --spacing-padding-sm: 3rem;    /* 48px */
+      --spacing-padding-md: 4rem;    /* 64px */
+      --spacing-padding-lg: 6rem;    /* 96px */
+      --spacing-padding-xl: 8rem;    /* 128px */
+      --spacing-padding-2xl: 10rem;  /* 160px */
+    }
+  }
   
   /* ========================================
      BASE STYLES & RESET
      ======================================== */
-  
+
   @layer base {
     * {
-      @apply border-border;
+      border-color: hsl(var(--border));
     }
-  
+
     body {
-      @apply bg-background text-foreground;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
     }
   }
   
@@ -230,12 +290,12 @@
       @apply text-center lg:text-left;
       display: flex;
       flex-direction: column;
-      gap: var(--padding-md);
+      gap: var(--padding-xl);
     }
 
     @media (min-width: 768px) {
       .hero-content {
-        gap: var(--padding-sm);
+        gap: var(--padding-lg);
       }
     }
   
@@ -328,8 +388,54 @@
       @apply hover:text-[#B8FFFA] transition-colors;
     }
   
+    /* DEMO REVEAL SECTION COMPONENTS */
+
+    /* Demo Reveal Section - Container principale con sticky positioning */
+    .demo-reveal-section {
+      @apply relative overflow-hidden;
+      position: sticky;
+      bottom: 0;
+      background: #020617;
+      z-index: 0;
+      clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+      padding-top: var(--padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .demo-reveal-section {
+        padding-top: var(--padding-lg);
+      }
+    }
+
+    /* Partners Grid - Griglia responsive per partner */
+    .partners-grid {
+      @apply grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto;
+      gap: var(--padding-md);
+      margin-bottom: var(--padding-lg);
+    }
+
+    @media (min-width: 1024px) {
+      .partners-grid {
+        gap: var(--padding-lg);
+      }
+    }
+
+    /* Partner Card - Card singolo partner con testo centrato */
+    .partner-card {
+      @apply text-center;
+      display: flex;
+      flex-direction: column;
+      gap: var(--padding-xs);
+    }
+
+    /* Partner Logos Group - Gruppo loghi partner orizzontale */
+    .partner-logos-group {
+      @apply flex items-center justify-center;
+      gap: var(--padding-sm);
+    }
+
     /* UTILITY CLASSES */
-  
+
     /* Text Gradient - Testo con gradiente animato */
     .text-gradient {
       @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;

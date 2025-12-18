@@ -104,7 +104,7 @@ const FuturisticHero = () => {
                     {/* Left side - Text content */}
                     <div className="hero-content">
                         <h1 className="hero-title font-inter relative z-20">
-                            <div className="text-white mb-padding-sm">
+                            <div className="text-white mb-padding-xs">
                                 We Build
                             </div>
                             <div className="animated-text-container">
@@ -116,25 +116,31 @@ const FuturisticHero = () => {
                         </h1>
 
                         {/* Description - Mobile & Tablet */}
-                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto flex flex-col gap-padding-sm md:gap-padding-md">
+                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto">
                             {/* 3D Sphere as background */}
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] opacity-40 pointer-events-none">
                                 <DataVisualization3D />
                             </div>
 
                             {/* Description Text */}
-                            <p className="relative z-10 text-base md:text-lg text-gray-300 leading-relaxed text-center max-w-lg mx-auto">
+                            <p className="relative z-10 text-base md:text-lg text-gray-300 leading-relaxed text-center max-w-lg mx-auto pt-padding-xs">
                                 A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
                             </p>
 
                             {/* CTAs - Mobile & Tablet */}
-                            <div className="pt-padding-sm flex flex-col gap-padding-md relative z-10 md:max-w-sm md:mx-auto items-center">
-                                <a
-                                    href="/free-audit"
-                                    className="brutalist-button w-full"
-                                >
-                                    <span>Get Free Audit</span>
-                                </a>
+                            <div className="pt-padding-sm flex flex-col gap-padding-xs relative z-10 md:max-w-sm md:mx-auto items-center">
+                                <div className="flex justify-center w-full">
+                                    <MovingBorderButton
+                                        type="submit"
+                                        borderRadius="0.75rem"
+                                        containerClassName="min-w-[240px] h-16"
+                                        borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                        className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed bg-slate-950"
+                                        duration={2500}
+                                    >
+                                        Get Free Audit
+                                    </MovingBorderButton>
+                                </div>
                                 <a
                                     href="#services"
                                     className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"
@@ -146,19 +152,19 @@ const FuturisticHero = () => {
                         </div>
 
                         {/* Description - Desktop only */}
-                        <p className="hidden lg:block text-lg text-gray-300 leading-relaxed max-w-xl">
+                        <p className="hidden pt-padding-xs lg:block text-lg text-gray-300 leading-relaxed max-w-xl">
                             A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
                         </p>
 
                         {/* CTAs - Desktop */}
-                        <div className="hidden lg:flex flex-row items-center gap-padding-lg pt-padding-sm">
+                        <div className="hidden lg:flex flex-row items-center gap-padding-md pt-padding-lg">
                         <div className="flex justify-center">
                             <MovingBorderButton
                                 type="submit"
                                 borderRadius="0.75rem"
                                 containerClassName="min-w-[240px] h-16"
                                 borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
-                                className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed bg-slate-950"
                                 duration={2500}
                             >
                                 Get Free Audit
