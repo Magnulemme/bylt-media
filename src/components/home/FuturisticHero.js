@@ -104,7 +104,7 @@ const FuturisticHero = () => {
                     {/* Left side - Text content */}
                     <div className="hero-content">
                         <h1 className="hero-title font-inter relative z-20">
-                            <div className="text-white mb-6 md:mb-4">
+                            <div className="text-white mb-padding-sm">
                                 We Build
                             </div>
                             <div className="animated-text-container">
@@ -116,7 +116,7 @@ const FuturisticHero = () => {
                         </h1>
 
                         {/* Description - Mobile & Tablet */}
-                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto space-y-8 md:space-y-10">
+                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto flex flex-col gap-padding-sm md:gap-padding-md">
                             {/* 3D Sphere as background */}
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] opacity-40 pointer-events-none">
                                 <DataVisualization3D />
@@ -128,7 +128,7 @@ const FuturisticHero = () => {
                             </p>
 
                             {/* CTAs - Mobile & Tablet */}
-                            <div className="pt-8 flex flex-col gap-10 relative z-10 md:max-w-sm md:mx-auto items-center">
+                            <div className="pt-padding-sm flex flex-col gap-padding-md relative z-10 md:max-w-sm md:mx-auto items-center">
                                 <a
                                     href="/free-audit"
                                     className="brutalist-button w-full"
@@ -151,7 +151,7 @@ const FuturisticHero = () => {
                         </p>
 
                         {/* CTAs - Desktop */}
-                        <div className="hidden lg:flex flex-row items-center gap-16 pt-8">
+                        <div className="hidden lg:flex flex-row items-center gap-padding-lg pt-padding-sm">
                         <div className="flex justify-center">
                             <MovingBorderButton
                                 type="submit"
