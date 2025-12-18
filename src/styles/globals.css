@@ -192,22 +192,29 @@
     .hero-inner {
       @apply relative w-full rounded-2xl;
       @apply flex items-center justify-center;
-      @apply pt-2 pb-2 lg:pt-16 lg:pb-24;
-      @apply mt-2 mb-2 lg:mt-0 lg:mb-0;
+      padding-top: var(--padding-xs);
+      padding-bottom: var(--padding-xs);
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
       min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
       overflow-x: hidden;
       overflow-y: visible;
     }
-  
+
     @media (min-width: 1024px) {
       .hero-inner {
+        padding-top: var(--padding-lg);
+        padding-bottom: var(--padding-xl);
+        margin-top: 0;
+        margin-bottom: 0;
         min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
       }
     }
   
     /* Hero Grid - Layout grid 2 colonne hero */
     .hero-grid {
-      @apply grid grid-cols-1 lg:grid-cols-2 gap-12 items-center;
+      @apply grid grid-cols-1 lg:grid-cols-2 items-center;
+      gap: var(--padding-md);
     }
   
     /* Hero Grid - Centra elementi su tablet */
@@ -219,8 +226,17 @@
   
     /* Hero Content - Contenitore contenuto hero */
     .hero-content {
-      @apply relative text-white space-y-10 md:space-y-8 lg:space-y-8;
+      @apply relative text-white;
       @apply text-center lg:text-left;
+      display: flex;
+      flex-direction: column;
+      gap: var(--padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .hero-content {
+        gap: var(--padding-sm);
+      }
     }
   
     /* Hero Content - Centra elementi su tablet */
