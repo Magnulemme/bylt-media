@@ -116,14 +116,14 @@ const FuturisticHero = () => {
                         </h1>
 
                         {/* Description - Mobile & Tablet */}
-                        <div className="lg:hidden relative w-full max-w-md md:max-w-lg mx-auto">
+                        <div className="xl:hidden relative w-full max-w-md md:max-w-lg mx-auto">
                             {/* 3D Sphere as background */}
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] opacity-40 pointer-events-none">
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] opacity-40 pointer-events-none" style={{ marginTop: 'calc(-1 * var(--navbar-height-mobile))' }}>
                                 <DataVisualization3D />
                             </div>
 
                             {/* Description Text */}
-                            <p className="relative z-10 text-base md:text-lg text-gray-300 leading-relaxed text-center max-w-lg mx-auto pt-padding-xs">
+                            <p className="relative z-10 text-base md:text-lg text-gray-300 leading-relaxed text-center max-w-lg mx-auto">
                                 A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
                             </p>
 
@@ -152,12 +152,12 @@ const FuturisticHero = () => {
                         </div>
 
                         {/* Description - Desktop only */}
-                        <p className="hidden pt-padding-xs lg:block text-lg text-gray-300 leading-relaxed max-w-xl">
+                        <p className="hidden xl:block text-lg text-gray-300 leading-relaxed max-w-xl">
                             A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
                         </p>
 
                         {/* CTAs - Desktop */}
-                        <div className="hidden lg:flex flex-row items-center gap-padding-md pt-padding-lg">
+                        <div className="hidden xl:flex flex-row items-center gap-padding-md pt-padding-lg">
                         <div className="flex justify-center">
                             <MovingBorderButton
                                 type="submit"
@@ -181,7 +181,7 @@ const FuturisticHero = () => {
                     </div>
 
                     {/* Right side - 3D Data Visualization - Desktop only */}
-                    <div className="hidden lg:block relative h-[600px]">
+                    <div className="hidden xl:block relative h-[600px]">
                         <DataVisualization3D />
                     </div>
                 </div>
