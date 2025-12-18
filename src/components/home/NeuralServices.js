@@ -68,7 +68,7 @@ const NeuralServices = () => {
     return (
         <>
             {/* Section intro */}
-            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-content mx-auto ">
                 <SectionIntro
                     title="A synergistic approach to digital dominance"
                     subtitle="Each service is a component of a greater strategy, designed to deliver comprehensive and exponential results"
@@ -79,7 +79,7 @@ const NeuralServices = () => {
             </div>
 
                 {/* Services container */}
-                <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-content mx-auto">
                     {/* Desktop & Tablet Slider */}
                     <div className="hidden md:block">
                         <ServiceSlider
@@ -114,11 +114,11 @@ const NeuralServices = () => {
                     </div>
 
                     {/* Mobile Accordion */}
-                    <div className="flex flex-col gap-4 md:hidden">
+                    <div className="services-accordion-container">
                     {services.map((service, index) => (
                         <div
                             key={service.id}
-                            className="pb-2 pr-2"
+                            className="service-accordion-item"
                         >
                             <div
                                 className={`rounded-lg bg-white/5 backdrop-blur-sm border-2 transition-all duration-300 ${
@@ -135,18 +135,18 @@ const NeuralServices = () => {
                             >
                                 <div className="relative">
                                     <button
-                                        className="flex justify-between items-start gap-3 w-full p-5 text-left cursor-pointer bg-transparent border-none text-white"
+                                        className="service-card-button"
                                         onClick={() => toggleService(service.id)}
                                         aria-expanded={openService === service.id}
                                         aria-controls={`content-${service.id}`}
                                     >
-                                        <div className="flex-1 min-w-0">
+                                        <div className="service-button-content">
                                             <h3 className="text-xl font-bold text-white font-inter m-0 leading-tight">
                                                 {service.title}
                                             </h3>
                                             <p className="text-sm text-gray-400 m-0 mt-1">{service.subtitle}</p>
                                         </div>
-                                        <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                                        <div className="service-button-icon-container">
                                             <div className="relative text-3xl font-bold font-inter leading-none">
                                                 {/* Static number - always visible */}
                                                 <span className={`bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.12] bg-clip-text text-transparent transition-opacity duration-500 ${
@@ -176,11 +176,11 @@ const NeuralServices = () => {
                                     className="overflow-hidden transition-all duration-500"
                                     style={{ maxHeight: openService === service.id ? '1000px' : '0px' }}
                                 >
-                                    <div className="px-5 pb-5 flex flex-col gap-4">
+                                    <div className="service-card-content">
                                         <p className="text-sm text-gray-300 leading-relaxed">{service.description}</p>
-                                        <div className="border-t border-white/10 pt-4">
+                                        <div className="service-capabilities-container">
                                             <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-3">Key Capabilities</p>
-                                            <div className="space-y-2">
+                                            <div className="service-capabilities-list">
                                                 {service.capabilities.map((cap, i) => (
                                                     <div
                                                         key={i}

@@ -600,23 +600,99 @@
       }
     }
 
-    /* Grainy BG Card - Card con effetto 3D e transform */
+    /* Grainy BG Card - Card con effetto 3D e transform con safety margins ridotti di 4px */
     .grainy-bg-card {
       @apply relative h-full w-full rounded-2xl;
       background: #020617;
       transform-style: preserve-3d;
-      padding-top: var(--spacing-padding-xl);
+      padding-top: calc(var(--spacing-padding-xl) - 4px);
+      padding-left: calc(var(--margin-safe-x) - 4px);
+      padding-right: calc(var(--margin-safe-x) - 4px);
     }
 
     @media (min-width: 768px) {
       .grainy-bg-card {
-        padding-top: var(--spacing-padding-2xl);
+        padding-top: calc(var(--spacing-padding-2xl) - 4px);
       }
     }
 
     /* Grainy BG Content - Wrapper per contenuti interni */
     .grainy-bg-content {
       @apply relative z-10 max-w-7xl mx-auto;
+    }
+
+    /* ====================================
+       NEURAL SERVICES SECTION COMPONENTS
+       ==================================== */
+
+    /* Services Accordion Container - Container principale liste services mobile */
+    .services-accordion-container {
+      @apply flex flex-col md:hidden;
+      gap: var(--spacing-padding-xs);
+    }
+
+    /* Service Accordion Item - Singolo item accordion con shadow offset */
+    .service-accordion-item {
+      padding-bottom: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    /* Service Card Button - Bottone header accordion */
+    .service-card-button {
+      @apply flex justify-between items-start w-full text-left cursor-pointer bg-transparent border-none text-white;
+      gap: 0.75rem;
+      padding: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 640px) {
+      .service-card-button {
+        padding: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Service Button Content - Container flex per contenuto button */
+    .service-button-content {
+      @apply flex-1 min-w-0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    /* Service Button Icon Container - Container per icona e chevron */
+    .service-button-icon-container {
+      @apply flex flex-col items-end flex-shrink-0;
+      gap: 0.5rem;
+    }
+
+    /* Service Card Content - Contenuto espandibile accordion */
+    .service-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-padding-xs);
+      padding-left: var(--spacing-padding-xs);
+      padding-right: var(--spacing-padding-xs);
+      padding-bottom: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 640px) {
+      .service-card-content {
+        padding-left: var(--spacing-padding-sm);
+        padding-right: var(--spacing-padding-sm);
+        padding-bottom: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Service Capabilities Container - Container capabilities con border top */
+    .service-capabilities-container {
+      @apply border-t border-white/10;
+      padding-top: var(--spacing-padding-xs);
+    }
+
+    /* Service Capabilities List - Lista capabilities */
+    .service-capabilities-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
     /* UTILITY CLASSES */
