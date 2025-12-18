@@ -1,0 +1,76 @@
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
+import ShaderBackground from './ShaderBackground';
+import NeuralServices from './NeuralServices';
+import InfinityPhilosophy from './InfinityPhilosophy';
+import PerformanceMetrics from './PerformanceMetrics';
+
+const GrainyBgSection = () => {
+    const sectionRef = useQuantumScrollAnim(0.1);
+    const containerRef = useRef(null);
+
+    // Scroll-based animations usando motion
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    // 3D entrance effect - card si avvicina lungo l'asse Z
+    const translateZEntrance = useTransform(scrollYProgress, [0, 0.08], [-100, 0]);
+    const opacityEntrance = useTransform(scrollYProgress, [0, 0.08], [0.7, 1]);
+
+    // 3D exit effect - card si allontana lungo l'asse Z (solo parte finale)
+    const translateZExit = useTransform(scrollYProgress, [0.92, 1], [0, -100]);
+    const opacityExit = useTransform(scrollYProgress, [0.92, 1], [1, 0.7]);
+
+    // Combina entrata e uscita
+    const translateZ = useTransform(scrollYProgress, (progress) => {
+        if (progress <= 0.08) {
+            return translateZEntrance.get();
+        } else if (progress >= 0.92) {
+            return translateZExit.get();
+        }
+        return 0;
+    });
+
+    const opacity = useTransform(scrollYProgress, (progress) => {
+        if (progress <= 0.08) {
+            return opacityEntrance.get();
+        } else if (progress >= 0.92) {
+            return opacityExit.get();
+        }
+        return 1;
+    });
+
+    const transform = useTransform(translateZ, (z) => `translateZ(${z}px)`);
+
+    return (
+        <section id="services" className="grainy-bg-section">
+            <motion.div
+                ref={containerRef}
+                className="grainy-bg-card"
+                style={{
+                    transform,
+                    opacity
+                }}
+            >
+                {/* Shader Background */}
+                <ShaderBackground />
+
+                <div ref={sectionRef} className="grainy-bg-content">
+                    {/* Services Section */}
+                    <NeuralServices />
+
+                    {/* Infinity Philosophy Section */}
+                    <InfinityPhilosophy />
+
+                    {/* Performance Metrics Section */}
+                    <PerformanceMetrics />
+                </div>
+            </motion.div>
+        </section>
+    );
+};
+
+export default GrainyBgSection;
