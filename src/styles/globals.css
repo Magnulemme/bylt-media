@@ -755,6 +755,47 @@
       gap: var(--spacing-padding-xs);
     }
 
+    /* ====================================
+       PERFORMANCE METRICS SECTION COMPONENTS
+       ==================================== */
+
+    /* Performance Section - Container principale con padding verticale */
+    .performance-section {
+      @apply relative z-10;
+      padding-bottom: var(--spacing-padding-lg);
+    }
+
+    @media (min-width: 768px) {
+      .performance-section {
+        padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-xl);
+      }
+    }
+
+    /* Performance Cards Flex - Flex container per le card orizzontali */
+    .performance-cards-flex {
+      @apply flex items-stretch;
+      gap: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .performance-cards-flex {
+        gap: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Performance Sticky Text Container - Container testo sotto le card */
+    .performance-sticky-text-container {
+      @apply max-w-content mx-auto;
+      margin-top: var(--spacing-padding-lg);
+    }
+
+    /* Performance Sticky Text Content - Contenuto testo centrato */
+    .performance-sticky-text-content {
+      @apply text-center max-w-3xl mx-auto flex flex-col;
+      gap: var(--spacing-padding-xs);
+    }
+
     /* UTILITY CLASSES */
 
     /* Text Gradient - Testo con gradiente animato */
