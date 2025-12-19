@@ -1,11 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendingUp, Search, Code, BrainCircuit, ChevronDown } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Navigation } from 'swiper/modules';
 import { ServiceSlider } from '../ui/service-slider';
 import { SectionIntro } from '../ui/section-headers';
 import { MovingBorderButton } from '../ui/moving-border-button';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/navigation';
 
 const NeuralServices = () => {
-    const [openService, setOpenService] = useState(null);
+    const [mobileIsBeginning, setMobileIsBeginning] = useState(true);
+    const [mobileIsEnd, setMobileIsEnd] = useState(false);
+    const [showSideCards, setShowSideCards] = useState(false);
+
+    useEffect(() => {
+        const checkWidth = () => {
+            const cardWidth = 280;
+            const fadeSpace = 56; // 10% fade per lato
+            const margin = 40; // Margine di sicurezza
+            const minWidth = cardWidth + fadeSpace + margin;
+            setShowSideCards(window.innerWidth >= minWidth);
+        };
+
+        checkWidth();
+        window.addEventListener('resize', checkWidth);
+        return () => window.removeEventListener('resize', checkWidth);
+    }, []);
 
     const services = [
         {
@@ -62,10 +83,6 @@ const NeuralServices = () => {
         },
     ];
 
-    const toggleService = (id) => {
-        setOpenService(openService === id ? null : id);
-    };
-
     return (
         <>
             {/* Section intro */}
@@ -80,7 +97,7 @@ const NeuralServices = () => {
             </div>
 
                 {/* Services container */}
-                <div className="max-w-content mx-auto">
+                <div className="max-w-content mx-auto md:overflow-hidden overflow-visible">
                     {/* Desktop & Tablet Slider */}
                     <div className="hidden md:block">
                         <ServiceSlider
@@ -116,104 +133,145 @@ const NeuralServices = () => {
                         />
                     </div>
 
-                    {/* Mobile Accordion */}
-                    <div className="services-accordion-container">
-                    {services.map((service, index) => {
-                        const ctaTexts = {
-                            'paid-media': 'Scale Your Campaigns',
-                            'seo': 'Drive Organic Traffic',
-                            'web-dev': 'Build Your Platform',
-                            'ai-solutions': 'Deploy AI Solutions'
-                        };
-                        return (
-                        <div
-                            key={service.id}
-                            className="service-accordion-item"
-                        >
-                            <div
-                                className={`rounded-lg bg-white/5 backdrop-blur-sm border-2 transition-all duration-300 ${
-                                    openService === service.id
-                                        ? 'border-cyan-400/60 translate-x-[2px] translate-y-[2px]'
-                                        : 'border-white/30'
+                    {/* Mobile Coverflow Accordion */}
+                    <div className="md:hidden relative overflow-visible">
+                        {/* Navigation Buttons */}
+                        <div className="service-slider-nav-mobile relative z-10">
+                            <button
+                                className={`swiper-button-prev-mobile ${
+                                    mobileIsBeginning ? 'opacity-40 cursor-not-allowed' : ''
                                 }`}
-                                style={{
-                                    boxShadow: openService === service.id
-                                        ? '4px 4px 0px rgba(34, 211, 238, 1)'
-                                        : '6px 6px 0px rgba(34, 211, 238, 1)',
-                                    transition: 'all 0.3s ease'
-                                }}
+                                disabled={mobileIsBeginning}
+                                aria-label="Previous service"
                             >
-                                <div className="relative">
-                                    <button
-                                        className="service-card-button"
-                                        onClick={() => toggleService(service.id)}
-                                        aria-expanded={openService === service.id}
-                                        aria-controls={`content-${service.id}`}
-                                    >
-                                        <div className="service-button-content">
-                                            <h3 className="text-xl font-bold text-white font-inter m-0 leading-tight">
-                                                {service.title}
-                                            </h3>
-                                            <p className="text-sm text-gray-400 m-0 mt-1">{service.subtitle}</p>
-                                        </div>
-                                        <div className="service-button-icon-container">
-                                            <div className="relative text-3xl font-bold font-inter leading-none">
-                                                {/* Static number - always visible */}
-                                                <span className={`bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.12] bg-clip-text text-transparent transition-opacity duration-500 ${
-                                                    openService === service.id ? 'opacity-0' : 'opacity-100'
-                                                }`}>
-                                                    0{index + 1}
-                                                </span>
-                                                {/* Animated gradient when open */}
-                                                <span className={`absolute top-0 left-0 bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%] ${
-                                                    openService === service.id ? 'opacity-100' : 'opacity-0'
-                                                }`}>
-                                                    0{index + 1}
-                                                </span>
-                                            </div>
-                                            <div
-                                                className={`transition-all duration-300 ${
-                                                    openService === service.id ? 'rotate-180 text-cyan-400' : 'text-white'
-                                                }`}
-                                            >
-                                                <ChevronDown size={24} strokeWidth={2.5} />
-                                            </div>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div
-                                    id={`content-${service.id}`}
-                                    className="overflow-hidden transition-all duration-500"
-                                    style={{ maxHeight: openService === service.id ? '1000px' : '0px' }}
-                                >
-                                    <div className="service-card-content">
-                                        <p className="text-sm text-gray-300 leading-relaxed">{service.description}</p>
-                                        <div className="service-capabilities-container">
-                                            <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-3">Key Capabilities</p>
-                                            <div className="service-capabilities-list">
-                                                {service.capabilities.map((cap, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className="flex items-start gap-2 text-xs text-gray-400"
-                                                    >
-                                                        <span className="text-cyan-400 mt-0.5">•</span>
-                                                        <span className="leading-tight">{cap.name}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        {/* Simple CTA Link */}
-                                        <a href="#contact" className="service-cta-link">
-                                            <span>{ctaTexts[service.id]}</span>
-                                            <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button
+                                className={`swiper-button-next-mobile ${
+                                    mobileIsEnd ? 'opacity-40 cursor-not-allowed' : ''
+                                }`}
+                                disabled={mobileIsEnd}
+                                aria-label="Next service"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
                         </div>
-                        );
-                    })}
 
+                        <div className="-mx-[calc(var(--margin-safe-x)-4px)]">
+                        <Swiper
+                                modules={[EffectCoverflow, Navigation]}
+                                effect="coverflow"
+                                grabCursor={true}
+                                centeredSlides={true}
+                                slidesPerView="auto"
+                                coverflowEffect={{
+                                    rotate: 0,
+                                    stretch: 0,
+                                    depth: 200,
+                                    modifier: 1.5,
+                                    slideShadows: false,
+                                }}
+                                navigation={{
+                                    nextEl: '.swiper-button-next-mobile',
+                                    prevEl: '.swiper-button-prev-mobile',
+                                }}
+                                onSwiper={(swiper) => {
+                                    setMobileIsBeginning(swiper.isBeginning);
+                                    setMobileIsEnd(swiper.isEnd);
+                                }}
+                                onSlideChange={(swiper) => {
+                                    setMobileIsBeginning(swiper.isBeginning);
+                                    setMobileIsEnd(swiper.isEnd);
+                                }}
+                                className="pb-8"
+                            >
+                            {services.map((service, index) => {
+                                const ctaTexts = {
+                                    'paid-media': 'Scale Your Campaigns',
+                                    'seo': 'Drive Organic Traffic',
+                                    'web-dev': 'Build Your Platform',
+                                    'ai-solutions': 'Deploy AI Solutions'
+                                };
+                                return (
+                                    <SwiperSlide key={service.id} className="!w-[280px]">
+                                        {({ isActive }) => (
+                                            <div className="service-coverflow-card-wrapper">
+                                                <div
+                                                    className={`service-coverflow-card transition-all duration-500 ${
+                                                        isActive
+                                                            ? 'service-coverflow-card-active'
+                                                            : 'service-coverflow-card-inactive'
+                                                    }`}
+                                                >
+                                                    {/* Icon/Number Badge in alto */}
+                                                    <div className="flex items-center justify-between mb-6">
+                                                        <div className="w-14 h-14 rounded-lg bg-cyan-400/10 border-2 border-cyan-400/30 flex items-center justify-center text-cyan-300">
+                                                            {service.icon}
+                                                        </div>
+                                                        <div className="text-5xl font-bold font-inter leading-none">
+                                                            <span className={`bg-gradient-to-br from-cyan-400/20 to-purple-600/15 bg-clip-text text-transparent ${
+                                                                isActive ? 'opacity-100' : 'opacity-40'
+                                                            }`}>
+                                                                0{index + 1}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Titolo e Sottotitolo */}
+                                                    <div className="flex flex-col gap-3 mb-6">
+                                                        <h3 className={`text-2xl font-bold font-inter leading-tight transition-colors line-clamp-2 ${
+                                                            isActive ? 'text-white' : 'text-gray-500'
+                                                        }`}>
+                                                            {service.title}
+                                                        </h3>
+                                                        <p className={`text-sm leading-relaxed transition-colors line-clamp-2 ${
+                                                            isActive ? 'text-cyan-400' : 'text-gray-600'
+                                                        }`}>
+                                                            {service.subtitle}
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Descrizione - visibile solo se attiva */}
+                                                    <div className={`transition-all duration-500 ${
+                                                        isActive ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0 overflow-hidden'
+                                                    }`}>
+                                                        <p className="text-sm text-gray-300 leading-relaxed mb-6 line-clamp-4">
+                                                            {service.description}
+                                                        </p>
+
+                                                        {/* Capabilities */}
+                                                        <div className="border-t border-white/10 pt-4">
+                                                            <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-3">
+                                                                Key Capabilities
+                                                            </p>
+                                                            <div className="flex flex-col gap-2 max-h-24 overflow-hidden">
+                                                                {service.capabilities.map((cap, i) => (
+                                                                    <div key={i} className="flex items-start gap-2 text-xs text-gray-400">
+                                                                        <span className="text-cyan-400 mt-0.5">•</span>
+                                                                        <span className="leading-tight line-clamp-1">{cap.name}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* CTA Link */}
+                                                        <a href="#contact" className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-cyan-400 transition-colors duration-300 mt-6">
+                                                            <span>{ctaTexts[service.id]}</span>
+                                                            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </SwiperSlide>
+                                );
+                            })}
+                        </Swiper>
+                        </div>
                     </div>
 
                     {/* CTA Section - Below everything */}

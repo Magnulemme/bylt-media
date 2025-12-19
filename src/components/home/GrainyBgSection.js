@@ -16,12 +16,12 @@ const GrainyBgSection = () => {
         offset: ["start end", "end start"]
     });
 
-    // 3D entrance effect - card si avvicina lungo l'asse Z
-    const translateZEntrance = useTransform(scrollYProgress, [0, 0.08], [-100, 0]);
+    // 3D entrance effect - card si avvicina lungo l'asse Z (ridotto per movimento più sottile)
+    const translateZEntrance = useTransform(scrollYProgress, [0, 0.08], [-40, 0]);
     const opacityEntrance = useTransform(scrollYProgress, [0, 0.08], [0.7, 1]);
 
-    // 3D exit effect - card si allontana lungo l'asse Z (solo parte finale)
-    const translateZExit = useTransform(scrollYProgress, [0.92, 1], [0, -100]);
+    // 3D exit effect - card si allontana lungo l'asse Z (ridotto per movimento più sottile)
+    const translateZExit = useTransform(scrollYProgress, [0.92, 1], [0, -40]);
     const opacityExit = useTransform(scrollYProgress, [0.92, 1], [1, 0.7]);
 
     // Combina entrata e uscita

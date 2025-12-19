@@ -605,7 +605,7 @@
 
     /* Grainy BG Card - Card con effetto 3D e transform con safety margins ridotti di 4px */
     .grainy-bg-card {
-      @apply relative h-full w-full rounded-2xl;
+      @apply relative h-full w-full rounded-2xl overflow-visible;
       background: #020617;
       transform-style: preserve-3d;
       padding-top: var(--spacing-padding-lg);
@@ -701,6 +701,33 @@
       .service-card-button {
         padding: var(--spacing-padding-sm);
       }
+    }
+
+    /* Service Coverflow Card Wrapper - Wrapper card coverflow */
+    .service-coverflow-card-wrapper {
+      padding-bottom: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    /* Service Coverflow Card - Card base coverflow con layout verticale */
+    .service-coverflow-card {
+      @apply rounded-lg backdrop-blur-sm border-2 flex flex-col;
+      padding: 1.5rem;
+      height: 550px;
+      overflow: hidden;
+    }
+
+    /* Service Coverflow Card Active - Card centrale attiva */
+    .service-coverflow-card-active {
+      @apply bg-black border-cyan-400/60;
+      box-shadow: 8px 8px 0px rgba(34, 211, 238, 1);
+    }
+
+    /* Service Coverflow Card Inactive - Card laterali non attive */
+    .service-coverflow-card-inactive {
+      @apply bg-black/60 border-white/10;
+      box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.3);
+      opacity: 0.6;
     }
 
     /* Service Button Content - Container flex per contenuto button */
@@ -900,15 +927,6 @@
     .projects-showcase-section {
       @apply relative overflow-hidden;
       background: #020617;
-      padding-top: var(--spacing-padding-lg);
-      padding-bottom: var(--spacing-padding-lg);
-    }
-
-    @media (min-width: 768px) {
-      .projects-showcase-section {
-        padding-top: var(--spacing-padding-2xl);
-        padding-bottom: var(--spacing-padding-2xl);
-      }
     }
 
     /* Projects Showcase Container - Wrapper con max-width e safety margins */
@@ -1005,11 +1023,13 @@
       @apply relative;
       background: #020617;
       padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-lg);
     }
 
     @media (min-width: 768px) {
       .engine-timeline-section {
         padding-top: var(--spacing-padding-2xl);
+        padding-bottom: var(--spacing-padding-2xl);
       }
     }
 
