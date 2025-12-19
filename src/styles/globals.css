@@ -725,9 +725,8 @@
 
     /* Service Coverflow Card Inactive - Card laterali non attive */
     .service-coverflow-card-inactive {
-      @apply bg-black/60 border-white/10;
-      box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.3);
-      opacity: 0.6;
+      @apply bg-black/80 border-white/20;
+      box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
     }
 
     /* Service Button Content - Container flex per contenuto button */

@@ -13,6 +13,7 @@ const NeuralServices = () => {
     const [mobileIsBeginning, setMobileIsBeginning] = useState(true);
     const [mobileIsEnd, setMobileIsEnd] = useState(false);
     const [showSideCards, setShowSideCards] = useState(false);
+    const [isTablet, setIsTablet] = useState(false);
 
     useEffect(() => {
         const checkWidth = () => {
@@ -21,6 +22,7 @@ const NeuralServices = () => {
             const margin = 40; // Margine di sicurezza
             const minWidth = cardWidth + fadeSpace + margin;
             setShowSideCards(window.innerWidth >= minWidth);
+            setIsTablet(window.innerWidth >= 768);
         };
 
         checkWidth();
@@ -83,6 +85,9 @@ const NeuralServices = () => {
         },
     ];
 
+    // Triplica le slide per il loop manuale
+    const loopedServices = [...services, ...services, ...services];
+
     return (
         <>
             {/* Section intro */}
@@ -97,9 +102,9 @@ const NeuralServices = () => {
             </div>
 
                 {/* Services container */}
-                <div className="max-w-content mx-auto md:overflow-hidden overflow-visible">
-                    {/* Desktop & Tablet Slider */}
-                    <div className="hidden md:block">
+                <div className="max-w-content mx-auto lg:overflow-hidden overflow-visible">
+                    {/* Desktop Slider */}
+                    <div className="hidden lg:block">
                         <ServiceSlider
                             items={services.map((service, index) => {
                                 const capabilityLabels = {
@@ -133,8 +138,8 @@ const NeuralServices = () => {
                         />
                     </div>
 
-                    {/* Mobile Coverflow Accordion */}
-                    <div className="md:hidden relative overflow-visible">
+                    {/* Mobile & Tablet Coverflow */}
+                    <div className="lg:hidden relative overflow-visible">
                         {/* Navigation Buttons */}
                         <div className="service-slider-nav-mobile relative z-10">
                             <button
@@ -161,35 +166,52 @@ const NeuralServices = () => {
                             </button>
                         </div>
 
-                        <div className="-mx-[calc(var(--margin-safe-x)-4px)]">
+                        <div
+                            className="md:-mx-[calc(var(--margin-safe-x)-4px)]"
+                            style={showSideCards ? {
+                                maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
+                                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
+                            } : {}}
+                        >
                         <Swiper
                                 modules={[EffectCoverflow, Navigation]}
                                 effect="coverflow"
                                 grabCursor={true}
                                 centeredSlides={true}
                                 slidesPerView="auto"
+                                loop={false}
+                                initialSlide={services.length}
+                                spaceBetween={isTablet ? 40 : 0}
                                 coverflowEffect={{
                                     rotate: 0,
                                     stretch: 0,
-                                    depth: 200,
-                                    modifier: 1.5,
+                                    depth: showSideCards ? 200 : 100,
+                                    modifier: showSideCards ? 1.5 : 1,
                                     slideShadows: false,
                                 }}
                                 navigation={{
                                     nextEl: '.swiper-button-next-mobile',
                                     prevEl: '.swiper-button-prev-mobile',
                                 }}
-                                onSwiper={(swiper) => {
-                                    setMobileIsBeginning(swiper.isBeginning);
-                                    setMobileIsEnd(swiper.isEnd);
-                                }}
                                 onSlideChange={(swiper) => {
-                                    setMobileIsBeginning(swiper.isBeginning);
-                                    setMobileIsEnd(swiper.isEnd);
+                                    const current = swiper.activeIndex;
+
+                                    // Loop infinito: quando arrivi alla fine, salta all'inizio
+                                    if (current >= services.length * 2) {
+                                        setTimeout(() => {
+                                            swiper.slideTo(services.length, 0);
+                                        }, 300);
+                                    }
+                                    // Quando vai indietro dall'inizio, salta alla fine
+                                    else if (current < services.length) {
+                                        setTimeout(() => {
+                                            swiper.slideTo(services.length * 2 - 1, 0);
+                                        }, 300);
+                                    }
                                 }}
                                 className="pb-8"
                             >
-                            {services.map((service, index) => {
+                            {loopedServices.map((service, index) => {
                                 const ctaTexts = {
                                     'paid-media': 'Scale Your Campaigns',
                                     'seo': 'Drive Organic Traffic',
@@ -197,7 +219,7 @@ const NeuralServices = () => {
                                     'ai-solutions': 'Deploy AI Solutions'
                                 };
                                 return (
-                                    <SwiperSlide key={service.id} className="!w-[280px]">
+                                    <SwiperSlide key={`${service.id}-${index}`} className="!w-[280px] md:!w-[320px]">
                                         {({ isActive }) => (
                                             <div className="service-coverflow-card-wrapper">
                                                 <div
@@ -216,7 +238,7 @@ const NeuralServices = () => {
                                                             <span className={`bg-gradient-to-br from-cyan-400/20 to-purple-600/15 bg-clip-text text-transparent ${
                                                                 isActive ? 'opacity-100' : 'opacity-40'
                                                             }`}>
-                                                                0{index + 1}
+                                                                0{(index % services.length) + 1}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -235,10 +257,8 @@ const NeuralServices = () => {
                                                         </p>
                                                     </div>
 
-                                                    {/* Descrizione - visibile solo se attiva */}
-                                                    <div className={`transition-all duration-500 ${
-                                                        isActive ? 'opacity-100 max-h-[500px]' : 'opacity-0 max-h-0 overflow-hidden'
-                                                    }`}>
+                                                    {/* Descrizione e dettagli */}
+                                                    <div className="transition-all duration-500">
                                                         <p className="text-sm text-gray-300 leading-relaxed mb-6 line-clamp-4">
                                                             {service.description}
                                                         </p>
