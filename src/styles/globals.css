@@ -656,6 +656,24 @@
       gap: 0.75rem;
     }
 
+    /* Service Slider Navigation Mobile - Frecce navigazione mobile coverflow */
+    .service-slider-nav-mobile {
+      @apply flex items-center justify-end;
+      gap: 0.75rem;
+      margin-bottom: var(--spacing-padding-xs);
+    }
+
+    /* Bottoni navigazione mobile - stile brutalist coerente con desktop */
+    .swiper-button-prev-mobile,
+    .swiper-button-next-mobile {
+      @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
+    }
+
+    .swiper-button-prev-mobile:not(:disabled):hover,
+    .swiper-button-next-mobile:not(:disabled):hover {
+      @apply border-cyan-400/60 from-cyan-500/20 to-blue-500/20 scale-110 cursor-pointer;
+    }
+
     /* ====================================
        NEURAL SERVICES SECTION COMPONENTS
        ==================================== */
@@ -872,6 +890,110 @@
     .performance-sticky-text-content {
       @apply text-center max-w-3xl mx-auto flex flex-col;
       gap: var(--spacing-padding-xs);
+    }
+
+    /* ====================================
+       PROJECTS SHOWCASE SECTION COMPONENTS
+       ==================================== */
+
+    /* Projects Showcase Section - Container principale con padding verticale */
+    .projects-showcase-section {
+      @apply relative overflow-hidden;
+      background: #020617;
+      padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-lg);
+    }
+
+    @media (min-width: 768px) {
+      .projects-showcase-section {
+        padding-top: var(--spacing-padding-2xl);
+        padding-bottom: var(--spacing-padding-2xl);
+      }
+    }
+
+    /* Projects Showcase Container - Wrapper con max-width e safety margins */
+    .projects-showcase-container {
+      @apply relative z-10;
+      max-width: var(--breakpoint-content);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    }
+
+    @media (min-width: 640px) {
+      .projects-showcase-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .projects-showcase-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+      }
+    }
+
+    /* Projects List Container - Container lista progetti */
+    .projects-list-container {
+      @apply relative;
+    }
+
+    /* Project Link Item - Singolo link progetto con padding e border */
+    .project-link-item {
+      @apply block border-b border-slate-800/50 cursor-pointer relative;
+      padding-top: var(--spacing-padding-xs);
+      padding-bottom: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .project-link-item {
+        padding-top: var(--spacing-padding-sm);
+        padding-bottom: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Project Link Content - Flex container per contenuto progetto */
+    .project-link-content {
+      @apply flex items-center;
+      gap: var(--spacing-padding-sm);
+    }
+
+    @media (min-width: 768px) {
+      .project-link-content {
+        gap: var(--spacing-padding-md);
+      }
+    }
+
+    /* Project Info Container - Container info progetto */
+    .project-info-container {
+      @apply flex-1;
+    }
+
+    /* Project Title - Titolo progetto con gap bottom */
+    .project-title {
+      @apply text-3xl md:text-5xl lg:text-6xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-300 cursor-pointer w-fit;
+      font-family: var(--font-family-inter);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Project Meta - Container metadati progetto */
+    .project-meta {
+      @apply flex items-center text-gray-400 text-sm md:text-base;
+      gap: 0.75rem;
+    }
+
+    /* Projects CTA Section - Sezione CTA finale */
+    .projects-cta-section {
+      @apply text-center;
+      margin-top: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .projects-cta-section {
+        margin-top: var(--spacing-padding-lg);
+      }
     }
 
     /* ====================================

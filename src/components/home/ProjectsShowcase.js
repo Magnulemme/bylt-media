@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import SectionHeader from '../ui/SectionHeader';
+import SectionIntro from '../ui/SectionIntro';
 
 const ProjectsShowcase = () => {
     const [hoveredProject, setHoveredProject] = useState(null);
@@ -49,18 +49,25 @@ const ProjectsShowcase = () => {
     };
 
     return (
-        <section
-            className="relative pb-20 overflow-hidden"
-            style={{ background: '#020617' }}
-        >
-            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="projects-showcase-section">
+            <div className="projects-showcase-container">
+                {/* Section Title */}
+                <SectionIntro
+                    title="Our Work"
+                    subtitle="Explore our portfolio of successful campaigns and strategic partnerships that drive measurable results."
+                    align="left"
+                    maxWidth="3xl"
+                    size="xl"
+                    variant="blur"
+                />
+
                 {/* Projects List */}
                 <div
-                    className="relative"
+                    className="projects-list-container"
                     onMouseMove={handleMouseMove}
                 >
                     {/* Projects */}
-                    <div className="space-y-0">
+                    <div>
                         {projects.map((project, index) => (
                             <motion.div
                                 key={project.id}
@@ -72,24 +79,24 @@ const ProjectsShowcase = () => {
                             >
                                 <a
                                     href={project.link}
-                                    className="group block py-8 border-b border-slate-800/50 cursor-pointer relative"
+                                    className="group project-link-item"
                                 >
-                                    <div className="flex items-center gap-8">
+                                    <div className="project-link-content">
                                         {/* Number */}
                                         <span className="text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300">
                                             {String(project.id).padStart(2, '0')}
                                         </span>
 
                                         {/* Project Info */}
-                                        <div className="flex-1">
+                                        <div className="project-info-container">
                                             <h3
-                                                className="text-3xl md:text-5xl lg:text-6xl font-bold text-white font-inter mb-2 group-hover:text-cyan-400 transition-colors duration-300 cursor-pointer w-fit"
+                                                className="project-title"
                                                 onMouseEnter={() => setHoveredProject(project)}
                                                 onMouseLeave={() => setHoveredProject(null)}
                                             >
                                                 {project.name}
                                             </h3>
-                                            <div className="flex items-center gap-3 text-gray-400 text-sm md:text-base">
+                                            <div className="project-meta">
                                                 <span>{project.category}</span>
                                                 <span className="text-cyan-400/50">•</span>
                                                 <span>{project.service}</span>
@@ -164,7 +171,7 @@ const ProjectsShowcase = () => {
 
                 {/* CTA */}
                 <motion.div
-                    className="mt-16 text-center"
+                    className="projects-cta-section"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
