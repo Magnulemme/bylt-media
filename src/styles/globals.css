@@ -473,7 +473,7 @@
 
     @media (min-width: 1024px) {
       .partners-grid {
-        gap: var(--spacing-padding-xl);
+        gap: var(--spacing-padding-2xl);
       }
     }
 
@@ -608,20 +608,52 @@
       @apply relative h-full w-full rounded-2xl;
       background: #020617;
       transform-style: preserve-3d;
-      padding-top: calc(var(--spacing-padding-xl) - 4px);
+      padding-top: var(--spacing-padding-lg);
       padding-left: calc(var(--margin-safe-x) - 4px);
       padding-right: calc(var(--margin-safe-x) - 4px);
     }
 
     @media (min-width: 768px) {
       .grainy-bg-card {
-        padding-top: calc(var(--spacing-padding-2xl) - 4px);
+        padding-top: var(--spacing-padding-2xl);
       }
     }
 
     /* Grainy BG Content - Wrapper per contenuti interni */
     .grainy-bg-content {
       @apply relative z-10 max-w-7xl mx-auto;
+    }
+
+    /* ====================================
+       SECTION INTRO COMPONENTS
+       ==================================== */
+
+    /* Section Intro Container - Container principale con padding bottom centralizzato */
+    .section-intro-container {
+      padding-bottom: var(--spacing-padding-sm);
+    }
+
+    @media (min-width: 768px) {
+      .section-intro-container {
+        padding-bottom: var(--spacing-padding-md);
+      }
+    }
+
+    /* Section Intro Title Spacing - Spazio tra titolo e sottotitolo */
+    .section-intro-title-spacing {
+      margin-bottom: var(--spacing-padding-sm);
+    }
+
+    /* ====================================
+       SERVICE SLIDER COMPONENTS
+       ==================================== */
+
+    /* Service Slider Navigation - Container frecce di navigazione sopra lo slider */
+    .service-slider-nav {
+      @apply absolute right-0 z-20 flex items-center;
+      top: 0;
+      transform: translateY(calc(-100% - var(--spacing-padding-xs)));
+      gap: 0.75rem;
     }
 
     /* ====================================
@@ -698,6 +730,50 @@
       gap: 0.5rem;
     }
 
+    /* Service CTA Link - Link CTA dentro le card services */
+    .service-cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: white;
+      transition: color 0.3s ease;
+      margin-top: var(--spacing-padding-xs);
+    }
+
+    .service-cta-link:hover {
+      color: rgb(34 211 238);
+    }
+
+    /* Services Bottom CTA Section - Sezione CTA finale sotto tutti i servizi */
+    .services-bottom-cta-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--spacing-padding-sm);
+      margin-top: var(--spacing-padding-md);
+    }
+
+    @media (min-width: 768px) {
+      .services-bottom-cta-section {
+        gap: var(--spacing-padding-md);
+        margin-top: var(--spacing-padding-lg);
+      }
+    }
+
+    /* Services Bottom CTA Content - Contenuto testo CTA */
+    .services-bottom-cta-content {
+      max-width: 36rem;
+    }
+
+    .services-bottom-cta-content p {
+      font-size: 1.125rem;
+      color: rgb(209 213 219);
+      line-height: 1.625;
+    }
+
     /* ====================================
        INFINITY PHILOSOPHY SECTION COMPONENTS
        ==================================== */
@@ -706,13 +782,11 @@
     .infinity-section {
       @apply max-w-content mx-auto;
       padding-top: var(--spacing-padding-lg);
-      padding-bottom: var(--spacing-padding-md);
     }
 
     @media (min-width: 768px) {
       .infinity-section {
-        padding-top: var(--spacing-padding-xl);
-        padding-bottom: var(--spacing-padding-lg);
+        padding-top: var(--spacing-padding-2xl);
       }
     }
 
@@ -765,13 +839,14 @@
     /* Performance Section - Container principale con padding verticale */
     .performance-section {
       @apply relative z-10;
+      padding-top: var(--spacing-padding-lg);
       padding-bottom: var(--spacing-padding-lg);
     }
 
     @media (min-width: 768px) {
       .performance-section {
-        padding-top: var(--spacing-padding-xl);
-        padding-bottom: var(--spacing-padding-xl);
+        padding-top: var(--spacing-padding-2xl);
+        padding-bottom: var(--spacing-padding-2xl);
       }
     }
 

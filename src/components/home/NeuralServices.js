@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TrendingUp, Search, Code, BrainCircuit, ChevronDown } from 'lucide-react';
 import { ServiceSlider } from '../ui/service-slider';
 import { SectionIntro } from '../ui/section-headers';
+import { MovingBorderButton } from '../ui/moving-border-button';
 
 const NeuralServices = () => {
     const [openService, setOpenService] = useState(null);
@@ -84,17 +85,17 @@ const NeuralServices = () => {
                     <div className="hidden md:block">
                         <ServiceSlider
                             items={services.map((service, index) => {
-                                const ctaTexts = {
-                                    'paid-media': 'Scale Your Campaigns',
-                                    'seo': 'Drive Organic Traffic',
-                                    'web-dev': 'Build Your Platform',
-                                    'ai-solutions': 'Deploy AI Solutions'
-                                };
                                 const capabilityLabels = {
                                     'paid-media': 'Campaign Types',
                                     'seo': 'Core Deliverables',
                                     'web-dev': 'Tech Stack',
                                     'ai-solutions': 'Solutions'
+                                };
+                                const ctaTexts = {
+                                    'paid-media': 'Scale Your Campaigns',
+                                    'seo': 'Drive Organic Traffic',
+                                    'web-dev': 'Build Your Platform',
+                                    'ai-solutions': 'Deploy AI Solutions'
                                 };
                                 return {
                                     id: service.id,
@@ -105,17 +106,26 @@ const NeuralServices = () => {
                                     description: service.description,
                                     capabilities: service.capabilities,
                                     capabilitiesLabel: capabilityLabels[service.id],
-                                    ctaText: ctaTexts[service.id] || "Learn More",
+                                    showCTA: true,
+                                    ctaText: ctaTexts[service.id],
                                     ctaHref: "#contact"
                                 };
                             })}
+                            showCTA={false}
                             className="py-0"
                         />
                     </div>
 
                     {/* Mobile Accordion */}
                     <div className="services-accordion-container">
-                    {services.map((service, index) => (
+                    {services.map((service, index) => {
+                        const ctaTexts = {
+                            'paid-media': 'Scale Your Campaigns',
+                            'seo': 'Drive Organic Traffic',
+                            'web-dev': 'Build Your Platform',
+                            'ai-solutions': 'Deploy AI Solutions'
+                        };
+                        return (
                         <div
                             key={service.id}
                             className="service-accordion-item"
@@ -192,11 +202,36 @@ const NeuralServices = () => {
                                                 ))}
                                             </div>
                                         </div>
+                                        {/* Simple CTA Link */}
+                                        <a href="#contact" className="service-cta-link">
+                                            <span>{ctaTexts[service.id]}</span>
+                                            <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
+
+                    </div>
+
+                    {/* CTA Section - Below everything */}
+                    <div className="services-bottom-cta-section">
+                        <div className="services-bottom-cta-content">
+                            <p>
+                                Don't see exactly what you need? We offer <span className="text-cyan-400 font-semibold">custom solutions</span> tailored to your business goals.
+                            </p>
+                        </div>
+                        <MovingBorderButton
+                            borderRadius="0.75rem"
+                            containerClassName="min-w-[240px] h-16"
+                            borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                            className="border-2 border-slate-700/80 text-white font-bold text-base bg-slate-950"
+                            duration={2500}
+                        >
+                            Discuss Your Project
+                        </MovingBorderButton>
                     </div>
                 </div>
             <style jsx>{`

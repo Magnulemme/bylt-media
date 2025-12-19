@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Infinity } from 'lucide-react';
 
 const InfinityPhilosophy = () => {
     return (
@@ -25,14 +26,38 @@ const InfinityPhilosophy = () => {
                         >
                             {/* Glow layer */}
                             <div className="absolute inset-0 blur-3xl opacity-40">
-                                <div className="text-[140px] md:text-[180px] leading-none font-bold bg-gradient-to-r from-cyan-400/50 via-blue-500/50 to-purple-600/50 bg-clip-text text-transparent">
-                                    ∞
-                                </div>
+                                <svg
+                                    viewBox="0 10 60 40"
+                                    className="w-[140px] md:w-[180px] h-auto"
+                                    fill="currentColor"
+                                >
+                                    <defs>
+                                        <linearGradient id="infinityGradientGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style={{ stopColor: 'rgb(34, 211, 238)', stopOpacity: 0.5 }} />
+                                            <stop offset="50%" style={{ stopColor: 'rgb(59, 130, 246)', stopOpacity: 0.5 }} />
+                                            <stop offset="100%" style={{ stopColor: 'rgb(168, 85, 247)', stopOpacity: 0.5 }} />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#infinityGradientGlow)" d="M43.594,12.5c-9.046,0-16.406,7.851-16.406,17.5c0,6.341-4.836,11.5-10.781,11.5S5.625,36.341,5.625,30s4.836-11.5,10.781-11.5c2.146,0,4.218,0.67,5.992,1.938c0.593,0.425,1.147,0.911,1.645,1.445c1.061,1.136,2.914,1.14,3.977,0.009c1.099-1.167,1.103-3.07,0.009-4.243c-0.76-0.813-1.601-1.552-2.499-2.194c-2.704-1.933-5.858-2.954-9.124-2.954C7.36,12.5,0,20.351,0,30s7.36,17.5,16.406,17.5S32.812,39.649,32.812,30c0-6.341,4.836-11.5,10.781-11.5S54.375,23.659,54.375,30s-4.836,11.5-10.781,11.5c-2.879,0-5.586-1.195-7.622-3.366c-1.062-1.133-2.915-1.133-3.978,0c-0.531,0.567-0.823,1.32-0.823,2.121c0,0.802,0.293,1.556,0.824,2.121c3.098,3.305,7.218,5.124,11.599,5.124C52.64,47.5,60,39.649,60,30S52.64,12.5,43.594,12.5z"/>
+                                </svg>
                             </div>
 
                             {/* Main symbol */}
-                            <div className="relative text-[140px] md:text-[180px] leading-none font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
-                                ∞
+                            <div className="relative">
+                                <svg
+                                    viewBox="0 10 60 40"
+                                    className="w-[140px] md:w-[180px] h-auto"
+                                    fill="currentColor"
+                                >
+                                    <defs>
+                                        <linearGradient id="infinityGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style={{ stopColor: 'rgb(34, 211, 238)', stopOpacity: 1 }} />
+                                            <stop offset="50%" style={{ stopColor: 'rgb(59, 130, 246)', stopOpacity: 1 }} />
+                                            <stop offset="100%" style={{ stopColor: 'rgb(168, 85, 247)', stopOpacity: 1 }} />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#infinityGradient)" d="M43.594,12.5c-9.046,0-16.406,7.851-16.406,17.5c0,6.341-4.836,11.5-10.781,11.5S5.625,36.341,5.625,30s4.836-11.5,10.781-11.5c2.146,0,4.218,0.67,5.992,1.938c0.593,0.425,1.147,0.911,1.645,1.445c1.061,1.136,2.914,1.14,3.977,0.009c1.099-1.167,1.103-3.07,0.009-4.243c-0.76-0.813-1.601-1.552-2.499-2.194c-2.704-1.933-5.858-2.954-9.124-2.954C7.36,12.5,0,20.351,0,30s7.36,17.5,16.406,17.5S32.812,39.649,32.812,30c0-6.341,4.836-11.5,10.781-11.5S54.375,23.659,54.375,30s-4.836,11.5-10.781,11.5c-2.879,0-5.586-1.195-7.622-3.366c-1.062-1.133-2.915-1.133-3.978,0c-0.531,0.567-0.823,1.32-0.823,2.121c0,0.802,0.293,1.556,0.824,2.121c3.098,3.305,7.218,5.124,11.599,5.124C52.64,47.5,60,39.649,60,30S52.64,12.5,43.594,12.5z"/>
+                                </svg>
                             </div>
                         </motion.div>
 
@@ -46,20 +71,20 @@ const InfinityPhilosophy = () => {
                         >
                             <div className="infinity-heading-container">
                                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                                    Built to perform,<br />
-                                    designed to scale
+                                    Growth that<br />
+                                    compounds
                                 </h2>
                             </div>
 
                             <div className="infinity-paragraphs">
                                 <p>
-                                    Every campaign we launch is built on a simple principle: <span className="text-white font-semibold">what works today should work even better tomorrow.</span>
+                                    Traditional marketing campaigns start from zero every time. <span className="text-white font-semibold">We build systems that get smarter with every iteration.</span>
                                 </p>
                                 <p>
-                                    No temporary fixes. No cookie-cutter playbooks. Just strategic marketing that compounds—where each win funds the next, and momentum builds on itself.
+                                    Every pound invested generates data. Every insight refines your strategy. Every optimization amplifies your returns. It's a self-reinforcing cycle that transforms marketing from an expense into your most profitable growth engine.
                                 </p>
                                 <p className="text-cyan-400 font-semibold">
-                                    Sustainable growth. Measurable impact. Unlimited potential.
+                                    More customers. Better margins. Exponential ROI.
                                 </p>
                             </div>
                         </motion.div>

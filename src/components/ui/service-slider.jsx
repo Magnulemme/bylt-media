@@ -6,57 +6,109 @@ import { useState } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-export const ServiceSlider = ({ items, className }) => {
+export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "Non sai da dove iniziare? Parliamone", ctaHref = "#contact" }) => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Funzione per calcolare il mask fade dinamico - solo agli estremi
+  const getMaskImage = () => {
+    if (isBeginning && isEnd) {
+      return 'none';
+    } else if (isBeginning) {
+      return 'linear-gradient(to right, black, black calc(100% - 96px), transparent)';
+    } else if (isEnd) {
+      return 'linear-gradient(to right, transparent, black 96px, black)';
+    } else {
+      // In mezzo: nessun fade, tutto visibile
+      return 'none';
+    }
+  };
 
   return (
-    <div className={cn("relative py-10 pb-12 px-20", className)}>
-      <Swiper
-        modules={[Navigation]}
-        spaceBetween={24}
-        slidesPerView={3}
-        centeredSlides={false}
-        breakpoints={{
-          768: {
-            slidesPerView: 2,
-          },
-          1024: {
-            slidesPerView: 3,
-          },
+    <div className={cn("relative", className)}>
+      {/* Navigation Buttons - Top Right */}
+      <div className="service-slider-nav">
+        <button
+          className={cn(
+            "swiper-button-prev-custom w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10",
+            isBeginning
+              ? "opacity-40 cursor-not-allowed"
+              : "hover:border-cyan-400/60 hover:from-cyan-500/20 hover:to-blue-500/20 hover:scale-110 cursor-pointer"
+          )}
+          disabled={isBeginning}
+          aria-label="Previous slide"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          className={cn(
+            "swiper-button-next-custom w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10",
+            isEnd
+              ? "opacity-40 cursor-not-allowed"
+              : "hover:border-cyan-400/60 hover:from-cyan-500/20 hover:to-blue-500/20 hover:scale-110 cursor-pointer"
+          )}
+          disabled={isEnd}
+          aria-label="Next slide"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div
+        style={{
+          maskImage: getMaskImage(),
+          WebkitMaskImage: getMaskImage(),
+          transition: 'mask-image 0.3s ease-out, -webkit-mask-image 0.3s ease-out'
         }}
-        navigation={{
-          nextEl: '.swiper-button-next-custom',
-          prevEl: '.swiper-button-prev-custom',
-          enabled: true,
-        }}
-        onSwiper={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        onSlideChange={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        onReachEnd={(swiper) => {
-          setIsEnd(true);
-        }}
-        onReachBeginning={(swiper) => {
-          setIsBeginning(true);
-        }}
-        onFromEdge={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
-        }}
-        className="!pb-0"
       >
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={24}
+          slidesPerView="auto"
+          centeredSlides={false}
+          navigation={{
+            nextEl: '.swiper-button-next-custom',
+            prevEl: '.swiper-button-prev-custom',
+            enabled: true,
+          }}
+          onSwiper={(swiper) => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+          onSlideChangeTransitionStart={() => {
+            setIsTransitioning(true);
+          }}
+          onSlideChangeTransitionEnd={() => {
+            setIsTransitioning(false);
+          }}
+          onSlideChange={(swiper) => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+          onReachEnd={() => {
+            setIsEnd(true);
+          }}
+          onReachBeginning={() => {
+            setIsBeginning(true);
+          }}
+          onFromEdge={(swiper) => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+          className="!pb-0"
+        >
         {items.map((item, idx) => (
-          <SwiperSlide key={idx} className="h-auto">
+          <SwiperSlide key={idx} className="h-auto !w-[85vw] md:!w-[42vw] lg:!w-[28vw] !max-w-md">
             <div className="relative group block h-full w-full pb-2 pr-2">
-              <Card href={item.ctaHref || "#contact"}>
+              <Card href={item.showCTA ? undefined : (item.ctaHref || "#contact")}>
                 {item.number && <CardNumber>{item.number}</CardNumber>}
                 {item.icon && <CardIcon>{item.icon}</CardIcon>}
-                <CardContent>
+                <CardContent showCTA={item.showCTA} ctaHref={item.ctaHref} ctaText={item.ctaText}>
                   <CardTitle>{item.title}</CardTitle>
                   {item.subtitle && <CardSubtitle>{item.subtitle}</CardSubtitle>}
                   {item.description && <CardDescription>{item.description}</CardDescription>}
@@ -68,25 +120,21 @@ export const ServiceSlider = ({ items, className }) => {
             </div>
           </SwiperSlide>
         ))}
-      </Swiper>
+        </Swiper>
+      </div>
 
-      {/* Custom Navigation Buttons */}
-      <div className={cn(
-        "swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 hover:border-cyan-400/60 hover:from-cyan-500/20 hover:to-blue-500/20 flex items-center justify-center text-cyan-400 cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/10",
-        isBeginning && "opacity-0 pointer-events-none"
-      )}>
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-        </svg>
-      </div>
-      <div className={cn(
-        "swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 z-20 w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 hover:border-cyan-400/60 hover:from-cyan-500/20 hover:to-blue-500/20 flex items-center justify-center text-cyan-400 cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg shadow-cyan-500/10",
-        isEnd && "opacity-0 pointer-events-none"
-      )}>
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-        </svg>
-      </div>
+      {/* Global CTA */}
+      {showCTA && (
+        <div className="mt-padding-md flex justify-center">
+          <a
+            href={ctaHref}
+            className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white hover:text-cyan-400 transition-colors duration-300"
+          >
+            <span>{ctaText}</span>
+            <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+          </a>
+        </div>
+      )}
 
       <style jsx global>{`
         .swiper-slide {
@@ -149,10 +197,20 @@ export const CardIcon = ({ className, children }) => {
   );
 };
 
-export const CardContent = ({ className, children }) => {
+export const CardContent = ({ className, children, showCTA = false, ctaHref = "#contact", ctaText = "Explore Services" }) => {
   return (
-    <div className={cn("relative z-10 flex flex-col gap-3.5 flex-1 mb-4", className)}>
+    <div className={cn("relative z-10 flex flex-col gap-3.5 flex-1", className)}>
       {children}
+      {showCTA && (
+        <a
+          href={ctaHref}
+          onClick={(e) => e.stopPropagation()}
+          className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-cyan-400 transition-colors duration-300 mt-2"
+        >
+          <span>{ctaText}</span>
+          <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+        </a>
+      )}
     </div>
   );
 };

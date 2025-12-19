@@ -22,7 +22,7 @@ const SectionTitle = ({
   title,
   subtitle,
   align = 'center',
-  size = 'lg',
+  size = 'xl',
   variant = 'blur',
   titleClassName = '',
   subtitleClassName = '',
