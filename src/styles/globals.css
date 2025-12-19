@@ -874,6 +874,114 @@
       gap: var(--spacing-padding-xs);
     }
 
+    /* ====================================
+       ENGINE TIMELINE SECTION COMPONENTS
+       ==================================== */
+
+    /* Engine Timeline Section - Container principale con padding-top */
+    .engine-timeline-section {
+      @apply relative;
+      background: #020617;
+      padding-top: var(--spacing-padding-lg);
+    }
+
+    @media (min-width: 768px) {
+      .engine-timeline-section {
+        padding-top: var(--spacing-padding-2xl);
+      }
+    }
+
+    /* Engine Timeline Container - Wrapper con max-width e safety margins */
+    .engine-timeline-container {
+      @apply relative z-10 max-w-content mx-auto;
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    }
+
+    @media (min-width: 640px) {
+      .engine-timeline-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .engine-timeline-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+      }
+    }
+
+    /* Engine Timeline Title Container - Wrapper per titolo con margin bottom */
+    .engine-timeline-title-container {
+      margin-bottom: var(--spacing-padding-sm);
+    }
+
+    @media (min-width: 768px) {
+      .engine-timeline-title-container {
+        margin-bottom: var(--spacing-padding-md);
+      }
+    }
+
+    /* Process Step - Singolo step con gap e margin */
+    .process-step {
+      @apply relative flex items-center justify-center;
+      gap: var(--spacing-padding-xs);
+      margin-bottom: var(--spacing-padding-sm);
+    }
+
+    @media (min-width: 768px) {
+      .process-step {
+        gap: var(--spacing-padding-sm);
+        margin-bottom: var(--spacing-padding-md);
+      }
+    }
+
+    /* Process Step Card - Card contenuto step */
+    .process-step-card {
+      @apply w-full max-w-2xl bg-slate-800/50 backdrop-blur-lg rounded-2xl border;
+      padding: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 768px) {
+      .process-step-card {
+        padding: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Mobile Timeline Container - Container mobile con padding */
+    .mobile-timeline-container {
+      padding-left: var(--margin-safe-x);
+      padding-right: var(--margin-safe-x);
+      margin-bottom: var(--spacing-padding-xs);
+    }
+
+    @media (min-width: 640px) {
+      .mobile-timeline-container {
+        margin-bottom: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Mobile Timeline Sticky Wrapper - Wrapper sticky per scroll orizzontale */
+    .mobile-timeline-sticky {
+      @apply sticky flex items-center overflow-x-clip;
+      padding-top: var(--spacing-padding-md);
+      padding-bottom: var(--spacing-padding-md);
+    }
+
+    /* Mobile Timeline Card Wrapper - Wrapper singola card mobile */
+    .mobile-timeline-card-wrapper {
+      @apply flex-shrink-0 w-full flex flex-col items-center justify-center self-stretch;
+      padding-left: var(--margin-safe-x);
+      padding-right: var(--margin-safe-x);
+    }
+
+    /* Mobile Timeline Card - Card contenuto mobile */
+    .mobile-timeline-card {
+      @apply w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl border flex flex-col flex-1;
+      padding: var(--spacing-padding-xs);
+    }
+
     /* UTILITY CLASSES */
 
     /* Text Gradient - Testo con gradiente animato */

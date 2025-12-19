@@ -157,7 +157,7 @@ const EngineTimeline = () => {
         return (
             <div
                 ref={stepRef}
-                className="relative flex items-center justify-center gap-6 md:gap-8 mb-16"
+                className="process-step"
             >
                 {/* Step Number Circle - centered vertically to card */}
                 <div className="relative flex-shrink-0 rounded-full overflow-visible">
@@ -220,7 +220,7 @@ const EngineTimeline = () => {
 
                 {/* Step Content Card */}
                 <motion.div
-                    className="w-full max-w-2xl bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 md:p-8 border"
+                    className="process-step-card"
                     style={{
                         borderColor,
                         x: cardX
@@ -463,7 +463,7 @@ const EngineTimeline = () => {
                     thisCardRef.current = el;
                     if (cardRef) cardRef.current = el;
                 }}
-                className="flex-shrink-0 w-full px-4 flex flex-col items-center justify-center self-stretch"
+                className="mobile-timeline-card-wrapper"
             >
                 {/* Step Number Circle */}
                 <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg flex-shrink-0"
@@ -520,7 +520,7 @@ const EngineTimeline = () => {
 
                 {/* Card Content */}
                 <motion.div
-                    className="w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl p-6 border flex flex-col flex-1"
+                    className="mobile-timeline-card"
                     style={{
                         borderColor: useTransform(
                             isActive,
@@ -586,14 +586,13 @@ const EngineTimeline = () => {
         <section
             ref={sectionRef}
             id="process"
-            className="relative pb-32"
-            style={{ background: '#020617' }}
+            className="engine-timeline-section"
         >
             <div className="relative z-10">
                 {/* Desktop Version */}
                 <div className="hidden md:block">
                     {/* Content container */}
-                    <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+                    <div className="engine-timeline-container engine-timeline-title-container">
                         <ScrollRevealText
                             text="Our proven process ensures clarity, efficiency, and exceptional results"
                             className="text-2xl md:text-4xl font-bold font-inter text-center leading-tight text-white mb-6"
@@ -610,7 +609,7 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Steps Container */}
-                    <div className="max-w-content mx-auto px-6 md:px-12 lg:px-8 relative">
+                    <div className="engine-timeline-container">
                         {/* Steps */}
                         <div>
                             {processSteps.map((step, index) => (
@@ -623,7 +622,7 @@ const EngineTimeline = () => {
                 {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
                 <div className="md:hidden">
                     {/* Title - static */}
-                    <div ref={mobileTitleRef} className="px-4 mb-8">
+                    <div ref={mobileTitleRef} className="mobile-timeline-container">
                         <h2 className="text-2xl font-bold font-inter text-center leading-tight text-white mb-4">
                             Our proven process ensures clarity, efficiency, and exceptional results
                         </h2>
@@ -636,7 +635,7 @@ const EngineTimeline = () => {
                     <div style={{ height: '500vh' }} ref={containerRef}>
                         {/* Sticky wrapper - stays in viewport while scrolling */}
                         <div
-                            className="sticky flex items-center overflow-x-clip py-12"
+                            className="mobile-timeline-sticky"
                             style={{
                                 top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px - 3rem)` : 'calc(50% - 3rem)'
                             }}
