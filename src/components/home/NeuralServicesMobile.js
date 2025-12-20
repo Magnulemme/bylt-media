@@ -153,7 +153,6 @@ const NeuralServicesMobile = () => {
                     <Swiper
                         modules={[Navigation]}
                         slidesPerView={1}
-                        centeredSlides={true}
                         spaceBetween={0}
                         breakpoints={{
                             500: {
