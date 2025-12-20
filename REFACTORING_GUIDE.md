@@ -12,7 +12,7 @@ Refactoring dei componenti **NeuralServices**, **InfinityPhilosophy** e **Perfor
 | Device | Variable | Valore |
 |--------|----------|--------|
 | 📱 Mobile | `--spacing-padding-lg` | **64px** |
-| 💻 Desktop | `--spacing-padding-xl` | **96px** |
+| 💻 Desktop | `--spacing-padding-2xl` | **160px** |
 
 **Esempio implementazione:**
 ```css
@@ -22,7 +22,7 @@ Refactoring dei componenti **NeuralServices**, **InfinityPhilosophy** e **Perfor
 
 @media (min-width: 768px) {
   .mia-sezione {
-    padding-top: var(--spacing-padding-xl);  /* 96px desktop */
+    padding-top: var(--spacing-padding-2xl);  /* 160px desktop */
   }
 }
 ```
@@ -82,7 +82,7 @@ Ogni sezione di contenuto standard deve usare **SEMPRE** questi valori di paddin
 padding-top: var(--spacing-padding-lg);  /* Mobile: 64px */
 
 @media (min-width: 768px) {
-  padding-top: var(--spacing-padding-xl);  /* Tablet/Desktop: 96px */
+  padding-top: var(--spacing-padding-2xl);  /* Tablet/Desktop: 160px */
 }
 ```
 
@@ -97,9 +97,9 @@ padding-top: var(--spacing-padding-lg);  /* Mobile: 64px */
 - Prima sezione del sito (gestita dal layout)
 
 **📌 Esempi Implementati:**
-- `InfinityPhilosophy`: lg mobile → xl desktop ✅
-- `PerformanceMetrics`: lg mobile → xl desktop ✅
-- `GrainyBgCard` (parent): lg mobile → xl desktop ✅
+- `InfinityPhilosophy`: lg mobile → 2xl desktop ✅
+- `PerformanceMetrics`: lg mobile → 2xl desktop ✅
+- `NeuralServices`: lg mobile → 2xl desktop ✅
 
 ---
 
@@ -119,7 +119,7 @@ padding-top: var(--spacing-padding-lg);  /* Mobile: 64px */
    ======================================== */
 /* Sezioni di contenuto standard */
 padding-top: var(--spacing-padding-lg);    /* Mobile: 64px */
-padding-top: var(--spacing-padding-xl);    /* Desktop: 96px */
+padding-top: var(--spacing-padding-2xl);   /* Desktop: 160px */
 
 /* Sezioni HERO o molto importanti */
 padding-top: var(--spacing-padding-2xl);   /* Mobile: 128px, Desktop: 160px */

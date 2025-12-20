@@ -6,15 +6,66 @@ import { MovingBorderButton } from '../ui/moving-border-button';
 import { Card, CardNumber, CardIcon, CardContent, CardTitle, CardSubtitle, CardDescription, CardCapabilities } from '../ui/service-slider';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const NeuralServices = () => {
     const swiperRef = useRef(null);
+    const containerRef = useRef(null);
+    const lastCardRef = useRef(null);
+    const [allCardsVisible, setAllCardsVisible] = useState(false);
+    const [shouldApplyFade, setShouldApplyFade] = useState(false);
 
+    // Hook per verificare se tutte le card sono visibili (solo al mount e resize)
     useEffect(() => {
-        console.log('[NeuralServices] Component mounted');
-        console.log('[NeuralServices] Window width:', window.innerWidth);
-    }, []);
+        const checkCardsVisibility = () => {
+            if (!containerRef.current || !lastCardRef.current) return;
+
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const lastCardRect = lastCardRef.current.getBoundingClientRect();
+
+            // Con centeredSlides + loop, l'ultima card è a sinistra. Se è visibile, tutte lo sono
+            // La card ha una shadow di 8px a destra, quindi compensiamo
+            const lastCardVisible = lastCardRect.left >= containerRect.left - 8 - 2; // -8px shadow -2px tolleranza
+
+            console.log('[NeuralServices] Card visibility check:', {
+                containerLeft: containerRect.left,
+                lastCardLeft: lastCardRect.left,
+                lastCardVisible,
+                windowWidth: window.innerWidth
+            });
+
+            setAllCardsVisible(lastCardVisible);
+
+            // Applica il fade da 500px+ (stesso breakpoint del coverflow)
+            // Su mobile/tablet sotto 1200px applica sempre il fade
+            // Su desktop (≥1200px) applica solo se non tutte le card sono visibili
+            const isCoverflowMode = window.innerWidth >= 500;
+            const isDesktop = window.innerWidth >= 1200;
+            const shouldFade = isCoverflowMode && (isDesktop ? !lastCardVisible : true);
+
+            console.log('[NeuralServices] Fade decision:', {
+                isCoverflowMode,
+                isDesktop,
+                lastCardVisible,
+                shouldFade,
+                windowWidth: window.innerWidth
+            });
+
+            setShouldApplyFade(shouldFade);
+        };
+
+        checkCardsVisibility();
+        window.addEventListener('resize', checkCardsVisibility);
+
+        // Delay check per assicurarsi che Swiper sia inizializzato
+        const timeoutId = setTimeout(checkCardsVisibility, 300);
+
+        return () => {
+            window.removeEventListener('resize', checkCardsVisibility);
+            clearTimeout(timeoutId);
+        };
+    }, []); // Empty deps: il numero di servizi è statico
+
     // Real services data
     const services = [
         {
@@ -130,8 +181,8 @@ const NeuralServices = () => {
 
                 {/* Services container */}
                 <div className="max-w-content mx-auto overflow-x-clip overflow-y-visible">
-                    {/* Custom 3D Slider */}
-                    <div className="relative overflow-visible">
+                    {/* Custom 3D Slider - margin negativo solo su mobile per espandere lo spazio */}
+                    <div className="relative overflow-visible -mx-4 md:mx-0">
                         {/* Navigation Buttons */}
                         <div className="service-slider-nav-mobile relative z-10">
                             <button
@@ -153,18 +204,42 @@ const NeuralServices = () => {
                         </div>
 
                         <div
+                            ref={containerRef}
                             className="relative swiper-3d-container"
                             style={{
                                 perspective: '1200px',
-                                maskImage: 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)',
-                                WebkitMaskImage: 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)'
+                                ...(shouldApplyFade ? {
+                                    maskImage: window.innerWidth >= 1200
+                                        ? 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)'
+                                        : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)',
+                                    WebkitMaskImage: window.innerWidth >= 1200
+                                        ? 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)'
+                                        : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)'
+                                } : {})
                             }}
                         >
                             <Swiper
                                 modules={[Navigation]}
-                                slidesPerView="auto"
-                                centeredSlides={true}
-                                spaceBetween={40}
+                                slidesPerView={1}
+                                spaceBetween={20}
+                                breakpoints={{
+                                    500: {
+                                        slidesPerView: 'auto',
+                                        spaceBetween: 20,
+                                        centeredSlides: true
+
+                                    },
+                                    768: {
+                                        slidesPerView: 'auto',
+                                        spaceBetween: 24,
+                                        centeredSlides: true
+                                    },
+                                    1200: {
+                                        slidesPerView: 'auto',
+                                        spaceBetween: 40,
+                                        centeredSlides: true
+                                    },
+                                }}
                                 grabCursor={true}
                                 loop={true}
                                 loopedSlides={services.length}
@@ -175,62 +250,36 @@ const NeuralServices = () => {
                                 }}
                                 onSwiper={(swiper) => {
                                     swiperRef.current = swiper;
-                                    console.log('[Swiper] Initialized', {
-                                        slidesPerView: swiper.params.slidesPerView,
-                                        activeIndex: swiper.activeIndex,
-                                        slides: swiper.slides.length
-                                    });
-                                }}
-                                onSlideChange={(swiper) => {
-                                    console.log('[Swiper] Slide changed', {
-                                        activeIndex: swiper.activeIndex,
-                                        realIndex: swiper.realIndex
-                                    });
-
-                                    // Log opacity delle slide
-                                    swiper.slides.forEach((slide, index) => {
-                                        const content = slide.querySelector('.service-slide-content');
-                                        if (content) {
-                                            const computedStyle = window.getComputedStyle(content);
-                                            const opacity = computedStyle.opacity;
-                                            const classList = Array.from(slide.classList);
-
-                                            if (classList.includes('swiper-slide-active') ||
-                                                classList.includes('swiper-slide-prev') ||
-                                                classList.includes('swiper-slide-next')) {
-                                                console.log(`[Fade Check] Slide ${index}:`, {
-                                                    classes: classList.filter(c => c.includes('swiper-slide')).join(', '),
-                                                    opacity: opacity,
-                                                    windowWidth: window.innerWidth
-                                                });
-                                            }
-                                        }
-                                    });
                                 }}
                                 className="services-3d-swiper pb-8"
                             >
                                 {services.map((item, index) => (
                                     <SwiperSlide key={`${item.id}-${index}`}>
                                         {({ isActive }) => (
-                                            <div className="service-slide-content h-full">
-                                                <Card href={isActive ? item.ctaHref : undefined}>
-                                                    {item.number && <CardNumber>{item.number}</CardNumber>}
-                                                    {item.icon && <CardIcon>{item.icon}</CardIcon>}
-                                                    <CardContent>
-                                                        <CardTitle>{item.title}</CardTitle>
-                                                        {item.subtitle && <CardSubtitle>{item.subtitle}</CardSubtitle>}
-                                                        {item.description && <CardDescription>{item.description}</CardDescription>}
-                                                        {item.capabilities && item.capabilities.length > 0 && (
-                                                            <CardCapabilities capabilities={item.capabilities} />
-                                                        )}
-                                                        {item.ctaText && item.ctaHref && (
-                                                            <span className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 mt-4">
-                                                                <span>{item.ctaText}</span>
-                                                                <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
-                                                            </span>
-                                                        )}
-                                                    </CardContent>
-                                                </Card>
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                <div
+                                                    ref={index === services.length - 1 ? lastCardRef : null}
+                                                    className="service-slide-content h-full"
+                                                >
+                                                    <Card href={isActive ? item.ctaHref : undefined}>
+                                                        {item.number && <CardNumber>{item.number}</CardNumber>}
+                                                        {item.icon && <CardIcon>{item.icon}</CardIcon>}
+                                                        <CardContent>
+                                                            <CardTitle>{item.title}</CardTitle>
+                                                            {item.subtitle && <CardSubtitle>{item.subtitle}</CardSubtitle>}
+                                                            {item.description && <CardDescription>{item.description}</CardDescription>}
+                                                            {item.capabilities && item.capabilities.length > 0 && (
+                                                                <CardCapabilities capabilities={item.capabilities} />
+                                                            )}
+                                                            {item.ctaText && item.ctaHref && (
+                                                                <span className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 mt-4">
+                                                                    <span>{item.ctaText}</span>
+                                                                    <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
+                                                                </span>
+                                                            )}
+                                                        </CardContent>
+                                                    </Card>
+                                                </div>
                                             </div>
                                         )}
                                     </SwiperSlide>
@@ -258,28 +307,36 @@ const NeuralServices = () => {
                     </div>
                 </div>
             <style jsx global>{`
-                /* Mobile (<350px): 1 card, no peek */
+                /* Mobile molto piccolo (<350px): 280px */
                 .services-3d-swiper .swiper-slide {
-                    width: calc(100vw - 48px) !important;
-                    max-width: 480px;
+                    width: 280px !important;
                 }
 
-                /* Medium (≥350px): Show peek of adjacent cards */
+                /* Mobile medio (≥350px): 300px */
                 @media (min-width: 350px) {
+                    .services-3d-swiper .swiper-slide {
+                        width: 300px !important;
+                    }
+                }
+
+                /* Tablet medio (≥500px): 320px con slidesPerView=auto */
+                @media (min-width: 500px) {
                     .services-3d-swiper .swiper-slide {
                         width: 320px !important;
                     }
                 }
 
-                /* Desktop (≥1200px): Full 3 cards with fade */
+                /* Tablet (≥768px): 330px */
+                @media (min-width: 768px) {
+                    .services-3d-swiper .swiper-slide {
+                        width: 330px !important;
+                    }
+                }
+
+                /* Desktop (≥1200px): 420px */
                 @media (min-width: 1200px) {
                     .services-3d-swiper .swiper-slide {
                         width: 420px !important;
-                    }
-
-                    .swiper-3d-container {
-                        mask-image: linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent) !important;
-                        -webkit-mask-image: linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent) !important;
                     }
                 }
 
@@ -327,20 +384,16 @@ const NeuralServices = () => {
                     margin-bottom: -100px !important;
                 }
 
-                /* Mobile Small (<350px): No fade, single card focus */
+                /* Mobile Small (<500px): No effects at all */
                 .services-3d-swiper .swiper-slide .service-slide-content {
                     transition: all 0.5s ease;
                     opacity: 1;
                     z-index: 1;
+                    transform: none;
                 }
 
-                .services-3d-swiper .swiper-slide-active .service-slide-content {
-                    opacity: 1;
-                    z-index: 10;
-                }
-
-                /* Everything else (≥350px): Fade effect + 3D transforms */
-                @media (min-width: 350px) {
+                /* Tablet+ (≥500px): Fade effect + 3D transforms */
+                @media (min-width: 500px) {
                     .services-3d-swiper .swiper-slide .service-slide-content {
                         transform: scale(0.85) translateZ(-200px) rotateY(0deg);
                         opacity: 0.4;
@@ -361,7 +414,7 @@ const NeuralServices = () => {
                 }
 
                 /* Stili per elementi interni - default (inactive) */
-                /* Mobile Small (<350px): Always full opacity/color for single card view */
+                /* Mobile Small (<500px): Always full opacity/color for single card view */
                 .services-3d-swiper .swiper-slide .service-number {
                     opacity: 1;
                     transition: opacity 0.5s ease;
@@ -384,8 +437,8 @@ const NeuralServices = () => {
                     color: rgb(34, 211, 238); /* text-cyan-400 */
                 }
 
-                /* Mobile Medium (≥350px): Apply muted styles to inactive slides */
-                @media (min-width: 350px) {
+                /* Tablet+ (≥500px): Apply muted styles to inactive slides */
+                @media (min-width: 500px) {
                     .services-3d-swiper .swiper-slide .service-number {
                         opacity: 0.4;
                     }

@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -10,9 +10,64 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [allCardsVisible, setAllCardsVisible] = useState(false);
+  const containerRef = useRef(null);
+  const swiperRef = useRef(null);
 
-  // Funzione per calcolare il mask fade dinamico - solo agli estremi
+  // Hook per verificare se tutte le card sono visibili (solo al mount e resize)
+  useEffect(() => {
+    const checkCardsVisibility = () => {
+      if (!containerRef.current || !swiperRef.current) return;
+
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const slides = swiperRef.current.slides;
+
+      if (!slides || slides.length === 0) return;
+
+      const firstSlide = slides[0];
+      if (!firstSlide) return;
+
+      const firstSlideRect = firstSlide.getBoundingClientRect();
+
+      // Se la prima card inizia dentro il container (o leggermente prima per tolleranza),
+      // significa che tutte le card sono visibili per simmetria
+      const firstCardVisible = firstSlideRect.left >= containerRect.left - 2;
+
+      console.log('[ServiceSlider] Card visibility check:', {
+        containerLeft: containerRect.left,
+        firstSlideLeft: firstSlideRect.left,
+        firstCardVisible,
+        tolerance: 2
+      });
+
+      setAllCardsVisible(firstCardVisible);
+    };
+
+    checkCardsVisibility();
+    window.addEventListener('resize', checkCardsVisibility);
+
+    // Delay check per assicurarsi che Swiper sia inizializzato
+    const timeoutId = setTimeout(checkCardsVisibility, 200);
+
+    return () => {
+      window.removeEventListener('resize', checkCardsVisibility);
+      clearTimeout(timeoutId);
+    };
+  }, [items.length]);
+
+  // Funzione per calcolare il mask fade dinamico
   const getMaskImage = () => {
+    // Nessun fade su mobile (< 768px)
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 'none';
+    }
+
+    // Se tutte le card sono visibili, nessun fade
+    if (allCardsVisible) {
+      return 'none';
+    }
+
+    // Altrimenti usa la logica esistente basata sulla posizione
     if (isBeginning && isEnd) {
       return 'none';
     } else if (isBeginning) {
@@ -26,7 +81,7 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div ref={containerRef} className={cn("relative", className)}>
       {/* Navigation Buttons - Top Right */}
       <div className="service-slider-nav">
         <button
@@ -71,12 +126,19 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
           spaceBetween={24}
           slidesPerView="auto"
           centeredSlides={false}
+          breakpoints={{
+            1024: {
+              slidesPerView: 3,
+              slidesPerGroup: 1,
+            },
+          }}
           navigation={{
             nextEl: '.swiper-button-next-custom',
             prevEl: '.swiper-button-prev-custom',
             enabled: true,
           }}
           onSwiper={(swiper) => {
+            swiperRef.current = swiper;
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
@@ -102,24 +164,24 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
           }}
           className="!pb-0"
         >
-        {items.map((item, idx) => (
-          <SwiperSlide key={idx} className="h-auto !w-[85vw] md:!w-[42vw] lg:!w-[28vw] !max-w-md">
-            <div className="relative group block h-full w-full pb-2 pr-2">
-              <Card href={item.showCTA ? undefined : (item.ctaHref || "#contact")}>
-                {item.number && <CardNumber>{item.number}</CardNumber>}
-                {item.icon && <CardIcon>{item.icon}</CardIcon>}
-                <CardContent showCTA={item.showCTA} ctaHref={item.ctaHref} ctaText={item.ctaText}>
-                  <CardTitle>{item.title}</CardTitle>
-                  {item.subtitle && <CardSubtitle>{item.subtitle}</CardSubtitle>}
-                  {item.description && <CardDescription>{item.description}</CardDescription>}
-                  {item.capabilities && item.capabilities.length > 0 && (
-                    <CardCapabilities capabilities={item.capabilities} label={item.capabilitiesLabel} />
-                  )}
-                </CardContent>
-              </Card>
-            </div>
-          </SwiperSlide>
-        ))}
+          {items.map((item, idx) => (
+            <SwiperSlide key={idx} className="h-auto !w-[280px] md:!w-[42vw] lg:!w-[calc((100%-48px)/3)]">
+              <div className="relative group block h-full w-full pb-2 pr-2">
+                <Card href={item.showCTA ? undefined : (item.ctaHref || "#contact")}>
+                  {item.number && <CardNumber>{item.number}</CardNumber>}
+                  {item.icon && <CardIcon>{item.icon}</CardIcon>}
+                  <CardContent showCTA={item.showCTA} ctaHref={item.ctaHref} ctaText={item.ctaText}>
+                    <CardTitle>{item.title}</CardTitle>
+                    {item.subtitle && <CardSubtitle>{item.subtitle}</CardSubtitle>}
+                    {item.description && <CardDescription>{item.description}</CardDescription>}
+                    {item.capabilities && item.capabilities.length > 0 && (
+                      <CardCapabilities capabilities={item.capabilities} label={item.capabilitiesLabel} />
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
 
@@ -148,12 +210,16 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
   );
 };
 
-export const Card = ({ className, children, href = "#" }) => {
+export const Card = ({ className, children, href }) => {
+  const Component = href ? 'a' : 'div';
+  const props = href ? { href } : {};
+
   return (
-    <a
-      href={href}
+    <Component
+      {...props}
       className={cn(
-        "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] cursor-pointer no-underline",
+        "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] no-underline",
+        href ? "cursor-pointer" : "",
         className
       )}
       style={{
@@ -168,7 +234,7 @@ export const Card = ({ className, children, href = "#" }) => {
       }}
     >
       {children}
-    </a>
+    </Component>
   );
 };
 

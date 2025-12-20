@@ -11,7 +11,7 @@ import SectionTitle from './SectionTitle';
  * @param {string} subtitle - Optional subtitle/description
  * @param {string} align - Alignment: 'left', 'center', 'right' (default: 'center')
  * @param {string} maxWidth - Max width class: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '5xl', '7xl', 'full' (default: '2xl')
- * @param {string} size - Size for title: 'sm', 'md', 'lg', 'xl' (default: 'lg')
+ * @param {string} size - Size for title: 'sm', 'md', 'lg', 'xl' (default: 'xl')
  * @param {string} variant - Animation variant: 'blur', 'scroll-reveal', 'fade', 'none' (default: 'blur')
  * @param {string} className - Additional container classes
  */
@@ -20,7 +20,7 @@ const SectionIntro = ({
   subtitle,
   align = 'center',
   maxWidth = '2xl',
-  size = 'lg',
+  size = 'xl',
   variant = 'blur',
   className = ''
 }) => {

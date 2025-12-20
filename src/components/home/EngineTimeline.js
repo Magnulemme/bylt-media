@@ -361,11 +361,8 @@ const EngineTimeline = () => {
         React.useEffect(() => {
             if (!isLastCard) return;
 
-            console.log('🎯 Last card effect mounted');
-
             const handleScroll = () => {
                 if (!thisCardRef.current) {
-                    console.log('⚠️ thisCardRef.current is null');
                     return;
                 }
 
@@ -378,12 +375,10 @@ const EngineTimeline = () => {
                 // Salva la posizione iniziale SOLO quando lo scroll orizzontale è completo (= 1)
                 if (startPositionRef.current === null && currentHorizontalProgress >= 0.99) {
                     startPositionRef.current = currentTop;
-                    console.log('📍 Start position saved:', currentTop, 'at horizontalProgress:', currentHorizontalProgress);
                 }
 
                 // Se non abbiamo ancora la posizione iniziale, non calcolare nulla
                 if (startPositionRef.current === null) {
-                    console.log('⏳ Waiting for horizontal scroll to complete...');
                     return;
                 }
 
@@ -394,14 +389,6 @@ const EngineTimeline = () => {
 
                 const progress = distance > 0 ? Math.min(1, Math.max(0, traveled / distance)) : 0;
 
-                console.log('📊 Card Exit Progress:', {
-                    currentTop: currentTop.toFixed(2),
-                    startPos: startPos.toFixed(2),
-                    distance: distance.toFixed(2),
-                    traveled: traveled.toFixed(2),
-                    progress: progress.toFixed(3)
-                });
-
                 setCardExitProgress(progress);
             };
 
@@ -409,7 +396,6 @@ const EngineTimeline = () => {
             handleScroll(); // Chiamata iniziale
 
             return () => {
-                console.log('🧹 Cleaning up scroll listener');
                 window.removeEventListener('scroll', handleScroll);
             };
         }, [isLastCard, scrollProgress]);
@@ -434,13 +420,11 @@ const EngineTimeline = () => {
                     if (horizontalProgress < cardCenterProgress) {
                         const normalizedProgress = (horizontalProgress - (cardCenterProgress - glowRange)) / glowRange;
                         const result = Math.max(0, Math.min(1, normalizedProgress));
-                        console.log('✨ Phase 1 - Rising:', { horizontalProgress: horizontalProgress.toFixed(3), result: result.toFixed(3) });
                         return result;
                     }
 
                     // Fase 2: Glow rimane a 1 durante tutto lo scroll orizzontale
                     if (horizontalProgress < 1) {
-                        console.log('✨ Phase 2 - Plateau:', { horizontalProgress: horizontalProgress.toFixed(3), result: 1 });
                         return 1;
                     }
 
@@ -449,7 +433,6 @@ const EngineTimeline = () => {
                     // exitProgress: 0 = card ancora visibile, 1 = top card al top schermo
                     // Glow diminuisce mentre la card sale e esce
                     const result = Math.max(0, 1 - cardExitProgress);
-                    console.log('✨ Phase 3 - Exit:', { horizontalProgress: horizontalProgress.toFixed(3), cardExitProgress: cardExitProgress.toFixed(3), result: result.toFixed(3) });
                     return result;
                 }
             )
@@ -595,10 +578,10 @@ const EngineTimeline = () => {
                     <div className="engine-timeline-container engine-timeline-title-container">
                         <ScrollRevealText
                             text="Our proven process ensures clarity, efficiency, and exceptional results"
-                            className="text-2xl md:text-4xl font-bold font-inter text-center leading-tight text-white mb-6"
+                            className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-6"
                         />
                         <motion.p
-                            className="text-gray-400 text-lg max-w-2xl mx-auto text-center"
+                            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto text-center"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -623,10 +606,10 @@ const EngineTimeline = () => {
                 <div className="md:hidden">
                     {/* Title - static */}
                     <div ref={mobileTitleRef} className="mobile-timeline-container">
-                        <h2 className="text-2xl font-bold font-inter text-center leading-tight text-white mb-4">
+                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
                             Our proven process ensures clarity, efficiency, and exceptional results
                         </h2>
-                        <p className="text-gray-400 text-base text-center">
+                        <p className="text-lg md:text-xl text-gray-400 text-center">
                             Every stage is designed to deliver measurable impact, from strategy to scale
                         </p>
                     </div>
