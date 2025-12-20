@@ -112,7 +112,7 @@
        SAFETY MARGINS (margini minimi ai lati)
        Usati con mx-auto per garantire spazio ai bordi
        ======================================== */
-    --margin-safe-x: 1rem;  /* 16px - Mobile default */
+    --margin-safe-x: 0.25rem;  /* 4px - Very small screens */
 
     /* ========================================
        BREAKPOINTS & MAX-WIDTH
@@ -121,6 +121,14 @@
 
     /* Custom max-width utility */
     --max-width-content: 1440px;
+  }
+
+  /* Small mobile screens - increase safe margins */
+  @media (min-width: 350px) {
+    @theme {
+      /* Safety Margins - Small mobile */
+      --margin-safe-x: 0.5rem;  /* 8px - Small mobile */
+    }
   }
 
   /* Desktop/Tablet responsive spacing values */
@@ -609,8 +617,6 @@
       background: #020617;
       transform-style: preserve-3d;
       padding-top: var(--spacing-padding-lg);
-      padding-left: calc(var(--margin-safe-x) - 4px);
-      padding-right: calc(var(--margin-safe-x) - 4px);
     }
 
     @media (min-width: 768px) {
@@ -729,6 +735,40 @@
       box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
     }
 
+    /* Service Desktop Card - Card base per slider desktop spotlight */
+    .service-desktop-card {
+      @apply rounded-lg backdrop-blur-sm border-2 flex flex-col;
+      padding: 2rem;
+      height: 500px;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    /* Service Desktop Card Active - Card centrale in evidenza */
+    .service-desktop-card-active {
+      @apply bg-black border-cyan-400/60;
+      box-shadow: 10px 10px 0px rgba(34, 211, 238, 1);
+    }
+
+    /* Service Desktop Card Inactive - Card laterali */
+    .service-desktop-card-inactive {
+      @apply bg-black/80 border-white/20;
+      box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
+      opacity: 0.7;
+    }
+
+    /* Desktop Navigation Buttons */
+    .swiper-button-prev-desktop,
+    .swiper-button-next-desktop {
+      @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
+    }
+
+    .swiper-button-prev-desktop:hover,
+    .swiper-button-next-desktop:hover {
+      @apply border-cyan-400/60 bg-cyan-500/20 shadow-cyan-500/20;
+      transform: translateY(-2px);
+    }
+
     /* Service Button Content - Container flex per contenuto button */
     .service-button-content {
       @apply flex-1 min-w-0;
@@ -834,43 +874,24 @@
       }
     }
 
-    /* Infinity Layout - Flex layout per simbolo e contenuto */
+    /* Infinity Layout - Container principale verticale */
     .infinity-layout {
-      @apply flex flex-col lg:flex-row items-center;
-      gap: var(--spacing-padding-md);
-    }
-
-    @media (min-width: 1024px) {
-      .infinity-layout {
-        gap: var(--spacing-padding-lg);
-      }
-    }
-
-    /* Infinity Text Container - Container testo con gap verticale */
-    .infinity-text-container {
-      @apply flex-1 flex flex-col;
-      gap: var(--spacing-padding-xs);
-    }
-
-    @media (min-width: 768px) {
-      .infinity-text-container {
-        gap: var(--spacing-padding-sm);
-      }
-    }
-
-    /* Infinity Heading Container - Wrapper per heading */
-    .infinity-heading-container {
       @apply flex flex-col;
-      gap: var(--spacing-padding-xs);
+      gap: var(--spacing-padding-sm);
     }
 
     @media (min-width: 768px) {
-      .infinity-heading-container {
-        gap: var(--spacing-padding-sm);
+      .infinity-layout {
+        gap: var(--spacing-padding-md);
       }
     }
 
-    /* Infinity Paragraphs - Container paragrafi descrittivi */
+    /* Infinity Header - Container titolo con simbolo in background */
+    .infinity-header {
+      @apply relative;
+    }
+
+    /* Infinity Paragraphs - Container paragrafi descrittivi a tutta larghezza */
     .infinity-paragraphs {
       @apply text-gray-300 text-lg leading-relaxed flex flex-col;
       gap: var(--spacing-padding-xs);

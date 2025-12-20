@@ -1,14 +1,32 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
 import ShaderBackground from './ShaderBackground';
 import NeuralServices from './NeuralServices';
+import NeuralServicesMobile from './NeuralServicesMobile';
 import InfinityPhilosophy from './InfinityPhilosophy';
 import PerformanceMetrics from './PerformanceMetrics';
 
 const GrainyBgSection = () => {
     const sectionRef = useQuantumScrollAnim(0.1);
     const containerRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect screen size for conditional rendering
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 500);
+        };
+
+        // Check on mount
+        checkMobile();
+
+        // Add resize listener
+        window.addEventListener('resize', checkMobile);
+
+        // Cleanup
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Scroll-based animations usando motion
     const { scrollYProgress } = useScroll({
@@ -59,8 +77,8 @@ const GrainyBgSection = () => {
                 <ShaderBackground />
 
                 <div ref={sectionRef} className="grainy-bg-content">
-                    {/* Services Section */}
-                    <NeuralServices />
+                    {/* Services Section - Conditional rendering based on screen size */}
+                    {isMobile ? <NeuralServicesMobile /> : <NeuralServices />}
 
                     {/* Infinity Philosophy Section */}
                     <InfinityPhilosophy />
