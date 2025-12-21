@@ -102,39 +102,56 @@ const MobileScrollSection = ({
 }) => (
   <div className="md:hidden">
     <div style={{ height: '500vh' }} ref={containerRef}>
-      <div className="sticky flex items-center" style={{ top: '20vh' }}>
-        <div className="max-w-content mx-auto w-full relative">
+      <div className="sticky flex flex-col justify-center" style={{ top: '15vh', height: '80vh' }}>
+        <div className="max-w-content mx-auto w-full relative px-4 sm:px-6">
           <div
             ref={stickyWrapperRef}
-            className="overflow-hidden -mx-4 sm:-mx-6"
+            className="overflow-hidden"
             style={{
               opacity: isReady ? 1 : 0,
-              transition: 'opacity 0.2s ease-out, mask-image 0.3s ease-out, -webkit-mask-image 0.3s ease-out',
-              maskImage: getMaskImage(),
-              WebkitMaskImage: getMaskImage()
+              transition: 'opacity 0.2s ease-out'
             }}
           >
             <motion.div
               ref={cardsRef}
-              className="flex items-stretch"
+              className="flex items-stretch performance-mobile-cards gap-4"
               style={{ x }}
             >
-              <div className="flex-shrink-0 w-screen px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <ConversionTrendChart data={channelPerformanceData} />
-              </div>
-              <div className="flex-shrink-0 w-screen px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <ROASTrendChart data={roasData} />
-              </div>
-              <div className="flex-shrink-0 w-screen px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <TrafficDistributionChart data={trafficMixData} />
-              </div>
-              <div className="flex-shrink-0 w-screen px-4 [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+              {/* Revenue Chart - Always show (most important) */}
+              <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
                 <RevenueChart data={performanceData} />
               </div>
-              <div className="flex-shrink-0 w-screen px-4" ref={cardRef}>
+
+              {/* ROAS Trend - Always show (key metric) */}
+              <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                <ROASTrendChart data={roasData} />
+              </div>
+
+              {/* KPI Card - Always show (summary) */}
+              <div className="performance-mobile-card" ref={cardRef}>
                 <KPICard isMobile roasData={roasData} kpis={kpis} />
               </div>
+
+              {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
+              <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                <ConversionTrendChart data={channelPerformanceData} />
+              </div>
+              <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                <TrafficDistributionChart data={trafficMixData} />
+              </div>
             </motion.div>
+          </div>
+        </div>
+
+        {/* Testo descrittivo sotto le card - mobile */}
+        <div className="mt-8 sm:mt-12">
+          <div className="text-center max-w-3xl mx-auto flex flex-col gap-3">
+            <h3 className="text-2xl font-bold text-white">
+              The Numbers Speak for Themselves
+            </h3>
+            <p className="text-base text-gray-400">
+              Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
+            </p>
           </div>
         </div>
       </div>
@@ -231,10 +248,9 @@ const PerformanceMetrics = () => {
 
     // Mobile
 // Nel calculateDistances, per mobile:
-if (mobileCardsRef.current) {
+if (mobileCardsRef.current && mobileStickyWrapperRef.current) {
   const cardsWidth = mobileCardsRef.current.scrollWidth;
-  // Su mobile le card sono w-screen, quindi usiamo la viewport reale
-  const visibleWidth = window.innerWidth;
+  const visibleWidth = mobileStickyWrapperRef.current.clientWidth;
   const distance = cardsWidth - visibleWidth;
   setMobileScrollableDistance(distance);
   mobileX.set(-distance);
@@ -329,41 +345,153 @@ if (mobileCardsRef.current) {
   };
 
   return (
-    <div className="performance-section">
-      <DesktopScrollSection
-        containerRef={desktopContainerRef}
-        stickyWrapperRef={stickyWrapperRef}
-        cardsRef={desktopCardsRef}
-        isReady={isReady}
-        getMaskImage={getDesktopMaskImage}
-        x={desktopX}
-        performanceData={performanceData}
-        roasData={roasData}
-        channelPerformanceData={channelPerformanceData}
-        trafficMixData={trafficMixData}
-        kpis={kpis}
-        cardHeight={cardHeight}
-        showStickyText={showStickyText}
-      />
-
-      {/* Section intro - only for mobile */}
-      <div className="max-w-content mx-auto relative z-10">
-        <MobileScrollSection
-          containerRef={mobileContainerRef}
-          stickyWrapperRef={mobileStickyWrapperRef}
-          cardsRef={mobileCardsRef}
-          cardRef={cardRef}
+    <>
+      <div className="performance-section">
+        <DesktopScrollSection
+          containerRef={desktopContainerRef}
+          stickyWrapperRef={stickyWrapperRef}
+          cardsRef={desktopCardsRef}
           isReady={isReady}
-          getMaskImage={getMobileMaskImage}
-          x={mobileX}
+          getMaskImage={getDesktopMaskImage}
+          x={desktopX}
           performanceData={performanceData}
           roasData={roasData}
           channelPerformanceData={channelPerformanceData}
           trafficMixData={trafficMixData}
           kpis={kpis}
+          cardHeight={cardHeight}
+          showStickyText={showStickyText}
         />
+
+        {/* Section intro - only for mobile */}
+        <div className="max-w-content mx-auto relative z-10">
+          <MobileScrollSection
+            containerRef={mobileContainerRef}
+            stickyWrapperRef={mobileStickyWrapperRef}
+            cardsRef={mobileCardsRef}
+            cardRef={cardRef}
+            isReady={isReady}
+            getMaskImage={getMobileMaskImage}
+            x={mobileX}
+            performanceData={performanceData}
+            roasData={roasData}
+            channelPerformanceData={channelPerformanceData}
+            trafficMixData={trafficMixData}
+            kpis={kpis}
+          />
+        </div>
       </div>
-    </div>
+
+      <style jsx global>{`
+        /* ==========================================
+           MOBILE CARDS - RESPONSIVE SIZING
+           ========================================== */
+        .performance-mobile-cards {
+          overflow: visible !important;
+          max-height: 550px;
+        }
+
+        .performance-mobile-card {
+          flex-shrink: 0;
+          /* Larghezza fluida basata sullo schermo disponibile - si adatta a qualsiasi dimensione */
+          width: 100%;
+          max-width: 500px;
+          max-height: 550px;
+        }
+
+        /* Hide optional cards on very small screens (< 300px like Galaxy Z Flip closed) */
+        @media (max-width: 299px) {
+          .performance-mobile-card-optional {
+            display: none;
+          }
+        }
+
+        /* ==========================================
+           SIMPLIFY CHART DETAILS ON SMALL SCREENS
+           ========================================== */
+
+        /* Very small screens (< 360px) - Stack everything vertically */
+        @media (max-width: 359px) {
+          /* Hide chart footer descriptions */
+          .performance-mobile-card .mt-4.pt-4.border-t p.text-xs.text-gray-500:last-child {
+            display: none;
+          }
+
+          /* Reduce padding in cards */
+          .performance-mobile-card > div > div {
+            padding: 1rem !important;
+          }
+
+          /* Make titles smaller */
+          .performance-mobile-card h3 {
+            font-size: 0.75rem !important;
+          }
+
+          /* Hide subtitles */
+          .performance-mobile-card p.text-xs.text-gray-600 {
+            display: none;
+          }
+
+          /* Header: Stack title and legend vertically */
+          .performance-mobile-card .flex.items-center.justify-between.mb-4 {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.5rem !important;
+          }
+
+          /* Legend: Stack legend items vertically */
+          .performance-mobile-card .flex.gap-3.text-xs,
+          .performance-mobile-card .flex.gap-4.text-xs {
+            flex-direction: column !important;
+            gap: 0.25rem !important;
+            align-items: flex-start !important;
+          }
+
+          /* Footer: Keep stats sections horizontal but stack content inside */
+          .performance-mobile-card .mt-4.pt-4.border-t > .flex.items-center.justify-between {
+            align-items: flex-start !important;
+          }
+
+          /* Footer stats: Stack number and label vertically within each section */
+          .performance-mobile-card .flex.items-baseline.gap-2 {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+          }
+
+          /* Stack percentages next to numbers in Traffic Distribution */
+          .performance-mobile-card .flex.items-center.gap-2 {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0.25rem !important;
+          }
+
+          /* Reduce big number size */
+          .performance-mobile-card .text-2xl {
+            font-size: 1.25rem !important;
+          }
+        }
+
+        /* Tablet+ sizing adjustments */
+        @media (min-width: 500px) {
+          .performance-mobile-card {
+            max-width: 520px;
+          }
+        }
+
+        @media (min-width: 640px) {
+          .performance-mobile-card {
+            max-width: 540px;
+          }
+        }
+
+        @media (min-width: 768px) {
+          .performance-mobile-card {
+            max-width: 600px;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 

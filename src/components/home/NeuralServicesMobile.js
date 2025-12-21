@@ -114,7 +114,7 @@ const NeuralServicesMobile = () => {
     return (
         <>
             {/* Section intro */}
-            <div className="max-w-content mx-auto">
+            <div className="max-w-content mx-auto px-(--margin-safe-x)">
                 <SectionIntro
                     title="A synergistic approach to digital dominance"
                     subtitle="Each service is a component of a greater strategy, designed to deliver comprehensive and exponential results"
@@ -130,9 +130,9 @@ const NeuralServicesMobile = () => {
                 <div className="relative overflow-visible services-slider-expander">
 
                     {/* Navigation Buttons */}
-                    <div className="service-slider-nav-mobile relative z-10">
+                    <div className="service-slider-nav-mobile relative z-10 mb-(--spacing-padding-xs) md:mb-(--spacing-padding-sm) px-(--margin-safe-x)">
                         <button
-                            className="swiper-button-prev-services"
+                            className="swiper-button-prev-services swiper-button-prev-mobile"
                             aria-label="Previous service"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -140,7 +140,7 @@ const NeuralServicesMobile = () => {
                             </svg>
                         </button>
                         <button
-                            className="swiper-button-next-services"
+                            className="swiper-button-next-services swiper-button-next-mobile"
                             aria-label="Next service"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -268,11 +268,20 @@ const NeuralServicesMobile = () => {
                 }
 
                 /* ==========================================
-                   CARD CONTAINER - LARGHEZZA FISSA RESPONSIVE
+                   CARD CONTAINER - LARGHEZZA RESPONSIVE FLUIDA
                    ========================================== */
                 .services-mobile-swiper .card-container {
-                    width: 220px;
+                    /* 100% dello spazio disponibile meno margini interni */
+                    width: calc(100% - 40px);
+
+                    /* Limiti min/max per mantenere proporzioni */
+                    min-width: 220px;
+                    max-width: 420px;
+
                     flex-shrink: 0;
+
+                    /* Compensazione shadow 8px: spostiamo 4px a sx */
+                    margin-left: -4px;
                 }
 
                 .services-mobile-swiper .card-container > a {
@@ -280,31 +289,6 @@ const NeuralServicesMobile = () => {
                     flex-direction: column;
                     width: 100%;
                     height: 100%;
-                }
-
-                /* Responsive widths */
-                @media (min-width: 350px) {
-                    .services-mobile-swiper .card-container {
-                        width: 300px;
-                    }
-                }
-
-                @media (min-width: 500px) {
-                    .services-mobile-swiper .card-container {
-                        width: 320px;
-                    }
-                }
-
-                @media (min-width: 768px) {
-                    .services-mobile-swiper .card-container {
-                        width: 360px;
-                    }
-                }
-
-                @media (min-width: 1200px) {
-                    .services-mobile-swiper .card-container {
-                        width: 420px;
-                    }
                 }
 
                 /* ==========================================
@@ -335,10 +319,15 @@ const NeuralServicesMobile = () => {
                     transform: translateX(4px);
                 }
 
-                /* Number subtle glow on card hover for active slide */
-                .services-mobile-swiper .swiper-slide-active .card-container > a:hover div[class*="absolute top-6 right-6"] span {
-                    text-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 40px rgba(34, 211, 238, 0.3);
-                    filter: brightness(1.15);
+                /* Number animated gradient on card hover for active slide */
+                .services-mobile-swiper .swiper-slide-active .card-container > a:hover div[class*="absolute top-6 right-6"] span:first-child {
+                    opacity: 0;
+                    transition: opacity 0.5s ease;
+                }
+
+                .services-mobile-swiper .swiper-slide-active .card-container > a:hover div[class*="absolute top-6 right-6"] span:last-child {
+                    opacity: 1;
+                    transition: opacity 0.5s ease;
                 }
 
                 /* Ensure card pointer on active slide */

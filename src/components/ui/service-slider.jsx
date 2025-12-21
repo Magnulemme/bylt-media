@@ -210,12 +210,13 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
   );
 };
 
-export const Card = ({ className, children, href }) => {
+export const Card = ({ className, children, href, ...props }) => {
   const Component = href ? 'a' : 'div';
-  const props = href ? { href } : {};
+  const linkProps = href ? { href } : {};
 
   return (
     <Component
+      {...linkProps}
       {...props}
       className={cn(
         "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] no-underline",
@@ -243,11 +244,11 @@ export const CardNumber = ({ className, children }) => {
     <div className={cn("absolute top-6 right-6 text-7xl font-bold font-inter leading-none", className)}>
       <div className="relative">
         {/* Static number - always visible */}
-        <span className="bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.10] bg-clip-text text-transparent group-hover:opacity-0 transition-opacity duration-500">
+        <span className="number-static bg-gradient-to-br from-cyan-400/[0.15] to-purple-600/[0.12] bg-clip-text text-transparent transition-opacity duration-500">
           {children}
         </span>
         {/* Animated gradient on hover */}
-        <span className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-cyan-400/40 via-blue-500/40 to-purple-600/40 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%]">
+        <span className="number-animated absolute top-0 left-0 bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent animate-gradient transition-opacity duration-500 bg-[length:200%_200%] opacity-0">
           {children}
         </span>
       </div>

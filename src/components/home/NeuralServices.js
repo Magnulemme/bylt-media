@@ -260,8 +260,22 @@ const NeuralServices = () => {
                                                 <div
                                                     ref={index === services.length - 1 ? lastCardRef : null}
                                                     className="service-slide-content h-full"
+                                                    onClick={() => {
+                                                        if (!isActive && swiperRef.current) {
+                                                            // Find the real index in the loop
+                                                            const realIndex = swiperRef.current.slides.findIndex(
+                                                                slide => slide.querySelector(`[data-service-id="${item.id}"]`)
+                                                            );
+                                                            if (realIndex !== -1) {
+                                                                swiperRef.current.slideToLoop(index);
+                                                            }
+                                                        }
+                                                    }}
                                                 >
-                                                    <Card href={isActive ? item.ctaHref : undefined}>
+                                                    <Card
+                                                        href={isActive ? item.ctaHref : undefined}
+                                                        data-service-id={item.id}
+                                                    >
                                                         {item.number && <CardNumber>{item.number}</CardNumber>}
                                                         {item.icon && <CardIcon>{item.icon}</CardIcon>}
                                                         <CardContent>
@@ -346,8 +360,8 @@ const NeuralServices = () => {
                     flex-direction: column;
                 }
 
-                /* CTA highlighted on card hover for active slide */
-                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover span[class*="group/cta"] span:first-child {
+                /* CTA highlighted on card hover for active slide - both text and arrow */
+                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover span[class*="group/cta"] {
                     color: #22d3ee; /* cyan-400 */
                 }
 
@@ -356,10 +370,24 @@ const NeuralServices = () => {
                     transform: translateX(4px);
                 }
 
-                /* Number subtle glow on card hover for active slide */
-                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover div[class*="absolute top-6 right-6"] span {
-                    text-shadow: 0 0 20px rgba(34, 211, 238, 0.6), 0 0 40px rgba(34, 211, 238, 0.3);
-                    filter: brightness(1.15);
+                /* Icon subtle glow and color shift on card hover for active slide */
+                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover div[class*="w-14 h-14"] {
+                    background-color: rgba(34, 211, 238, 0.15); /* cyan-400/15 */
+                    border-color: rgba(34, 211, 238, 0.5); /* cyan-400/50 */
+                    box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+                }
+
+                /* Icon SVG color brighten on hover */
+                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover div[class*="w-14 h-14"] svg {
+                    color: #22d3ee; /* cyan-400 - slightly brighter */
+                }
+
+                /* Number gradient animation on card hover for active slide */
+                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover div[class*="absolute top-6 right-6"] .number-static {
+                    opacity: 0;
+                }
+                .services-3d-swiper .swiper-slide-active .service-slide-content > a:hover div[class*="absolute top-6 right-6"] .number-animated {
+                    opacity: 1;
                 }
 
                 /* Ensure card pointer on active slide */
@@ -370,6 +398,25 @@ const NeuralServices = () => {
                 /* Disable default card hover translate in swiper */
                 .services-3d-swiper .swiper-slide .service-slide-content > a:hover {
                     transform: none !important;
+                }
+
+                /* Hover effects for INACTIVE slides (secondary cards) - tablet+ only */
+                @media (min-width: 500px) {
+                    /* Icon subtle brighten on inactive cards hover - grayscale */
+                    .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content:hover div[class*="w-14 h-14"] {
+                        background-color: rgba(255, 255, 255, 0.06); /* subtle brighter from 0.03 */
+                        border-color: rgba(255, 255, 255, 0.18); /* subtle brighter from 0.1 */
+                        box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+                    }
+
+                    .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content:hover div[class*="w-14 h-14"] svg {
+                        color: rgba(156, 163, 175, 1); /* gray-400 - subtle brighter from gray-500 */
+                    }
+
+                    /* Cursor pointer on inactive cards to signal interactivity */
+                    .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content {
+                        cursor: pointer;
+                    }
                 }
 
                 /* Remove swiper default overflow */
@@ -439,6 +486,7 @@ const NeuralServices = () => {
 
                 /* Tablet+ (≥500px): Apply muted styles to inactive slides */
                 @media (min-width: 500px) {
+                    /* Inactive slide default state - muted */
                     .services-3d-swiper .swiper-slide .service-number {
                         opacity: 0.4;
                     }
@@ -447,6 +495,16 @@ const NeuralServices = () => {
                     }
                     .services-3d-swiper .swiper-slide .service-subtitle {
                         color: rgb(75, 85, 99); /* text-gray-600 */
+                    }
+
+                    /* Icon muted for inactive slides */
+                    .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content div[class*="w-14 h-14"] {
+                        background-color: rgba(255, 255, 255, 0.03);
+                        border-color: rgba(255, 255, 255, 0.1);
+                    }
+
+                    .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content div[class*="w-14 h-14"] svg {
+                        color: rgb(107, 114, 128); /* gray-500 */
                     }
 
                     /* Restore full color/opacity for active slide */
