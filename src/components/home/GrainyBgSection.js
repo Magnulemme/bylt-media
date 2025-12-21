@@ -77,19 +77,6 @@ const GrainyBgSection = () => {
                 {/* Shader Background */}
                 <ShaderBackground />
 
-                {/* DEBUG: Background visibile per verificare che il container abbia altezza */}
-                <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'rgba(255, 0, 0, 0.1)',
-                    border: '2px solid red',
-                    zIndex: 0,
-                    pointerEvents: 'none'
-                }} />
-
                 <div ref={sectionRef} className="grainy-bg-content">
                     {/* Services Section - Conditional rendering based on screen size */}
                     {isMobile ? <NeuralServicesMobile /> : <NeuralServices />}
