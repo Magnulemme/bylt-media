@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { motion, useScroll, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useMotionValue, useTransform } from 'framer-motion';
 import RevenueChart from './PerformanceMetrics/RevenueChart';
 import TrafficDistributionChart from './PerformanceMetrics/TrafficDistributionChart';
 import ROASTrendChart from './PerformanceMetrics/ROASTrendChart';
@@ -88,6 +88,8 @@ const DesktopScrollSection = ({
 // Mobile Scroll Component
 const MobileScrollSection = ({
   containerRef,
+  textSpacerRef,
+  textContentRef,
   stickyWrapperRef,
   cardsRef,
   cardRef,
@@ -98,66 +100,93 @@ const MobileScrollSection = ({
   roasData,
   channelPerformanceData,
   trafficMixData,
-  kpis
-}) => (
-  <div className="md:hidden">
-    <div style={{ height: '500vh' }} ref={containerRef}>
-      <div className="sticky flex flex-col justify-center" style={{ top: '15vh', height: '80vh' }}>
-        <div className="max-w-content mx-auto w-full relative px-4 sm:px-6">
-          <div
-            ref={stickyWrapperRef}
-            className="overflow-hidden"
-            style={{
-              opacity: isReady ? 1 : 0,
-              transition: 'opacity 0.2s ease-out'
-            }}
-          >
-            <motion.div
-              ref={cardsRef}
-              className="flex items-stretch performance-mobile-cards gap-4"
-              style={{ x }}
+  kpis,
+  cardHeight,
+  textHeight,
+  textOpacity
+}) => {
+  return (
+    <div className="md:hidden">
+      {/* Container per lo scroll delle card */}
+      <div style={{ height: '500vh' }} ref={containerRef}>
+        <div
+          className="sticky"
+          style={{
+            top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px)` : '50vh'
+          }}
+        >
+          <div className="max-w-content mx-auto w-full relative px-4 sm:px-6">
+            <div
+              ref={stickyWrapperRef}
+              className="overflow-hidden"
+              style={{
+                opacity: isReady ? 1 : 0,
+                transition: 'opacity 0.2s ease-out'
+              }}
             >
-              {/* Revenue Chart - Always show (most important) */}
-              <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <RevenueChart data={performanceData} />
-              </div>
+              <motion.div
+                ref={cardsRef}
+                className="flex items-stretch performance-mobile-cards gap-4"
+                style={{ x }}
+              >
+                {/* Revenue Chart - Always show (most important) */}
+                <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <RevenueChart data={performanceData} />
+                </div>
 
-              {/* ROAS Trend - Always show (key metric) */}
-              <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <ROASTrendChart data={roasData} />
-              </div>
+                {/* ROAS Trend - Always show (key metric) */}
+                <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <ROASTrendChart data={roasData} />
+                </div>
 
-              {/* KPI Card - Always show (summary) */}
-              <div className="performance-mobile-card" ref={cardRef}>
-                <KPICard isMobile roasData={roasData} kpis={kpis} />
-              </div>
+                {/* KPI Card - Always show (summary) */}
+                <div className="performance-mobile-card" ref={cardRef}>
+                  <KPICard isMobile roasData={roasData} kpis={kpis} />
+                </div>
 
-              {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
-              <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <ConversionTrendChart data={channelPerformanceData} />
-              </div>
-              <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                <TrafficDistributionChart data={trafficMixData} />
+                {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
+                <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <ConversionTrendChart data={channelPerformanceData} />
+                </div>
+                <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <TrafficDistributionChart data={trafficMixData} />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Spacer collapsabile per far salire il testo */}
+      <div style={{ height: textHeight > 0 ? `${textHeight}px` : '200px' }} ref={textSpacerRef}>
+        <div
+          className="sticky"
+          style={{
+            top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px)` : '50vh'
+          }}
+        >
+          <div className="max-w-content mx-auto w-full relative px-4 sm:px-6">
+            {/* Testo che appare mentre lo spacer collassa */}
+            <motion.div
+              ref={textContentRef}
+              className="mt-8 sm:mt-12 pb-12 sm:pb-16"
+              style={{ opacity: textOpacity }}
+            >
+              <div className="text-center max-w-3xl mx-auto flex flex-col gap-3">
+                <h3 className="text-2xl font-bold text-white">
+                  The Numbers Speak for Themselves
+                </h3>
+                <p className="text-base text-gray-400">
+                  Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
+                </p>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Testo descrittivo sotto le card - mobile */}
-        <div className="mt-8 sm:mt-12">
-          <div className="text-center max-w-3xl mx-auto flex flex-col gap-3">
-            <h3 className="text-2xl font-bold text-white">
-              The Numbers Speak for Themselves
-            </h3>
-            <p className="text-base text-gray-400">
-              Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const PerformanceMetrics = () => {
   const mobileContainerRef = useRef(null);
@@ -167,11 +196,15 @@ const PerformanceMetrics = () => {
   const stickyWrapperRef = useRef(null);
   const mobileStickyWrapperRef = useRef(null);
   const cardRef = useRef(null);
+  const textSpacerRef = useRef(null);
+  const textContentRef = useRef(null);
 
   const [isReady, setIsReady] = useState(false);
   const [scrollableDistance, setScrollableDistance] = useState(0);
   const [mobileScrollableDistance, setMobileScrollableDistance] = useState(0);
   const [cardHeight, setCardHeight] = useState('auto');
+  const [mobileCardHeight, setMobileCardHeight] = useState(0);
+  const [mobileTextHeight, setMobileTextHeight] = useState(0);
   const [showStickyText, setShowStickyText] = useState(true);
 
   // Stati per gestire il fade ai bordi
@@ -228,6 +261,15 @@ const PerformanceMetrics = () => {
     offset: ["start start", "end end"]
   });
 
+  // Text spacer scroll progress per animare il testo
+  const { scrollYProgress: textSpacerProgress } = useScroll({
+    target: textSpacerRef,
+    offset: ["start end", "end end"]
+  });
+
+  // Transform per fade in del testo (il movimento è dato dal collasso dello spacer)
+  const textOpacity = useTransform(textSpacerProgress, [0, 0.5, 1], [0, 1, 1]);
+
   // Calcola le distanze scrollabili
   const calculateDistances = useCallback(() => {
     // Calcola prima l'altezza delle card per desktop
@@ -280,6 +322,34 @@ if (mobileCardsRef.current && mobileStickyWrapperRef.current) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [calculateDistances]);
+
+  // Calcola l'altezza della card mobile per il posizionamento centrato
+  useEffect(() => {
+    const updateMobileCardHeight = () => {
+      if (cardRef.current) {
+        const height = cardRef.current.offsetHeight;
+        setMobileCardHeight(height);
+      }
+    };
+
+    updateMobileCardHeight();
+    window.addEventListener('resize', updateMobileCardHeight);
+    return () => window.removeEventListener('resize', updateMobileCardHeight);
+  }, []);
+
+  // Calcola l'altezza del testo mobile per lo spacer
+  useEffect(() => {
+    const updateMobileTextHeight = () => {
+      if (textContentRef.current) {
+        const height = textContentRef.current.offsetHeight;
+        setMobileTextHeight(height);
+      }
+    };
+
+    updateMobileTextHeight();
+    window.addEventListener('resize', updateMobileTextHeight);
+    return () => window.removeEventListener('resize', updateMobileTextHeight);
+  }, []);
 
   // Sincronizza scroll desktop
   useEffect(() => {
@@ -346,7 +416,7 @@ if (mobileCardsRef.current && mobileStickyWrapperRef.current) {
 
   return (
     <>
-      <div className="performance-section">
+      <div className="performance-section ">
         <DesktopScrollSection
           containerRef={desktopContainerRef}
           stickyWrapperRef={stickyWrapperRef}
@@ -367,6 +437,8 @@ if (mobileCardsRef.current && mobileStickyWrapperRef.current) {
         <div className="max-w-content mx-auto relative z-10">
           <MobileScrollSection
             containerRef={mobileContainerRef}
+            textSpacerRef={textSpacerRef}
+            textContentRef={textContentRef}
             stickyWrapperRef={mobileStickyWrapperRef}
             cardsRef={mobileCardsRef}
             cardRef={cardRef}
@@ -378,6 +450,9 @@ if (mobileCardsRef.current && mobileStickyWrapperRef.current) {
             channelPerformanceData={channelPerformanceData}
             trafficMixData={trafficMixData}
             kpis={kpis}
+            cardHeight={mobileCardHeight}
+            textHeight={mobileTextHeight}
+            textOpacity={textOpacity}
           />
         </div>
       </div>

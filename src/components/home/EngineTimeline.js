@@ -160,7 +160,7 @@ const EngineTimeline = () => {
                 className="process-step"
             >
                 {/* Step Number Circle - centered vertically to card */}
-                <div className="relative flex-shrink-0 rounded-full overflow-visible">
+                <div className="relative shrink-0 rounded-full overflow-visible">
                     <motion.div
                         className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
                         style={{
@@ -229,7 +229,7 @@ const EngineTimeline = () => {
                     {/* Icon & Title */}
                     <div className="flex items-start gap-4 mb-4">
                         <motion.div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                            className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                             style={{
                                 background: iconBackground,
                                 color: iconColor
@@ -449,7 +449,7 @@ const EngineTimeline = () => {
                 className="mobile-timeline-card-wrapper"
             >
                 {/* Step Number Circle */}
-                <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg flex-shrink-0"
+                <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg shrink-0"
                     style={{
                         borderColor: useTransform(
                             isActive,
