@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DesktopSection from './PerformanceMetrics/DesktopSection';
 import MobileSection from './PerformanceMetrics/MobileSection';
 import {
@@ -11,25 +11,69 @@ import {
 } from './PerformanceMetrics/constants';
 
 const PerformanceMetrics = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Imposta mounted su true per evitare hydration mismatch
+    setIsMounted(true);
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Durante SSR e hydration iniziale, renderizza entrambe con CSS (come prima)
+  // Dopo il mount, switcha al rendering condizionale
+  if (!isMounted) {
+    return (
+      <div className="performance-section">
+        <div className="md:hidden">
+          <MobileSection
+            performanceData={performanceData}
+            roasData={roasData}
+            channelPerformanceData={channelPerformanceData}
+            trafficMixData={trafficMixData}
+            kpis={kpis}
+          />
+        </div>
+        <div className="hidden md:block">
+          <DesktopSection
+            performanceData={performanceData}
+            roasData={roasData}
+            channelPerformanceData={channelPerformanceData}
+            trafficMixData={trafficMixData}
+            kpis={kpis}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Dopo il mount, renderizza solo la sezione appropriata
   return (
     <div className="performance-section">
-      {/* Desktop/Tablet */}
-      <DesktopSection
-        performanceData={performanceData}
-        roasData={roasData}
-        channelPerformanceData={channelPerformanceData}
-        trafficMixData={trafficMixData}
-        kpis={kpis}
-      />
-
-      {/* Mobile */}
-      <MobileSection
-        performanceData={performanceData}
-        roasData={roasData}
-        channelPerformanceData={channelPerformanceData}
-        trafficMixData={trafficMixData}
-        kpis={kpis}
-      />
+      {isMobile ? (
+        <MobileSection
+          performanceData={performanceData}
+          roasData={roasData}
+          channelPerformanceData={channelPerformanceData}
+          trafficMixData={trafficMixData}
+          kpis={kpis}
+        />
+      ) : (
+        <DesktopSection
+          performanceData={performanceData}
+          roasData={roasData}
+          channelPerformanceData={channelPerformanceData}
+          trafficMixData={trafficMixData}
+          kpis={kpis}
+        />
+      )}
 
       {/* Stili globali per le card mobile */}
       <style jsx global>{`

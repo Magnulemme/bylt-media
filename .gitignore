@@ -39,3 +39,6 @@ logs/
 .next/cache/
 .tpm.*
 pensieri.txt
+
+# Documentation
+POST_MORTEM_*.md

@@ -149,9 +149,20 @@ const ShaderBackground = () => {
         };
         window.addEventListener('resize', handleResize);
 
+        // ResizeObserver per intercettare cambi di dimensione del parent
+        // Questo risolve il problema quando il contenuto cambia altezza dinamicamente
+        const resizeObserver = new ResizeObserver(() => {
+            handleResize();
+        });
+
+        if (containerRef.current.parentElement) {
+            resizeObserver.observe(containerRef.current.parentElement);
+        }
+
         // Cleanup
         return () => {
             window.removeEventListener('resize', handleResize);
+            resizeObserver.disconnect();
             if (frameIdRef.current) {
                 cancelAnimationFrame(frameIdRef.current);
             }
