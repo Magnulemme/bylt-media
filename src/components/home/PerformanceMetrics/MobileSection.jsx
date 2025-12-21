@@ -1,0 +1,81 @@
+"use client";
+import React from 'react';
+import { motion } from 'framer-motion';
+import RevenueChart from './RevenueChart';
+import TrafficDistributionChart from './TrafficDistributionChart';
+import ROASTrendChart from './ROASTrendChart';
+import ConversionTrendChart from './ConversionTrendChart';
+import KPICard from './KPICard';
+import { useScrollAnimation } from './hooks/useScrollAnimation';
+import { useFadeMask } from './hooks/useFadeMask';
+
+/**
+ * Sezione mobile
+ * Le card scrollano orizzontalmente da destra a sinistra
+ * Le card sono centrate verticalmente nello schermo con altezza fissa per sincronizzazione
+ */
+const MobileSection = ({ performanceData, roasData, channelPerformanceData, trafficMixData, kpis }) => {
+  const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(true);
+  const maskImage = useFadeMask(isAtStart, isAtEnd, 64);
+
+  return (
+    <div className="md:hidden">
+      {/* Container alto 500vh per dare spazio allo scroll */}
+      <div style={{ height: '500vh' }} ref={containerRef}>
+        {/* Area sticky centrata verticalmente */}
+        <div
+          className="sticky overflow-x-clip flex items-center"
+          style={{
+            top: '20vh'
+          }}
+        >
+          <div className="w-full">
+            {/* Wrapper delle card con fade ai bordi */}
+            <div
+              ref={wrapperRef}
+              className="overflow-hidden"
+              style={{
+                opacity: isReady ? 1 : 0,
+                transition: 'opacity 0.2s ease-out',
+                maskImage,
+                WebkitMaskImage: maskImage
+              }}
+            >
+              {/* Container delle card che si muove orizzontalmente */}
+              <motion.div
+                ref={cardsRef}
+                className="flex items-stretch performance-mobile-cards gap-4"
+                style={{ x }}
+              >
+                {/* Revenue Chart - Always show (most important) */}
+                <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <RevenueChart data={performanceData} />
+                </div>
+
+                {/* ROAS Trend - Always show (key metric) */}
+                <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <ROASTrendChart data={roasData} />
+                </div>
+
+                {/* KPI Card - Always show (summary) */}
+                <div className="performance-mobile-card">
+                  <KPICard isMobile roasData={roasData} kpis={kpis} />
+                </div>
+
+                {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
+                <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <ConversionTrendChart data={channelPerformanceData} />
+                </div>
+                <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
+                  <TrafficDistributionChart data={trafficMixData} />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MobileSection;
