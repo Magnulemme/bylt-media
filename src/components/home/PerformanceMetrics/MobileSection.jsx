@@ -8,6 +8,7 @@ import ConversionTrendChart from './ConversionTrendChart';
 import KPICard from './KPICard';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useFadeMask } from './hooks/useFadeMask';
+import { useCenteredPosition } from './hooks/useCenteredPosition';
 
 /**
  * Sezione mobile
@@ -17,6 +18,7 @@ import { useFadeMask } from './hooks/useFadeMask';
 const MobileSection = ({ performanceData, roasData, channelPerformanceData, trafficMixData, kpis }) => {
   const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(true);
   const maskImage = useFadeMask(isAtStart, isAtEnd, 64);
+  const topPosition = useCenteredPosition(wrapperRef);
 
   return (
     <div className="md:hidden">
@@ -33,7 +35,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
         <div
           className="sticky overflow-x-clip flex items-center"
           style={{
-            top: '20vh',
+            top: topPosition,
             zIndex: 2
           }}
         >
