@@ -321,24 +321,6 @@ const NeuralServices = () => {
                     </div>
                 </div>
             <style jsx global>{`
-                /* Mobile molto piccolo (<350px): 280px */
-                .services-3d-swiper .swiper-slide {
-                    width: 280px !important;
-                }
-
-                /* Mobile medio (≥350px): 300px */
-                @media (min-width: 350px) {
-                    .services-3d-swiper .swiper-slide {
-                        width: 300px !important;
-                    }
-                }
-
-                /* Tablet medio (≥500px): 320px con slidesPerView=auto */
-                @media (min-width: 500px) {
-                    .services-3d-swiper .swiper-slide {
-                        width: 320px !important;
-                    }
-                }
 
                 /* Tablet (≥768px): 330px */
                 @media (min-width: 768px) {
