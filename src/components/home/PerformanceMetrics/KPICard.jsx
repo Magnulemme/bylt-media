@@ -1,7 +1,7 @@
 import React from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
-const KPICard = ({ isMobile = false, roasData, kpis }) => (
+const KPICard = ({ roasData, kpis }) => (
   <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
     <div className="mb-4">
       <h3 className="text-sm font-medium text-gray-400 mb-1">Performance Overview</h3>
@@ -11,7 +11,7 @@ const KPICard = ({ isMobile = false, roasData, kpis }) => (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={roasData}>
           <defs>
-            <linearGradient id={isMobile ? "kpiGradient" : "kpiGradientDesktop"} x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="kpiGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4}/>
               <stop offset="100%" stopColor="#22d3ee" stopOpacity={0}/>
             </linearGradient>
@@ -21,7 +21,7 @@ const KPICard = ({ isMobile = false, roasData, kpis }) => (
             dataKey="actual"
             stroke="#22d3ee"
             strokeWidth={2}
-            fill={`url(#${isMobile ? "kpiGradient" : "kpiGradientDesktop"})`}
+            fill="url(#kpiGradient)"
             animationDuration={1500}
           />
         </AreaChart>

@@ -21,7 +21,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
   const topPosition = useCenteredPosition(wrapperRef);
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden performance-carousel-mobile">
       {/* Container alto per dare spazio allo scroll */}
       <div
         style={{
@@ -71,7 +71,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
 
                 {/* KPI Card - Always show (summary) */}
                 <div className="performance-mobile-card">
-                  <KPICard isMobile roasData={roasData} kpis={kpis} />
+                  <KPICard roasData={roasData} kpis={kpis} />
                 </div>
 
                 {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
