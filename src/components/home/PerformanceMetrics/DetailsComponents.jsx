@@ -19,7 +19,7 @@ export const DetailsSection = ({ leftStat, rightStat, description }) => (
       {/* Left Stat */}
       <div>
         <p className="text-xs text-gray-500 mb-1">{leftStat.label}</p>
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-0">
           <span className={leftStat.className}>{leftStat.value}</span>
           {leftStat.unit && <span className="text-xs text-gray-500">{leftStat.unit}</span>}
         </div>

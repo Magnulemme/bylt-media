@@ -198,7 +198,7 @@ export const chartConfigs = {
     ),
 
     renderChart: (data) => (
-      <div className="flex-1 flex items-center justify-center relative min-h-[200px]" style={{ pointerEvents: 'none' }}>
+      <div className="relative w-full h-full flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <defs>
@@ -250,13 +250,13 @@ export const chartConfigs = {
         leftStat={{
           label: "Organic SEO",
           value: "21K",
-          className: "text-2xl font-bold text-white",
+          className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-purple-600",
           unit: "(54.5%)"
         }}
         rightStat={{
           label: "Paid Ads",
           value: "17.5K",
-          className: "text-2xl font-bold text-white"
+          className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-600"
         }}
         description="Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante."
       />
