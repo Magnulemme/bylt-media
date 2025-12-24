@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, Tooltip, LineChart, Line, YAxis, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import CustomTooltip from './CustomTooltip';
-import { StatItem, StatsRow, DescriptionText, StatsGrid, GridStatItem } from './DetailsComponents';
+import { DetailsSection } from './DetailsComponents';
 
 /**
  * Configurazioni centralizzate per tutti i chart delle Performance Metrics
@@ -69,26 +69,20 @@ export const chartConfigs = {
 
     // Details
     renderDetails: () => (
-      <>
-        <StatsRow>
-          <StatItem
-            label="Revenue totale"
-            value="€31.5K"
-            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400"
-            unit="ultimo mese"
-          />
-          <div className="text-right">
-            <StatItem
-              label="Margine"
-              value="€26.9K (85%)"
-              valueClassName="text-sm font-bold text-green-400"
-            />
-          </div>
-        </StatsRow>
-        <DescriptionText>
-          Crescita sostenuta con margine costante. Spesa pubblicitaria ottimizzata per massimizzare il profitto.
-        </DescriptionText>
-      </>
+      <DetailsSection
+        leftStat={{
+          label: "Revenue totale",
+          value: "€31.5K",
+          className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400",
+          unit: "ultimo mese"
+        }}
+        rightStat={{
+          label: "Margine",
+          value: "€26.9K (85%)",
+          className: "text-sm font-bold text-green-400"
+        }}
+        description="Crescita sostenuta con margine costante. Spesa pubblicitaria ottimizzata per massimizzare il profitto."
+      />
     )
   },
 
@@ -168,27 +162,20 @@ export const chartConfigs = {
     ),
 
     renderDetails: () => (
-      <>
-        <StatsRow>
-          <StatItem
-            label="Performance attuale"
-            value="6.8x"
-            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400"
-            unit="ROAS"
-          />
-          <div className="text-right">
-            <StatItem
-              label="vs Obiettivo"
-              value="+36% sopra target"
-              valueClassName="text-sm font-bold text-green-400"
-            />
-          </div>
-        </StatsRow>
-        <DescriptionText>
-          Ogni euro investito in advertising genera <span className="text-cyan-400 font-semibold">€6.80</span> di revenue.
-          Performance costantemente superiore agli obiettivi prefissati.
-        </DescriptionText>
-      </>
+      <DetailsSection
+        leftStat={{
+          label: "Performance attuale",
+          value: "6.8x",
+          className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400",
+          unit: "ROAS"
+        }}
+        rightStat={{
+          label: "vs Obiettivo",
+          value: "+36% sopra target",
+          className: "text-sm font-bold text-green-400"
+        }}
+        description={<>Ogni euro investito in advertising genera <span className="text-cyan-400 font-semibold">€6.80</span> di revenue. Performance costantemente superiore agli obiettivi prefissati.</>}
+      />
     )
   },
 
@@ -259,25 +246,20 @@ export const chartConfigs = {
     ),
 
     renderDetails: () => (
-      <>
-        <StatsGrid>
-          <GridStatItem
-            iconColor="bg-purple-400"
-            label="Organic SEO"
-            value="21K"
-            percentage="54.5%"
-          />
-          <GridStatItem
-            iconColor="bg-cyan-400"
-            label="Paid Ads"
-            value="17.5K"
-            percentage="45.5%"
-          />
-        </StatsGrid>
-        <DescriptionText>
-          Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante.
-        </DescriptionText>
-      </>
+      <DetailsSection
+        leftStat={{
+          label: "Organic SEO",
+          value: "21K",
+          className: "text-2xl font-bold text-white",
+          unit: "(54.5%)"
+        }}
+        rightStat={{
+          label: "Paid Ads",
+          value: "17.5K",
+          className: "text-2xl font-bold text-white"
+        }}
+        description="Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante."
+      />
     )
   },
 
@@ -335,26 +317,20 @@ export const chartConfigs = {
     ),
 
     renderDetails: () => (
-      <>
-        <StatsRow>
-          <StatItem
-            label="Score medio"
-            value="87/100"
-            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"
-            unit="performance"
-          />
-          <div className="text-right">
-            <StatItem
-              label="Miglior canale"
-              value="Google Ads"
-              valueClassName="text-sm font-bold text-purple-400"
-            />
-          </div>
-        </StatsRow>
-        <DescriptionText>
-          Strategia omnicanale bilanciata con performance eccellenti su tutte le piattaforme principali. Google Ads e Meta leading performers.
-        </DescriptionText>
-      </>
+      <DetailsSection
+        leftStat={{
+          label: "Score medio",
+          value: "87/100",
+          className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400",
+          unit: "performance"
+        }}
+        rightStat={{
+          label: "Miglior canale",
+          value: "Google Ads",
+          className: "text-sm font-bold text-purple-400"
+        }}
+        description="Strategia omnicanale bilanciata con performance eccellenti su tutte le piattaforme principali. Google Ads e Meta leading performers."
+      />
     )
   }
 };

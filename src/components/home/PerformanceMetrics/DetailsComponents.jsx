@@ -1,62 +1,42 @@
 import React from 'react';
 
 /**
- * Componenti atomici per costruire la sezione details delle performance cards
- * Ogni componente ha le proprie media queries per gestire la responsiveness
+ * Componente unificato per la sezione details di tutte le performance cards
+ * Accetta una struttura dati standardizzata e gestisce il rendering in modo uniforme
  */
 
 /**
- * Statistica con label e valore
+ * Sezione details completa
+ *
+ * @param {object} leftStat - Statistica sinistra: { label, value, className, unit }
+ * @param {object} rightStat - Statistica destra: { label, value, className }
+ * @param {string|ReactNode} description - Testo descrittivo
  */
-export const StatItem = ({ label, value, valueClassName = "text-2xl font-bold text-white", unit }) => (
-  <div>
-    <p className="text-xs text-gray-500 mb-1">{label}</p>
-    <div className="flex items-baseline gap-2">
-      <span className={valueClassName}>{value}</span>
-      {unit && <span className="text-xs text-gray-500">{unit}</span>}
+export const DetailsSection = ({ leftStat, rightStat, description }) => (
+  <>
+    {/* Stats Row */}
+    <div className="flex items-center justify-between">
+      {/* Left Stat */}
+      <div>
+        <p className="text-xs text-gray-500 mb-1">{leftStat.label}</p>
+        <div className="flex items-baseline gap-2">
+          <span className={leftStat.className}>{leftStat.value}</span>
+          {leftStat.unit && <span className="text-xs text-gray-500">{leftStat.unit}</span>}
+        </div>
+      </div>
+
+      {/* Right Stat */}
+      <div className="text-right">
+        <p className="text-xs text-gray-500 mb-1">{rightStat.label}</p>
+        <p className={rightStat.className}>{rightStat.value}</p>
+      </div>
     </div>
-  </div>
-);
 
-/**
- * Container per statistiche affiancate (2 colonne)
- */
-export const StatsRow = ({ children }) => (
-  <div className="flex items-center justify-between">
-    {children}
-  </div>
-);
-
-/**
- * Paragrafo descrittivo
- */
-export const DescriptionText = ({ children }) => (
-  <p className="text-xs text-gray-500 mt-3">
-    {children}
-  </p>
-);
-
-/**
- * Grid di statistiche (usato per traffic distribution)
- */
-export const StatsGrid = ({ children }) => (
-  <div className="grid grid-cols-2 gap-3 text-xs mb-3">
-    {children}
-  </div>
-);
-
-/**
- * Item del grid con icona colorata e valore
- */
-export const GridStatItem = ({ icon, iconColor, label, value, percentage }) => (
-  <div className="flex flex-col gap-1">
-    <div className="flex items-center gap-1.5">
-      <div className={`w-2.5 h-2.5 rounded-full ${iconColor}`} />
-      <span className="text-gray-400">{label}</span>
-    </div>
-    <div className="ml-4">
-      <span className="text-lg font-bold text-white">{value}</span>
-      {percentage && <span className="text-gray-500 ml-1.5">({percentage})</span>}
-    </div>
-  </div>
+    {/* Description */}
+    {description && (
+      <p className="text-xs text-gray-500 mt-3">
+        {description}
+      </p>
+    )}
+  </>
 );
