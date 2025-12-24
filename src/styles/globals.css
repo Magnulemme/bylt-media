@@ -1162,6 +1162,57 @@
       padding: var(--spacing-padding-xs);
     }
 
+    /* ====================================
+       TIMELINE MOBILE CAROUSEL (New Pattern)
+       Responsive scroll pattern matching PerformanceMetrics
+       ==================================== */
+
+    /* Timeline Carousel Container - Negative margins for edge-to-edge on mobile */
+    .timeline-carousel-mobile {
+      margin-left: -1rem;
+      margin-right: -1rem;
+    }
+
+    @media (min-width: 640px) {
+      .timeline-carousel-mobile {
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .timeline-carousel-mobile {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    /* Timeline Mobile Card - Dynamic responsive sizing */
+    .timeline-mobile-card {
+      flex-shrink: 0;
+      width: calc(100% - 40px) !important;
+      min-width: 280px !important;
+      max-width: 380px !important;
+    }
+
+    @media (min-width: 500px) {
+      .timeline-mobile-card {
+        max-width: 480px !important;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .timeline-mobile-card {
+        max-width: 520px !important;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .timeline-mobile-card {
+        max-width: 560px !important;
+      }
+    }
+
     /* UTILITY CLASSES */
 
     /* Text Gradient - Testo con gradiente animato */

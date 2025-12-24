@@ -1,5 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import { useScrollAnimation } from './PerformanceMetrics/hooks/useScrollAnimation';
+import { useFadeMask } from './PerformanceMetrics/hooks/useFadeMask';
+import { useCenteredPosition } from './PerformanceMetrics/hooks/useCenteredPosition';
 
 // Word Component with Motion (same as OfficialPartnerSection)
 const Word = ({ children, range, progress }) => {
@@ -42,48 +45,12 @@ const ScrollRevealText = ({ text, className }) => {
 };
 
 const EngineTimeline = () => {
-    const containerRef = useRef(null);
-    const cardRef = useRef(null);
-    const mobileTitleRef = useRef(null);
     const sectionRef = useRef(null);
-    const [cardHeight, setCardHeight] = React.useState(0);
-    const [isMounted, setIsMounted] = React.useState(false);
 
-    // Mobile scroll progress per il card switching
-    const { scrollYProgress: mobileScrollProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"]
-    });
-
-    // Forza un re-render dopo il mount per inizializzare useScroll correttamente
-    React.useEffect(() => {
-        setIsMounted(true);
-
-        // Forza un piccolo scroll per attivare i calcoli di Framer Motion
-        const timer = setTimeout(() => {
-            if (containerRef.current) {
-                const currentScroll = window.scrollY;
-                window.scrollTo({ top: currentScroll + 1, behavior: 'instant' });
-                window.scrollTo({ top: currentScroll, behavior: 'instant' });
-            }
-        }, 100);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    // Calcola l'altezza della card per il posizionamento sticky
-    React.useEffect(() => {
-        const updateCardHeight = () => {
-            if (cardRef.current) {
-                const height = cardRef.current.offsetHeight;
-                setCardHeight(height);
-            }
-        };
-
-        updateCardHeight();
-        window.addEventListener('resize', updateCardHeight);
-        return () => window.removeEventListener('resize', updateCardHeight);
-    }, []);
+    // Mobile carousel hooks (reusing PerformanceMetrics pattern)
+    const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(true);
+    const maskImage = useFadeMask(isAtStart, isAtEnd, 64);
+    const topPosition = useCenteredPosition(wrapperRef);
 
     // Step Component with scroll-driven spotlight activation
     const ProcessStep = ({ step, index }) => {
@@ -334,12 +301,18 @@ const EngineTimeline = () => {
         }
     ];
 
-    // Mobile Card Component - singola card con numero e contenuto
-    const MobileCard = ({ step, cardRef, index, totalSteps, scrollProgress }) => {
+    // Mobile Card Component - simplified to work with useScrollAnimation hook
+    const MobileCard = ({ step, index, totalSteps }) => {
         const thisCardRef = useRef(null);
         const isLastCard = index === totalSteps - 1;
         const [cardExitProgress, setCardExitProgress] = React.useState(0);
         const startPositionRef = useRef(null);
+
+        // Track the scroll progress from the container
+        const { scrollYProgress: cardScrollProgress } = useScroll({
+            target: containerRef,
+            offset: ["start start", "end end"]
+        });
 
         // Calcola quando questa card è al centro dello schermo
         // Per 5 card: card 0 al centro quando progress = 0, card 1 quando = 0.25, ecc.
@@ -358,7 +331,7 @@ const EngineTimeline = () => {
                 }
 
                 // Ottieni il progresso orizzontale corrente
-                const currentHorizontalProgress = scrollProgress.get();
+                const currentHorizontalProgress = cardScrollProgress.get();
 
                 const rect = thisCardRef.current.getBoundingClientRect();
                 const currentTop = rect.top;
@@ -389,11 +362,11 @@ const EngineTimeline = () => {
             return () => {
                 window.removeEventListener('scroll', handleScroll);
             };
-        }, [isLastCard, scrollProgress]);
+        }, [isLastCard, cardScrollProgress]);
 
         // Comportamento standard per tutte le card: glow sale e scende
         const baseActive = useTransform(
-            scrollProgress,
+            cardScrollProgress,
             [
                 Math.max(0, cardCenterProgress - glowRange),
                 cardCenterProgress,
@@ -405,7 +378,7 @@ const EngineTimeline = () => {
         // Per l'ultima card: glow resta a 1 dopo il centro, poi diminuisce quando la card esce
         const isActive = isLastCard
             ? useTransform(
-                scrollProgress,
+                cardScrollProgress,
                 (horizontalProgress) => {
                     // Fase 1: Glow sale normalmente fino al centro (scroll orizzontale)
                     if (horizontalProgress < cardCenterProgress) {
@@ -432,13 +405,7 @@ const EngineTimeline = () => {
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
         return (
-            <div
-                ref={(el) => {
-                    thisCardRef.current = el;
-                    if (cardRef) cardRef.current = el;
-                }}
-                className="mobile-timeline-card-wrapper"
-            >
+            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col">
                 {/* Step Number Circle */}
                 <div className="relative w-20 h-20 rounded-full flex items-center justify-center font-mono font-bold text-2xl mb-6 border-2 bg-slate-900/80 backdrop-blur-lg shrink-0"
                     style={{
@@ -494,7 +461,7 @@ const EngineTimeline = () => {
 
                 {/* Card Content */}
                 <motion.div
-                    className="mobile-timeline-card"
+                    className="bg-slate-800/50 backdrop-blur-lg rounded-2xl border flex flex-col flex-1 p-6"
                     style={{
                         borderColor: useTransform(
                             isActive,
@@ -589,10 +556,10 @@ const EngineTimeline = () => {
                     </div>
                 </div>
 
-                {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
-                <div className="lg:hidden">
+                {/* Mobile/Tablet Version - Horizontal scroll driven by vertical scroll */}
+                <div className="lg:hidden timeline-carousel-mobile">
                     {/* Title - static */}
-                    <div ref={mobileTitleRef} className="mobile-timeline-container">
+                    <div className="mobile-timeline-container">
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
                             Our proven process ensures clarity, efficiency, and exceptional results
                         </h2>
@@ -602,36 +569,43 @@ const EngineTimeline = () => {
                     </div>
 
                     {/* Tall container for vertical scroll space */}
-                    <div style={{ height: '500vh' }} ref={containerRef}>
-                        {/* Sticky wrapper - stays in viewport while scrolling */}
+                    <div style={{ height: '400vh' }} ref={containerRef}>
+                        {/* Sticky wrapper - centered vertically */}
                         <div
-                            className="mobile-timeline-sticky"
+                            className="sticky overflow-x-clip flex items-center"
                             style={{
-                                top: cardHeight > 0 ? `calc(50vh - ${cardHeight / 2}px - 3rem)` : 'calc(50% - 3rem)'
+                                top: topPosition
                             }}
                         >
-                            {/* Horizontal scrolling cards container */}
-                            <motion.div
-                                className="flex items-stretch w-full"
-                                style={{
-                                    x: useTransform(
-                                        mobileScrollProgress,
-                                        [0, 1],
-                                        ['0%', `-${(processSteps.length - 1) * 100}%`]
-                                    )
-                                }}
-                            >
-                                {processSteps.map((step, index) => (
-                                    <MobileCard
-                                        key={step.step}
-                                        step={step}
-                                        index={index}
-                                        totalSteps={processSteps.length}
-                                        scrollProgress={mobileScrollProgress}
-                                        cardRef={index === 0 ? cardRef : null}
-                                    />
-                                ))}
-                            </motion.div>
+                            <div className="w-full">
+                                {/* Wrapper with fade mask */}
+                                <div
+                                    ref={wrapperRef}
+                                    className="overflow-hidden"
+                                    style={{
+                                        opacity: isReady ? 1 : 0,
+                                        transition: 'opacity 0.2s ease-out',
+                                        maskImage,
+                                        WebkitMaskImage: maskImage
+                                    }}
+                                >
+                                    {/* Horizontal scrolling cards container */}
+                                    <motion.div
+                                        ref={cardsRef}
+                                        className="flex items-stretch timeline-mobile-cards gap-4"
+                                        style={{ x }}
+                                    >
+                                        {processSteps.map((step, index) => (
+                                            <MobileCard
+                                                key={step.step}
+                                                step={step}
+                                                index={index}
+                                                totalSteps={processSteps.length}
+                                            />
+                                        ))}
+                                    </motion.div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
