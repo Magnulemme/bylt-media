@@ -212,46 +212,22 @@ const EngineTimeline = () => {
                         x: cardX
                     }}
                 >
-                    {/* Two Column Layout: Content Left, 3D Icon Right */}
-                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">
-                        {/* Left Column: Content */}
+                    {/* Row 1: Title + Description + 3D Icon */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-6">
+                        {/* Left: Title + Description */}
                         <div>
-                            {/* Title */}
-                            <div className="mb-4">
-                                <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
-                                    {step.title}
-                                </h3>
-                                <p className="text-sm text-cyan-400 font-medium">
-                                    {step.subtitle}
-                                </p>
-                            </div>
-
-                            {/* Description */}
-                            <p className="text-gray-300 leading-relaxed mb-6">
+                            <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
+                                {step.title}
+                            </h3>
+                            <p className="text-sm text-cyan-400 font-medium mb-4">
+                                {step.subtitle}
+                            </p>
+                            <p className="text-gray-300 leading-relaxed">
                                 {step.description}
                             </p>
-
-                            {/* Details Grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {step.details.map((detail, i) => (
-                                    <motion.div
-                                        key={i}
-                                        className="flex items-start gap-3"
-                                        initial={{ opacity: 0, x: -10 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1 + i * 0.05 }}
-                                    >
-                                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
-                                        <span className="text-sm text-gray-200 leading-relaxed">
-                                            {detail}
-                                        </span>
-                                    </motion.div>
-                                ))}
-                            </div>
                         </div>
 
-                        {/* Right Column: 3D Icon */}
+                        {/* Right: 3D Icon */}
                         <motion.div
                             className="hidden lg:flex items-center justify-center"
                             style={{
@@ -265,6 +241,25 @@ const EngineTimeline = () => {
                                 className="w-48 h-48 object-contain"
                             />
                         </motion.div>
+                    </div>
+
+                    {/* Row 2: Details Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {step.details.map((detail, i) => (
+                            <motion.div
+                                key={i}
+                                className="flex items-start gap-3"
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 + i * 0.05 }}
+                            >
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
+                                <span className="text-sm text-gray-200 leading-relaxed">
+                                    {detail}
+                                </span>
+                            </motion.div>
+                        ))}
                     </div>
                 </motion.div>
             </div>
@@ -565,7 +560,7 @@ const EngineTimeline = () => {
         >
             <div className="relative z-10">
                 {/* Desktop Version */}
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                     {/* Content container */}
                     <div className="engine-timeline-container engine-timeline-title-container">
                         <ScrollRevealText
@@ -595,7 +590,7 @@ const EngineTimeline = () => {
                 </div>
 
                 {/* Mobile Version - Horizontal scroll driven by vertical scroll */}
-                <div className="md:hidden">
+                <div className="lg:hidden">
                     {/* Title - static */}
                     <div ref={mobileTitleRef} className="mobile-timeline-container">
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
