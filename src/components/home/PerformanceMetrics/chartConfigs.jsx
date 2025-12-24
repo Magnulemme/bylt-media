@@ -1,6 +1,7 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, Tooltip, LineChart, Line, YAxis, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import CustomTooltip from './CustomTooltip';
+import { StatItem, StatsRow, DescriptionText, StatsGrid, GridStatItem } from './DetailsComponents';
 
 /**
  * Configurazioni centralizzate per tutti i chart delle Performance Metrics
@@ -69,22 +70,24 @@ export const chartConfigs = {
     // Details
     renderDetails: () => (
       <>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs text-gray-500 mb-1">Revenue totale</p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">€31.5K</span>
-              <span className="text-xs text-gray-500">ultimo mese</span>
-            </div>
-          </div>
+        <StatsRow>
+          <StatItem
+            label="Revenue totale"
+            value="€31.5K"
+            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400"
+            unit="ultimo mese"
+          />
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">Margine</p>
-            <p className="text-sm font-bold text-green-400">€26.9K (85%)</p>
+            <StatItem
+              label="Margine"
+              value="€26.9K (85%)"
+              valueClassName="text-sm font-bold text-green-400"
+            />
           </div>
-        </div>
-        <p className="text-xs text-gray-500 mt-3">
+        </StatsRow>
+        <DescriptionText>
           Crescita sostenuta con margine costante. Spesa pubblicitaria ottimizzata per massimizzare il profitto.
-        </p>
+        </DescriptionText>
       </>
     )
   },
@@ -166,23 +169,25 @@ export const chartConfigs = {
 
     renderDetails: () => (
       <>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs text-gray-500 mb-1">Performance attuale</p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">6.8x</span>
-              <span className="text-xs text-gray-500">ROAS</span>
-            </div>
-          </div>
+        <StatsRow>
+          <StatItem
+            label="Performance attuale"
+            value="6.8x"
+            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400"
+            unit="ROAS"
+          />
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">vs Obiettivo</p>
-            <p className="text-sm font-bold text-green-400">+36% sopra target</p>
+            <StatItem
+              label="vs Obiettivo"
+              value="+36% sopra target"
+              valueClassName="text-sm font-bold text-green-400"
+            />
           </div>
-        </div>
-        <p className="text-xs text-gray-500 mt-3">
+        </StatsRow>
+        <DescriptionText>
           Ogni euro investito in advertising genera <span className="text-cyan-400 font-semibold">€6.80</span> di revenue.
           Performance costantemente superiore agli obiettivi prefissati.
-        </p>
+        </DescriptionText>
       </>
     )
   },
@@ -255,31 +260,23 @@ export const chartConfigs = {
 
     renderDetails: () => (
       <>
-        <div className="grid grid-cols-2 gap-3 text-xs mb-3">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-purple-400" />
-              <span className="text-gray-400">Organic SEO</span>
-            </div>
-            <div className="ml-4">
-              <span className="text-lg font-bold text-white">21K</span>
-              <span className="text-gray-500 ml-1.5">(54.5%)</span>
-            </div>
-          </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
-              <span className="text-gray-400">Paid Ads</span>
-            </div>
-            <div className="ml-4">
-              <span className="text-lg font-bold text-white">17.5K</span>
-              <span className="text-gray-500 ml-1.5">(45.5%)</span>
-            </div>
-          </div>
-        </div>
-        <p className="text-xs text-gray-500">
+        <StatsGrid>
+          <GridStatItem
+            iconColor="bg-purple-400"
+            label="Organic SEO"
+            value="21K"
+            percentage="54.5%"
+          />
+          <GridStatItem
+            iconColor="bg-cyan-400"
+            label="Paid Ads"
+            value="17.5K"
+            percentage="45.5%"
+          />
+        </StatsGrid>
+        <DescriptionText>
           Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante.
-        </p>
+        </DescriptionText>
       </>
     )
   },
@@ -339,22 +336,24 @@ export const chartConfigs = {
 
     renderDetails: () => (
       <>
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <p className="text-xs text-gray-500 mb-1">Score medio</p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">87/100</span>
-              <span className="text-xs text-gray-500">performance</span>
-            </div>
-          </div>
+        <StatsRow>
+          <StatItem
+            label="Score medio"
+            value="87/100"
+            valueClassName="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"
+            unit="performance"
+          />
           <div className="text-right">
-            <p className="text-xs text-gray-500 mb-1">Miglior canale</p>
-            <p className="text-sm font-bold text-purple-400">Google Ads</p>
+            <StatItem
+              label="Miglior canale"
+              value="Google Ads"
+              valueClassName="text-sm font-bold text-purple-400"
+            />
           </div>
-        </div>
-        <p className="text-xs text-gray-500">
+        </StatsRow>
+        <DescriptionText>
           Strategia omnicanale bilanciata con performance eccellenti su tutte le piattaforme principali. Google Ads e Meta leading performers.
-        </p>
+        </DescriptionText>
       </>
     )
   }

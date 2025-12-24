@@ -31,7 +31,7 @@ const PerformanceCard = ({
             )}
           </div>
           {legend && (
-            <div className="gap-3 text-xs flex">
+            <div className="gap-3 text-xs flex max-sm:flex-col">
               {legend}
             </div>
           )}
