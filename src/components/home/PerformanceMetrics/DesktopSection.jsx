@@ -1,10 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import RevenueChart from './RevenueChart';
-import TrafficDistributionChart from './TrafficDistributionChart';
-import ROASTrendChart from './ROASTrendChart';
-import ConversionTrendChart from './ConversionTrendChart';
+import ChartCard from './ChartCard';
 import KPICard from './KPICard';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useCardHeight } from './hooks/useCardHeight';
@@ -60,19 +57,19 @@ const DesktopSection = ({ performanceData, roasData, channelPerformanceData, tra
                 }}
               >
                 <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
-                  <ConversionTrendChart data={channelPerformanceData} />
+                  <ChartCard type="conversion" data={channelPerformanceData} />
                 </div>
                 <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
-                  <ROASTrendChart data={roasData} />
+                  <ChartCard type="roas" data={roasData} />
                 </div>
                 <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
-                  <TrafficDistributionChart data={trafficMixData} />
+                  <ChartCard type="traffic" data={trafficMixData} />
                 </div>
                 <div className="flex-shrink-0 w-[45vw] lg:w-[32vw]">
                   <KPICard roasData={roasData} kpis={kpis} />
                 </div>
                 <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
-                  <RevenueChart data={performanceData} />
+                  <ChartCard type="revenue" data={performanceData} />
                 </div>
               </motion.div>
             </div>

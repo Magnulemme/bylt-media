@@ -1,10 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'framer-motion';
-import RevenueChart from './RevenueChart';
-import TrafficDistributionChart from './TrafficDistributionChart';
-import ROASTrendChart from './ROASTrendChart';
-import ConversionTrendChart from './ConversionTrendChart';
+import ChartCard from './ChartCard';
 import KPICard from './KPICard';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useFadeMask } from './hooks/useFadeMask';
@@ -61,12 +58,12 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
               >
                 {/* Revenue Chart - Always show (most important) */}
                 <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                  <RevenueChart data={performanceData} />
+                  <ChartCard type="revenue" data={performanceData} />
                 </div>
 
                 {/* ROAS Trend - Always show (key metric) */}
                 <div className="performance-mobile-card [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                  <ROASTrendChart data={roasData} />
+                  <ChartCard type="roas" data={roasData} />
                 </div>
 
                 {/* KPI Card - Always show (summary) */}
@@ -76,10 +73,10 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
 
                 {/* Conversion & Traffic - Hide on very small screens (< 300px) */}
                 <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                  <ConversionTrendChart data={channelPerformanceData} />
+                  <ChartCard type="conversion" data={channelPerformanceData} />
                 </div>
                 <div className="performance-mobile-card performance-mobile-card-optional [&>div]:!h-full [&>div>div]:!h-full [&_[class*='ResponsiveContainer']]:!h-full">
-                  <TrafficDistributionChart data={trafficMixData} />
+                  <ChartCard type="traffic" data={trafficMixData} />
                 </div>
               </motion.div>
             </div>
