@@ -78,6 +78,28 @@ const PerformanceMetrics = () => {
       {/* Stili globali per le card mobile */}
       <style jsx global>{`
         /* ==========================================
+           MOBILE CAROUSEL - NEGATIVE MARGIN
+           ========================================== */
+        .performance-carousel-mobile {
+          margin-left: -1rem;
+          margin-right: -1rem;
+        }
+
+        @media (min-width: 640px) {
+          .performance-carousel-mobile {
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
+          }
+        }
+
+        @media (min-width: 768px) {
+          .performance-carousel-mobile {
+            margin-left: 0;
+            margin-right: 0;
+          }
+        }
+
+        /* ==========================================
            MOBILE CARDS - RESPONSIVE SIZING
            ========================================== */
         .performance-mobile-cards {
@@ -87,71 +109,16 @@ const PerformanceMetrics = () => {
 
         .performance-mobile-card {
           flex-shrink: 0;
-          width: 100%;
-          max-width: 500px;
+          width: calc(100% - 60px) !important;
+          min-width: 250px !important;
+          max-width: 420px !important;
           max-height: 550px;
         }
 
-        /* Hide optional cards on very small screens (< 300px) */
-        @media (max-width: 299px) {
-          .performance-mobile-card-optional {
-            display: none;
-          }
-        }
-
-        /* ==========================================
-           SIMPLIFY CHART DETAILS ON SMALL SCREENS
-           ========================================== */
-
-        /* Very small screens (< 360px) */
-        @media (max-width: 359px) {
-          .performance-mobile-card .mt-4.pt-4.border-t p.text-xs.text-gray-500:last-child {
-            display: none;
-          }
-
-          .performance-mobile-card > div > div {
-            padding: 1rem !important;
-          }
-
-          .performance-mobile-card h3 {
-            font-size: 0.75rem !important;
-          }
-
-          .performance-mobile-card p.text-xs.text-gray-600 {
-            display: none;
-          }
-
-          .performance-mobile-card .flex.items-center.justify-between.mb-4 {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.5rem !important;
-          }
-
-          .performance-mobile-card .flex.gap-3.text-xs,
-          .performance-mobile-card .flex.gap-4.text-xs {
-            flex-direction: column !important;
-            gap: 0.25rem !important;
-            align-items: flex-start !important;
-          }
-
-          .performance-mobile-card .mt-4.pt-4.border-t > .flex.items-center.justify-between {
-            align-items: flex-start !important;
-          }
-
-          .performance-mobile-card .flex.items-baseline.gap-2 {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.25rem !important;
-          }
-
-          .performance-mobile-card .flex.items-center.gap-2 {
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            gap: 0.25rem !important;
-          }
-
-          .performance-mobile-card .text-2xl {
-            font-size: 1.25rem !important;
+        /* Smaller margin on very small screens */
+        @media (max-width: 360px) {
+          .performance-mobile-card {
+            width: calc(100% - 30px) !important;
           }
         }
 

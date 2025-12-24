@@ -779,14 +779,17 @@
 
     /* Desktop Navigation Buttons */
     .swiper-button-prev-desktop,
-    .swiper-button-next-desktop {
+    .swiper-button-next-desktop,
+    .swiper-button-prev-services,
+    .swiper-button-next-services {
       @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
     }
 
     .swiper-button-prev-desktop:hover,
-    .swiper-button-next-desktop:hover {
-      @apply border-cyan-400/60 bg-cyan-500/20 shadow-cyan-500/20;
-      transform: translateY(-2px);
+    .swiper-button-next-desktop:hover,
+    .swiper-button-prev-services:hover,
+    .swiper-button-next-services:hover {
+      @apply border-cyan-400/60 from-cyan-500/20 to-blue-500/20 scale-110 cursor-pointer;
     }
 
     /* Service Button Content - Container flex per contenuto button */
@@ -1024,11 +1027,6 @@
       }
     }
 
-    /* Project Info Container - Container info progetto */
-    .project-info-container {
-      @apply flex-1;
-    }
-
     /* Project Title - Titolo progetto con gap bottom */
     .project-title {
       @apply text-3xl md:text-5xl lg:text-6xl font-bold text-white group-hover:text-cyan-400 transition-colors duration-300 cursor-pointer w-fit;
@@ -1045,12 +1043,12 @@
     /* Projects CTA Section - Sezione CTA finale */
     .projects-cta-section {
       @apply text-center;
-      margin-top: var(--spacing-padding-md);
+      margin-top: 2rem;
     }
 
     @media (min-width: 768px) {
       .projects-cta-section {
-        margin-top: var(--spacing-padding-lg);
+        margin-top: 2.5rem;
       }
     }
 
