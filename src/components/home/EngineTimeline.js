@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Lightbulb, Construction, Rocket, BarChart, TrendingUp } from 'lucide-react';
 
 // Word Component with Motion (same as OfficialPartnerSection)
 const Word = ({ children, range, progress }) => {
@@ -121,19 +120,6 @@ const EngineTimeline = () => {
             ['#0f172a', '#1e293b']
         );
 
-        // Icon colors - più netti per evitare momenti senza contrasto
-        const iconBackground = useTransform(
-            isActive,
-            [0, 0.3, 0.7, 1],
-            ['rgba(51, 65, 85, 0.4)', 'rgba(51, 65, 85, 0.4)', '#67e8f9', '#67e8f9']
-        );
-
-        const iconColor = useTransform(
-            isActive,
-            [0, 0.3, 0.7, 1],
-            ['rgba(209, 213, 219, 1)', 'rgba(209, 213, 219, 1)', '#0f172a', '#0f172a']
-        );
-
         const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
         // Debug scale del glow e blur
@@ -226,49 +212,59 @@ const EngineTimeline = () => {
                         x: cardX
                     }}
                 >
-                    {/* Icon & Title */}
-                    <div className="flex items-start gap-4 mb-4">
+                    {/* Two Column Layout: Content Left, 3D Icon Right */}
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-center">
+                        {/* Left Column: Content */}
+                        <div>
+                            {/* Title */}
+                            <div className="mb-4">
+                                <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
+                                    {step.title}
+                                </h3>
+                                <p className="text-sm text-cyan-400 font-medium">
+                                    {step.subtitle}
+                                </p>
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-gray-300 leading-relaxed mb-6">
+                                {step.description}
+                            </p>
+
+                            {/* Details Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {step.details.map((detail, i) => (
+                                    <motion.div
+                                        key={i}
+                                        className="flex items-start gap-3"
+                                        initial={{ opacity: 0, x: -10 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1 + i * 0.05 }}
+                                    >
+                                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
+                                        <span className="text-sm text-gray-200 leading-relaxed">
+                                            {detail}
+                                        </span>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Right Column: 3D Icon */}
                         <motion.div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+                            className="hidden lg:flex items-center justify-center"
                             style={{
-                                background: iconBackground,
-                                color: iconColor
+                                opacity: isActive,
+                                rotate: useTransform(isActive, [0, 1], [-5, 0])
                             }}
                         >
-                            {step.icon}
+                            <img
+                                src={step.image3d}
+                                alt={step.title}
+                                className="w-48 h-48 object-contain"
+                            />
                         </motion.div>
-                        <div className="flex-1">
-                            <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
-                                {step.title}
-                            </h3>
-                            <p className="text-sm text-cyan-400 font-medium">
-                                {step.subtitle}
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-6">
-                        {step.description}
-                    </p>
-
-                    {/* Details Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {step.details.map((detail, i) => (
-                            <motion.div
-                                key={i}
-                                className="flex items-start gap-3"
-                                initial={{ opacity: 0, x: -10 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 + i * 0.05 }}
-                            >
-                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
-                                <span className="text-sm text-gray-200 leading-relaxed">
-                                    {detail}
-                                </span>
-                            </motion.div>
-                        ))}
                     </div>
                 </motion.div>
             </div>
@@ -281,7 +277,7 @@ const EngineTimeline = () => {
             title: "Discovery & Strategy",
             subtitle: "Foundation & Alignment",
             description: "We dive deep into your business, market, and goals. This phase is about aligning on a data-driven strategy that sets the foundation for success.",
-            icon: <Lightbulb size={24} />,
+            image3d: "/3d icons/3dicons-bulb-dynamic-color.png",
             details: [
                 "Comprehensive business analysis",
                 "Goal setting and KPI definition",
@@ -294,7 +290,7 @@ const EngineTimeline = () => {
             title: "Design & Development",
             subtitle: "Architecture & Creation",
             description: "Our team architects and builds the solution. We focus on quality, performance, and user experience.",
-            icon: <Construction size={24} />,
+            image3d: "/3d icons/3dicons-tools-dynamic-color.png",
             details: [
                 "Technical architecture planning",
                 "User experience design",
@@ -307,7 +303,7 @@ const EngineTimeline = () => {
             title: "Launch & Optimisation",
             subtitle: "Deployment & Refinement",
             description: "Deployment is just the beginning. We manage the launch, gather data, and begin our continuous optimisation cycle.",
-            icon: <Rocket size={24} />,
+            image3d: "/3d icons/3dicons-rocket-dynamic-color.png",
             details: [
                 "Staged deployment and monitoring",
                 "Performance metrics tracking",
@@ -320,7 +316,7 @@ const EngineTimeline = () => {
             title: "Reporting & Analytics",
             subtitle: "Transparency & Insights",
             description: "We believe in complete transparency. Our reports provide comprehensive insights and actionable recommendations.",
-            icon: <BarChart size={24} />,
+            image3d: "/3d icons/3dicons-chart-dynamic-color.png",
             details: [
                 "Real-time dashboard creation",
                 "Comprehensive performance reports",
@@ -333,7 +329,7 @@ const EngineTimeline = () => {
             title: "Growth & Scaling",
             subtitle: "Expansion & Evolution",
             description: "Using insights gained, we identify new opportunities and scale what works, turning success into long-term growth.",
-            icon: <TrendingUp size={24} />,
+            image3d: "/3d icons/3dicons-target-dynamic-color.png",
             details: [
                 "Growth opportunity identification",
                 "Scaling strategy development",
@@ -512,33 +508,29 @@ const EngineTimeline = () => {
                         )
                     }}
                 >
-                    {/* Icon & Title */}
-                    <div className="flex items-start gap-4 mb-6 flex-shrink-0">
-                        <motion.div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                            style={{
-                                background: useTransform(
-                                    isActive,
-                                    [0, 0.3, 0.7, 1],
-                                    ['rgba(51, 65, 85, 0.4)', 'rgba(51, 65, 85, 0.4)', '#67e8f9', '#67e8f9']
-                                ),
-                                color: useTransform(
-                                    isActive,
-                                    [0, 0.3, 0.7, 1],
-                                    ['rgba(209, 213, 219, 1)', 'rgba(209, 213, 219, 1)', '#0f172a', '#0f172a']
-                                )
-                            }}
-                        >
-                            {step.icon}
-                        </motion.div>
-                        <div className="flex-1">
-                            <h3 className="text-xl font-bold text-white font-inter mb-1">
-                                {step.title}
-                            </h3>
-                            <p className="text-sm text-cyan-400 font-medium">
-                                {step.subtitle}
-                            </p>
-                        </div>
+                    {/* 3D Icon - Top on Mobile */}
+                    <motion.div
+                        className="flex items-center justify-center mb-6"
+                        style={{
+                            opacity: isActive,
+                            rotate: useTransform(isActive, [0, 1], [-5, 0])
+                        }}
+                    >
+                        <img
+                            src={step.image3d}
+                            alt={step.title}
+                            className="w-32 h-32 object-contain"
+                        />
+                    </motion.div>
+
+                    {/* Title */}
+                    <div className="mb-6 flex-shrink-0">
+                        <h3 className="text-xl font-bold text-white font-inter mb-1">
+                            {step.title}
+                        </h3>
+                        <p className="text-sm text-cyan-400 font-medium">
+                            {step.subtitle}
+                        </p>
                     </div>
 
                     {/* Description */}
