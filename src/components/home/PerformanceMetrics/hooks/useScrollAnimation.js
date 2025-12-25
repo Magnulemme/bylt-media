@@ -201,6 +201,7 @@ export const useScrollAnimation = (isMobile = false) => {
     x,
     isReady,
     isAtStart,
-    isAtEnd
+    isAtEnd,
+    scrollYProgress  // ← AGGIUNTO: espone il progress per i componenti figli
   };
 };

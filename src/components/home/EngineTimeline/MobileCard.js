@@ -1,0 +1,310 @@
+import React, { useRef } from 'react';
+import { motion, useTransform } from 'motion/react';
+
+const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' }) => {
+    const thisCardRef = useRef(null);
+
+    // Range dinamico per ogni card basato sull'indice
+    // INVERTITO per mobile: progress 0 = card 5 visibile, progress 1 = card 1 visibile
+    // Con 5 card ci sono 4 transizioni, quindi dividiamo per (totalSteps - 1)
+    const numTransitions = totalSteps - 1;
+    const transitionWidth = 1 / numTransitions;  // 0.25 per 5 card
+
+    // Centro di ogni card (dove isActive = 100%)
+    const center = 1 - index / numTransitions;
+
+    // Crossfade logic:
+    // - Prima card visibile (index più alto): inizia a 100%, fadeOut
+    // - Ultima card visibile (index 0): fadeIn, finisce a 100%
+    // - Card intermedie: fadeIn da card precedente, fadeOut a card successiva
+    const isFirstVisible = index === totalSteps - 1;
+    const isLastVisible = index === 0;
+
+    // Calcola input/output arrays PRIMA di chiamare useTransform (no conditional hooks)
+    const inputRange = isFirstVisible
+        ? [center, center + transitionWidth]                              // Card 5: [0, 0.25]
+        : isLastVisible
+            ? [center - transitionWidth, center]                          // Card 1: [0.75, 1]
+            : [center - transitionWidth, center, center + transitionWidth]; // Altri: [prev, center, next]
+
+    const outputRange = isFirstVisible
+        ? [1, 0]           // Card 5: fadeOut da 100%
+        : isLastVisible
+            ? [0, 1]       // Card 1: fadeIn a 100%
+            : [0, 1, 0];   // Intermedie: fadeIn/fadeOut
+
+    const isActive = useTransform(scrollProgress, inputRange, outputRange);
+
+    const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
+
+    // Transforms pre-calcolati (non dentro il render)
+    const circleBorderColor = useTransform(isActive, [0, 1], ['rgba(103, 232, 249, 0.3)', 'rgba(103, 232, 249, 0.8)']);
+    const iconScale = useTransform(isActive, [0, 1], [0.7, 1]);
+    const iconRotate = useTransform(isActive, [0, 1], [-15, 0]);
+    const iconOpacity = useTransform(isActive, [0, 1], [0.2, 1]);
+
+    // Debug - log solo al mount
+    React.useEffect(() => {
+        const type = isFirstVisible ? 'FIRST' : isLastVisible ? 'LAST' : 'MID';
+        console.log(`✅ [${step.step}] MOUNTED (${type}) - Center: ${center.toFixed(2)}, Input: [${inputRange.map(v => v.toFixed(2)).join(', ')}]`);
+
+        return () => {
+            console.log(`🔴 [${step.step}] UNMOUNTED`);
+        };
+    }, []);
+
+    const circleBackground = useTransform(
+        isActive,
+        [0, 1],
+        ['#0f172a', '#1e293b']
+    );
+
+    // Render solo i glow (layer non mascherato)
+    if (variant === 'glow-only') {
+        return (
+            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4 pointer-events-none">
+                {/* Step Number Circle - solo i glow */}
+                <div className="relative shrink-0 rounded-full overflow-visible">
+                    {/* Cerchio invisibile per mantenere dimensioni */}
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full opacity-0" />
+                    {/* Luminous glow effect around circle - Safari fix with will-change */}
+                    <motion.div
+                        className="absolute inset-0 rounded-full pointer-events-none -z-10"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
+                            filter: useTransform(glowScale, (s) => {
+                                const blur = 15 + s * 5;
+                                return `blur(${blur}px)`;
+                            }),
+                            opacity: isActive,
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
+                        }}
+                    />
+                    {/* Outer glow ring - Safari fix with will-change */}
+                    <motion.div
+                        className="absolute -inset-4 rounded-full pointer-events-none -z-20"
+                        style={{
+                            background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
+                            filter: useTransform(glowScale, (s) => {
+                                const blur = 20 + s * 5;
+                                return `blur(${blur}px)`;
+                            }),
+                            opacity: isActive,
+                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            willChange: 'transform, filter, opacity'
+                        }}
+                    />
+                </div>
+                {/* Spacer per mantenere altezza uguale al layer content */}
+                <div className="w-full opacity-0 pointer-events-none">
+                    <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6">
+                        <div className="w-32 h-32 mb-6" />
+                        <div className="mb-4"><div className="h-6 mb-1" /><div className="h-4" /></div>
+                        <div className="mb-6 h-16" />
+                        <div className="space-y-3">
+                            {step.details.map((_, i) => <div key={i} className="h-5" />)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Render solo il contenuto (layer mascherato)
+    if (variant === 'content-only') {
+        return (
+            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4">
+                {/* Step Number Circle - senza glow */}
+                <div className="relative shrink-0 rounded-full">
+                    <motion.div
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
+                        style={{
+                            background: circleBackground,
+                            borderColor: circleBorderColor
+                        }}
+                    >
+                        {/* Number - white/gray when inactive */}
+                        <motion.span
+                            className="relative text-gray-400"
+                            style={{
+                                opacity: useTransform(isActive, [0, 1], [1, 0])
+                            }}
+                        >
+                            {step.step}
+                        </motion.span>
+                        {/* Number - gradient when active */}
+                        <motion.span
+                            className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
+                            style={{
+                                opacity: isActive,
+                                animation: 'gradient 3s ease infinite'
+                            }}
+                        >
+                            {step.step}
+                        </motion.span>
+                    </motion.div>
+                </div>
+
+                {/* Card Content */}
+                <div className="w-full bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+                    {/* 3D Icon */}
+                    <motion.div
+                        className="flex items-center justify-center mb-6"
+                        style={{
+                            scale: iconScale,
+                            rotate: iconRotate,
+                            opacity: iconOpacity
+                        }}
+                    >
+                        <img
+                            src={step.image3d}
+                            alt={step.title}
+                            className="w-32 h-32 object-contain"
+                        />
+                    </motion.div>
+
+                    {/* Title & Subtitle */}
+                    <div className="mb-4">
+                        <h3 className="text-xl font-bold text-white font-inter mb-1">
+                            {step.title}
+                        </h3>
+                        <p className="text-sm text-cyan-400 font-medium">
+                            {step.subtitle}
+                        </p>
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-gray-300 leading-relaxed mb-6 text-sm">
+                        {step.description}
+                    </p>
+
+                    {/* Details */}
+                    <div className="space-y-3">
+                        {step.details.map((detail, i) => (
+                            <div key={i} className="flex items-start gap-3">
+                                <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
+                                <span className="text-sm text-gray-200 leading-relaxed">
+                                    {detail}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Render completo (default - per backward compatibility)
+    return (
+        <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4">
+            {/* Step Number Circle - centered vertically to card */}
+            <div className="relative shrink-0 rounded-full overflow-visible">
+                <motion.div
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
+                    style={{
+                        background: circleBackground,
+                        borderColor: circleBorderColor
+                    }}
+                >
+                    {/* Number - white/gray when inactive */}
+                    <motion.span
+                        className="relative text-gray-400"
+                        style={{
+                            opacity: useTransform(isActive, [0, 1], [1, 0])
+                        }}
+                    >
+                        {step.step}
+                    </motion.span>
+                    {/* Number - gradient when active */}
+                    <motion.span
+                        className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
+                        style={{
+                            opacity: isActive,
+                            animation: 'gradient 3s ease infinite'
+                        }}
+                    >
+                        {step.step}
+                    </motion.span>
+                </motion.div>
+                {/* Luminous glow effect around circle - Safari fix with will-change */}
+                <motion.div
+                    className="absolute inset-0 rounded-full pointer-events-none -z-10"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
+                        filter: useTransform(glowScale, (s) => {
+                            const blur = 15 + s * 5;
+                            return `blur(${blur}px)`;
+                        }),
+                        opacity: isActive,
+                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        willChange: 'transform, filter, opacity'
+                    }}
+                />
+                {/* Outer glow ring - Safari fix with will-change */}
+                <motion.div
+                    className="absolute -inset-4 rounded-full pointer-events-none -z-20"
+                    style={{
+                        background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
+                        filter: useTransform(glowScale, (s) => {
+                            const blur = 20 + s * 5;
+                            return `blur(${blur}px)`;
+                        }),
+                        opacity: isActive,
+                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        willChange: 'transform, filter, opacity'
+                    }}
+                />
+            </div>
+
+            {/* Card Content */}
+            <div className="w-full bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+
+                {/* 3D Icon */}
+                <motion.div
+                    className="flex items-center justify-center mb-6"
+                    style={{
+                        scale: iconScale,
+                        rotate: iconRotate,
+                        opacity: iconOpacity
+                    }}
+                >
+                    <img
+                        src={step.image3d}
+                        alt={step.title}
+                        className="w-32 h-32 object-contain"
+                    />
+                </motion.div>
+
+                {/* Title & Subtitle */}
+                <div className="mb-4">
+                    <h3 className="text-xl font-bold text-white font-inter mb-1">
+                        {step.title}
+                    </h3>
+                    <p className="text-sm text-cyan-400 font-medium">
+                        {step.subtitle}
+                    </p>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-300 leading-relaxed mb-6 text-sm">
+                    {step.description}
+                </p>
+
+                {/* Details */}
+                <div className="space-y-3">
+                    {step.details.map((detail, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
+                            <span className="text-sm text-gray-200 leading-relaxed">
+                                {detail}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default MobileCard;
