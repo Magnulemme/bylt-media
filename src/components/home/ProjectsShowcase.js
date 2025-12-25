@@ -1,10 +1,68 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useAnimationFrame } from 'motion/react';
 import SectionIntro from '../ui/SectionIntro';
 import { MovingBorderButton } from '../ui/moving-border-button';
 
+// Hook per animazione Lissajous curve (figura a "8" smooth)
+const useLissajousAnimation = (isActive, seed = 0) => {
+    const rotateX = useMotionValue(0);
+    const rotateY = useMotionValue(0);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const scale = useMotionValue(1);
+
+    useAnimationFrame((time) => {
+        if (!isActive) {
+            // Ritorna a 0 quando non in hover
+            rotateX.set(0);
+            rotateY.set(0);
+            x.set(0);
+            y.set(0);
+            scale.set(1);
+            return;
+        }
+
+        // Time in secondi con seed offset - velocizzato
+        const t = (time / 1000 + seed) * 0.8;
+
+        // Lissajous curve: x = A*sin(at + δ), y = B*sin(bt)
+        // Ratio 2:1 crea figura a "8" orizzontale (infinity)
+        const phase = seed;
+
+        // Movimento ellittico a "8" - più deciso
+        const lissajousX = Math.sin(2 * t + phase) * 12;
+        const lissajousY = Math.sin(t) * 10;
+
+        // Rotazione 3D sincronizzata - più marcata
+        const rotation3DX = Math.sin(t + Math.PI / 4) * 8;
+        const rotation3DY = Math.sin(2 * t) * 10;
+
+        // Scale pulsante più evidente
+        const scalePulse = Math.sin(t * 0.7) * 0.05;
+
+        // Applica i valori direttamente (senza spring)
+        x.set(lissajousX);
+        y.set(lissajousY);
+        rotateX.set(rotation3DX);
+        rotateY.set(rotation3DY);
+        scale.set(1 + scalePulse);
+    });
+
+    return {
+        rotateX,
+        rotateY,
+        x,
+        y,
+        scale,
+    };
+};
+
 // Component per singolo progetto con scroll reveal su mobile
 const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
+    // Lissajous animation per immagine hover
+    const isHovered = hoveredProject?.id === project.id;
+    const lissajousAnimation = useLissajousAnimation(isHovered, index * 1.5);
+
     return (
         <motion.div
             className="relative"
@@ -13,44 +71,42 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
+            {/* Background Image - Scroll Reveal (Mobile fino a lg) */}
+            <motion.div
+                className="xl:hidden absolute rounded-xl overflow-hidden -inset-x-2 md:-inset-x-4"
+                style={{
+                    top: 0,
+                    bottom: 0,
+                }}
+                animate={{
+                    opacity: isActive ? 1 : 0,
+                    scale: isActive ? 1 : 1.05,
+                }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+                <img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-cover"
+                />
+                {/* Dark overlay per leggibilità testo */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+            </motion.div>
+
             <a
                 href={project.link}
                 className="group project-link-item xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center"
                 onMouseEnter={() => onHover(project)}
                 onMouseLeave={() => onHover(null)}
             >
-                <div className="project-link-content relative flex items-center gap-6 md:gap-12">
-                    {/* Background Image - Scroll Reveal (Mobile fino a lg) */}
-                    <motion.div
-                        className="xl:hidden absolute rounded-lg"
-                        style={{
-                            top: '-0.75rem',
-                            bottom: '-0.75rem',
-                            left: 0,
-                            right: 0,
-                        }}
-                        animate={{
-                            opacity: isActive ? 1 : 0,
-                            scale: isActive ? 1 : 1.1,
-                        }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                    >
-                        <img
-                            src={project.image}
-                            alt={project.name}
-                            className="w-full h-full object-cover"
-                        />
-                        {/* Dark overlay per leggibilità testo */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-                    </motion.div>
-
+                <div className="project-link-content relative flex items-center gap-4 md:gap-8">
                     {/* Number */}
-                    <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 flex-shrink-0">
+                    <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 flex-shrink-0 min-w-[2rem]">
                         {String(project.id).padStart(2, '0')}
                     </span>
 
                     {/* Project Info */}
-                    <div className="relative z-10 project-info-container">
+                    <div className="relative z-10 project-info-container flex-1">
                         <h3 className="project-title">
                             {project.name}
                         </h3>
@@ -102,36 +158,21 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
                 {/* Image a destra - Solo XL, sempre visibile quando in hover */}
                 <motion.div
                     className="hidden xl:block w-80 h-52 rounded-lg overflow-hidden"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={hoveredProject?.id === project.id ? {
-                        opacity: 1,
-                        scale: 1,
-                        rotateX: [0, -4, 0, 4, 0],
-                        rotateY: [0, 4, 0, -4, 0],
-                        x: [0, -8, 0, 8, 0],
-                        y: [0, -6, 0, -6, 0],
-                    } : {
-                        opacity: 0,
-                        scale: 0.95,
-                        rotateX: 0,
-                        rotateY: 0,
-                        x: 0,
-                        y: 0,
+                    initial={{ opacity: 0 }}
+                    animate={{
+                        opacity: isHovered ? 1 : 0,
                     }}
-                    transition={hoveredProject?.id === project.id ? {
-                        opacity: { duration: 0.3, ease: "easeOut" },
-                        scale: { duration: 0.3, ease: "easeOut" },
-                        rotateX: { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "loop", delay: index * 0.3 },
-                        rotateY: { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "loop", delay: index * 0.3 },
-                        x: { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "loop", delay: index * 0.3 },
-                        y: { duration: 8, ease: "easeInOut", repeat: Infinity, repeatType: "loop", delay: index * 0.3 },
-                    } : {
-                        duration: 0.3,
-                        ease: "easeOut"
+                    transition={{
+                        opacity: { duration: 0.3, ease: "easeOut" }
                     }}
                     style={{
                         perspective: 1000,
                         transformStyle: 'preserve-3d',
+                        rotateX: lissajousAnimation.rotateX,
+                        rotateY: lissajousAnimation.rotateY,
+                        x: lissajousAnimation.x,
+                        y: lissajousAnimation.y,
+                        scale: lissajousAnimation.scale,
                     }}
                 >
                     <img
