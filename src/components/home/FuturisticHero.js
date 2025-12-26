@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackground from './ShaderBackground';
 import { MovingBorderButton } from '../ui/moving-border-button';
-import SectionHeader from '../ui/SectionHeader'; 
+import SectionHeader from '../ui/SectionHeader';
+import { useProfiler } from '@/hooks/useProfiler';
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -51,6 +52,7 @@ const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pause
 
 // Optimized Hero Section with typing effect and side-by-side layout
 const FuturisticHero = () => {
+    useProfiler('FuturisticHero');
     // Determine if mobile/tablet
     const [isMobile, setIsMobile] = useState(false);
 

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useAnimationFrame } from 'motion/react';
 import SectionIntro from '../ui/SectionIntro';
 import { MovingBorderButton } from '../ui/moving-border-button';
+import { useProfiler } from '@/hooks/useProfiler';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
 const useLissajousAnimation = (isActive, seed = 0) => {
@@ -187,6 +188,7 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
 };
 
 const ProjectsShowcase = () => {
+    useProfiler('ProjectsShowcase');
     const [hoveredProject, setHoveredProject] = useState(null);
     const [activeProjectIndex, setActiveProjectIndex] = useState(0);
 

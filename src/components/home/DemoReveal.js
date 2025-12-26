@@ -1,9 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
+import { useProfiler } from '@/hooks/useProfiler';
 
 // Shared Portfolio Carousel using CSS sticky positioning
 const DemoReveal = () => {
+    useProfiler('DemoReveal');
 
     return (
         <section className="demo-reveal-section">

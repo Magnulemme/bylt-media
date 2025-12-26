@@ -1,1 +1,2 @@
-export { default } from './EngineTimeline/index';
+import EngineTimeline from './EngineTimeline/index';
+export default EngineTimeline;

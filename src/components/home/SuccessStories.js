@@ -1,8 +1,10 @@
 import React from 'react';
 import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
 import { SectionIntro } from '../ui/section-headers';
+import { useProfiler } from '@/hooks/useProfiler';
 
 const SuccessStories = () => {
+    useProfiler('SuccessStories');
     const stories = [
         {
             name: 'Happy Bar & Grill',

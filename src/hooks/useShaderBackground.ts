@@ -101,7 +101,7 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
       },
       {
         threshold: visibilityThreshold,
-        rootMargin: "50px",
+        rootMargin: "500px", // Pre-carica 500px prima che sia visibile
       }
     );
 

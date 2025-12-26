@@ -472,8 +472,8 @@ const AboutHeroAnimation = () => {
                     if (sparkleGeom) sparkleGeom.dispose();
                     if (sparkleMat) sparkleMat.dispose();
                     if (renderer) renderer.dispose();
-                } catch (error) {
-                    console.warn('Cleanup error:', error);
+                } catch {
+                    // Cleanup silenzioso
                 }
             };
 

@@ -49,9 +49,6 @@ const Custom3DSwiper = () => {
                             nextEl: '.custom-swiper-next',
                             prevEl: '.custom-swiper-prev',
                         }}
-                        onSlideChange={(swiper) => {
-                            console.log('🔄 onSlideChange - activeIndex:', swiper.activeIndex, 'realIndex:', swiper.realIndex);
-                        }}
                         className="custom-3d-swiper"
                     >
                         {testData.map((item, index) => (

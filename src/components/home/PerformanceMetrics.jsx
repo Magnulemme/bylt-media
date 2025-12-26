@@ -9,8 +9,10 @@ import {
   trafficMixData,
   kpis
 } from './PerformanceMetrics/constants';
+import { useProfiler } from '@/hooks/useProfiler';
 
 const PerformanceMetrics = () => {
+  useProfiler('PerformanceMetrics [Recharts]');
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 

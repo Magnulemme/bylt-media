@@ -42,15 +42,6 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     const circleBorderColor = useTransform(isActive, [0, 1], ['rgba(103, 232, 249, 0.3)', 'rgba(103, 232, 249, 0.8)']);
     const iconOpacity = useTransform(isActive, [0, 1], [0.2, 1]);
 
-    // Debug - log solo al mount
-    React.useEffect(() => {
-        const type = isFirstVisible ? 'FIRST' : isLastVisible ? 'LAST' : 'MID';
-        console.log(`✅ [${step.step}] MOUNTED (${type}) - Center: ${center.toFixed(2)}, Input: [${inputRange.map(v => v.toFixed(2)).join(', ')}]`);
-
-        return () => {
-            console.log(`🔴 [${step.step}] UNMOUNTED`);
-        };
-    }, []);
 
     const circleBackground = useTransform(
         isActive,

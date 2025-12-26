@@ -3,8 +3,10 @@ import DesktopTimeline from './DesktopTimeline';
 import MobileTimeline from './MobileTimeline';
 import TimelineStyles from './TimelineStyles';
 import { processSteps } from './constants';
+import { useProfiler } from '@/hooks/useProfiler';
 
 const EngineTimeline = () => {
+    useProfiler('EngineTimeline [ShaderBG]');
     const sectionRef = useRef(null);
 
     return (

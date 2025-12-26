@@ -7,8 +7,10 @@ import { Card, CardNumber, CardIcon, CardContent, CardTitle, CardSubtitle, CardD
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { useProfiler } from '@/hooks/useProfiler';
 
 const NeuralServices = () => {
+    useProfiler('NeuralServices [Swiper]');
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
     const lastCardRef = useRef(null);
@@ -27,13 +29,6 @@ const NeuralServices = () => {
             // La card ha una shadow di 8px a destra, quindi compensiamo
             const lastCardVisible = lastCardRect.left >= containerRect.left - 8 - 2; // -8px shadow -2px tolleranza
 
-            console.log('[NeuralServices] Card visibility check:', {
-                containerLeft: containerRect.left,
-                lastCardLeft: lastCardRect.left,
-                lastCardVisible,
-                windowWidth: window.innerWidth
-            });
-
             setAllCardsVisible(lastCardVisible);
 
             // Applica il fade da 500px+ (stesso breakpoint del coverflow)
@@ -42,14 +37,6 @@ const NeuralServices = () => {
             const isCoverflowMode = window.innerWidth >= 500;
             const isDesktop = window.innerWidth >= 1200;
             const shouldFade = isCoverflowMode && (isDesktop ? !lastCardVisible : true);
-
-            console.log('[NeuralServices] Fade decision:', {
-                isCoverflowMode,
-                isDesktop,
-                lastCardVisible,
-                shouldFade,
-                windowWidth: window.innerWidth
-            });
 
             setShouldApplyFade(shouldFade);
         };

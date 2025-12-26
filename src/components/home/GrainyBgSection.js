@@ -6,8 +6,10 @@ import NeuralServices from './NeuralServices';
 import NeuralServicesMobile from './NeuralServicesMobile';
 import InfinityPhilosophy from './InfinityPhilosophy';
 import PerformanceMetrics from './PerformanceMetrics';
+import { useProfiler } from '@/hooks/useProfiler';
 
 const GrainyBgSection = () => {
+    useProfiler('GrainyBgSection');
     const sectionRef = useQuantumScrollAnim(0.1);
     const containerRef = useRef(null);
     const [isMobile, setIsMobile] = useState(false);

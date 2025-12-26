@@ -39,11 +39,26 @@ class SharedRendererManager {
   private canvas: HTMLCanvasElement | null = null;
   private supportsTransferBitmap = false;
 
+  // Performance metrics
+  private frameCount = 0;
+  private lastFpsTime = 0;
+  private currentFps = 0;
+  private lastPerfLogTime = 0;
+  private frameTimes: number[] = [];
+  private renderTimes: number[] = [];
+
+  // Load timing
+  private initStartTime = 0;
+  private firstRenderTime = 0;
+  private hasLoggedLoadTime = false;
+
   /**
    * Inizializza il renderer condiviso con pre-warm
    */
   initialize(): WebGLRenderer {
     if (this.renderer) return this.renderer;
+
+    this.initStartTime = performance.now();
 
     if (typeof window !== "undefined") {
       this.canvas = document.createElement("canvas");
@@ -73,10 +88,8 @@ class SharedRendererManager {
       const dummyCamera = new Camera();
       this.renderer.render(dummyScene, dummyCamera);
 
-      console.log("✅ SharedRenderer initialized", {
-        transferBitmap: this.supportsTransferBitmap,
-        pixelRatio: this.renderer.getPixelRatio(),
-      });
+      const initTime = performance.now() - this.initStartTime;
+      console.log(`⚡ [LOAD] WebGL initialized in ${initTime.toFixed(1)}ms`);
     }
 
     return this.renderer!;
@@ -177,10 +190,22 @@ class SharedRendererManager {
 
     this.animationId = requestAnimationFrame(this.animate);
 
+    const frameStart = performance.now();
+
+    // FPS tracking
+    this.frameCount++;
+    if (time - this.lastFpsTime >= 1000) {
+      this.currentFps = this.frameCount;
+      this.frameCount = 0;
+      this.lastFpsTime = time;
+    }
+
     // Filtra task abilitati E visibili, ordina per priorità
     const sortedTasks = Array.from(this.tasks.values())
       .filter((task) => task.enabled && task.visible)
       .sort((a, b) => a.priority - b.priority);
+
+    let tasksRenderedThisFrame = 0;
 
     // Rendi ogni task se è il momento (throttling FPS)
     sortedTasks.forEach((task) => {
@@ -194,9 +219,94 @@ class SharedRendererManager {
         }
         this.renderTask(task);
         task.lastFrameTime = time;
+        tasksRenderedThisFrame++;
       }
     });
+
+    // Track frame time
+    const frameTime = performance.now() - frameStart;
+    this.frameTimes.push(frameTime);
+    if (this.frameTimes.length > 60) this.frameTimes.shift();
+
+    if (tasksRenderedThisFrame > 0) {
+      this.renderTimes.push(frameTime);
+      if (this.renderTimes.length > 60) this.renderTimes.shift();
+
+      // Log first render time
+      if (!this.hasLoggedLoadTime) {
+        this.firstRenderTime = performance.now();
+        this.hasLoggedLoadTime = true;
+        this.logLoadMetrics();
+      }
+    }
+
+    // Log performance ogni 3 secondi
+    if (time - this.lastPerfLogTime >= 3000) {
+      this.logPerformance(sortedTasks.length);
+      this.lastPerfLogTime = time;
+    }
   };
+
+  /**
+   * Log delle metriche di performance
+   */
+  private logPerformance(activeTasks: number): void {
+    const avgFrameTime = this.frameTimes.length > 0
+      ? this.frameTimes.reduce((a, b) => a + b, 0) / this.frameTimes.length
+      : 0;
+
+    const avgRenderTime = this.renderTimes.length > 0
+      ? this.renderTimes.reduce((a, b) => a + b, 0) / this.renderTimes.length
+      : 0;
+
+    const maxFrameTime = this.frameTimes.length > 0
+      ? Math.max(...this.frameTimes)
+      : 0;
+
+    // WebGL memory info (Chrome only)
+    const gl = this.renderer?.getContext();
+    const memInfo = gl?.getExtension('WEBGL_debug_renderer_info');
+    const renderer = memInfo ? gl?.getParameter(memInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
+
+    console.log(
+      `📊 [PERF] FPS: ${this.currentFps} | ` +
+      `Tasks: ${this.tasks.size} total, ${activeTasks} visible | ` +
+      `Frame: ${avgFrameTime.toFixed(2)}ms avg, ${maxFrameTime.toFixed(2)}ms max | ` +
+      `Render: ${avgRenderTime.toFixed(2)}ms avg | ` +
+      `GPU: ${typeof renderer === 'string' ? renderer.substring(0, 30) : 'N/A'}`
+    );
+  }
+
+  /**
+   * Log delle metriche di caricamento
+   */
+  private logLoadMetrics(): void {
+    const perf = typeof performance !== 'undefined' ? performance : null;
+    const nav = perf?.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
+
+    const metrics: string[] = [];
+
+    // Time to first WebGL render
+    metrics.push(`First Render: ${this.firstRenderTime.toFixed(0)}ms`);
+
+    // Navigation timing (if available)
+    if (nav) {
+      const domReady = nav.domContentLoadedEventEnd - nav.startTime;
+      const loadComplete = nav.loadEventEnd - nav.startTime;
+      metrics.push(`DOM Ready: ${domReady.toFixed(0)}ms`);
+      if (loadComplete > 0) metrics.push(`Load: ${loadComplete.toFixed(0)}ms`);
+    }
+
+    // Paint timing
+    const paintEntries = perf?.getEntriesByType?.('paint') || [];
+    paintEntries.forEach((entry) => {
+      if (entry.name === 'first-contentful-paint') {
+        metrics.push(`FCP: ${entry.startTime.toFixed(0)}ms`);
+      }
+    });
+
+    console.log(`⏱️ [LOAD] ${metrics.join(' | ')}`);
+  }
 
   /**
    * Renderizza un singolo task

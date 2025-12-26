@@ -33,13 +33,6 @@ export const ServiceSlider = ({ items, className, showCTA = false, ctaText = "No
       // significa che tutte le card sono visibili per simmetria
       const firstCardVisible = firstSlideRect.left >= containerRect.left - 2;
 
-      console.log('[ServiceSlider] Card visibility check:', {
-        containerLeft: containerRect.left,
-        firstSlideLeft: firstSlideRect.left,
-        firstCardVisible,
-        tolerance: 2
-      });
-
       setAllCardsVisible(firstCardVisible);
     };
 
