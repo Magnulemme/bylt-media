@@ -65,7 +65,13 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 {/* Step Number Circle - solo i glow */}
                 <div className="relative shrink-0 rounded-full overflow-visible">
                     {/* Cerchio invisibile per mantenere dimensioni */}
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full opacity-0" />
+                    <motion.div
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full opacity-0"
+                        style={{
+                            background: circleBackground,
+                            borderColor: circleBorderColor
+                        }}
+                    />
                     {/* Luminous glow effect around circle - Safari fix with will-change */}
                     <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none -z-10"
@@ -118,31 +124,26 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     if (variant === 'content-only') {
         return (
             <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4 px-4">
-                {/* Step Number Circle - senza glow */}
+                {/* Step Number Circle - con shader background */}
                 <div className="relative shrink-0 rounded-full">
                     <motion.div
-                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2 overflow-hidden"
                         style={{
                             background: circleBackground,
                             borderColor: circleBorderColor
                         }}
                     >
-                        {/* Number - white/gray when inactive */}
-                        <motion.span
-                            className="relative text-gray-400"
-                            style={{
-                                opacity: useTransform(isActive, [0, 1], [1, 0])
-                            }}
+                        {/* Shader Background dentro il cerchio */}
+                        <motion.div
+                            className="absolute inset-0 pointer-events-none z-0"
+                            style={{ opacity: isActive }}
                         >
-                            {step.step}
-                        </motion.span>
-                        {/* Number - gradient when active */}
+                            <ShaderBackground priority={8} targetFPS={24} style={{ borderRadius: '9999px', zIndex: 0 }} />
+                        </motion.div>
+                        {/* Number */}
                         <motion.span
-                            className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
-                            style={{
-                                opacity: isActive,
-                                animation: 'gradient 3s ease infinite'
-                            }}
+                            className="relative z-20 text-white"
+                            style={{ opacity: iconOpacity }}
                         >
                             {step.step}
                         </motion.span>
