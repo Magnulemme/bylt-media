@@ -12,7 +12,7 @@ const MobileTimeline = ({ processSteps }) => {
     const topPosition = useCenteredPosition(wrapperRef);
 
     return (
-        <div className="lg:hidden ">
+        <div className="lg:hidden px-4">
             {/* Title */}
             <div className="">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
@@ -28,57 +28,28 @@ const MobileTimeline = ({ processSteps }) => {
                 <div className="sticky flex items-center " style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}>
                     <div className="w-full">
                         <div
-                            className="relative"
                             ref={wrapperRef}
                             style={{
                                 opacity: isReady ? 1 : 0,
-                                transition: 'opacity 0.2s ease-out'
+                                transition: 'opacity 0.2s ease-out',
+                                overflowX: 'clip', overflowY: 'visible'
                             }}
                         >
-                            {/* Layer 1: Glow - SENZA mask, overflow visible */}
-                            <div className="absolute inset-0 pointer-events-none ">
-                                <motion.div
-                                    className="flex items-stretch timeline-mobile-cards gap-6"
-                                    style={{ x }}
-                                >
-                                    {processSteps.map((step, index) => (
-                                        <MobileCard
-                                            key={`glow-${step.step}`}
-                                            step={step}
-                                            index={index}
-                                            totalSteps={processSteps.length}
-                                            scrollProgress={scrollYProgress}
-                                            variant="glow-only"
-                                        />
-                                    ))}
-                                </motion.div>
-                            </div>
-
-                            {/* Layer 2: Content - CON mask */}
-                            <div
-                                className="overflow-hidden"
-                                style={{
-                                    maskImage,
-                                    WebkitMaskImage: maskImage
-                                }}
+                            <motion.div
+                                ref={cardsRef}
+                                className="flex items-stretch timeline-mobile-cards gap-6"
+                                style={{ x }}
                             >
-                                <motion.div
-                                    ref={cardsRef}
-                                    className="flex items-stretch timeline-mobile-cards gap-6"
-                                    style={{ x }}
-                                >
-                                    {processSteps.map((step, index) => (
-                                        <MobileCard
-                                            key={`content-${step.step}`}
-                                            step={step}
-                                            index={index}
-                                            totalSteps={processSteps.length}
-                                            scrollProgress={scrollYProgress}
-                                            variant="content-only"
-                                        />
-                                    ))}
-                                </motion.div>
-                            </div>
+                                {processSteps.map((step, index) => (
+                                    <MobileCard
+                                        key={step.step}
+                                        step={step}
+                                        index={index}
+                                        totalSteps={processSteps.length}
+                                        scrollProgress={scrollYProgress}
+                                    />
+                                ))}
+                            </motion.div>
                         </div>
                     </div>
                 </div>
