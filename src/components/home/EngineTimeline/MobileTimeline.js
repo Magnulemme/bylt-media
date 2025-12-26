@@ -40,7 +40,7 @@ const MobileTimeline = ({ processSteps }) => {
                             {/* Layer 1: Glow layer (absolute, no mask, overflow visible) */}
                             <div className="absolute inset-0 overflow-visible pointer-events-none py-12">
                                 <motion.div
-                                    className="flex items-stretch timeline-mobile-cards gap-6"
+                                    className="flex items-stretch gap-4"
                                     style={{ x }}
                                 >
                                     {processSteps.map((step, index) => (
@@ -65,7 +65,7 @@ const MobileTimeline = ({ processSteps }) => {
                             >
                                 <motion.div
                                     ref={cardsRef}
-                                    className="flex items-stretch timeline-mobile-cards gap-6"
+                                    className="flex items-stretch gap-4"
                                     style={{ x }}
                                 >
                                     {processSteps.map((step, index) => (

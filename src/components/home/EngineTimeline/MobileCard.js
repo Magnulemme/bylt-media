@@ -95,8 +95,8 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     />
                 </div>
                 {/* Spacer per mantenere altezza uguale al layer content */}
-                <div className="w-full opacity-0 pointer-events-none">
-                    <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6">
+                <div className="w-full flex-1 opacity-0 pointer-events-none">
+                    <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6 h-full">
                         <div className="w-32 h-32 mb-6" />
                         <div className="mb-4"><div className="h-6 mb-1" /><div className="h-4" /></div>
                         <div className="mb-6 h-16" />
@@ -145,7 +145,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </div>
 
                 {/* Card Content */}
-                <div className="w-full bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+                <div className="w-full flex-1 bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
                     {/* 3D Icon */}
                     <motion.div
                         className="flex items-center justify-center mb-6"
@@ -254,7 +254,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
             </div>
 
             {/* Card Content */}
-            <div className="w-full bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+            <div className="w-full flex-1 bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
 
                 {/* 3D Icon */}
                 <motion.div

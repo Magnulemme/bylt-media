@@ -1164,37 +1164,37 @@
 
 
 
-    /* Timeline Mobile Card - Dynamic responsive sizing (narrower than PerformanceMetrics) */
+    /* Timeline Mobile Card - Matching PerformanceMetrics responsive sizing */
     .timeline-mobile-card {
       flex-shrink: 0;
       width: calc(100% - 60px) !important;
-      min-width: 280px !important;
-      max-width: 240px !important;
-      height: 100% !important;
-      display: flex !important;
-      flex-direction: column !important;
+      min-width: 250px !important;
+      max-width: 420px !important;
     }
 
-    /* Forza altezza uniforme per tutte le card interne */
-    .timeline-mobile-card > div {
-      height: 100% !important;
+    /* Smaller margin on very small screens */
+    @media (max-width: 360px) {
+      .timeline-mobile-card {
+        width: calc(100% - 30px) !important;
+      }
     }
 
+    /* Tablet+ sizing adjustments */
     @media (min-width: 500px) {
       .timeline-mobile-card {
-        max-width: 380px !important;
+        max-width: 520px;
       }
     }
 
     @media (min-width: 640px) {
       .timeline-mobile-card {
-        max-width: 420px !important;
+        max-width: 540px;
       }
     }
 
     @media (min-width: 768px) {
       .timeline-mobile-card {
-        max-width: 460px !important;
+        max-width: 600px;
       }
     }
 
