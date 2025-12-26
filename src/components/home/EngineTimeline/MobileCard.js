@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useTransform } from 'motion/react';
+import ShaderBackground from '../ShaderBackground';
 
 const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' }) => {
     const thisCardRef = useRef(null);
@@ -96,7 +97,11 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </div>
                 {/* Spacer per mantenere altezza uguale al layer content */}
                 <div className="w-full flex-1 opacity-0 pointer-events-none">
-                    <div className="bg-slate-800/50 rounded-2xl border border-slate-700/50 p-6 h-full">
+                    <div className="bg-[#020617] rounded-2xl border border-slate-700/50 p-6 h-full relative overflow-hidden">
+                        {/* Shader Background */}
+                        <div className="absolute inset-0 opacity-50 pointer-events-none">
+                            <ShaderBackground />
+                        </div>
                         <div className="w-32 h-32 mb-6" />
                         <div className="mb-4"><div className="h-6 mb-1" /><div className="h-4" /></div>
                         <div className="mb-6 h-16" />
@@ -145,10 +150,15 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </div>
 
                 {/* Card Content */}
-                <div className="w-full flex-1 bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+                <div className="w-full flex-1 bg-[#020617] rounded-2xl border border-slate-700/50 p-6 flex flex-col relative overflow-hidden">
+                    {/* Shader Background */}
+                    <div className="absolute inset-0 opacity-50 pointer-events-none">
+                        <ShaderBackground />
+                    </div>
+
                     {/* 3D Icon */}
                     <motion.div
-                        className="flex items-center justify-center mb-6"
+                        className="flex items-center justify-center mb-6 relative z-10"
                         style={{
                             opacity: iconOpacity
                         }}
@@ -161,7 +171,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     </motion.div>
 
                     {/* Title & Subtitle */}
-                    <div className="mb-4">
+                    <div className="mb-4 relative z-10">
                         <h3 className="text-xl font-bold text-white font-inter mb-1">
                             {step.title}
                         </h3>
@@ -171,12 +181,12 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-6 text-sm">
+                    <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10">
                         {step.description}
                     </p>
 
                     {/* Details */}
-                    <div className="space-y-3">
+                    <div className="space-y-3 relative z-10">
                         {step.details.map((detail, i) => (
                             <div key={i} className="flex items-start gap-3">
                                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
@@ -254,11 +264,15 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
             </div>
 
             {/* Card Content */}
-            <div className="w-full flex-1 bg-slate-800/50 backdrop-blur-lg rounded-2xl border border-slate-700/50 p-6 flex flex-col">
+            <div className="w-full flex-1 bg-[#020617] rounded-2xl border border-slate-700/50 p-6 flex flex-col relative overflow-hidden">
+                {/* Shader Background */}
+                <div className="absolute inset-0 opacity-50 pointer-events-none">
+                    <ShaderBackground />
+                </div>
 
                 {/* 3D Icon */}
                 <motion.div
-                    className="flex items-center justify-center mb-6"
+                    className="flex items-center justify-center mb-6 relative z-10"
                     style={{
                         opacity: iconOpacity
                     }}
@@ -271,7 +285,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </motion.div>
 
                 {/* Title & Subtitle */}
-                <div className="mb-4">
+                <div className="mb-4 relative z-10">
                     <h3 className="text-xl font-bold text-white font-inter mb-1">
                         {step.title}
                     </h3>
@@ -281,12 +295,12 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-300 leading-relaxed mb-6 text-sm">
+                <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10">
                     {step.description}
                 </p>
 
                 {/* Details */}
-                <div className="space-y-3">
+                <div className="space-y-3 relative z-10">
                     {step.details.map((detail, i) => (
                         <div key={i} className="flex items-start gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
