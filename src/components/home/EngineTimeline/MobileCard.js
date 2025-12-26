@@ -5,20 +5,20 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     const thisCardRef = useRef(null);
 
     // Range dinamico per ogni card basato sull'indice
-    // INVERTITO per mobile: progress 0 = card 5 visibile, progress 1 = card 1 visibile
+    // progress 0 = card 1 visibile, progress 1 = card 5 visibile
     // Con 5 card ci sono 4 transizioni, quindi dividiamo per (totalSteps - 1)
     const numTransitions = totalSteps - 1;
     const transitionWidth = 1 / numTransitions;  // 0.25 per 5 card
 
     // Centro di ogni card (dove isActive = 100%)
-    const center = 1 - index / numTransitions;
+    const center = index / numTransitions;
 
     // Crossfade logic:
-    // - Prima card visibile (index più alto): inizia a 100%, fadeOut
-    // - Ultima card visibile (index 0): fadeIn, finisce a 100%
+    // - Prima card visibile (index 0): inizia a 100%, fadeOut
+    // - Ultima card visibile (index più alto): fadeIn, finisce a 100%
     // - Card intermedie: fadeIn da card precedente, fadeOut a card successiva
-    const isFirstVisible = index === totalSteps - 1;
-    const isLastVisible = index === 0;
+    const isFirstVisible = index === 0;
+    const isLastVisible = index === totalSteps - 1;
 
     // Calcola input/output arrays PRIMA di chiamare useTransform (no conditional hooks)
     const inputRange = isFirstVisible
@@ -39,8 +39,6 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
 
     // Transforms pre-calcolati (non dentro il render)
     const circleBorderColor = useTransform(isActive, [0, 1], ['rgba(103, 232, 249, 0.3)', 'rgba(103, 232, 249, 0.8)']);
-    const iconScale = useTransform(isActive, [0, 1], [0.7, 1]);
-    const iconRotate = useTransform(isActive, [0, 1], [-15, 0]);
     const iconOpacity = useTransform(isActive, [0, 1], [0.2, 1]);
 
     // Debug - log solo al mount
@@ -152,8 +150,6 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     <motion.div
                         className="flex items-center justify-center mb-6"
                         style={{
-                            scale: iconScale,
-                            rotate: iconRotate,
                             opacity: iconOpacity
                         }}
                     >
@@ -264,8 +260,6 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 <motion.div
                     className="flex items-center justify-center mb-6"
                     style={{
-                        scale: iconScale,
-                        rotate: iconRotate,
                         opacity: iconOpacity
                     }}
                 >

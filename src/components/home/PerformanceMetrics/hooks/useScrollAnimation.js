@@ -13,8 +13,8 @@ export const useScrollAnimation = (isMobile = false) => {
   const [isReady, setIsReady] = useState(false);
   const [scrollableDistance, setScrollableDistance] = useState(0);
   const scrollableDistanceRef = useRef(0); // Ref per mantenere il valore aggiornato senza ricreare il listener
-  const [isAtStart, setIsAtStart] = useState(!isMobile); // Desktop inizia a sinistra, mobile a destra
-  const [isAtEnd, setIsAtEnd] = useState(isMobile);
+  const [isAtStart, setIsAtStart] = useState(true); // Sempre inizia a sinistra
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   const x = useMotionValue(0);
 
@@ -46,16 +46,9 @@ export const useScrollAnimation = (isMobile = false) => {
     setScrollableDistance(distance);
     scrollableDistanceRef.current = distance; // Aggiorna il ref
 
-    // Posizione iniziale
-    if (isMobile) {
-      // Mobile: inizia dall'ultima card (destra)
-      x.set(-distance);
-      console.log('📱 [MOBILE] Posizione iniziale:', -distance);
-    } else {
-      // Desktop: inizia dalla prima card (sinistra)
-      x.set(0);
-      console.log('💻 [DESKTOP] Posizione iniziale:', 0);
-    }
+    // Posizione iniziale: sempre dalla prima card (sinistra)
+    x.set(0);
+    console.log(`${isMobile ? '📱 [MOBILE]' : '💻 [DESKTOP]'} Posizione iniziale:`, 0);
   }, [isMobile, x]);
 
   // Inizializzazione con delay più lungo per schermi piccoli
@@ -153,17 +146,10 @@ export const useScrollAnimation = (isMobile = false) => {
       const currentDistance = scrollableDistanceRef.current;
       let newX;
 
-      if (isMobile) {
-        // Mobile: scroll verso sinistra (da destra a sinistra)
-        // progress 0 = ultima card (-distance)
-        // progress 1 = prima card (0)
-        newX = -currentDistance * (1 - progress);
-      } else {
-        // Desktop: scroll verso destra (da sinistra a destra)
-        // progress 0 = prima card (0)
-        // progress 1 = ultima card (-distance)
-        newX = -currentDistance * progress;
-      }
+      // Sia mobile che desktop: scroll da sinistra a destra
+      // progress 0 = prima card (0)
+      // progress 1 = ultima card (-distance)
+      newX = -currentDistance * progress;
 
       x.set(newX);
 
@@ -178,14 +164,9 @@ export const useScrollAnimation = (isMobile = false) => {
         });
       }
 
-      // Aggiorna stati posizione
-      if (isMobile) {
-        setIsAtStart(progress > 0.98);
-        setIsAtEnd(progress < 0.02);
-      } else {
-        setIsAtStart(progress < 0.02);
-        setIsAtEnd(progress > 0.98);
-      }
+      // Aggiorna stati posizione (stessa logica per mobile e desktop)
+      setIsAtStart(progress < 0.02);
+      setIsAtEnd(progress > 0.98);
     });
 
     return () => {
