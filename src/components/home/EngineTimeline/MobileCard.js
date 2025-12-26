@@ -112,7 +112,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     // Render solo il contenuto (layer mascherato)
     if (variant === 'content-only') {
         return (
-            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4">
+            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4 px-4">
                 {/* Step Number Circle - senza glow */}
                 <div className="relative shrink-0 rounded-full">
                     <motion.div
