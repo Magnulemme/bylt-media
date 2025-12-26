@@ -12,9 +12,9 @@ const MobileTimeline = ({ processSteps }) => {
     const topPosition = useCenteredPosition(wrapperRef);
 
     return (
-        <div className="lg:hidden timeline-carousel-mobile">
+        <div className="lg:hidden ">
             {/* Title */}
-            <div className="mobile-timeline-container px-6 sm:px-8">
+            <div className="">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
                     Our proven process ensures clarity, efficiency, and exceptional results
                 </h2>
@@ -25,8 +25,8 @@ const MobileTimeline = ({ processSteps }) => {
 
             {/* Scroll container */}
             <div style={{ height: '400vh' }} ref={containerRef}>
-                <div className="sticky flex items-center" style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}>
-                    <div className="w-full px-6 sm:px-8">
+                <div className="sticky flex items-center " style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}>
+                    <div className="w-full">
                         <div
                             className="relative"
                             ref={wrapperRef}
@@ -36,7 +36,7 @@ const MobileTimeline = ({ processSteps }) => {
                             }}
                         >
                             {/* Layer 1: Glow - SENZA mask, overflow visible */}
-                            <div className="absolute inset-0 pointer-events-none overflow-visible">
+                            <div className="absolute inset-0 pointer-events-none ">
                                 <motion.div
                                     className="flex items-stretch timeline-mobile-cards gap-6"
                                     style={{ x }}

@@ -1129,12 +1129,7 @@
       }
     }
 
-    /* Mobile Timeline Container - Container mobile con padding */
-    .mobile-timeline-container {
-      padding-left: var(--margin-safe-x);
-      padding-right: var(--margin-safe-x);
-      margin-bottom: var(--spacing-padding-xs);
-    }
+
 
     @media (min-width: 640px) {
       .mobile-timeline-container {
@@ -1167,25 +1162,7 @@
        Responsive scroll pattern matching PerformanceMetrics
        ==================================== */
 
-    /* Timeline Carousel Container - Negative margins for edge-to-edge on mobile */
-    .timeline-carousel-mobile {
-      margin-left: -1rem;
-      margin-right: -1rem;
-    }
 
-    @media (min-width: 640px) {
-      .timeline-carousel-mobile {
-        margin-left: -1.5rem;
-        margin-right: -1.5rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .timeline-carousel-mobile {
-        margin-left: 0;
-        margin-right: 0;
-      }
-    }
 
     /* Timeline Mobile Card - Dynamic responsive sizing (narrower than PerformanceMetrics) */
     .timeline-mobile-card {
