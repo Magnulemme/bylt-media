@@ -25,31 +25,61 @@ const MobileTimeline = ({ processSteps }) => {
 
             {/* Scroll container */}
             <div style={{ height: '400vh' }} ref={containerRef}>
-                <div className="sticky flex items-center " style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}>
-                    <div className="w-full">
+                <div className="sticky flex items-center" style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}>
+                    <div className="w-full relative">
                         <div
                             ref={wrapperRef}
+                            className="relative"
                             style={{
                                 opacity: isReady ? 1 : 0,
                                 transition: 'opacity 0.2s ease-out',
-                                overflowX: 'clip', overflowY: 'visible'
+                                overflowX: 'clip',
+                                overflowY: 'visible'
                             }}
                         >
-                            <motion.div
-                                ref={cardsRef}
-                                className="flex items-stretch timeline-mobile-cards gap-6"
-                                style={{ x }}
+                            {/* Layer 1: Glow layer (absolute, no mask, overflow visible) */}
+                            <div className="absolute inset-0 overflow-visible pointer-events-none">
+                                <motion.div
+                                    className="flex items-stretch timeline-mobile-cards gap-6"
+                                    style={{ x }}
+                                >
+                                    {processSteps.map((step, index) => (
+                                        <MobileCard
+                                            key={`glow-${step.step}`}
+                                            step={step}
+                                            index={index}
+                                            totalSteps={processSteps.length}
+                                            scrollProgress={scrollYProgress}
+                                            variant="glow-only"
+                                        />
+                                    ))}
+                                </motion.div>
+                            </div>
+
+                            {/* Layer 2: Content layer (base layer with mask) */}
+                            <div
+                                style={{
+                                    maskImage,
+                                    WebkitMaskImage: maskImage
+                                }}
                             >
-                                {processSteps.map((step, index) => (
-                                    <MobileCard
-                                        key={step.step}
-                                        step={step}
-                                        index={index}
-                                        totalSteps={processSteps.length}
-                                        scrollProgress={scrollYProgress}
-                                    />
-                                ))}
-                            </motion.div>
+                                <motion.div
+                                    ref={cardsRef}
+                                    className="flex items-stretch timeline-mobile-cards gap-6"
+                                    style={{ x }}
+                                >
+                                    {processSteps.map((step, index) => (
+                                        <MobileCard
+                                            key={`content-${step.step}`}
+                                            step={step}
+                                            index={index}
+                                            totalSteps={processSteps.length}
+                                            scrollProgress={scrollYProgress}
+                                            variant="content-only"
+                                        />
+                                    ))}
+                                </motion.div>
+                            </div>
                         </div>
                     </div>
                 </div>
