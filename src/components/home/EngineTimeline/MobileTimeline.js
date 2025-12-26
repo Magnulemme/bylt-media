@@ -29,7 +29,7 @@ const MobileTimeline = ({ processSteps }) => {
                     <div className="w-full relative">
                         <div
                             ref={wrapperRef}
-                            className="relative"
+                            className="relative py-12"
                             style={{
                                 opacity: isReady ? 1 : 0,
                                 transition: 'opacity 0.2s ease-out',
@@ -38,7 +38,7 @@ const MobileTimeline = ({ processSteps }) => {
                             }}
                         >
                             {/* Layer 1: Glow layer (absolute, no mask, overflow visible) */}
-                            <div className="absolute inset-0 overflow-visible pointer-events-none">
+                            <div className="absolute inset-0 overflow-visible pointer-events-none py-12">
                                 <motion.div
                                     className="flex items-stretch timeline-mobile-cards gap-6"
                                     style={{ x }}
