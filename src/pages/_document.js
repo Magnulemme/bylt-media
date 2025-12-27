@@ -111,10 +111,10 @@ export default function Document() {
                 text-decoration: none; overflow: hidden; transition: all 0.4s ease; cursor: pointer;
                 will-change: transform;
               }
-              .quantum-button-hero:hover { 
+              .quantum-button-hero:hover {
                 transform: translate3d(0, -3px, 0) scale3d(1.05, 1.05, 1);
-                box-shadow: 0 8px 25px rgba(184, 255, 250, 0.3); 
-                background: #9DFFF8; 
+                box-shadow: 0 8px 25px rgba(184, 255, 250, 0.3);
+                background: #9DFFF8;
               }
             `,
           }}

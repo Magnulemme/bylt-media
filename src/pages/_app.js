@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import { useEffect } from 'react';
 import { loadNonCriticalCSS } from '../utils/loadCSS';
 import EnhancedCookieConsent from '@/components/EnhancedCookieConsent';
+import SplashScreen from '@/components/SplashScreen';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <SplashScreen />
       <Component {...pageProps} />
       <EnhancedCookieConsent />
     </>

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
-import ShaderBackground from './ShaderBackground';
+import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import NeuralServices from './NeuralServices';
 import NeuralServicesMobile from './NeuralServicesMobile';
 import InfinityPhilosophy from './InfinityPhilosophy';
@@ -77,7 +77,7 @@ const GrainyBgSection = () => {
                 }}
             >
                 {/* Shader Background */}
-                <ShaderBackground />
+                <ShaderBackgroundStandalone />
 
                 <div ref={sectionRef} className="grainy-bg-content">
                     {/* Services Section - Conditional rendering based on screen size */}
