@@ -30,7 +30,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
       >
         {/* Area sticky centrata verticalmente */}
         <div
-          className="sticky overflow-x-clip flex items-center"
+          className="sticky overflow-x-clip flex flex-col justify-center"
           style={{
             top: topPosition,
             zIndex: 2
@@ -81,6 +81,24 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
               </motion.div>
             </div>
           </div>
+
+          {/* Testo che appare quando lo scroll è completato */}
+          <motion.div
+            className="text-center px-6 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: isAtEnd ? 1 : 0,
+              y: isAtEnd ? 0 : 20
+            }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            <h3 className="text-xl font-bold text-white mb-2">
+              The Numbers Speak for Themselves
+            </h3>
+            <p className="text-sm text-gray-400">
+              Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
+            </p>
+          </motion.div>
         </div>
       </div>
     </div>
