@@ -114,7 +114,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     // Render solo il contenuto (layer mascherato)
     if (variant === 'content-only') {
         return (
-            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4 px-4">
+            <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4">
                 {/* Step Number Circle - con shader background */}
                 <div className="relative shrink-0 rounded-full">
                     <motion.div
@@ -173,7 +173,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10">
+                    <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10 hidden sm:block">
                         {step.description}
                     </p>
 

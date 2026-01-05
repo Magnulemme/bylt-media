@@ -18,7 +18,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
   const topPosition = useCenteredPosition(wrapperRef);
 
   return (
-    <div className="md:hidden performance-carousel-mobile">
+    <div className="md:hidden">
       {/* Container alto per dare spazio allo scroll */}
       <div
         style={{

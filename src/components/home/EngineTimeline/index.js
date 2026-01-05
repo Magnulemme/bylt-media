@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import DesktopTimeline from './DesktopTimeline';
 import MobileTimeline from './MobileTimeline';
 import TimelineStyles from './TimelineStyles';
@@ -8,7 +8,39 @@ import { useProfiler } from '@/hooks/useProfiler';
 const EngineTimeline = () => {
     useProfiler('EngineTimeline [ShaderBG]');
     const sectionRef = useRef(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
+    useEffect(() => {
+        setIsMounted(true);
+
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024); // lg breakpoint
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Durante SSR e hydration iniziale, renderizza entrambe con CSS
+    if (!isMounted) {
+        return (
+            <section
+                ref={sectionRef}
+                id="process"
+                className="engine-timeline-section"
+            >
+                <div className="relative z-10">
+                    <DesktopTimeline processSteps={processSteps} />
+                    <MobileTimeline processSteps={processSteps} />
+                </div>
+                <TimelineStyles />
+            </section>
+        );
+    }
+
+    // Dopo il mount, renderizza solo la sezione appropriata
     return (
         <section
             ref={sectionRef}
@@ -16,8 +48,11 @@ const EngineTimeline = () => {
             className="engine-timeline-section"
         >
             <div className="relative z-10">
-                <DesktopTimeline processSteps={processSteps} />
-                <MobileTimeline processSteps={processSteps} />
+                {isMobile ? (
+                    <MobileTimeline processSteps={processSteps} />
+                ) : (
+                    <DesktopTimeline processSteps={processSteps} />
+                )}
             </div>
 
             <TimelineStyles />

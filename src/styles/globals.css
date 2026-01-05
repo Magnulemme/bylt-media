@@ -1071,37 +1071,7 @@
       }
     }
 
-    /* Engine Timeline Container - Wrapper con max-width e safety margins */
-    .engine-timeline-container {
-      @apply relative z-10 max-w-content mx-auto;
-      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
-      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
-    }
 
-    @media (min-width: 640px) {
-      .engine-timeline-container {
-        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
-        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .engine-timeline-container {
-        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
-        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
-      }
-    }
-
-    /* Engine Timeline Title Container - Wrapper per titolo con margin bottom */
-    .engine-timeline-title-container {
-      margin-bottom: var(--spacing-padding-sm);
-    }
-
-    @media (min-width: 768px) {
-      .engine-timeline-title-container {
-        margin-bottom: var(--spacing-padding-md);
-      }
-    }
 
     /* Process Step - Singolo step con gap e margin */
     .process-step {
