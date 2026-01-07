@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { motion, useTransform, useMotionValue } from 'motion/react';
 import { useFooterStore } from '../store/footerStore';
 import { useEffect } from 'react';
-import ShaderBackground from './home/ShaderBackground';
+import ShaderBackgroundStandalone from './home/ShaderBackgroundStandalone';
 
 const Content = () => {
     return (
@@ -13,7 +13,7 @@ const Content = () => {
             }}
         >
             {/* Shader Background */}
-            <ShaderBackground />
+            <ShaderBackgroundStandalone />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 h-full flex flex-col justify-between">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
