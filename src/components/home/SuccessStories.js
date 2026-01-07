@@ -76,7 +76,7 @@ const SuccessStories = () => {
                 <InfiniteMovingCards
                     items={stories}
                     direction="left"
-                    speed="slow"
+                    speed="normal"
                     pauseOnHover={false}
                 />
             </div>
