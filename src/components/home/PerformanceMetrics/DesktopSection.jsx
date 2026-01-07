@@ -13,7 +13,8 @@ import { useFadeMask } from './hooks/useFadeMask';
  */
 const DesktopSection = ({ performanceData, roasData, channelPerformanceData, trafficMixData, kpis }) => {
   const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(false);
-  const { cardHeight, showText } = useCardHeight();
+  const stickyContentRef = React.useRef(null);
+  const { cardHeight, showText, stickyTop } = useCardHeight(stickyContentRef);
   const maskImage = useFadeMask(isAtStart, isAtEnd, 128);
 
   return (
@@ -29,10 +30,10 @@ const DesktopSection = ({ performanceData, roasData, channelPerformanceData, tra
       >
         {/* Area sticky che rimane fissa durante lo scroll */}
         <div
-          className="sticky flex flex-col justify-center"
+          ref={stickyContentRef}
+          className="sticky flex flex-col"
           style={{
-            top: '15vh',
-            height: '80vh'
+            top: stickyTop
           }}
         >
           <div className="w-full overflow-hidden">

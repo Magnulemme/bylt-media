@@ -11,7 +11,7 @@ import { DetailsSection } from './DetailsComponents';
 export const chartConfigs = {
   revenue: {
     title: "Revenue & Ad Spend",
-    subtitle: "Performance mensile",
+    subtitle: "Monthly performance",
     delay: 0,
 
     // Legenda
@@ -71,35 +71,35 @@ export const chartConfigs = {
     renderDetails: () => (
       <DetailsSection
         leftStat={{
-          label: "Revenue totale",
+          label: "Total revenue",
           value: "€31.5K",
           className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400",
-          unit: "ultimo mese"
+          unit: "last month"
         }}
         rightStat={{
-          label: "Margine",
+          label: "Margin",
           value: "€26.9K (85%)",
           className: "text-sm font-bold text-green-400"
         }}
-        description="Crescita sostenuta con margine costante. Spesa pubblicitaria ottimizzata per massimizzare il profitto."
+        description="Sustained growth with consistent margin. Advertising spend optimized to maximize profit."
       />
     )
   },
 
   roas: {
-    title: "Ritorno sulla Spesa Pubblicitaria",
-    subtitle: "Performance ROAS nell'ultimo semestre",
+    title: "Return on Ad Spend",
+    subtitle: "ROAS performance over the last semester",
     delay: 0.4,
 
     renderLegend: () => (
       <>
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-blue-400" />
-          <span className="text-gray-400">Realizzato</span>
+          <span className="text-gray-400">Actual</span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-gray-600" />
-          <span className="text-gray-400">Obiettivo</span>
+          <span className="text-gray-400">Target</span>
         </div>
       </>
     ),
@@ -164,17 +164,17 @@ export const chartConfigs = {
     renderDetails: () => (
       <DetailsSection
         leftStat={{
-          label: "Performance attuale",
+          label: "Current performance",
           value: "6.8x",
           className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400",
           unit: "ROAS"
         }}
         rightStat={{
-          label: "vs Obiettivo",
-          value: "+36% sopra target",
+          label: "vs Target",
+          value: "+36% above target",
           className: "text-sm font-bold text-green-400"
         }}
-        description={<>Ogni euro investito in advertising genera <span className="text-cyan-400 font-semibold">€6.80</span> di revenue. Performance costantemente superiore agli obiettivi prefissati.</>}
+        description={<>Every euro invested in advertising generates <span className="text-cyan-400 font-semibold">€6.80</span> in revenue. Performance consistently exceeding set targets.</>}
       />
     )
   },
@@ -258,14 +258,14 @@ export const chartConfigs = {
           value: "17.5K",
           className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-cyan-600"
         }}
-        description="Mix bilanciato di traffico organico e a pagamento. La forte presenza SEO garantisce sostenibilità a lungo termine, mentre le campagne paid mantengono la crescita costante."
+        description="Balanced mix of organic and paid traffic. Strong SEO presence ensures long-term sustainability, while paid campaigns maintain consistent growth."
       />
     )
   },
 
   conversion: {
-    title: "Performance per Canale",
-    subtitle: "Analisi multi-dimensionale delle piattaforme pubblicitarie",
+    title: "Channel Performance",
+    subtitle: "Multi-dimensional analysis of advertising platforms",
     delay: 0.5,
 
     renderLegend: () => null,
@@ -319,17 +319,17 @@ export const chartConfigs = {
     renderDetails: () => (
       <DetailsSection
         leftStat={{
-          label: "Score medio",
+          label: "Average score",
           value: "87/100",
           className: "text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400",
           unit: "performance"
         }}
         rightStat={{
-          label: "Miglior canale",
+          label: "Top channel",
           value: "Google Ads",
           className: "text-sm font-bold text-purple-400"
         }}
-        description="Strategia omnicanale bilanciata con performance eccellenti su tutte le piattaforme principali. Google Ads e Meta leading performers."
+        description="Balanced omnichannel strategy with excellent performance across all major platforms. Google Ads and Meta are leading performers."
       />
     )
   }

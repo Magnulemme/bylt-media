@@ -107,6 +107,15 @@ const PerformanceMetrics = () => {
         .performance-mobile-cards {
           overflow: visible !important;
           max-height: 550px;
+          padding-left: max(4px, 1rem);
+          padding-right: max(4px, 1rem);
+        }
+
+        @media (min-width: 640px) {
+          .performance-mobile-cards {
+            padding-left: max(8px, 1.5rem);
+            padding-right: max(8px, 1.5rem);
+          }
         }
 
         .performance-mobile-card {

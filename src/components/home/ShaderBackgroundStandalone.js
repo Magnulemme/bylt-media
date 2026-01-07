@@ -95,21 +95,21 @@ const ShaderBackgroundStandalone = () => {
 
                     // Enhanced grain texture (film grain effect)
                     vec2 grainCoord = gl_FragCoord.xy;
-                    float grainTime = floor(u_time * 24.0);
+                    float grainTime = floor(u_time * 6.0); // 6 FPS
 
                     // Main grain layer
                     float grain = hash(grainCoord + grainTime * 100.0);
-                    float grainStrength = 0.18;
+                    float grainStrength = 0.09;
                     float grainEffect = mix(1.0 - grainStrength, 1.0 + grainStrength * 0.5, grain);
                     color *= grainEffect;
 
                     // Fine grain detail
                     float fineGrain = hash(grainCoord * 1.5 + grainTime * 50.0);
-                    color += (fineGrain - 0.5) * 0.12;
+                    color += (fineGrain - 0.5) * 0.06;
 
                     // Coarse grain layer
                     float coarseGrain = hash(grainCoord * 0.5 + grainTime * 75.0);
-                    color *= mix(0.95, 1.05, coarseGrain);
+                    color *= mix(0.97, 1.03, coarseGrain);
 
                     // Subtle vignette
                     float vignette = 1.0 - length(p) * 0.35;

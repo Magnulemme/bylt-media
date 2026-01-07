@@ -38,6 +38,39 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
 
     const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
+    // Wave effect per il glow - ciclo continuo quando la card è attiva
+    const [glowWave, setGlowWave] = React.useState(0);
+
+    React.useEffect(() => {
+        let animationFrameId;
+        let startTime = Date.now();
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            // Onda sinusoidale: oscilla tra 0.8 e 1.2 con periodo di 2 secondi
+            const wave = 1 + Math.sin(elapsed / 1000 * Math.PI) * 0.2;
+            setGlowWave(wave);
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        const unsubscribe = isActive.on('change', (v) => {
+            if (v > 0.5) {
+                // Avvia l'animazione quando la card diventa attiva
+                startTime = Date.now();
+                animate();
+            } else {
+                // Ferma l'animazione quando non è attiva
+                cancelAnimationFrame(animationFrameId);
+                setGlowWave(0);
+            }
+        });
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            unsubscribe();
+        };
+    }, [isActive]);
+
     // Transforms pre-calcolati (non dentro il render)
     const circleBorderColor = useTransform(isActive, [0, 1], ['rgba(103, 232, 249, 0.3)', 'rgba(103, 232, 249, 0.8)']);
     const iconOpacity = useTransform(isActive, [0, 1], [0.2, 1]);
@@ -63,7 +96,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                             borderColor: circleBorderColor
                         }}
                     />
-                    {/* Luminous glow effect around circle - Safari fix with will-change */}
+                    {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                     <motion.div
                         className="absolute inset-0 rounded-full pointer-events-none -z-10"
                         style={{
@@ -73,11 +106,11 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                                 return `blur(${blur}px)`;
                             }),
                             opacity: isActive,
-                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            transform: `scale(${glowWave || 1})`,
                             willChange: 'transform, filter, opacity'
                         }}
                     />
-                    {/* Outer glow ring - Safari fix with will-change */}
+                    {/* Outer glow ring - Safari fix with will-change + wave effect */}
                     <motion.div
                         className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                         style={{
@@ -87,7 +120,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                                 return `blur(${blur}px)`;
                             }),
                             opacity: isActive,
-                            transform: useTransform(glowScale, (s) => `scale(${s})`),
+                            transform: `scale(${glowWave || 1})`,
                             willChange: 'transform, filter, opacity'
                         }}
                     />
@@ -225,7 +258,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                         {step.step}
                     </motion.span>
                 </motion.div>
-                {/* Luminous glow effect around circle - Safari fix with will-change */}
+                {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                 <motion.div
                     className="absolute inset-0 rounded-full pointer-events-none -z-10"
                     style={{
@@ -235,11 +268,11 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />
-                {/* Outer glow ring - Safari fix with will-change */}
+                {/* Outer glow ring - Safari fix with will-change + wave effect */}
                 <motion.div
                     className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                     style={{
@@ -249,7 +282,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />

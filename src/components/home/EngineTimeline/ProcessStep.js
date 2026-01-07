@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import ShaderBackground from '../ShaderBackground';
 
 const ProcessStep = ({ step, index }) => {
     const stepRef = useRef(null);
@@ -37,6 +38,42 @@ const ProcessStep = ({ step, index }) => {
 
     const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
+    // Wave effect per il glow - ciclo continuo quando la card è attiva
+    const [glowWave, setGlowWave] = React.useState(0);
+
+    React.useEffect(() => {
+        let animationFrameId;
+        let startTime = Date.now();
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            // Onda sinusoidale: oscilla tra 0.8 e 1.2 con periodo di 2 secondi
+            const wave = 1 + Math.sin(elapsed / 1000 * Math.PI) * 0.2;
+            setGlowWave(wave);
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        const unsubscribe = isActive.on('change', (v) => {
+            if (v > 0.5) {
+                // Avvia l'animazione quando la card diventa attiva
+                startTime = Date.now();
+                animate();
+            } else {
+                // Ferma l'animazione quando non è attiva
+                cancelAnimationFrame(animationFrameId);
+                setGlowWave(0);
+            }
+        });
+
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            unsubscribe();
+        };
+    }, [isActive]);
+
+    // Icone mantengono 100% opacity quando attive
+    const iconOpacity = useTransform(isActive, [0, 1], [0.2, 1]);
+
     // Debug scale del glow e blur
     React.useEffect(() => {
         const unsubscribeActive = isActive.on('change', (v) => {
@@ -63,15 +100,23 @@ const ProcessStep = ({ step, index }) => {
             {/* Step Number Circle - centered vertically to card */}
             <div className="relative shrink-0 rounded-full overflow-visible">
                 <motion.div
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2 overflow-hidden"
                     style={{
                         background: circleBackground,
                         borderColor: circleBorderColor
                     }}
                 >
+                    {/* Shader Background dentro il cerchio */}
+                    <motion.div
+                        className="absolute inset-0 pointer-events-none z-0"
+                        style={{ opacity: isActive }}
+                    >
+                        <ShaderBackground priority={8} targetFPS={24} style={{ borderRadius: '9999px', zIndex: 0 }} />
+                    </motion.div>
+
                     {/* Number - white/gray when inactive */}
                     <motion.span
-                        className="relative text-gray-400"
+                        className="relative z-20 text-gray-400"
                         style={{
                             opacity: useTransform(isActive, [0, 1], [1, 0])
                         }}
@@ -80,7 +125,7 @@ const ProcessStep = ({ step, index }) => {
                     </motion.span>
                     {/* Number - gradient when active */}
                     <motion.span
-                        className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
+                        className="absolute z-20 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
                         style={{
                             opacity: isActive,
                             animation: 'gradient 3s ease infinite'
@@ -89,7 +134,7 @@ const ProcessStep = ({ step, index }) => {
                         {step.step}
                     </motion.span>
                 </motion.div>
-                {/* Luminous glow effect around circle - Safari fix with will-change */}
+                {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                 <motion.div
                     className="absolute inset-0 rounded-full pointer-events-none -z-10"
                     style={{
@@ -99,11 +144,11 @@ const ProcessStep = ({ step, index }) => {
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />
-                {/* Outer glow ring - Safari fix with will-change */}
+                {/* Outer glow ring - Safari fix with will-change + wave effect */}
                 <motion.div
                     className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                     style={{
@@ -113,7 +158,7 @@ const ProcessStep = ({ step, index }) => {
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: useTransform(glowScale, (s) => `scale(${s})`),
+                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />
@@ -121,14 +166,28 @@ const ProcessStep = ({ step, index }) => {
 
             {/* Step Content Card */}
             <motion.div
-                className="process-step-card"
+                className="process-step-card relative overflow-hidden"
                 style={{
                     borderColor,
                     x: cardX
                 }}
             >
+                {/* Shader Background */}
+                <div className="absolute inset-0 opacity-50 pointer-events-none">
+                    <ShaderBackground />
+                </div>
+
+                {/* Gradient Background - matching mobile */}
+                <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(34, 211, 238, 0.03) 0%, rgba(59, 130, 246, 0.05) 50%, rgba(168, 85, 247, 0.03) 100%)',
+                        opacity: isActive
+                    }}
+                />
+
                 {/* Row 1: Title + Description + 3D Icon */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-6">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-6 relative z-10">
                     {/* Left: Title + Description */}
                     <div>
                         <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
@@ -142,11 +201,11 @@ const ProcessStep = ({ step, index }) => {
                         </p>
                     </div>
 
-                    {/* Right: 3D Icon */}
+                    {/* Right: 3D Icon - mantiene 100% opacity quando attivo */}
                     <motion.div
                         className="hidden lg:flex items-center justify-center"
                         style={{
-                            opacity: isActive,
+                            opacity: iconOpacity,
                             rotate: useTransform(isActive, [0, 1], [-5, 0])
                         }}
                     >
@@ -159,7 +218,7 @@ const ProcessStep = ({ step, index }) => {
                 </div>
 
                 {/* Row 2: Details Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
                     {step.details.map((detail, i) => (
                         <motion.div
                             key={i}

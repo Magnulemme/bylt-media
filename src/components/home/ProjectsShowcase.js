@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useMotionValue, useSpring, useAnimatio
 import SectionIntro from '../ui/SectionIntro';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
+import ShaderBackground from './ShaderBackground';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
 const useLissajousAnimation = (isActive, seed = 0) => {
@@ -106,44 +107,38 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
                         {String(project.id).padStart(2, '0')}
                     </span>
 
-                    {/* Project Info */}
+                    {/* Project Info with inline arrow */}
                     <div className="relative z-10 project-info-container flex-1">
-                        <h3 className="project-title">
+                        <h3 className="project-title inline">
                             {project.name}
                         </h3>
+                        {/* Arrow inline dopo il titolo */}
+                        <div
+                            className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border-2 border-white/30 group-hover:border-cyan-400/60 relative transition-all duration-300 group-hover:translate-x-[2px] group-hover:translate-y-[2px] ml-8 align-middle"
+                            style={{
+                                boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)',
+                                verticalAlign: 'middle',
+                            }}
+                        >
+                            <svg
+                                className="w-5 h-5 text-cyan-300 transition-transform duration-300 group-hover:translate-x-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                />
+                            </svg>
+                        </div>
                         <div className="project-meta">
                             <span>{project.category}</span>
                             <span className="text-cyan-400/50">•</span>
                             <span>{project.service}</span>
                         </div>
-                    </div>
-
-                    {/* Arrow - Brutalist Style */}
-                    <div
-                        className="hidden md:flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border-2 border-white/30 group-hover:border-cyan-400/60 relative z-10 transition-all duration-300 group-hover:translate-x-[2px] group-hover:translate-y-[2px] flex-shrink-0"
-                        style={{
-                            boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)'
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.boxShadow = '4px 4px 0px rgba(34, 211, 238, 1)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.boxShadow = '6px 6px 0px rgba(34, 211, 238, 1)';
-                        }}
-                    >
-                        <svg
-                            className="w-5 h-5 text-cyan-300 transition-transform duration-300 group-hover:translate-x-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            />
-                        </svg>
                     </div>
                 </div>
 
@@ -260,12 +255,16 @@ const ProjectsShowcase = () => {
 
     return (
         <section className="projects-showcase-section">
-            <div className="projects-showcase-container">
+            <div className="projects-showcase-inner">
+                {/* Shader Background */}
+                <ShaderBackground />
+
+                <div className="projects-showcase-container">
                 {/* Section Title */}
                 <SectionIntro
                     title="Our Work"
                     subtitle="Explore our portfolio of successful campaigns and strategic partnerships that drive measurable results."
-                    align="left"
+                    align="center"
                     maxWidth="3xl"
                     size="xl"
                     variant="blur"
@@ -312,6 +311,7 @@ const ProjectsShowcase = () => {
                                                 </MovingBorderButton>
                                             </div>
                 </motion.div>
+                </div>
             </div>
         </section>
     );

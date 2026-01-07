@@ -2,10 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 
 /**
  * Hook per calcolare il top position per centrare verticalmente le card mobile
- * Formula: (100dvh - cardHeight) / 2
+ * Formula: (viewport - contentHeight) / 2 per centrare perfettamente
  */
 export const useCenteredPosition = (cardRef) => {
-  const [topPosition, setTopPosition] = useState('20vh'); // fallback iniziale
+  const [topPosition, setTopPosition] = useState('0'); // fallback iniziale
 
   const calculatePosition = useCallback(() => {
     if (!cardRef?.current) return;
@@ -13,7 +13,7 @@ export const useCenteredPosition = (cardRef) => {
     const viewportHeight = window.innerHeight;
     const cardHeight = cardRef.current.offsetHeight;
 
-    // Calcola il top per centrare: (viewport - card) / 2
+    // Calcola il top per centrare verticalmente il contenuto
     const calculatedTop = Math.max(0, (viewportHeight - cardHeight) / 2);
 
     setTopPosition(`${calculatedTop}px`);

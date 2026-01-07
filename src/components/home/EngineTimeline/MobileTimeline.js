@@ -14,11 +14,11 @@ const MobileTimeline = ({ processSteps }) => {
     return (
         <div className="lg:hidden px-4">
             {/* Title */}
-            <div className="">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4">
+            <div className="mb-12">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter text-center leading-tight text-white mb-4 max-w-4xl mx-auto">
                     Our proven process ensures clarity, efficiency, and exceptional results
                 </h2>
-                <p className="text-lg md:text-xl text-gray-400 text-center">
+                <p className="text-lg md:text-xl text-gray-400 text-center max-w-2xl mx-auto">
                     Every stage is designed to deliver measurable impact, from strategy to scale
                 </p>
             </div>

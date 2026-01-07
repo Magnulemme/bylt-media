@@ -68,18 +68,18 @@ const GrainyBgSection = () => {
 
     return (
         <section id="services" className="grainy-bg-section">
-            <motion.div
-                ref={containerRef}
-                className="grainy-bg-card"
-                style={{
-                    transform,
-                    opacity
-                }}
-            >
-                {/* Shader Background */}
+            <div ref={containerRef} className="grainy-bg-card">
+                {/* Shader Background - Rimane fisso */}
                 <ShaderBackgroundStandalone />
 
-                <div ref={sectionRef} className="grainy-bg-content">
+                <motion.div
+                    ref={sectionRef}
+                    className="grainy-bg-content"
+                    style={{
+                        transform,
+                        opacity
+                    }}
+                >
                     {/* Services Section - Conditional rendering based on screen size */}
                     {isMobile ? <NeuralServicesMobile /> : <NeuralServices />}
 
@@ -88,8 +88,8 @@ const GrainyBgSection = () => {
 
                     {/* Performance Metrics Section */}
                     <PerformanceMetrics />
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
         </section>
     );
 };

@@ -85,7 +85,7 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
       </div>
 
       {/* Testo che appare DOPO lo scroll container */}
-      <div className="text-center px-6 py-12">
+      <div className="performance-mobile-text-container">
         <h3 className="text-xl font-bold text-white mb-2">
           The Numbers Speak for Themselves
         </h3>

@@ -56,11 +56,11 @@ const SuccessStories = () => {
     return (
         <section
             id="success-stories"
-            className="relative pt-20 pb-4 overflow-hidden"
+            className="success-stories-section"
             style={{ background: '#020617' }}
         >
             {/* Section intro */}
-            <div className="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="success-stories-header max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                 <SectionIntro
                     title="Real Results from Real Partners"
                     subtitle="See why leading brands trust us to drive their growth. Ready to join them?"

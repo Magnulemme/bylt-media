@@ -175,6 +175,34 @@
       background-color: hsl(var(--background));
       color: hsl(var(--foreground));
     }
+
+    /* Hide all scrollbars globally */
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    html::-webkit-scrollbar {
+      display: none;
+    }
+
+    html {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   }
   
   /* ========================================
@@ -630,21 +658,21 @@
       @apply relative z-10 max-w-7xl mx-auto;
     }
 
-    /* Padding solo per i figli diretti che NON sono NeuralServices */
-    .grainy-bg-content > :not(.services-container-mobile) {
+    /* Padding solo per i figli diretti che NON sono NeuralServices o PerformanceMetrics */
+    .grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
       padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
       padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
     }
 
     @media (min-width: 640px) {
-      .grainy-bg-content > :not(.services-container-mobile) {
+      .grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
         padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
         padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
       }
     }
 
     @media (min-width: 1024px) {
-      .grainy-bg-content > :not(.services-container-mobile) {
+      .grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
         padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
         padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
       }
@@ -889,11 +917,12 @@
     .infinity-section {
       @apply max-w-content mx-auto;
       padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-sm);
     }
 
     @media (min-width: 768px) {
       .infinity-section {
-        padding-top: var(--spacing-padding-2xl);
+      padding-bottom: var(--spacing-padding-lg);
       }
     }
 
@@ -905,6 +934,7 @@
 
     @media (min-width: 768px) {
       .infinity-layout {
+        padding-top: var(--spacing-padding-lg);
         gap: var(--spacing-padding-md);
       }
     }
@@ -927,13 +957,13 @@
     /* Performance Section - Container principale con padding verticale */
     .performance-section {
       @apply relative z-10;
-      padding-top: var(--spacing-padding-lg);
+      padding-top: var(--spacing-padding-sm);
       padding-bottom: var(--spacing-padding-lg);
     }
 
     @media (min-width: 768px) {
       .performance-section {
-        padding-top: var(--spacing-padding-2xl);
+        padding-top: 0;
         padding-bottom: var(--spacing-padding-2xl);
       }
     }
@@ -941,7 +971,7 @@
     /* Performance Cards Flex - Flex container per le card orizzontali */
     .performance-cards-flex {
       @apply flex items-stretch;
-      gap: var(--spacing-padding-xs);
+      gap: "2px";
     }
 
     @media (min-width: 768px) {
@@ -950,26 +980,86 @@
       }
     }
 
-    /* Performance Sticky Text Container - Container testo sotto le card */
+    /* Performance Sticky Text Container - Container testo sotto le card (Desktop) */
     .performance-sticky-text-container {
       @apply max-w-content mx-auto;
       margin-top: var(--spacing-padding-lg);
     }
 
-    /* Performance Sticky Text Content - Contenuto testo centrato */
+    /* Performance Sticky Text Content - Contenuto testo centrato (Desktop) */
     .performance-sticky-text-content {
       @apply text-center max-w-3xl mx-auto flex flex-col;
       gap: var(--spacing-padding-xs);
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    }
+
+    @media (min-width: 640px) {
+      .performance-sticky-text-content {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .performance-sticky-text-content {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+      }
+    }
+
+    /* Performance Mobile Text Container - Container testo mobile (padding ridotto) */
+    .performance-mobile-text-container {
+      @apply text-center py-12;
+      padding-left: max(var(--margin-safe-x), 1rem);
+      padding-right: max(var(--margin-safe-x), 1rem);
+    }
+
+    @media (min-width: 640px) {
+      .performance-mobile-text-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      }
     }
 
     /* ====================================
        PROJECTS SHOWCASE SECTION COMPONENTS
        ==================================== */
 
-    /* Projects Showcase Section - Container principale con padding verticale */
+    /* Projects Showcase Section - Container principale */
     .projects-showcase-section {
-      @apply relative overflow-hidden;
+      @apply relative flex items-center justify-center overflow-hidden;
+      @apply px-4;
       background: #020617;
+      z-index: 10;
+    }
+
+    /* Projects Showcase Inner - Blocco arrotondato con shader background */
+    .projects-showcase-inner {
+      @apply relative w-full rounded-2xl;
+      @apply flex items-center justify-center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding-top: var(--spacing-padding-lg);
+      padding-bottom: var(--spacing-padding-md);
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .projects-showcase-inner {
+        padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-lg);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .projects-showcase-inner {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding-top: var(--spacing-padding-2xl);
+        padding-bottom: var(--spacing-padding-lg);
+      }
     }
 
     /* Projects Showcase Container - Wrapper con max-width e safety margins */
@@ -980,6 +1070,7 @@
       margin-right: auto;
       padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
       padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      width: 100%;
     }
 
     @media (min-width: 640px) {
@@ -1003,9 +1094,16 @@
 
     /* Project Link Item - Singolo link progetto con padding e border */
     .project-link-item {
-      @apply block border-b border-slate-800/50 cursor-pointer relative;
+      @apply block border-b cursor-pointer relative;
+      border-bottom-color: rgba(148, 163, 184, 0.15);
+      border-bottom-width: 1px;
       padding-top: var(--spacing-padding-xs);
       padding-bottom: var(--spacing-padding-xs);
+      transition: border-color 0.3s ease;
+    }
+
+    .project-link-item:hover {
+      border-bottom-color: rgba(6, 182, 212, 0.3);
     }
 
     @media (min-width: 768px) {
@@ -1043,12 +1141,33 @@
     /* Projects CTA Section - Sezione CTA finale */
     .projects-cta-section {
       @apply text-center;
-      margin-top: 2rem;
+      padding-top: var(--spacing-padding-lg);
+    }
+
+    /* ====================================
+       SUCCESS STORIES SECTION COMPONENTS
+       ==================================== */
+
+    /* Success Stories Section - Container principale */
+    .success-stories-section {
+      @apply relative overflow-hidden;
+      padding-bottom: var(--spacing-padding-xs);
     }
 
     @media (min-width: 768px) {
-      .projects-cta-section {
-        margin-top: 2.5rem;
+      .success-stories-section {
+        padding-bottom: var(--spacing-padding-sm);
+      }
+    }
+
+    /* Success Stories Header - Container titolo con padding-top */
+    .success-stories-header {
+      padding-top: var(--spacing-padding-lg);
+    }
+
+    @media (min-width: 768px) {
+      .success-stories-header {
+        padding-top: var(--spacing-padding-xl);
       }
     }
 
@@ -1068,6 +1187,30 @@
       .engine-timeline-section {
         padding-top: var(--spacing-padding-2xl);
         padding-bottom: var(--spacing-padding-2xl);
+      }
+    }
+
+    /* Engine Timeline Container - Wrapper con max-width e safety margins */
+    .engine-timeline-container {
+      @apply relative z-10;
+      max-width: var(--breakpoint-content);
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    }
+
+    @media (min-width: 640px) {
+      .engine-timeline-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .engine-timeline-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
       }
     }
 
