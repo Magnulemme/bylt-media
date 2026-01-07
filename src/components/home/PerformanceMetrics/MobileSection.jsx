@@ -33,7 +33,8 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
           className="sticky overflow-x-clip flex items-center"
           style={{
             top: topPosition,
-            zIndex: 2
+            zIndex: 2,
+            paddingRight: '1rem'
           }}
         >
           <div className="w-full">
