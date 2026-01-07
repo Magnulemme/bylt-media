@@ -91,9 +91,9 @@ class PerformanceProfiler {
       component.renderDuration = now - component.renderStart;
 
       // Log immediato per render lenti (>16ms = 1 frame)
-      if (component.renderDuration > 16) {
-        console.log(`🐌 [SLOW RENDER] ${name}: ${component.renderDuration.toFixed(1)}ms`);
-      }
+      // if (component.renderDuration > 16) {
+      //   console.log(`🐌 [SLOW RENDER] ${name}: ${component.renderDuration.toFixed(1)}ms`);
+      // }
     }
 
     // Pop from stack
@@ -128,59 +128,59 @@ class PerformanceProfiler {
     if (this.hasLoggedSummary) return;
     this.hasLoggedSummary = true;
 
-    const totalTime = performance.now() - this.pageLoadStart;
+    // const totalTime = performance.now() - this.pageLoadStart;
 
-    console.log('\n📊 ═══════════════════════════════════════════');
-    console.log('   PERFORMANCE PROFILER v2 - RENDER SEQUENCE');
-    console.log('═══════════════════════════════════════════════');
-    console.log(`⏱️  Total time since page load: ${totalTime.toFixed(0)}ms\n`);
+    // console.log('\n📊 ═══════════════════════════════════════════');
+    // console.log('   PERFORMANCE PROFILER v2 - RENDER SEQUENCE');
+    // console.log('═══════════════════════════════════════════════');
+    // console.log(`⏱️  Total time since page load: ${totalTime.toFixed(0)}ms\n`);
 
-    // Timeline dei render (solo render-start e render-end)
-    console.log('📍 RENDER TIMELINE (cronologico)');
-    console.log('─────────────────────────────────');
+    // // Timeline dei render (solo render-start e render-end)
+    // console.log('📍 RENDER TIMELINE (cronologico)');
+    // console.log('─────────────────────────────────');
 
-    const renderEvents = this.renderSequence.filter(e => e.phase !== 'effect');
-    renderEvents.forEach((entry, i) => {
-      const icon = entry.phase === 'render-start' ? '▶️' : '✅';
-      const indent = entry.phase === 'render-end' ? '  ' : '';
-      console.log(`${indent}${entry.relativeTime.toFixed(0).padStart(5)}ms ${icon} ${entry.name}`);
-    });
+    // const renderEvents = this.renderSequence.filter(e => e.phase !== 'effect');
+    // renderEvents.forEach((entry, i) => {
+    //   const icon = entry.phase === 'render-start' ? '▶️' : '✅';
+    //   const indent = entry.phase === 'render-end' ? '  ' : '';
+    //   console.log(`${indent}${entry.relativeTime.toFixed(0).padStart(5)}ms ${icon} ${entry.name}`);
+    // });
 
-    // Componenti ordinati per durata render
-    console.log('\n\n🧩 RENDER TIME PER COMPONENTE (dal più lento)');
-    console.log('─────────────────────────────────');
+    // // Componenti ordinati per durata render
+    // console.log('\n\n🧩 RENDER TIME PER COMPONENTE (dal più lento)');
+    // console.log('─────────────────────────────────');
 
-    const sortedByRender = Array.from(this.components.values())
-      .sort((a, b) => b.renderDuration - a.renderDuration);
+    // const sortedByRender = Array.from(this.components.values())
+    //   .sort((a, b) => b.renderDuration - a.renderDuration);
 
-    sortedByRender.forEach(c => {
-      const bar = '█'.repeat(Math.min(20, Math.round(c.renderDuration / 2)));
-      const warning = c.renderDuration > 16 ? ' ⚠️ >16ms' : '';
-      console.log(
-        `  ${c.name}: ${c.renderDuration.toFixed(1)}ms ${bar}${warning}`
-      );
-    });
+    // sortedByRender.forEach(c => {
+    //   const bar = '█'.repeat(Math.min(20, Math.round(c.renderDuration / 2)));
+    //   const warning = c.renderDuration > 16 ? ' ⚠️ >16ms' : '';
+    //   console.log(
+    //     `  ${c.name}: ${c.renderDuration.toFixed(1)}ms ${bar}${warning}`
+    //   );
+    // });
 
-    // Sequenza di mount
-    console.log('\n\n📋 ORDINE DI MOUNT');
-    console.log('─────────────────────────────────');
+    // // Sequenza di mount
+    // console.log('\n\n📋 ORDINE DI MOUNT');
+    // console.log('─────────────────────────────────');
 
-    const sortedByOrder = Array.from(this.components.values())
-      .sort((a, b) => a.mountOrder - b.mountOrder);
+    // const sortedByOrder = Array.from(this.components.values())
+    //   .sort((a, b) => a.mountOrder - b.mountOrder);
 
-    sortedByOrder.forEach((c, i) => {
-      const effectDelay = c.effectTime
-        ? `→ effect +${(c.effectTime - c.renderEnd).toFixed(0)}ms`
-        : '';
-      console.log(`  ${i + 1}. ${c.name} (render: ${c.renderDuration.toFixed(1)}ms) ${effectDelay}`);
-    });
+    // sortedByOrder.forEach((c, i) => {
+    //   const effectDelay = c.effectTime
+    //     ? `→ effect +${(c.effectTime - c.renderEnd).toFixed(0)}ms`
+    //     : '';
+    //   console.log(`  ${i + 1}. ${c.name} (render: ${c.renderDuration.toFixed(1)}ms) ${effectDelay}`);
+    // });
 
-    // Tempo totale di render (somma)
-    const totalRenderTime = sortedByRender.reduce((sum, c) => sum + c.renderDuration, 0);
-    console.log(`\n⚡ Tempo totale render: ${totalRenderTime.toFixed(0)}ms`);
-    console.log(`📊 Numero componenti tracciati: ${this.components.size}`);
+    // // Tempo totale di render (somma)
+    // const totalRenderTime = sortedByRender.reduce((sum, c) => sum + c.renderDuration, 0);
+    // console.log(`\n⚡ Tempo totale render: ${totalRenderTime.toFixed(0)}ms`);
+    // console.log(`📊 Numero componenti tracciati: ${this.components.size}`);
 
-    console.log('\n═══════════════════════════════════════════════\n');
+    // console.log('\n═══════════════════════════════════════════════\n');
   }
 
   /**

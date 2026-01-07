@@ -105,7 +105,7 @@ class ShaderBackgroundRenderer {
   private initializeGeometry(): void {
     if (this.geometry) return;
     this.geometry = new PlaneGeometry(2, 2);
-    console.log("✅ ShaderBackgroundRenderer geometry initialized");
+    // console.log("✅ ShaderBackgroundRenderer geometry initialized");
   }
 
   /**
@@ -132,7 +132,7 @@ class ShaderBackgroundRenderer {
     });
 
     this.instances.set(id, { material, id });
-    console.log(`📊 Active ShaderBackground instances: ${this.instances.size}`);
+    // console.log(`📊 Active ShaderBackground instances: ${this.instances.size}`);
 
     return material;
   }
@@ -191,13 +191,13 @@ class ShaderBackgroundRenderer {
     if (instance) {
       instance.material.dispose();
       this.instances.delete(id);
-      console.log(`📊 Active ShaderBackground instances: ${this.instances.size}`);
+      // console.log(`📊 Active ShaderBackground instances: ${this.instances.size}`);
 
       // Disponi geometry quando non ci sono più istanze
       if (this.instances.size === 0 && this.geometry) {
         this.geometry.dispose();
         this.geometry = null;
-        console.log("🧹 ShaderBackgroundRenderer geometry disposed");
+        // console.log("🧹 ShaderBackgroundRenderer geometry disposed");
       }
     }
   }

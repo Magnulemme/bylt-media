@@ -37,8 +37,8 @@ const GrainyBgSection = () => {
     });
 
     // 3D entrance effect - card si avvicina lungo l'asse Z (ridotto per movimento più sottile)
-    const translateZEntrance = useTransform(scrollYProgress, [0, 0.08], [-40, 0]);
-    const opacityEntrance = useTransform(scrollYProgress, [0, 0.08], [0.7, 1]);
+    const translateZEntrance = useTransform(scrollYProgress, [0, 0.03], [-40, 0]);
+    const opacityEntrance = useTransform(scrollYProgress, [0, 0.03], [1, 1]);
 
     // 3D exit effect - card si allontana lungo l'asse Z (ridotto per movimento più sottile)
     // MODIFICATO: exit più tardi per sincronizzarsi con il mobile scroll delle performance metrics
@@ -47,7 +47,7 @@ const GrainyBgSection = () => {
 
     // Combina entrata e uscita
     const translateZ = useTransform(scrollYProgress, (progress) => {
-        if (progress <= 0.08) {
+        if (progress <= 0.03) {
             return translateZEntrance.get();
         } else if (progress >= 0.98) {
             return translateZExit.get();
@@ -56,7 +56,7 @@ const GrainyBgSection = () => {
     });
 
     const opacity = useTransform(scrollYProgress, (progress) => {
-        if (progress <= 0.08) {
+        if (progress <= 0.03) {
             return opacityEntrance.get();
         } else if (progress >= 0.98) {
             return opacityExit.get();

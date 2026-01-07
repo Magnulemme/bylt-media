@@ -89,7 +89,7 @@ class SharedRendererManager {
       this.renderer.render(dummyScene, dummyCamera);
 
       const initTime = performance.now() - this.initStartTime;
-      console.log(`⚡ [LOAD] WebGL initialized in ${initTime.toFixed(1)}ms`);
+      // console.log(`⚡ [LOAD] WebGL initialized in ${initTime.toFixed(1)}ms`);
     }
 
     return this.renderer!;
@@ -124,9 +124,9 @@ class SharedRendererManager {
       this.start();
     }
 
-    console.log(
-      `📝 Registered task: ${id} (priority: ${task.priority}, fps: ${task.targetFPS}, visible: ${task.visible})`
-    );
+    // console.log(
+    //   `📝 Registered task: ${id} (priority: ${task.priority}, fps: ${task.targetFPS}, visible: ${task.visible})`
+    // );
   }
 
   /**
@@ -134,7 +134,7 @@ class SharedRendererManager {
    */
   unregisterTask(id: string): void {
     this.tasks.delete(id);
-    console.log(`🗑️ Unregistered task: ${id} (remaining: ${this.tasks.size})`);
+    // console.log(`🗑️ Unregistered task: ${id} (remaining: ${this.tasks.size})`);
 
     if (this.tasks.size === 0) {
       this.stop();
@@ -268,13 +268,13 @@ class SharedRendererManager {
     const memInfo = gl?.getExtension('WEBGL_debug_renderer_info');
     const renderer = memInfo ? gl?.getParameter(memInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
 
-    console.log(
-      `📊 [PERF] FPS: ${this.currentFps} | ` +
-      `Tasks: ${this.tasks.size} total, ${activeTasks} visible | ` +
-      `Frame: ${avgFrameTime.toFixed(2)}ms avg, ${maxFrameTime.toFixed(2)}ms max | ` +
-      `Render: ${avgRenderTime.toFixed(2)}ms avg | ` +
-      `GPU: ${typeof renderer === 'string' ? renderer.substring(0, 30) : 'N/A'}`
-    );
+    // console.log(
+    //   `📊 [PERF] FPS: ${this.currentFps} | ` +
+    //   `Tasks: ${this.tasks.size} total, ${activeTasks} visible | ` +
+    //   `Frame: ${avgFrameTime.toFixed(2)}ms avg, ${maxFrameTime.toFixed(2)}ms max | ` +
+    //   `Render: ${avgRenderTime.toFixed(2)}ms avg | ` +
+    //   `GPU: ${typeof renderer === 'string' ? renderer.substring(0, 30) : 'N/A'}`
+    // );
   }
 
   /**
@@ -305,7 +305,7 @@ class SharedRendererManager {
       }
     });
 
-    console.log(`⏱️ [LOAD] ${metrics.join(' | ')}`);
+    // console.log(`⏱️ [LOAD] ${metrics.join(' | ')}`);
   }
 
   /**
@@ -379,7 +379,7 @@ class SharedRendererManager {
     this.isRunning = true;
     this.animationId = requestAnimationFrame(this.animate);
 
-    console.log("▶️ SharedRenderer started");
+    // console.log("▶️ SharedRenderer started");
   }
 
   /**
@@ -394,7 +394,7 @@ class SharedRendererManager {
       this.animationId = null;
     }
 
-    console.log("⏸️ SharedRenderer stopped");
+    // console.log("⏸️ SharedRenderer stopped");
   }
 
   /**
@@ -414,7 +414,7 @@ class SharedRendererManager {
       this.canvas = null;
     }
 
-    console.log("🧹 SharedRenderer disposed");
+    // console.log("🧹 SharedRenderer disposed");
   }
 
   /**
