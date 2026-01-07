@@ -6,6 +6,7 @@ import { BackgroundBeams } from '../ui/background-beams';
 import { useFooterStore } from '../../store/footerStore';
 import { cn } from '@/lib/utils';
 import SectionHeader from '../ui/SectionHeader';
+import ShaderBackground from './ShaderBackground';
 
 // Moving Border Button Component (inline to avoid import issues)
 const MovingBorder = ({
@@ -283,6 +284,13 @@ ${formData.message}
             style={{ background: '#020617' }}
         >
             <BackgroundBeams className="absolute inset-0 z-0" />
+            {/* Gradient overlay per transizione graduale dall'alto */}
+            <div
+                className="absolute top-0 left-0 right-0 h-64 z-1 pointer-events-none"
+                style={{
+                    background: 'linear-gradient(to bottom, #020617 0%, #020617 15%, rgba(2, 6, 23, 0.85) 35%, rgba(2, 6, 23, 0.6) 55%, rgba(2, 6, 23, 0.35) 70%, rgba(2, 6, 23, 0.15) 85%, transparent 100%)'
+                }}
+            />
             <div ref={sectionRef} className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
                 {/* Bridge Header */}
                 <div className="text-center mb-16 max-w-4xl mx-auto">
@@ -301,9 +309,12 @@ ${formData.message}
 
                 {/* Contact Form Container */}
                 <div className="relative max-w-3xl mx-auto mb-12">
+                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                        <ShaderBackground />
+                    </div>
                     <form
                         onSubmit={handleSubmit}
-                        className="relative z-[2] bg-slate-900/80 backdrop-blur-xl border-2 border-cyan-400/30 rounded-2xl p-8 md:p-12 shadow-[8px_8px_0px_rgba(34,211,238,0.4)] transition-all duration-300 hover:shadow-[6px_6px_0px_rgba(34,211,238,0.4)] hover:translate-x-0.5 hover:translate-y-0.5"
+                        className="relative z-[2] backdrop-blur-xl border-2 border-cyan-400/30 rounded-2xl p-8 md:p-12 shadow-[8px_8px_0px_rgba(34,211,238,0.4)] transition-all duration-300 hover:shadow-[6px_6px_0px_rgba(34,211,238,0.4)] hover:translate-x-0.5 hover:translate-y-0.5"
                     >
                         {/* Form Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
