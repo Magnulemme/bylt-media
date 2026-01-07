@@ -10,20 +10,7 @@ const useQuantumScrollAnim = (threshold = 0.01, delay = 0) => {
         if (!element) return;
 
         const handleIntersection = ([entry]) => {
-            console.log('🔍 IntersectionObserver trigger:', {
-                isIntersecting: entry.isIntersecting,
-                intersectionRatio: entry.intersectionRatio,
-                boundingClientRect: {
-                    top: entry.boundingClientRect.top,
-                    bottom: entry.boundingClientRect.bottom,
-                    height: entry.boundingClientRect.height
-                },
-                target: entry.target.className,
-                viewportHeight: window.innerHeight
-            });
-
             if (entry.isIntersecting) {
-                console.log('✅ Adding quantum-visible class to:', entry.target.className);
                 // Cancel any pending animation frame
                 if (animationFrameRef.current) {
                     cancelAnimationFrame(animationFrameRef.current);
@@ -34,7 +21,6 @@ const useQuantumScrollAnim = (threshold = 0.01, delay = 0) => {
                     setTimeout(() => {
                         if (element) {
                             element.classList.add('quantum-visible');
-                            console.log('✨ quantum-visible added!');
                         }
                     }, delay);
                 });
