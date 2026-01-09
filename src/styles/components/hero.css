@@ -11,6 +11,7 @@
 .hero-section {
   @apply relative flex items-center justify-center overflow-hidden;
   @apply px-4;
+  padding-top: var(--navbar-height-mobile);
 }
 
 @media (min-width: 1024px) {

@@ -277,8 +277,9 @@
     .hero-section {
       @apply relative flex items-center justify-center overflow-hidden;
       @apply px-4;
+      padding-top: var(--navbar-height-mobile);
     }
-  
+
     @media (min-width: 1024px) {
       .hero-section {
         min-height: 100dvh;
@@ -1327,6 +1328,21 @@
       }
     }
 
+
+        /* services page - Wrapper principale hero */
+        .service-page {
+          @apply relative w-full;
+          @apply px-4;
+          padding-top: calc(var(--navbar-height-mobile) + 0.75rem);
+        }
+
+        @media (min-width: 1024px) {
+          .service-page {
+            min-height: 100dvh;
+            padding-top: calc(var(--navbar-height-desktop) + 1.5rem);
+          }
+        }
+
     /* UTILITY CLASSES */
 
     /* Text Gradient - Testo con gradiente animato */
@@ -1377,4 +1393,24 @@
   
   .animate-gradient {
     animation: gradient-shift 6s ease-in-out infinite;
+  }
+
+  /* Process Swiper Pagination Dots */
+  .process-swiper .swiper-pagination {
+    position: relative;
+    margin-top: 1rem;
+  }
+
+  .process-swiper .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+    background: rgba(148, 163, 184, 0.4);
+    opacity: 1;
+    transition: all 0.3s ease;
+  }
+
+  .process-swiper .swiper-pagination-bullet-active {
+    background: #22d3ee;
+    width: 24px;
+    border-radius: 4px;
   }
