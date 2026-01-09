@@ -20,21 +20,30 @@ const ServiceHero = ({ service }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7 }}
-                        className="text-4xl md:text-7xl lg:text-8xl font-bold font-inter leading-[1.3]"
+                        className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-inter leading-[1.3]"
                     >
-                        <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">We Give You</span>
-                        <br />
-                        <RotatingText
-                            phrases={service.rotatingPhrases}
-                            className="text-white"
-                        />
+                        <span className="block text-white">We Give You</span>
+                        {/* Mobile - shorter phrases */}
+                        <span className="block md:hidden text-5xl mt-4">
+                            <RotatingText
+                                phrases={service.rotatingPhrasesMobile || service.rotatingPhrases}
+                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4"
+                            />
+                        </span>
+                        {/* Tablet/Desktop - full phrases */}
+                        <span className="hidden md:block md:text-6xl lg:text-7xl xl:text-8xl mt-6">
+                            <RotatingText
+                                phrases={service.rotatingPhrases}
+                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4"
+                            />
+                        </span>
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto mt-8 md:mt-10"
+                        className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto mt-6 md:mt-8"
                     >
                         {service.description}
                     </motion.p>
@@ -46,14 +55,16 @@ const ServiceHero = ({ service }) => {
                     <MainCard service={service} />
 
                     {/* Right Column - 3 Feature Cards */}
-                    <div className="grid grid-rows-3 gap-4 h-full">
-                        {service.features.map((feature, index) => (
-                            <FeatureCard
-                                key={index}
-                                feature={feature}
-                                index={index}
-                            />
-                        ))}
+                    <div className="flex flex-col gap-4 h-full">
+                        <div className="grid grid-rows-3 gap-4 flex-1">
+                            {service.features.map((feature, index) => (
+                                <FeatureCard
+                                    key={index}
+                                    feature={feature}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -63,20 +74,25 @@ const ServiceHero = ({ service }) => {
                     <MainCard service={service} />
 
                     {/* Features - Vertical Stack */}
-                    <div className="space-y-3">
-                        {service.features.map((feature, index) => (
-                            <FeatureCard
-                                key={index}
-                                feature={feature}
-                                index={index}
-                            />
-                        ))}
+                    <div>
+                        <div className="text-center mb-3">
+                            <span className="text-xs tracking-[0.2em] text-slate-500 uppercase">Our Features</span>
+                        </div>
+                        <div className="space-y-3">
+                            {service.features.map((feature, index) => (
+                                <FeatureCard
+                                    key={index}
+                                    feature={feature}
+                                    index={index}
+                                />
+                            ))}
+                        </div>
                     </div>
 
                     {/* Process Swiper */}
                     <div>
                         <div className="text-center mb-3">
-                            <span className="text-xs tracking-[0.2em] text-gray-500 uppercase">Our Process</span>
+                            <span className="md:hidden text-xs tracking-[0.2em] text-slate-500 uppercase">Our Process</span>
                         </div>
                         <div className="-mx-4 px-4">
                             <Swiper
@@ -97,14 +113,16 @@ const ServiceHero = ({ service }) => {
                 </div>
 
                 {/* Process Row - Desktop Grid */}
-                <div className="hidden md:grid grid-cols-3 gap-4 mt-4">
-                    {service.process.slice(0, 3).map((step, index) => (
-                        <ProcessCard
-                            key={step.step}
-                            step={step}
-                            index={index}
-                        />
-                    ))}
+                <div className="hidden md:block mt-4">
+                    <div className="grid grid-cols-3 gap-4">
+                        {service.process.slice(0, 3).map((step, index) => (
+                            <ProcessCard
+                                key={step.step}
+                                step={step}
+                                index={index}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

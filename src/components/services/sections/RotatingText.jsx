@@ -12,50 +12,18 @@ const RotatingText = ({ phrases, className = '' }) => {
         return () => clearInterval(interval);
     }, [phrases.length]);
 
-    const currentPhrase = phrases[currentIndex];
-
     return (
-        <span className={`inline-block ${className}`}>
+        <span className="inline-block">
             <AnimatePresence mode="wait">
                 <motion.span
                     key={currentIndex}
-                    className="inline-block"
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+                    className={`inline-block ${className}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    {currentPhrase.split('').map((char, index) => (
-                        <motion.span
-                            key={`${currentIndex}-${index}`}
-                            className="inline-block"
-                            variants={{
-                                hidden: {
-                                    opacity: 0,
-                                    y: 20,
-                                },
-                                visible: {
-                                    opacity: 1,
-                                    y: 0,
-                                    transition: {
-                                        duration: 0.5,
-                                        delay: index * 0.035,
-                                        ease: [0.22, 1, 0.36, 1],
-                                    },
-                                },
-                                exit: {
-                                    opacity: 0,
-                                    y: -20,
-                                    transition: {
-                                        duration: 0.3,
-                                        delay: index * 0.02,
-                                        ease: [0.22, 1, 0.36, 1],
-                                    },
-                                },
-                            }}
-                        >
-                            {char === ' ' ? '\u00A0' : char}
-                        </motion.span>
-                    ))}
+                    {phrases[currentIndex]}
                 </motion.span>
             </AnimatePresence>
         </span>

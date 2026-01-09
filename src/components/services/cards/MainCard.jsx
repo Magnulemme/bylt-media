@@ -25,12 +25,10 @@ const MainCard = ({ service }) => {
 
             {/* Text Content */}
             <div className="relative z-10 p-8 md:p-10">
-                <h1 className="text-3xl md:text-5xl font-bold mb-4 font-inter">
-                    <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                        {service.headline}
-                    </span>
+                <h1 className="text-3xl md:text-5xl font-bold mb-4 font-inter text-white">
+                    {service.headline}
                 </h1>
-                <p className="text-lg text-gray-300 leading-relaxed">
+                <p className="text-base md:text-lg text-slate-400 leading-relaxed">
                     {service.description}
                 </p>
             </div>

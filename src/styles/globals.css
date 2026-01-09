@@ -277,7 +277,6 @@
     .hero-section {
       @apply relative flex items-center justify-center overflow-hidden;
       @apply px-4;
-      padding-top: var(--navbar-height-mobile);
     }
 
     @media (min-width: 1024px) {
@@ -1332,8 +1331,7 @@
         /* services page - Wrapper principale hero */
         .service-page {
           @apply relative w-full;
-          @apply px-4;
-          padding-top: calc(var(--navbar-height-mobile) + 0.75rem);
+          @apply px-4 pt-2;
         }
 
         @media (min-width: 1024px) {

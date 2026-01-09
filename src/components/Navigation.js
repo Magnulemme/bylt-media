@@ -38,12 +38,12 @@ const Navigation = () => {
 
             {/* Mobile + Tablet: Simple navbar */}
             <div
-                className="lg:hidden relative z-[5000] backdrop-blur-xl"
+                className="lg:hidden relative z-5000 backdrop-blur-x"
                 style={{
                     background: '#020617'
                 }}
             >
-                <div className="flex items-center justify-between px-4 h-[70px]" >
+                <div className="flex items-center justify-between px-4 pt-4" >
                     {/* Logo */}
                     <Link href="/" className="text-lg font-bold tracking-wide font-mono transition-opacity duration-300 active:opacity-70">
                         <span className="logo-gradient-bylt">BYLT</span>

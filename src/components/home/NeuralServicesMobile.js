@@ -211,9 +211,6 @@ const NeuralServicesMobile = () => {
                                                             />
                                                         </div>
                                                     )}
-                                                    {item.capabilities && item.capabilities.length > 0 && (
-                                                        <CardCapabilities capabilities={item.capabilities} />
-                                                    )}
                                                     {item.ctaText && item.ctaHref && (
                                                         <span className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 mt-4">
                                                             <span>{item.ctaText}</span>

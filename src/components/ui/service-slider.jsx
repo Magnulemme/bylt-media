@@ -301,7 +301,7 @@ export const CardDescription = ({ className, children }) => {
 
 export const CardCapabilities = ({ capabilities, label = "Key Capabilities", className }) => {
   return (
-    <div className={cn("space-y-3 pt-4 flex-shrink-0", className)}>
+    <div className={cn("space-y-3 pt-4 flex-shrink-0 max-lg:hidden", className)}>
       <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">{label}</p>
       <div className="grid grid-cols-2 gap-2">
         {capabilities.slice(0, 4).map((cap, idx) => (

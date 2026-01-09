@@ -42,12 +42,19 @@ const ProcessCard = ({ step, index }) => {
                 </h3>
             </div>
 
-            {/* Hover State - Full Content (desktop) / Always visible (mobile) */}
-            <div className="absolute inset-0 flex flex-col justify-center p-6 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
+            {/* Mobile/Tablet - Title only at bottom */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 lg:hidden">
+                <h3 className="text-lg font-bold text-white font-inter drop-shadow-lg">
+                    {step.title}
+                </h3>
+            </div>
+
+            {/* Desktop Hover State - Full Content */}
+            <div className="absolute inset-0 hidden lg:flex flex-col justify-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-300">
                 <h3 className="text-lg font-bold text-white font-inter mb-3">
                     {step.title}
                 </h3>
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm text-slate-400 leading-relaxed">
                     {step.description}
                 </p>
             </div>
