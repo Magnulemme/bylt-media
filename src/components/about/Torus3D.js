@@ -102,13 +102,11 @@ const Torus3D = ({ className = '' }) => {
             vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
             float lightIntensity = dot(vNormal, lightDirection) * 0.5 + 0.5;
 
-            // Animated gradient
-            float wave = sin(vPosition.x * 3.0 + uTime * 2.0) * 0.5 + 0.5;
+            float wave = sin(vPosition.x * 3.0 + uTime * 1.5) * 0.5 + 0.5;
             vec3 darkColor = uBaseColor * 0.7;
             vec3 brightColor = uBaseColor + vec3(0.3);
             vec3 color = mix(darkColor, brightColor, wave);
 
-            // Fresnel rim
             float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.5);
             color += fresnel * brightColor * 0.4;
 
@@ -124,8 +122,8 @@ const Torus3D = ({ className = '' }) => {
         const currentMount = mountRef.current;
         if (!currentMount) return;
 
-        const width = Math.min(currentMount.clientWidth, 500);
-        const height = Math.min(currentMount.clientHeight, 500);
+        const width = currentMount.clientWidth;
+        const height = currentMount.clientHeight;
 
         const scene = new Scene();
         const camera = new PerspectiveCamera(30, width / height, 0.1, 1000);
@@ -140,13 +138,12 @@ const Torus3D = ({ className = '' }) => {
         currentMount.appendChild(renderer.domElement);
         camera.position.z = 3.5;
 
-        // Create torus knot with animated wireframe
         const torusGroup = new Group();
 
+        // Create torus knot geometry
         const torusGeometry = new TorusKnotGeometry(0.5, 0.18, 100, 16, 2, 3);
         const wireframeGeometry = new WireframeGeometry(torusGeometry);
 
-        // Animated wireframe with ShaderMaterial
         const wireframeMaterial = new ShaderMaterial({
             vertexShader,
             fragmentShader,
@@ -162,43 +159,25 @@ const Torus3D = ({ className = '' }) => {
         const wireframe = new LineSegments(wireframeGeometry, wireframeMaterial);
         torusGroup.add(wireframe);
 
-        // Create nodes (spheres) distributed on the torus knot surface
+        // Get vertices from torus geometry to sample surface points
+        const vertices = torusGeometry.attributes.position.array;
+
+        // Create nodes on the surface
         const nodes = [];
         const nodeCount = 60;
         const colors = [
-            new Color(0x06b6d4), // cyan
-            new Color(0x3b82f6), // blue
-            new Color(0x8b5cf6), // purple
+            new Color(0x06b6d4),
+            new Color(0x3b82f6),
+            new Color(0x8b5cf6),
         ];
 
-        // Sample points along the torus knot curve
-        const torusKnotPoints = [];
-        const p = 2, q = 3; // torus knot parameters
-        const radius = 0.5, tube = 0.18;
-
+        // Sample evenly distributed points from the torus knot surface
+        const step = Math.floor(vertices.length / 3 / nodeCount);
         for (let i = 0; i < nodeCount; i++) {
-            const t = (i / nodeCount) * Math.PI * 2 * p;
+            const idx = (i * step) % (vertices.length / 3);
+            const vertexIndex = idx * 3;
 
-            // Torus knot parametric equations
-            const r = radius + tube * Math.cos(q * t / p);
-            const x = r * Math.cos(t);
-            const y = r * Math.sin(t);
-            const z = tube * Math.sin(q * t / p);
-
-            // Add some offset to place spheres slightly outside the wireframe
-            const offset = 0.08;
-            const normal = new Vector3(x, y, z).normalize();
-
-            torusKnotPoints.push({
-                x: x + normal.x * offset,
-                y: y + normal.y * offset,
-                z: z + normal.z * offset
-            });
-        }
-
-        // Create sphere nodes
-        for (let i = 0; i < nodeCount; i++) {
-            const geometry = new SphereGeometry(0.035, 16, 16);
+            const geometry = new SphereGeometry(0.03, 16, 16);
             const colorIndex = Math.floor(Math.random() * colors.length);
             const baseColor = colors[colorIndex].clone();
 
@@ -215,15 +194,26 @@ const Torus3D = ({ className = '' }) => {
             });
 
             const node = new Mesh(geometry, material);
-            const point = torusKnotPoints[i];
-            node.position.set(point.x, point.y, point.z);
+            node.position.set(
+                vertices[vertexIndex],
+                vertices[vertexIndex + 1],
+                vertices[vertexIndex + 2]
+            );
+
+            // Calculate surface normal from position (pointing outward from center)
+            const surfaceNormal = new Vector3(
+                vertices[vertexIndex],
+                vertices[vertexIndex + 1],
+                vertices[vertexIndex + 2]
+            ).normalize();
 
             nodes.push({
                 mesh: node,
-                basePosition: new Vector3(point.x, point.y, point.z),
+                basePosition: node.position.clone(),
+                surfaceNormal: surfaceNormal,
                 speed: Math.random() * 0.3 + 0.2,
-                orbitSpeed: (Math.random() - 0.5) * 0.8,
-                orbitRadius: Math.random() * 0.03 + 0.01,
+                orbitSpeed: (Math.random() - 0.5) * 0.5,
+                orbitRadius: Math.random() * 0.02 + 0.01,
                 phaseOffset: Math.random() * Math.PI * 2,
                 floatSpeed: Math.random() * 0.5 + 0.3
             });
@@ -231,9 +221,9 @@ const Torus3D = ({ className = '' }) => {
             torusGroup.add(node);
         }
 
-        // Create connections between nearby nodes
+        // Create connections
         const connections = [];
-        const maxDistance = 0.35;
+        const maxDistance = 0.3;
 
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
@@ -242,29 +232,29 @@ const Torus3D = ({ className = '' }) => {
                     const lineMaterial = new LineBasicMaterial({
                         color: 0x3b82f6,
                         transparent: true,
-                        opacity: 0.25
+                        opacity: 0.2
                     });
 
-                    const geometry = new BufferGeometry().setFromPoints([
+                    const lineGeometry = new BufferGeometry().setFromPoints([
                         nodes[i].mesh.position.clone(),
                         nodes[j].mesh.position.clone()
                     ]);
 
-                    const line = new Line(geometry, lineMaterial);
+                    const line = new Line(lineGeometry, lineMaterial);
                     connections.push({
                         line: line,
                         nodeA: nodes[i],
-                        nodeB: nodes[j],
-                        baseOpacity: 0.25
+                        nodeB: nodes[j]
                     });
                     torusGroup.add(line);
                 }
             }
         }
 
+        // Scale down to leave room for oscillation
+        torusGroup.scale.setScalar(0.5);
         scene.add(torusGroup);
 
-        // Visibility state for Intersection Observer
         let isVisible = true;
         let time = 0;
 
@@ -275,44 +265,74 @@ const Torus3D = ({ className = '' }) => {
         const animate = () => {
             animationFrameRef.current = requestAnimationFrame(animate);
 
-            // Skip if not visible (saves GPU when scrolled away)
             if (!isVisible) return;
 
             time += 0.016;
 
-            // Oscillate morph intensity for breathing effect
-            morphIntensity += morphDirection * 0.003;
-            if (morphIntensity > 1.3) morphDirection = -1;
-            if (morphIntensity < 0.7) morphDirection = 1;
+            // Oscillate morph intensity for breathing effect (reduced range to avoid clipping)
+            morphIntensity += morphDirection * 0.002;
+            if (morphIntensity > 1.1) morphDirection = -1;
+            if (morphIntensity < 0.9) morphDirection = 1;
 
             wireframeMaterial.uniforms.uTime.value = time;
             wireframeMaterial.uniforms.uMorphIntensity.value = morphIntensity;
             wireframeMaterial.uniforms.uPulsePhase.value = Math.sin(time * 0.5) * Math.PI;
 
-            // Animate sphere nodes
+            // Animate sphere nodes - apply same transformations as wireframe shader
             nodes.forEach((nodeData, index) => {
-                const offset = time * nodeData.speed + nodeData.phaseOffset;
+                const basePos = nodeData.basePosition;
+                let posX = basePos.x;
+                let posY = basePos.y;
+                let posZ = basePos.z;
 
-                // Breathing motion - nodes pulse in and out
-                const breathe = Math.sin(offset * 1.5) * 0.015;
+                // 1. Multi-layered twist effect (same as shader)
+                const twistAmount1 = Math.sin(time * 0.6) * 0.35;
+                const twistAmount2 = Math.cos(time * 0.4) * 0.15;
+                const twist = posY * twistAmount1 + posX * twistAmount2;
+                const cosT = Math.cos(twist);
+                const sinT = Math.sin(twist);
+                const newX = basePos.x * cosT - basePos.z * sinT;
+                const newZ = basePos.x * sinT + basePos.z * cosT;
+                posX = newX;
+                posZ = newZ;
 
-                // Orbital motion around base position
-                const orbitAngle = time * nodeData.orbitSpeed;
-                const orbitX = Math.cos(orbitAngle) * nodeData.orbitRadius;
-                const orbitY = Math.sin(orbitAngle) * nodeData.orbitRadius;
+                // 2. Breathing/pulse effect (same as shader)
+                const breathe = 1.0 + Math.sin(time * 1.2 + Math.sin(time * 0.5) * Math.PI) * 0.08 * morphIntensity;
+                posX *= breathe;
+                posY *= breathe;
+                posZ *= breathe;
 
-                // Float motion - gentle wandering
-                const floatX = Math.sin(time * nodeData.floatSpeed + index) * 0.01;
-                const floatY = Math.cos(time * nodeData.floatSpeed * 0.7 + index * 1.3) * 0.01;
-                const floatZ = Math.sin(time * nodeData.floatSpeed * 0.5 + index * 0.7) * 0.01;
+                // 3. Spiral wave deformation
+                const angle = Math.atan2(basePos.z, basePos.x);
+                const len = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
+                const spiralWave = Math.sin(angle * 3.0 + time * 1.5 + basePos.y * 2.0) * 0.04;
+                if (len > 0) {
+                    posX += (basePos.x / len) * spiralWave;
+                    posY += (basePos.y / len) * spiralWave;
+                    posZ += (basePos.z / len) * spiralWave;
+                }
 
-                // Apply to base position with breathing
-                const dir = nodeData.basePosition.clone().normalize();
-                nodeData.mesh.position.set(
-                    nodeData.basePosition.x + dir.x * breathe + orbitX + floatX,
-                    nodeData.basePosition.y + dir.y * breathe + orbitY + floatY,
-                    nodeData.basePosition.z + dir.z * breathe + floatZ
-                );
+                // 4. Organic noise-like displacement
+                const noise1 = Math.sin(posX * 4.0 + time * 2.0) * Math.cos(posY * 3.0 + time * 1.7);
+                const noise2 = Math.cos(posZ * 5.0 + time * 1.3) * Math.sin(posX * 2.0 + time * 2.2);
+                if (len > 0) {
+                    const noiseAmount = (noise1 + noise2) * 0.015 * morphIntensity;
+                    posX += (basePos.x / len) * noiseAmount;
+                    posY += (basePos.y / len) * noiseAmount;
+                    posZ += (basePos.z / len) * noiseAmount;
+                }
+
+                // 5. Ripple effect from center
+                const dist = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
+                const ripple = Math.sin(dist * 6.0 - time * 3.0) * 0.02;
+                if (len > 0) {
+                    posX += (basePos.x / len) * ripple;
+                    posY += (basePos.y / len) * ripple;
+                    posZ += (basePos.z / len) * ripple;
+                }
+
+                // Apply final position
+                nodeData.mesh.position.set(posX, posY, posZ);
 
                 // Update shader uniforms
                 nodeData.mesh.material.uniforms.uTime.value = time + index * 0.1;
@@ -342,14 +362,13 @@ const Torus3D = ({ className = '' }) => {
                 conn.line.material.opacity = Math.max(0, 0.35 - distance * 0.5);
             });
 
-            torusGroup.rotation.y += 0.004;
-            torusGroup.rotation.x += 0.0015;
+            // Slow rotation (only Y axis to avoid clipping)
+            torusGroup.rotation.y += 0.002;
             renderer.render(scene, camera);
         };
 
         animate();
 
-        // Intersection Observer - pause when not in viewport
         const observer = new IntersectionObserver(
             (entries) => {
                 isVisible = entries[0].isIntersecting;
@@ -360,8 +379,8 @@ const Torus3D = ({ className = '' }) => {
 
         const handleResize = () => {
             if (!currentMount) return;
-            const w = Math.min(currentMount.clientWidth, 500);
-            const h = Math.min(currentMount.clientHeight, 500);
+            const w = currentMount.clientWidth;
+            const h = currentMount.clientHeight;
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
@@ -379,29 +398,18 @@ const Torus3D = ({ className = '' }) => {
                 currentMount.removeChild(renderer.domElement);
             }
 
-            // Dispose torus geometry and material
             torusGeometry.dispose();
             wireframeGeometry.dispose();
             wireframeMaterial.dispose();
 
-            // Dispose sphere nodes
             nodes.forEach((nodeData) => {
-                if (nodeData.mesh.geometry) {
-                    nodeData.mesh.geometry.dispose();
-                }
-                if (nodeData.mesh.material) {
-                    nodeData.mesh.material.dispose();
-                }
+                if (nodeData.mesh.geometry) nodeData.mesh.geometry.dispose();
+                if (nodeData.mesh.material) nodeData.mesh.material.dispose();
             });
 
-            // Dispose connection lines
             connections.forEach((conn) => {
-                if (conn.line.geometry) {
-                    conn.line.geometry.dispose();
-                }
-                if (conn.line.material) {
-                    conn.line.material.dispose();
-                }
+                if (conn.line.geometry) conn.line.geometry.dispose();
+                if (conn.line.material) conn.line.material.dispose();
             });
 
             renderer.dispose();

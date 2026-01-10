@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import DataVisualization3D from './DataVisualization3D';
-import ShaderBackground from './ShaderBackground';
+import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import SectionHeader from '../ui/SectionHeader';
 import { useProfiler } from '@/hooks/useProfiler';
@@ -99,7 +99,7 @@ const FuturisticHero = () => {
         >
             <div className="hero-inner bg-hero">
                 {/* Shader Background */}
-                <ShaderBackground />
+                <ShaderBackgroundStandalone />
 
                 <div className="container-centered">
                 <div className="hero-grid">

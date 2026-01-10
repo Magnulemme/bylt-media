@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import Layout from '../components/layout';
-import ShaderBackground from '../components/home/ShaderBackground';
+import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
 import { MoveRight, Linkedin, GraduationCap, Trophy, Target, Users, Code, Check, MapPin, Globe, ExternalLink, Calendar } from 'lucide-react';
 
 const Torus3D = dynamic(() => import('../components/about/Torus3D'), { ssr: false });
@@ -23,7 +23,7 @@ export default function About() {
                     zIndex: 10
                 }}
             >
-                <ShaderBackground
+                <ShaderBackgroundStandalone
                     style={{
                         top: '6rem',
                         height: 'calc(100% - 6rem)'
@@ -51,8 +51,12 @@ export default function About() {
                                 strategic thinking, and data-driven approach to every project.
                             </p>
                         </div>
-                        <div className="hidden lg:flex items-center justify-center h-[300px]">
-                            <Torus3D />
+                        <div className="hidden lg:block relative h-[350px] overflow-hidden">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-[500px] h-[500px]">
+                                    <Torus3D />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
