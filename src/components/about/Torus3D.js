@@ -3,10 +3,7 @@ import {
     Scene,
     PerspectiveCamera,
     WebGLRenderer,
-    TorusKnotGeometry,
-    WireframeGeometry,
-    ShaderMaterial,
-    LineSegments,
+    TorusGeometry,
     Group,
     SphereGeometry,
     Mesh,
@@ -14,68 +11,13 @@ import {
     BufferGeometry,
     Line,
     Vector3,
-    Color
+    Color,
+    ShaderMaterial
 } from 'three';
 
 const Torus3D = ({ className = '' }) => {
     const mountRef = useRef(null);
     const animationFrameRef = useRef(null);
-
-    // Vertex shader with advanced morphing animations
-    const vertexShader = `
-        uniform float uTime;
-        uniform float uMorphIntensity;
-        uniform float uPulsePhase;
-
-        void main() {
-            vec3 pos = position;
-
-            // Multi-layered twist effect
-            float twistAmount1 = sin(uTime * 0.6) * 0.35;
-            float twistAmount2 = cos(uTime * 0.4) * 0.15;
-            float twist = pos.y * twistAmount1 + pos.x * twistAmount2;
-            float cosT = cos(twist);
-            float sinT = sin(twist);
-            pos.x = position.x * cosT - position.z * sinT;
-            pos.z = position.x * sinT + position.z * cosT;
-
-            // Breathing/pulse effect
-            float breathe = 1.0 + sin(uTime * 1.2 + uPulsePhase) * 0.08 * uMorphIntensity;
-            pos *= breathe;
-
-            // Spiral wave deformation
-            float angle = atan(position.z, position.x);
-            float spiralWave = sin(angle * 3.0 + uTime * 1.5 + position.y * 2.0) * 0.04;
-            pos += normalize(position) * spiralWave;
-
-            // Organic noise-like displacement
-            float noise1 = sin(pos.x * 4.0 + uTime * 2.0) * cos(pos.y * 3.0 + uTime * 1.7);
-            float noise2 = cos(pos.z * 5.0 + uTime * 1.3) * sin(pos.x * 2.0 + uTime * 2.2);
-            pos += normalize(position) * (noise1 + noise2) * 0.015 * uMorphIntensity;
-
-            // Ripple effect from center
-            float dist = length(position);
-            float ripple = sin(dist * 6.0 - uTime * 3.0) * 0.02;
-            pos += normalize(position) * ripple;
-
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-        }
-    `;
-
-    // Fragment shader with animated color
-    const fragmentShader = `
-        uniform float uOpacity;
-        uniform float uTime;
-
-        void main() {
-            // Subtle color shift over time
-            float colorShift = sin(uTime * 0.5) * 0.05;
-            vec3 baseColor = vec3(0.231, 0.510, 0.965);
-            vec3 accentColor = vec3(0.545, 0.361, 0.965); // purple accent
-            vec3 color = mix(baseColor, accentColor, 0.2 + colorShift);
-            gl_FragColor = vec4(color, uOpacity);
-        }
-    `;
 
     // Sphere shader for nodes
     const sphereVertexShader = `
@@ -136,48 +78,43 @@ const Torus3D = ({ className = '' }) => {
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         currentMount.appendChild(renderer.domElement);
-        camera.position.z = 3.5;
+        camera.position.z = 4;
 
         const torusGroup = new Group();
 
-        // Create torus knot geometry
-        const torusGeometry = new TorusKnotGeometry(0.5, 0.18, 100, 16, 2, 3);
-        const wireframeGeometry = new WireframeGeometry(torusGeometry);
+        // Create TorusGeometry to get the vertex grid
+        // radialSegments = segments around the torus (big circle)
+        // tubularSegments = segments around the tube (small circle)
+        const radialSegments = 32;
+        const tubularSegments = 16;
+        const torusGeometry = new TorusGeometry(0.55, 0.2, tubularSegments, radialSegments);
 
-        const wireframeMaterial = new ShaderMaterial({
-            vertexShader,
-            fragmentShader,
-            transparent: true,
-            uniforms: {
-                uTime: { value: 0 },
-                uOpacity: { value: 0.5 },
-                uMorphIntensity: { value: 1.0 },
-                uPulsePhase: { value: 0 }
-            }
-        });
+        const positions = torusGeometry.attributes.position.array;
+        const vertexCount = positions.length / 3;
 
-        const wireframe = new LineSegments(wireframeGeometry, wireframeMaterial);
-        torusGroup.add(wireframe);
-
-        // Get vertices from torus geometry to sample surface points
-        const vertices = torusGeometry.attributes.position.array;
-
-        // Create nodes on the surface
+        // Create sphere nodes at vertices
         const nodes = [];
-        const nodeCount = 60;
         const colors = [
-            new Color(0x06b6d4),
-            new Color(0x3b82f6),
-            new Color(0x8b5cf6),
+            new Color(0x06b6d4), // cyan
+            new Color(0x3b82f6), // blue
+            new Color(0x8b5cf6), // purple
         ];
 
-        // Sample evenly distributed points from the torus knot surface
-        const step = Math.floor(vertices.length / 3 / nodeCount);
-        for (let i = 0; i < nodeCount; i++) {
-            const idx = (i * step) % (vertices.length / 3);
-            const vertexIndex = idx * 3;
+        // Sample vertices (not all, to keep performance good)
+        const sampleRate = 2;
+        const sampledIndices = [];
 
-            const geometry = new SphereGeometry(0.03, 16, 16);
+        for (let i = 0; i < vertexCount; i += sampleRate) {
+            sampledIndices.push(i);
+        }
+
+        for (let i = 0; i < sampledIndices.length; i++) {
+            const vertexIndex = sampledIndices[i];
+            const x = positions[vertexIndex * 3];
+            const y = positions[vertexIndex * 3 + 1];
+            const z = positions[vertexIndex * 3 + 2];
+
+            const geometry = new SphereGeometry(0.025, 12, 12);
             const colorIndex = Math.floor(Math.random() * colors.length);
             const baseColor = colors[colorIndex].clone();
 
@@ -188,51 +125,38 @@ const Torus3D = ({ className = '' }) => {
                 uniforms: {
                     uTime: { value: 0 },
                     uBaseColor: { value: baseColor },
-                    uOpacity: { value: 0.85 },
-                    uGlow: { value: 0 }
+                    uOpacity: { value: 0.9 },
+                    uGlow: { value: 0.1 }
                 }
             });
 
             const node = new Mesh(geometry, material);
-            node.position.set(
-                vertices[vertexIndex],
-                vertices[vertexIndex + 1],
-                vertices[vertexIndex + 2]
-            );
-
-            // Calculate surface normal from position (pointing outward from center)
-            const surfaceNormal = new Vector3(
-                vertices[vertexIndex],
-                vertices[vertexIndex + 1],
-                vertices[vertexIndex + 2]
-            ).normalize();
+            node.position.set(x, y, z);
 
             nodes.push({
                 mesh: node,
-                basePosition: node.position.clone(),
-                surfaceNormal: surfaceNormal,
-                speed: Math.random() * 0.3 + 0.2,
-                orbitSpeed: (Math.random() - 0.5) * 0.5,
-                orbitRadius: Math.random() * 0.02 + 0.01,
-                phaseOffset: Math.random() * Math.PI * 2,
-                floatSpeed: Math.random() * 0.5 + 0.3
+                basePosition: new Vector3(x, y, z),
+                originalIndex: vertexIndex,
+                gridI: Math.floor(vertexIndex / (tubularSegments + 1)), // Position around torus
+                gridJ: vertexIndex % (tubularSegments + 1), // Position around tube
+                phaseOffset: Math.random() * Math.PI * 2
             });
 
             torusGroup.add(node);
         }
 
-        // Create connections
+        // Create connections between nearby nodes (like the sphere)
         const connections = [];
-        const maxDistance = 0.3;
+        const maxDistance = 0.35;
 
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
-                const distance = nodes[i].mesh.position.distanceTo(nodes[j].mesh.position);
+                const distance = nodes[i].basePosition.distanceTo(nodes[j].basePosition);
                 if (distance < maxDistance) {
                     const lineMaterial = new LineBasicMaterial({
                         color: 0x3b82f6,
                         transparent: true,
-                        opacity: 0.2
+                        opacity: 0.3
                     });
 
                     const lineGeometry = new BufferGeometry().setFromPoints([
@@ -251,14 +175,13 @@ const Torus3D = ({ className = '' }) => {
             }
         }
 
-        // Scale down to leave room for oscillation
-        torusGroup.scale.setScalar(0.5);
+        torusGroup.scale.setScalar(0.9);
         scene.add(torusGroup);
 
         let isVisible = true;
         let time = 0;
 
-        // Morphing intensity oscillation
+        // Morphing parameters
         let morphIntensity = 1.0;
         let morphDirection = 1;
 
@@ -269,25 +192,21 @@ const Torus3D = ({ className = '' }) => {
 
             time += 0.016;
 
-            // Oscillate morph intensity for breathing effect (reduced range to avoid clipping)
+            // Oscillate morph intensity
             morphIntensity += morphDirection * 0.002;
-            if (morphIntensity > 1.1) morphDirection = -1;
-            if (morphIntensity < 0.9) morphDirection = 1;
+            if (morphIntensity > 1.12) morphDirection = -1;
+            if (morphIntensity < 0.88) morphDirection = 1;
 
-            wireframeMaterial.uniforms.uTime.value = time;
-            wireframeMaterial.uniforms.uMorphIntensity.value = morphIntensity;
-            wireframeMaterial.uniforms.uPulsePhase.value = Math.sin(time * 0.5) * Math.PI;
-
-            // Animate sphere nodes - apply same transformations as wireframe shader
+            // Animate sphere nodes with organic deformations
             nodes.forEach((nodeData, index) => {
                 const basePos = nodeData.basePosition;
                 let posX = basePos.x;
                 let posY = basePos.y;
                 let posZ = basePos.z;
 
-                // 1. Multi-layered twist effect (same as shader)
-                const twistAmount1 = Math.sin(time * 0.6) * 0.35;
-                const twistAmount2 = Math.cos(time * 0.4) * 0.15;
+                // 1. Multi-layered twist effect
+                const twistAmount1 = Math.sin(time * 0.5) * 0.25;
+                const twistAmount2 = Math.cos(time * 0.35) * 0.1;
                 const twist = posY * twistAmount1 + posX * twistAmount2;
                 const cosT = Math.cos(twist);
                 const sinT = Math.sin(twist);
@@ -296,53 +215,44 @@ const Torus3D = ({ className = '' }) => {
                 posX = newX;
                 posZ = newZ;
 
-                // 2. Breathing/pulse effect (same as shader)
-                const breathe = 1.0 + Math.sin(time * 1.2 + Math.sin(time * 0.5) * Math.PI) * 0.08 * morphIntensity;
+                // 2. Breathing/pulse effect
+                const breathe = 1.0 + Math.sin(time * 1.0 + nodeData.phaseOffset * 0.3) * 0.05 * morphIntensity;
                 posX *= breathe;
                 posY *= breathe;
                 posZ *= breathe;
 
-                // 3. Spiral wave deformation
-                const angle = Math.atan2(basePos.z, basePos.x);
+                // 3. Wave along the torus
+                const curvePhase = (nodeData.gridI / radialSegments) * Math.PI * 2;
+                const waveOffset = Math.sin(curvePhase * 4 + time * 2) * 0.02;
                 const len = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
-                const spiralWave = Math.sin(angle * 3.0 + time * 1.5 + basePos.y * 2.0) * 0.04;
                 if (len > 0) {
-                    posX += (basePos.x / len) * spiralWave;
-                    posY += (basePos.y / len) * spiralWave;
-                    posZ += (basePos.z / len) * spiralWave;
+                    posX += (basePos.x / len) * waveOffset;
+                    posY += (basePos.y / len) * waveOffset;
+                    posZ += (basePos.z / len) * waveOffset;
                 }
 
-                // 4. Organic noise-like displacement
-                const noise1 = Math.sin(posX * 4.0 + time * 2.0) * Math.cos(posY * 3.0 + time * 1.7);
-                const noise2 = Math.cos(posZ * 5.0 + time * 1.3) * Math.sin(posX * 2.0 + time * 2.2);
+                // 4. Subtle noise displacement
+                const noise1 = Math.sin(posX * 5.0 + time * 1.8) * Math.cos(posY * 4.0 + time * 1.5);
+                const noise2 = Math.cos(posZ * 6.0 + time * 1.2) * Math.sin(posX * 3.0 + time * 2.0);
                 if (len > 0) {
-                    const noiseAmount = (noise1 + noise2) * 0.015 * morphIntensity;
+                    const noiseAmount = (noise1 + noise2) * 0.01 * morphIntensity;
                     posX += (basePos.x / len) * noiseAmount;
                     posY += (basePos.y / len) * noiseAmount;
                     posZ += (basePos.z / len) * noiseAmount;
-                }
-
-                // 5. Ripple effect from center
-                const dist = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
-                const ripple = Math.sin(dist * 6.0 - time * 3.0) * 0.02;
-                if (len > 0) {
-                    posX += (basePos.x / len) * ripple;
-                    posY += (basePos.y / len) * ripple;
-                    posZ += (basePos.z / len) * ripple;
                 }
 
                 // Apply final position
                 nodeData.mesh.position.set(posX, posY, posZ);
 
                 // Update shader uniforms
-                nodeData.mesh.material.uniforms.uTime.value = time + index * 0.1;
+                nodeData.mesh.material.uniforms.uTime.value = time + index * 0.05;
 
                 // Pulse opacity
-                const baseOpacity = 0.75 + Math.sin(time * 2 + index) * 0.15;
+                const baseOpacity = 0.85 + Math.sin(time * 2 + index * 0.1) * 0.1;
                 nodeData.mesh.material.uniforms.uOpacity.value = baseOpacity;
 
-                // Subtle glow pulse
-                const glow = Math.sin(time * 3 + index * 0.5) * 0.15 + 0.1;
+                // Glow pulse
+                const glow = Math.sin(time * 2.5 + index * 0.2) * 0.1 + 0.08;
                 nodeData.mesh.material.uniforms.uGlow.value = Math.max(0, glow);
             });
 
@@ -357,13 +267,15 @@ const Torus3D = ({ className = '' }) => {
                 positions[5] = conn.nodeB.mesh.position.z;
                 conn.line.geometry.attributes.position.needsUpdate = true;
 
-                // Pulse line opacity based on distance
+                // Fade based on distance
                 const distance = conn.nodeA.mesh.position.distanceTo(conn.nodeB.mesh.position);
-                conn.line.material.opacity = Math.max(0, 0.35 - distance * 0.5);
+                conn.line.material.opacity = Math.max(0.1, 0.4 - distance * 0.8);
             });
 
-            // Slow rotation (only Y axis to avoid clipping)
-            torusGroup.rotation.y += 0.002;
+            // Slow rotation
+            torusGroup.rotation.y += 0.003;
+            torusGroup.rotation.x = Math.sin(time * 0.2) * 0.15;
+
             renderer.render(scene, camera);
         };
 
@@ -399,8 +311,6 @@ const Torus3D = ({ className = '' }) => {
             }
 
             torusGeometry.dispose();
-            wireframeGeometry.dispose();
-            wireframeMaterial.dispose();
 
             nodes.forEach((nodeData) => {
                 if (nodeData.mesh.geometry) nodeData.mesh.geometry.dispose();
