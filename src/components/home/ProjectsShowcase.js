@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useAnimationFrame } from 'motion/react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
 import SectionIntro from '../ui/SectionIntro';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
@@ -60,13 +60,33 @@ const useLissajousAnimation = (isActive, seed = 0) => {
 };
 
 // Component per singolo progetto con scroll reveal su mobile
-const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
-    // Lissajous animation per immagine hover
+const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onToggleExpand, isActive, isScrollBgEnabled, onVisibilityChange }) => {
     const isHovered = hoveredProject?.id === project.id;
     const lissajousAnimation = useLissajousAnimation(isHovered, index * 1.5);
+    const itemRef = useRef(null);
+
+    // Notifica al parent quando entra/esce dalla zona centrale
+    useEffect(() => {
+        const element = itemRef.current;
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                onVisibilityChange(project.id, entry.isIntersecting);
+            },
+            {
+                rootMargin: '-40% 0px -40% 0px',
+                threshold: 0,
+            }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [project.id, onVisibilityChange]);
 
     return (
         <motion.div
+            ref={itemRef}
             className="relative"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -74,110 +94,187 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
             {/* Background Image - Scroll Reveal (Mobile fino a lg) */}
-            <motion.div
-                className="xl:hidden absolute rounded-xl overflow-hidden -inset-x-2 md:-inset-x-4"
-                style={{
-                    top: 0,
-                    bottom: 0,
-                }}
-                animate={{
-                    opacity: isActive ? 1 : 0,
-                    scale: isActive ? 1 : 1.05,
-                }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-                <img
-                    src={project.image}
-                    alt={project.name}
-                    className="w-full h-full object-cover"
-                />
-                {/* Dark overlay per leggibilità testo */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-            </motion.div>
-
-            <a
-                href={project.link}
-                className="group project-link-item xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center"
-                onMouseEnter={() => onHover(project)}
-                onMouseLeave={() => onHover(null)}
-            >
-                <div className="project-link-content relative flex items-center gap-4 md:gap-8">
-                    {/* Number */}
-                    <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 flex-shrink-0 min-w-[2rem]">
-                        {String(project.id).padStart(2, '0')}
-                    </span>
-
-                    {/* Project Info with inline arrow */}
-                    <div className="relative z-10 project-info-container flex-1">
-                        <h3 className="project-title inline">
-                            {project.name}
-                        </h3>
-                        {/* Arrow inline dopo il titolo */}
-                        <div
-                            className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border-2 border-white/30 group-hover:border-cyan-400/60 relative transition-all duration-300 group-hover:translate-x-[2px] group-hover:translate-y-[2px] ml-8 align-middle"
-                            style={{
-                                boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)',
-                                verticalAlign: 'middle',
-                            }}
-                        >
-                            <svg
-                                className="w-5 h-5 text-cyan-300 transition-transform duration-300 group-hover:translate-x-1"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                />
-                            </svg>
-                        </div>
-                        <div className="project-meta">
-                            <span>{project.category}</span>
-                            <span className="text-cyan-400/50">•</span>
-                            <span>{project.service}</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Hover Underline Effect - Positioned over existing border */}
+            {isScrollBgEnabled && (
                 <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 xl:hidden"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: hoveredProject?.id === project.id ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ transformOrigin: 'left' }}
-                />
-
-                {/* Image a destra - Solo XL, sempre visibile quando in hover */}
-                <motion.div
-                    className="hidden xl:block w-80 h-52 rounded-lg overflow-hidden"
-                    initial={{ opacity: 0 }}
-                    animate={{
-                        opacity: isHovered ? 1 : 0,
-                    }}
-                    transition={{
-                        opacity: { duration: 0.3, ease: "easeOut" }
-                    }}
+                    className="xl:hidden absolute rounded-xl overflow-hidden -inset-x-2 md:-inset-x-4 pointer-events-none"
                     style={{
-                        perspective: 1000,
-                        transformStyle: 'preserve-3d',
-                        rotateX: lissajousAnimation.rotateX,
-                        rotateY: lissajousAnimation.rotateY,
-                        x: lissajousAnimation.x,
-                        y: lissajousAnimation.y,
-                        scale: lissajousAnimation.scale,
+                        top: 0,
+                        bottom: 0,
                     }}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{
+                        opacity: isActive ? 1 : 0,
+                        scale: isActive ? 1 : 1.05,
+                    }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
                 >
                     <img
                         src={project.image}
                         alt={project.name}
                         className="w-full h-full object-cover"
                     />
+                    {/* Dark overlay per leggibilità testo */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
                 </motion.div>
-            </a>
+            )}
+
+            <div
+                className="group project-link-item cursor-pointer"
+                onMouseEnter={() => onHover(project)}
+                onMouseLeave={() => onHover(null)}
+                onClick={() => onToggleExpand(project.id)}
+            >
+                {/* Riga principale con grid solo su XL */}
+                <div className="xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center">
+                    <div className="project-link-content relative flex items-center gap-4 md:gap-8">
+                        {/* Number */}
+                        <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 flex-shrink-0 min-w-[2rem]">
+                            {String(project.id).padStart(2, '0')}
+                        </span>
+
+                        {/* Project Info with inline plus button */}
+                        <div className="relative z-10 project-info-container flex-1">
+                            <h3 className="project-title inline">
+                                {project.name}
+                            </h3>
+                            {/* Plus button inline dopo il titolo */}
+                            <motion.div
+                                className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border-2 border-white/30 group-hover:border-cyan-400/60 relative transition-all duration-300 group-hover:translate-x-[2px] group-hover:translate-y-[2px] ml-8 align-middle"
+                                style={{
+                                    boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)',
+                                    verticalAlign: 'middle',
+                                }}
+                                animate={{ rotate: isExpanded ? 45 : 0 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <svg
+                                    className="w-5 h-5 text-cyan-300"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2.5}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15"
+                                    />
+                                </svg>
+                            </motion.div>
+                            <div className="project-meta">
+                                <span>{project.category}</span>
+                                <span className="text-cyan-400/50">•</span>
+                                <span>{project.service}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Image a destra - Solo XL, visibile in hover, nascosta se espanso */}
+                    <motion.div
+                        className="hidden xl:block w-80 h-52 rounded-lg overflow-hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{
+                            opacity: isHovered && !isExpanded ? 1 : 0,
+                        }}
+                        transition={{
+                            opacity: { duration: 0.3, ease: "easeOut" }
+                        }}
+                        style={{
+                            perspective: 1000,
+                            transformStyle: 'preserve-3d',
+                            rotateX: lissajousAnimation.rotateX,
+                            rotateY: lissajousAnimation.rotateY,
+                            x: lissajousAnimation.x,
+                            y: lissajousAnimation.y,
+                            scale: lissajousAnimation.scale,
+                        }}
+                    >
+                        <img
+                            src={project.image}
+                            alt={project.name}
+                            className="w-full h-full object-cover"
+                        />
+                    </motion.div>
+                </div>
+
+                {/* Expanded Content with CTA - dentro project-link-item, sopra il border */}
+                <div
+                    className="grid"
+                    style={{
+                        gridTemplateRows: isExpanded ? '1fr' : '0fr',
+                        transition: 'grid-template-rows 0.35s ease-out',
+                    }}
+                >
+                    <div className="overflow-hidden">
+                        <div
+                            className="pt-8 pb-4"
+                            style={{
+                                opacity: isExpanded ? 1 : 0,
+                                transition: 'opacity 0.25s ease-out',
+                                transitionDelay: isExpanded ? '0.1s' : '0s',
+                            }}
+                        >
+                            <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+                                {/* Image */}
+                                <div className="lg:w-80 flex-shrink-0">
+                                    <div className="relative rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[4/3]">
+                                        <img
+                                            src={project.image}
+                                            alt={project.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                        {/* Highlight stat overlay */}
+                                        <div className="absolute bottom-4 left-4">
+                                            <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                                                {project.highlight}
+                                            </span>
+                                            <span className="block text-xs text-cyan-300 uppercase tracking-wider mt-1">
+                                                {project.highlightLabel}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <span className="text-cyan-400 text-xs font-semibold uppercase tracking-widest">
+                                            {project.category} · {project.service}
+                                        </span>
+                                        <p className="text-white/80 text-base md:text-lg leading-relaxed mt-3 max-w-xl">
+                                            {project.description}
+                                        </p>
+                                    </div>
+
+                                    <a
+                                        href={project.link}
+                                        className="inline-flex items-center gap-2 mt-6 text-cyan-400 font-semibold text-sm group/cta hover:text-cyan-300 transition-colors w-fit"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <span className="border-b border-cyan-400/50 group-hover/cta:border-cyan-300 pb-0.5">
+                                            Read Full Case Study
+                                        </span>
+                                        <svg
+                                            className="w-4 h-4 transition-transform group-hover/cta:translate-x-1"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                            />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </motion.div>
     );
 };
@@ -185,13 +282,35 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isActive }) => {
 const ProjectsShowcase = () => {
     useProfiler('ProjectsShowcase');
     const [hoveredProject, setHoveredProject] = useState(null);
-    const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+    const [activeProjectId, setActiveProjectId] = useState(null);
+    const [expandedProjectId, setExpandedProjectId] = useState(null);
+    const [isScrollBgEnabled, setIsScrollBgEnabled] = useState(true);
+    const visibleProjectsRef = useRef(new Set());
 
-    const projectsListRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: projectsListRef,
-        offset: ["start end", "end center"]
-    });
+    const handleToggleExpand = (projectId) => {
+        setExpandedProjectId(prev => {
+            if (prev === projectId) {
+                // Sta chiudendo - aspetta prima di riabilitare il bg
+                setTimeout(() => setIsScrollBgEnabled(true), 600);
+                return null;
+            }
+            // Sta aprendo - disabilita il bg
+            setIsScrollBgEnabled(false);
+            return projectId;
+        });
+    };
+
+    // Callback per quando un progetto entra/esce dalla zona centrale
+    const handleVisibilityChange = useCallback((projectId, isVisible) => {
+        if (isVisible) {
+            visibleProjectsRef.current.add(projectId);
+        } else {
+            visibleProjectsRef.current.delete(projectId);
+        }
+
+        const visibleIds = Array.from(visibleProjectsRef.current).sort((a, b) => a - b);
+        setActiveProjectId(visibleIds.length > 0 ? visibleIds[0] : null);
+    }, []);
 
     const projects = [
         {
@@ -200,7 +319,10 @@ const ProjectsShowcase = () => {
             category: 'Automotive',
             service: 'Lead Generation',
             image: '/images/casestudy/nissan-case-study.webp',
-            link: '/case-studies-nissan'
+            link: '/case-studies-nissan',
+            description: 'Transformed a complex user journey into a streamlined lead generation machine, driving qualified test drive requests through precision-targeted campaigns.',
+            highlight: '2,000+',
+            highlightLabel: 'Test Drives Generated',
         },
         {
             id: 2,
@@ -208,7 +330,10 @@ const ProjectsShowcase = () => {
             category: 'Fashion Retail',
             service: 'E-commerce Growth',
             image: '/images/casestudy/napudreni-case-study.webp',
-            link: '/case-studies-napudreni'
+            link: '/case-studies-napudreni',
+            description: 'Elevated an emerging fashion brand from limited visibility to market prominence through strategic social engagement and optimized conversion funnels.',
+            highlight: '340%',
+            highlightLabel: 'Revenue Increase',
         },
         {
             id: 3,
@@ -216,7 +341,10 @@ const ProjectsShowcase = () => {
             category: 'Restaurant Chain',
             service: 'Brand Awareness',
             image: '/images/casestudy/happy-case-study.webp',
-            link: '/case-studies-happy'
+            link: '/case-studies-happy',
+            description: "Amplified Bulgaria's favorite restaurant chain's digital presence with hyper-localized campaigns that drove foot traffic across 30+ locations nationwide.",
+            highlight: '180%',
+            highlightLabel: 'Traffic Growth',
         },
         {
             id: 4,
@@ -224,34 +352,12 @@ const ProjectsShowcase = () => {
             category: 'E-commerce',
             service: 'Performance Marketing',
             image: '/images/casestudy/parfium.bg-case-study.webp',
-            link: '/case-studies-parfium'
+            link: '/case-studies-parfium',
+            description: 'Maximized holiday season impact with surgical ad optimization, turning Black Friday and Christmas into record-breaking revenue periods.',
+            highlight: '12.5x',
+            highlightLabel: 'ROAS Achieved',
         },
     ];
-
-    // Calcola quale progetto è attivo in base allo scroll progress
-    useEffect(() => {
-        const unsubscribe = scrollYProgress.on('change', (latest) => {
-            // Se siamo alla fine dello scroll, nessun progetto attivo
-            if (latest >= 0.95) {
-                setActiveProjectIndex(-1);
-                return;
-            }
-
-            // Dividi il range per il numero di progetti
-            const numProjects = projects.length;
-            const segmentSize = 1 / numProjects;
-
-            // Calcola l'indice del progetto attivo
-            const newIndex = Math.min(
-                Math.floor(latest / segmentSize),
-                numProjects - 1
-            );
-
-            setActiveProjectIndex(newIndex);
-        });
-
-        return () => unsubscribe();
-    }, [scrollYProgress, projects.length]);
 
     return (
         <section className="projects-showcase-section">
@@ -271,10 +377,7 @@ const ProjectsShowcase = () => {
                 />
 
                 {/* Projects List */}
-                <div
-                    ref={projectsListRef}
-                    className="projects-list-container"
-                >
+                <div className="projects-list-container">
                     {/* Projects */}
                     <div>
                         {projects.map((project, index) => (
@@ -284,7 +387,11 @@ const ProjectsShowcase = () => {
                                 index={index}
                                 onHover={setHoveredProject}
                                 hoveredProject={hoveredProject}
-                                isActive={index === activeProjectIndex}
+                                isActive={activeProjectId === project.id}
+                                isExpanded={expandedProjectId === project.id}
+                                isScrollBgEnabled={isScrollBgEnabled}
+                                onToggleExpand={handleToggleExpand}
+                                onVisibilityChange={handleVisibilityChange}
                             />
                         ))}
                     </div>
