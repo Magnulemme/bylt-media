@@ -22,19 +22,18 @@ const ServiceHero = ({ service }) => {
                         transition={{ duration: 0.7 }}
                         className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-inter leading-[1.3]"
                     >
-                        <span className="block text-white">We Give You</span>
                         {/* Mobile - shorter phrases */}
                         <span className="block md:hidden text-5xl mt-4">
                             <RotatingText
                                 phrases={service.rotatingPhrasesMobile || service.rotatingPhrases}
-                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4"
+                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4 animate-gradient"
                             />
                         </span>
                         {/* Tablet/Desktop - full phrases */}
                         <span className="hidden md:block md:text-6xl lg:text-7xl xl:text-8xl mt-6">
                             <RotatingText
                                 phrases={service.rotatingPhrases}
-                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4"
+                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4 animate-gradient"
                             />
                         </span>
                     </motion.h1>

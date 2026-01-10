@@ -1336,7 +1336,6 @@
 
         @media (min-width: 1024px) {
           .service-page {
-            min-height: 100dvh;
             padding-top: calc(var(--navbar-height-desktop) + 1.5rem);
           }
         }
@@ -1390,6 +1389,7 @@
   }
   
   .animate-gradient {
+    background-size: 200% 100%;
     animation: gradient-shift 6s ease-in-out infinite;
   }
 

@@ -11,6 +11,7 @@ import {
     BufferGeometry,
     Line,
     Vector3,
+    Vector2,
     Color,
     ShaderMaterial
 } from 'three';
@@ -35,16 +36,20 @@ const Torus3D = ({ className = '' }) => {
         uniform float uTime;
         uniform vec3 uBaseColor;
         uniform float uOpacity;
-        uniform float uGlow;
+        uniform float uMouseEffect;
 
         varying vec3 vNormal;
         varying vec3 vPosition;
+
+        vec3 brighten(vec3 color, float amount) {
+            return color + vec3(amount);
+        }
 
         void main() {
             vec3 lightDirection = normalize(vec3(1.0, 1.0, 1.0));
             float lightIntensity = dot(vNormal, lightDirection) * 0.5 + 0.5;
 
-            float wave = sin(vPosition.x * 3.0 + uTime * 1.5) * 0.5 + 0.5;
+            float wave = sin(vPosition.x * 3.0 + uTime * 0.5) * 0.5 + 0.5;
             vec3 darkColor = uBaseColor * 0.7;
             vec3 brightColor = uBaseColor + vec3(0.3);
             vec3 color = mix(darkColor, brightColor, wave);
@@ -53,7 +58,9 @@ const Torus3D = ({ className = '' }) => {
             color += fresnel * brightColor * 0.4;
 
             color *= lightIntensity;
-            color += brightColor * uGlow * 0.5;
+
+            // Add glow on mouse interaction
+            color += brighten(uBaseColor, 0.5) * uMouseEffect * 0.6;
 
             gl_FragColor = vec4(color, uOpacity);
         }
@@ -82,12 +89,10 @@ const Torus3D = ({ className = '' }) => {
 
         const torusGroup = new Group();
 
-        // Create TorusGeometry to get the vertex grid
-        // radialSegments = segments around the torus (big circle)
-        // tubularSegments = segments around the tube (small circle)
+        // Create TorusGeometry
         const radialSegments = 32;
         const tubularSegments = 16;
-        const torusGeometry = new TorusGeometry(0.55, 0.2, tubularSegments, radialSegments);
+        const torusGeometry = new TorusGeometry(0.45, 0.2, tubularSegments, radialSegments);
 
         const positions = torusGeometry.attributes.position.array;
         const vertexCount = positions.length / 3;
@@ -100,12 +105,17 @@ const Torus3D = ({ className = '' }) => {
             new Color(0x8b5cf6), // purple
         ];
 
-        // Sample vertices (not all, to keep performance good)
-        const sampleRate = 2;
+        // Randomly sample vertices for organic distribution
+        const targetNodeCount = 180;
         const sampledIndices = [];
+        const usedIndices = new Set();
 
-        for (let i = 0; i < vertexCount; i += sampleRate) {
-            sampledIndices.push(i);
+        while (sampledIndices.length < targetNodeCount && sampledIndices.length < vertexCount) {
+            const randomIndex = Math.floor(Math.random() * vertexCount);
+            if (!usedIndices.has(randomIndex)) {
+                usedIndices.add(randomIndex);
+                sampledIndices.push(randomIndex);
+            }
         }
 
         for (let i = 0; i < sampledIndices.length; i++) {
@@ -126,7 +136,7 @@ const Torus3D = ({ className = '' }) => {
                     uTime: { value: 0 },
                     uBaseColor: { value: baseColor },
                     uOpacity: { value: 0.9 },
-                    uGlow: { value: 0.1 }
+                    uMouseEffect: { value: 0 }
                 }
             });
 
@@ -136,18 +146,15 @@ const Torus3D = ({ className = '' }) => {
             nodes.push({
                 mesh: node,
                 basePosition: new Vector3(x, y, z),
-                originalIndex: vertexIndex,
-                gridI: Math.floor(vertexIndex / (tubularSegments + 1)), // Position around torus
-                gridJ: vertexIndex % (tubularSegments + 1), // Position around tube
                 phaseOffset: Math.random() * Math.PI * 2
             });
 
             torusGroup.add(node);
         }
 
-        // Create connections between nearby nodes (like the sphere)
+        // Create connections between nearby nodes
         const connections = [];
-        const maxDistance = 0.35;
+        const maxDistance = 0.4;
 
         for (let i = 0; i < nodes.length; i++) {
             for (let j = i + 1; j < nodes.length; j++) {
@@ -175,15 +182,26 @@ const Torus3D = ({ className = '' }) => {
             }
         }
 
-        torusGroup.scale.setScalar(0.9);
         scene.add(torusGroup);
+
+        // Mouse interaction
+        let mouseScreen = new Vector2(-1000, -1000);
+
+        const handleMouseMove = (event) => {
+            const rect = currentMount.getBoundingClientRect();
+            mouseScreen.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            mouseScreen.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        };
+
+        const handleMouseLeave = () => {
+            mouseScreen.set(-1000, -1000);
+        };
+
+        currentMount.addEventListener('mousemove', handleMouseMove);
+        currentMount.addEventListener('mouseleave', handleMouseLeave);
 
         let isVisible = true;
         let time = 0;
-
-        // Morphing parameters
-        let morphIntensity = 1.0;
-        let morphDirection = 1;
 
         const animate = () => {
             animationFrameRef.current = requestAnimationFrame(animate);
@@ -192,89 +210,72 @@ const Torus3D = ({ className = '' }) => {
 
             time += 0.016;
 
-            // Oscillate morph intensity
-            morphIntensity += morphDirection * 0.002;
-            if (morphIntensity > 1.12) morphDirection = -1;
-            if (morphIntensity < 0.88) morphDirection = 1;
-
-            // Animate sphere nodes with organic deformations
+            // Animate sphere nodes
             nodes.forEach((nodeData, index) => {
                 const basePos = nodeData.basePosition;
-                let posX = basePos.x;
-                let posY = basePos.y;
-                let posZ = basePos.z;
 
-                // 1. Multi-layered twist effect
-                const twistAmount1 = Math.sin(time * 0.5) * 0.25;
-                const twistAmount2 = Math.cos(time * 0.35) * 0.1;
-                const twist = posY * twistAmount1 + posX * twistAmount2;
-                const cosT = Math.cos(twist);
-                const sinT = Math.sin(twist);
-                const newX = basePos.x * cosT - basePos.z * sinT;
-                const newZ = basePos.x * sinT + basePos.z * cosT;
-                posX = newX;
-                posZ = newZ;
+                // Gentle breathing + wave effect
+                const breathe = 1.0 + Math.sin(time * 0.8 + nodeData.phaseOffset) * 0.04;
+                const wave = Math.sin(time * 1.2 + basePos.x * 3 + basePos.y * 2) * 0.02;
+                let posX = basePos.x * breathe + basePos.x * wave;
+                let posY = basePos.y * breathe + basePos.y * wave;
+                let posZ = basePos.z * breathe + basePos.z * wave;
 
-                // 2. Breathing/pulse effect
-                const breathe = 1.0 + Math.sin(time * 1.0 + nodeData.phaseOffset * 0.3) * 0.05 * morphIntensity;
-                posX *= breathe;
-                posY *= breathe;
-                posZ *= breathe;
+                // Mouse repulsion effect
+                const worldPos = new Vector3(posX, posY, posZ);
+                worldPos.applyMatrix4(torusGroup.matrixWorld);
 
-                // 3. Wave along the torus
-                const curvePhase = (nodeData.gridI / radialSegments) * Math.PI * 2;
-                const waveOffset = Math.sin(curvePhase * 4 + time * 2) * 0.02;
-                const len = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
-                if (len > 0) {
-                    posX += (basePos.x / len) * waveOffset;
-                    posY += (basePos.y / len) * waveOffset;
-                    posZ += (basePos.z / len) * waveOffset;
-                }
+                const nodeScreenPos = worldPos.clone();
+                nodeScreenPos.project(camera);
 
-                // 4. Subtle noise displacement
-                const noise1 = Math.sin(posX * 5.0 + time * 1.8) * Math.cos(posY * 4.0 + time * 1.5);
-                const noise2 = Math.cos(posZ * 6.0 + time * 1.2) * Math.sin(posX * 3.0 + time * 2.0);
-                if (len > 0) {
-                    const noiseAmount = (noise1 + noise2) * 0.01 * morphIntensity;
-                    posX += (basePos.x / len) * noiseAmount;
-                    posY += (basePos.y / len) * noiseAmount;
-                    posZ += (basePos.z / len) * noiseAmount;
+                const distToMouse = Math.sqrt(
+                    Math.pow(nodeScreenPos.x - mouseScreen.x, 2) +
+                    Math.pow(nodeScreenPos.y - mouseScreen.y, 2)
+                );
+
+                const mouseEffect = Math.max(0, 1 - distToMouse / 0.4);
+                const smoothMouseEffect = mouseEffect * mouseEffect;
+
+                if (smoothMouseEffect > 0) {
+                    // Repulsion direction (outward from torus center)
+                    const len = Math.sqrt(basePos.x * basePos.x + basePos.y * basePos.y + basePos.z * basePos.z);
+                    if (len > 0) {
+                        const repulsionForce = smoothMouseEffect * 0.15;
+                        posX += (basePos.x / len) * repulsionForce;
+                        posY += (basePos.y / len) * repulsionForce;
+                        posZ += (basePos.z / len) * repulsionForce;
+                    }
                 }
 
                 // Apply final position
                 nodeData.mesh.position.set(posX, posY, posZ);
 
                 // Update shader uniforms
-                nodeData.mesh.material.uniforms.uTime.value = time + index * 0.05;
-
-                // Pulse opacity
-                const baseOpacity = 0.85 + Math.sin(time * 2 + index * 0.1) * 0.1;
-                nodeData.mesh.material.uniforms.uOpacity.value = baseOpacity;
-
-                // Glow pulse
-                const glow = Math.sin(time * 2.5 + index * 0.2) * 0.1 + 0.08;
-                nodeData.mesh.material.uniforms.uGlow.value = Math.max(0, glow);
+                nodeData.mesh.material.uniforms.uTime.value = time;
+                nodeData.mesh.material.uniforms.uOpacity.value = 0.9;
+                nodeData.mesh.material.uniforms.uMouseEffect.value = smoothMouseEffect;
             });
 
             // Update connection lines
             connections.forEach((conn) => {
-                const positions = conn.line.geometry.attributes.position.array;
-                positions[0] = conn.nodeA.mesh.position.x;
-                positions[1] = conn.nodeA.mesh.position.y;
-                positions[2] = conn.nodeA.mesh.position.z;
-                positions[3] = conn.nodeB.mesh.position.x;
-                positions[4] = conn.nodeB.mesh.position.y;
-                positions[5] = conn.nodeB.mesh.position.z;
+                const linePositions = conn.line.geometry.attributes.position.array;
+                linePositions[0] = conn.nodeA.mesh.position.x;
+                linePositions[1] = conn.nodeA.mesh.position.y;
+                linePositions[2] = conn.nodeA.mesh.position.z;
+                linePositions[3] = conn.nodeB.mesh.position.x;
+                linePositions[4] = conn.nodeB.mesh.position.y;
+                linePositions[5] = conn.nodeB.mesh.position.z;
                 conn.line.geometry.attributes.position.needsUpdate = true;
 
                 // Fade based on distance
                 const distance = conn.nodeA.mesh.position.distanceTo(conn.nodeB.mesh.position);
-                conn.line.material.opacity = Math.max(0.1, 0.4 - distance * 0.8);
+                conn.line.material.opacity = Math.max(0.1, 0.4 - distance * 0.6);
             });
 
-            // Slow rotation
-            torusGroup.rotation.y += 0.003;
-            torusGroup.rotation.x = Math.sin(time * 0.2) * 0.15;
+            // Slow rotation on all axes
+            torusGroup.rotation.x += 0.0015;
+            torusGroup.rotation.y += 0.002;
+            torusGroup.rotation.z += 0.001;
 
             renderer.render(scene, camera);
         };
@@ -303,6 +304,9 @@ const Torus3D = ({ className = '' }) => {
         return () => {
             observer.disconnect();
             window.removeEventListener('resize', handleResize);
+            currentMount.removeEventListener('mousemove', handleMouseMove);
+            currentMount.removeEventListener('mouseleave', handleMouseLeave);
+
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
             }
