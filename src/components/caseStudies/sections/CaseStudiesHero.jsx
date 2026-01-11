@@ -1,135 +1,203 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import ShaderBackground from '../../home/ShaderBackground';
-import { heroRotatingPhrases, heroRotatingPhrasesMobile, heroContent } from '../constants';
+import { caseStudiesData, heroContent } from '../constants';
 
-const RotatingText = ({ phrases, className = '' }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+// Signal page ready for splash screen
+const signalPageReady = () => {
+    if (typeof window !== 'undefined' && window.location.pathname === '/casestudies') {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }
+};
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % phrases.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [phrases.length]);
+// Card content component
+const CardContent = ({ study }) => (
+    <div
+        className="relative overflow-hidden rounded-2xl bg-slate-900/80 backdrop-blur-sm border border-white/10 shadow-2xl shadow-black/60 group cursor-pointer max-h-[80dvh]"
+        style={{
+            maskImage: 'radial-gradient(white, black)',
+            WebkitMaskImage: 'radial-gradient(white, black)',
+            isolation: 'isolate',
+        }}
+    >
+        {/* Image */}
+        <div className="relative aspect-square sm:aspect-[16/9] overflow-hidden">
+            <img
+                src={study.imageUrl}
+                alt={study.client}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute top-4 left-4">
+                <span className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 backdrop-blur-sm">
+                    {study.category}
+                </span>
+            </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-5 md:p-6">
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-1">
+                {study.client}
+            </h3>
+            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4 line-clamp-2">
+                {study.description}
+            </p>
+            <div className="flex gap-6 mb-4">
+                {study.stats.slice(0, 2).map((stat, statIndex) => (
+                    <div key={statIndex}>
+                        <div className="text-lg md:text-xl font-bold text-cyan-400">
+                            {stat.value}
+                        </div>
+                        <div className="text-xs text-slate-500 uppercase tracking-wider">
+                            {stat.label}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="flex items-center gap-2 text-sm text-cyan-400 group-hover:text-cyan-300 transition-colors">
+                <span>View case study</span>
+                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </div>
+        </div>
+    </div>
+);
+
+// Single card that gets "dealt" away on scroll
+const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
+    const isLastCard = index === totalCards - 1;
+
+    const cardsToAnimate = totalCards - 1;
+    const segmentSize = cardsToAnimate > 0 ? 1 / cardsToAnimate : 1;
+    const cardStart = index * segmentSize;
+    const cardEnd = Math.min((index + 1) * segmentSize, 1);
+
+    const exitDirection = index % 2 === 0 ? -1 : 1;
+
+    const rotationDirection = index % 2 === 0 ? 1 : -1;
+    const baseRotation = [0, 3, 5, 4, 6, 3, 5, 4][index % 8];
+    const stackRotation = index === 0 ? 0 : rotationDirection * baseRotation;
+
+    const exitOffsetY = [0, -80, 120, -50, 90, -100, 60, -30][index % 8];
+
+    const x = useTransform(
+        scrollYProgress,
+        [cardStart, cardStart + segmentSize * 0.1, cardEnd],
+        isLastCard ? [0, 0, 0] : [0, 0, exitDirection * 1800]
+    );
+
+    const y = useTransform(
+        scrollYProgress,
+        [cardStart, cardEnd],
+        isLastCard ? [0, 0] : [0, exitOffsetY]
+    );
+
+    const rotate = useTransform(
+        scrollYProgress,
+        isLastCard
+            ? [Math.max(0, cardStart - segmentSize), cardStart]
+            : [Math.max(0, cardStart - segmentSize), cardStart, cardEnd],
+        isLastCard
+            ? [stackRotation, 0]
+            : [stackRotation, 0, exitDirection * 25]
+    );
+
+    const zIndex = totalCards - index;
 
     return (
-        <span className="inline-block">
-            <AnimatePresence mode="wait">
-                <motion.span
-                    key={currentIndex}
-                    className={`inline-block ${className}`}
-                    initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
-                    transition={{
-                        duration: 0.8,
-                        ease: [0.25, 0.1, 0.25, 1],
-                        opacity: { duration: 0.6 }
-                    }}
-                >
-                    {phrases[currentIndex]}
-                </motion.span>
-            </AnimatePresence>
-        </span>
+        <motion.a
+            href={study.link}
+            className="absolute inset-0 block"
+            style={{
+                x,
+                y,
+                rotate,
+                zIndex,
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                perspective: 1000,
+            }}
+        >
+            <CardContent study={study} />
+        </motion.a>
     );
 };
 
 const CaseStudiesHero = () => {
-    return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-            {/* Shader Background */}
-            <ShaderBackground />
+    const containerRef = useRef(null);
+    const cardRef = useRef(null);
+    const [cardHeight, setCardHeight] = useState(500);
 
-            {/* Content */}
-            <div className="relative z-20 text-white max-w-6xl mx-auto px-4 py-16 md:py-20 lg:py-24 text-center">
-                {/* Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-8"
-                >
-                    <span className="text-xs tracking-[0.2em] text-slate-500 uppercase font-inter">
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    const showcaseStudies = caseStudiesData;
+
+    useEffect(() => {
+        const measureHeight = () => {
+            if (cardRef.current) {
+                setCardHeight(cardRef.current.offsetHeight);
+            }
+        };
+
+        measureHeight();
+        window.addEventListener('resize', measureHeight);
+        return () => window.removeEventListener('resize', measureHeight);
+    }, []);
+
+    const cardsToAnimate = showcaseStudies.length - 1;
+    const scrollHeight = `${cardsToAnimate * 100}vh`;
+
+    return (
+        <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
+            {/* Shader Background - sticky */}
+            <div className="sticky top-0 h-screen z-0">
+                <ShaderBackground onReady={signalPageReady} />
+            </div>
+
+            {/* Content container - positioned over shader */}
+            <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100vh' }}>
+                {/* Header - scrolls normally */}
+                <div className="pt-16 md:pt-24 pb-32 md:pb-40 text-center px-4 max-w-4xl mx-auto">
+                    <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
                         {heroContent.badge}
                     </span>
-                </motion.div>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter leading-[1.1] mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                        Featured Projects
+                    </h1>
+                    <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                        {heroContent.description}
+                    </p>
+                </div>
 
-                {/* Main Title with Rotating Text */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7 }}
-                    className="font-bold font-inter leading-[1.1] mb-8"
+                {/* Sticky cards container */}
+                <div
+                    className="sticky"
+                    style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
                 >
-                    {/* Mobile - shorter phrases */}
-                    <span className="block md:hidden text-5xl">
-                        <RotatingText
-                            phrases={heroRotatingPhrasesMobile}
-                            className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
-                        />
-                    </span>
-                    {/* Tablet/Desktop - full phrases */}
-                    <span className="hidden md:block md:text-6xl lg:text-7xl xl:text-8xl">
-                        <RotatingText
-                            phrases={heroRotatingPhrases}
-                            className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
-                        />
-                    </span>
-                </motion.h1>
+                    <div className="relative max-w-2xl mx-auto px-6">
+                        {/* Ghost card for height */}
+                        <div ref={cardRef} className="invisible">
+                            <CardContent study={showcaseStudies[0]} />
+                        </div>
 
-                {/* Description */}
-                <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-base md:text-lg lg:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed"
-                >
-                    {heroContent.description}
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-                >
-                    <a
-                        href={heroContent.ctaPrimary.href}
-                        className="group relative px-8 py-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-xl font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25"
-                    >
-                        <span className="relative z-10">{heroContent.ctaPrimary.text}</span>
-                    </a>
-                    <a
-                        href={heroContent.ctaSecondary.href}
-                        className="group px-8 py-4 rounded-xl font-semibold text-white border border-white/20 backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:bg-white/5"
-                    >
-                        {heroContent.ctaSecondary.text}
-                    </a>
-                </motion.div>
-
-                {/* Scroll Indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1, duration: 0.5 }}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2"
-                >
-                    <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2">
-                        <motion.div
-                            animate={{
-                                y: [0, 12, 0]
-                            }}
-                            transition={{
-                                duration: 1.5,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                            }}
-                            className="w-1.5 h-1.5 bg-cyan-400 rounded-full"
-                        />
+                        {/* Actual stacked cards */}
+                        <div className="absolute inset-y-0 left-6 right-6">
+                            {showcaseStudies.map((study, index) => (
+                                <StackedCard
+                                    key={study.id}
+                                    study={study}
+                                    index={index}
+                                    totalCards={showcaseStudies.length}
+                                    scrollYProgress={scrollYProgress}
+                                />
+                            ))}
+                        </div>
                     </div>
-                </motion.div>
+                </div>
             </div>
         </section>
     );
