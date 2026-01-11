@@ -10,6 +10,7 @@ import { useShaderBackground } from '@/hooks/useShaderBackground';
  * - targetFPS: number - Target FPS per l'animazione
  * - className: string - Classe CSS aggiuntiva
  * - style: object - Stili inline aggiuntivi
+ * - onReady: function - Callback when first frame is rendered
  */
 const ShaderBackground = ({
     colors,
@@ -17,6 +18,7 @@ const ShaderBackground = ({
     targetFPS = 24,
     className = '',
     style = {},
+    onReady = null,
 }) => {
     const { containerRef, canvasRef } = useShaderBackground({
         colors,
@@ -24,6 +26,7 @@ const ShaderBackground = ({
         targetFPS,
         enableVisibilityTracking: true,
         visibilityThreshold: 0.1,
+        onReady,
     });
 
     return (

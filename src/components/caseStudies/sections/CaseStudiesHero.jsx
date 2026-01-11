@@ -35,7 +35,7 @@ const CardContent = ({ study }) => (
         </div>
 
         {/* Content */}
-        <div className="p-5 md:p-6">
+        <div className="px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4">
             <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-1">
                 {study.client}
             </h3>
@@ -152,57 +152,70 @@ const CaseStudiesHero = () => {
     const scrollHeight = `${cardsToAnimate * 100}vh`;
 
     return (
-        <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
-            {/* Shader Background - sticky, oversized to hide rounded corners */}
-            <div
-                className="sticky z-0 overflow-hidden rounded-2xl"
-                style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
-            >
-                <ShaderBackground onReady={signalPageReady} />
-            </div>
+        <div><div
+        className="sticky z-0 overflow-hidden rounded-2xl"
+        style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
+    >
+        <ShaderBackground onReady={signalPageReady} />
+    </div>
+<section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
+    {/* Shader Background - sticky, oversized to hide rounded corners */}
+    
 
-            {/* Content container - positioned over shader */}
-            <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100vh' }}>
-                {/* Header - scrolls normally */}
-                <div className="pt-16 md:pt-24 pb-32 md:pb-40 text-center px-4 max-w-4xl mx-auto">
-                    <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
-                        {heroContent.badge}
-                    </span>
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter leading-[1.1] mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                        Featured Projects
-                    </h1>
-                    <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                        {heroContent.description}
-                    </p>
+    {/* Content container - positioned over shader */}
+    <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100vh' }}>
+        {/* Header - scrolls normally */}
+        <div className="pt-16 md:pt-24 pb-32 md:pb-40 text-center px-4 max-w-4xl mx-auto">
+            <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
+                {heroContent.badge}
+            </span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter leading-[1.1] mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                Featured Projects
+            </h1>
+            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                {heroContent.description}
+            </p>
+        </div>
+
+        {/* Sticky cards container */}
+        <div
+            className="sticky"
+            style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
+        >
+            <div className="relative max-w-2xl mx-auto px-6">
+                {/* Ghost card for height */}
+                <div ref={cardRef} className="invisible">
+                    <CardContent study={showcaseStudies[0]} />
                 </div>
 
-                {/* Sticky cards container */}
-                <div
-                    className="sticky"
-                    style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
-                >
-                    <div className="relative max-w-2xl mx-auto px-6">
-                        {/* Ghost card for height */}
-                        <div ref={cardRef} className="invisible">
-                            <CardContent study={showcaseStudies[0]} />
-                        </div>
-
-                        {/* Actual stacked cards */}
-                        <div className="absolute inset-y-0 left-6 right-6">
-                            {showcaseStudies.map((study, index) => (
-                                <StackedCard
-                                    key={study.id}
-                                    study={study}
-                                    index={index}
-                                    totalCards={showcaseStudies.length}
-                                    scrollYProgress={scrollYProgress}
-                                />
-                            ))}
-                        </div>
-                    </div>
+                {/* Actual stacked cards */}
+                <div className="absolute inset-y-0 left-6 right-6">
+                    {showcaseStudies.map((study, index) => (
+                        <StackedCard
+                            key={study.id}
+                            study={study}
+                            index={index}
+                            totalCards={showcaseStudies.length}
+                            scrollYProgress={scrollYProgress}
+                        />
+                    ))}
                 </div>
             </div>
-        </section>
+        </div>
+        {/* Content dopo sticky - sale via con la fine del background */}
+    </div>
+
+    
+</section>
+            <div className='relative z-20 text-center pb-24 px-4 max-w-2xl mx-auto'>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    Results That Speak for Themselves
+                </h3>
+                <p className="text-base text-slate-400">
+                    Every project is a partnership built on data, creativity, and measurable outcomes.
+                </p>
+            </div>
+</div>
     );
 };
 
