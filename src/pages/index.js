@@ -1,15 +1,49 @@
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import Layout from '../components/layout';
 import GlobalStyles from '../components/globalsyles';
 
-// Import all home page components
-import FuturisticHero from '../components/home/FuturisticHero';
-import GrainyBgSection from '../components/home/GrainyBgSection';
-import EngineTimeline from '../components/home/EngineTimeline';
-import ProjectsShowcase from '../components/home/ProjectsShowcase';
+// Hero skeleton placeholder
+const HeroSkeleton = () => (
+    <section
+        className="hero-section"
+        style={{
+            background: '#020617',
+            minHeight: '100vh',
+            zIndex: 10
+        }}
+    />
+);
+
+// Dynamic imports for 3D components (lazy loaded, no SSR)
+const FuturisticHero = dynamic(
+    () => import('../components/home/FuturisticHero'),
+    { ssr: false, loading: () => <HeroSkeleton /> }
+);
+
+const GrainyBgSection = dynamic(
+    () => import('../components/home/GrainyBgSection'),
+    { ssr: false }
+);
+
+const EngineTimeline = dynamic(
+    () => import('../components/home/EngineTimeline'),
+    { ssr: false }
+);
+
+const ProjectsShowcase = dynamic(
+    () => import('../components/home/ProjectsShowcase'),
+    { ssr: false }
+);
+
+const NeuralContact = dynamic(
+    () => import('../components/home/NeuralContact'),
+    { ssr: false }
+);
+
+// Static imports for components without 3D
 import SuccessStories from '../components/home/SuccessStories';
-import NeuralContact from '../components/home/NeuralContact';
 import DemoReveal from '@/components/home/DemoReveal';
 import OfficialPartnerSection from '@/components/home/OfficialPartnerSection';
 

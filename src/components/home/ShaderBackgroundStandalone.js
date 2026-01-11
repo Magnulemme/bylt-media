@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const ShaderBackgroundStandalone = () => {
+const ShaderBackgroundStandalone = ({ onReady = null }) => {
     const containerRef = useRef(null);
     const sceneRef = useRef(null);
     const cameraRef = useRef(null);
@@ -131,11 +131,21 @@ const ShaderBackgroundStandalone = () => {
 
         // Animation loop
         const clock = new THREE.Clock();
+        let hasSignaledReady = false;
+
         const animate = () => {
             frameIdRef.current = requestAnimationFrame(animate);
             const elapsedTime = clock.getElapsedTime();
             material.uniforms.u_time.value = elapsedTime;
             renderer.render(scene, camera);
+
+            // Signal ready after first frame is rendered
+            if (!hasSignaledReady) {
+                hasSignaledReady = true;
+                if (onReady) {
+                    onReady();
+                }
+            }
         };
         animate();
 

@@ -153,8 +153,11 @@ const CaseStudiesHero = () => {
 
     return (
         <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
-            {/* Shader Background - sticky */}
-            <div className="sticky top-0 h-screen z-0">
+            {/* Shader Background - sticky, oversized to hide rounded corners */}
+            <div
+                className="sticky z-0 overflow-hidden rounded-2xl"
+                style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
+            >
                 <ShaderBackground onReady={signalPageReady} />
             </div>
 

@@ -1,52 +1,36 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { sharedRenderer } from '@/lib/sharedRenderer';
 
 /**
  * Splash Screen che si nasconde quando lo shader background è pronto.
+ * Ascolta l'evento 'standalone-renderer-ready' emesso da ShaderBackgroundStandalone.
  */
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    // Controlla periodicamente se il primo render WebGL è avvenuto
-    const checkReady = () => {
-      const stats = sharedRenderer.getStats();
+    let hasTriggered = false;
 
-      // Nascondi quando:
-      // 1. Il renderer è attivo
-      // 2. Ci sono task visibili renderizzati
-      if (stats.isRunning && stats.activeTasks > 0) {
-        // Inizia fade out
-        setIsFading(true);
-        // Rimuovi dopo l'animazione
-        setTimeout(() => setIsVisible(false), 500);
-        return true;
-      }
-      return false;
+    const handleReady = () => {
+      if (hasTriggered) return;
+      hasTriggered = true;
+
+      // Inizia fade out
+      setIsFading(true);
+      // Rimuovi dopo l'animazione
+      setTimeout(() => setIsVisible(false), 500);
     };
 
-    // Se già pronto, nascondi subito
-    if (checkReady()) return;
+    // Ascolta evento specifico dalla Hero
+    window.addEventListener('hero-ready', handleReady);
 
-    // Altrimenti controlla ogni 100ms
-    const interval = setInterval(() => {
-      if (checkReady()) {
-        clearInterval(interval);
-      }
-    }, 100);
-
-    // Timeout massimo: 5 secondi
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      setIsFading(true);
-      setTimeout(() => setIsVisible(false), 500);
-    }, 5000);
+    // Timeout fallback: 8 secondi (solo emergenza, normalmente l'evento arriva prima)
+    const timeout = setTimeout(handleReady, 8000);
 
     return () => {
-      clearInterval(interval);
+      window.removeEventListener('hero-ready', handleReady);
       clearTimeout(timeout);
     };
   }, []);

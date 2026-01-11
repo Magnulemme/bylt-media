@@ -12,6 +12,7 @@ interface UseShaderBackgroundOptions {
   targetFPS?: number;
   enableVisibilityTracking?: boolean;
   visibilityThreshold?: number;
+  onReady?: () => void;
 }
 
 /**
@@ -25,6 +26,7 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
     targetFPS = 24, // 24fps è sufficiente per il grain effect
     enableVisibilityTracking = true,
     visibilityThreshold = 0.1,
+    onReady,
   } = options;
 
   const uniqueId = useId();
@@ -34,6 +36,7 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const hasSignaledReady = useRef(false);
 
   // Setup Three.js e registrazione nel sharedRenderer
   useEffect(() => {
@@ -71,6 +74,12 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
     // Callback per aggiornare u_time prima di ogni render
     const onBeforeRender = (time: number) => {
       shaderBackgroundRenderer.updateTime(taskId, time);
+
+      // Signal ready after first frame
+      if (!hasSignaledReady.current && onReady) {
+        hasSignaledReady.current = true;
+        onReady();
+      }
     };
 
     // Registra nel sharedRenderer
@@ -123,8 +132,9 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
       const height = container.offsetHeight;
       canvas.width = width;
       canvas.height = height;
-      sharedRenderer.resize(taskId, width, height);
+      // Update resolution BEFORE resize so the forced render uses correct dimensions
       shaderBackgroundRenderer.updateResolution(taskId, width, height);
+      sharedRenderer.resize(taskId, width, height);
     };
 
     const resizeObserver = new ResizeObserver(handleResize);

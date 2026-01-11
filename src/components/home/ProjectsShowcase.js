@@ -139,13 +139,28 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onTo
                             </h3>
                             {/* Plus button inline dopo il titolo */}
                             <motion.div
-                                className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border-2 border-white/30 group-hover:border-cyan-400/60 relative transition-all duration-300 group-hover:translate-x-[2px] group-hover:translate-y-[2px] ml-8 align-middle"
+                                className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg backdrop-blur-sm border-2 relative ml-8 align-middle bg-white/5"
                                 style={{
-                                    boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)',
                                     verticalAlign: 'middle',
                                 }}
-                                animate={{ rotate: isExpanded ? 45 : 0 }}
-                                transition={{ duration: 0.3 }}
+                                initial={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+                                animate={{
+                                    rotate: isExpanded ? 45 : 0,
+                                    x: isExpanded ? 2 : 0,
+                                    y: isExpanded ? 2 : 0,
+                                    boxShadow: isExpanded
+                                        ? '4px 4px 0px rgba(34, 211, 238, 0.5)'
+                                        : '6px 6px 0px rgba(34, 211, 238, 1)',
+                                    borderColor: isExpanded
+                                        ? 'rgba(34, 211, 238, 0.8)'
+                                        : 'rgba(255, 255, 255, 0.3)',
+                                }}
+                                whileHover={!isExpanded ? {
+                                    x: 2,
+                                    y: 2,
+                                    borderColor: 'rgba(34, 211, 238, 0.6)',
+                                } : {}}
+                                transition={{ duration: 0.2, ease: 'easeOut' }}
                             >
                                 <svg
                                     className="w-5 h-5 text-cyan-300"

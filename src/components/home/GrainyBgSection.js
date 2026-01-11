@@ -69,15 +69,21 @@ const GrainyBgSection = () => {
     return (
         <section id="services" className="grainy-bg-section">
             <div ref={containerRef} className="grainy-bg-card">
-                {/* Shader Background - Rimane fisso */}
-                <ShaderBackgroundStandalone />
+                {/* Shader Background - Sticky, oversized to hide rounded corners */}
+                <div
+                    className="sticky z-0 overflow-hidden rounded-2xl"
+                    style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
+                >
+                    <ShaderBackgroundStandalone />
+                </div>
 
                 <motion.div
                     ref={sectionRef}
-                    className="grainy-bg-content"
+                    className="grainy-bg-content h-full pt-16 md:pt-24 lg:pt-32"
                     style={{
                         transform,
-                        opacity
+                        opacity,
+                        marginTop: '-100vh'
                     }}
                 >
                     {/* Services Section - Conditional rendering based on screen size */}

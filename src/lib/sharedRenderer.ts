@@ -326,7 +326,8 @@ class SharedRendererManager {
     const ctx = canvas.getContext("2d");
     if (ctx && this.canvas) {
       try {
-        ctx.clearRect(0, 0, width, height);
+        // Note: no clearRect needed - drawImage will overwrite the entire canvas
+        // Removing clearRect prevents flickering during resize/reflow
 
         if (this.supportsTransferBitmap) {
           const bitmap = (this.canvas as HTMLCanvasElement & { transferToImageBitmap: () => ImageBitmap }).transferToImageBitmap();
@@ -367,6 +368,11 @@ class SharedRendererManager {
 
     task.canvas.width = width;
     task.canvas.height = height;
+
+    // Force immediate render to prevent flickering during resize
+    if (task.enabled && task.visible) {
+      this.renderOnce(id);
+    }
   }
 
   /**

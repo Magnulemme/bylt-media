@@ -1,9 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import SectionHeader from '../ui/SectionHeader';
 import { useProfiler } from '@/hooks/useProfiler';
+
+// Callback to signal Hero is ready
+const signalHeroReady = () => {
+    window.dispatchEvent(new CustomEvent('hero-ready'));
+};
 
 // Realistic typing effect hook with variable speed
 const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
@@ -99,7 +104,7 @@ const FuturisticHero = () => {
         >
             <div className="hero-inner bg-hero">
                 {/* Shader Background */}
-                <ShaderBackgroundStandalone />
+                <ShaderBackgroundStandalone onReady={signalHeroReady} />
 
                 <div className="container-centered">
                 <div className="hero-grid">
