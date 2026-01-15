@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { DitherShader } from '@/components/ui/dither-shader';
 import { useIconBackground } from './useIconBackground';
 
@@ -43,15 +43,17 @@ const SectionHeader = () => (
 
 // Single card component to use hooks
 const OverviewCard = ({ item, index }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
     const iconBg = useIconBackground(item.iconName, index);
 
     return (
         <motion.div
+            ref={ref}
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="group relative p-5 rounded-2xl border border-gray-800 bg-slate-950/50 hover:border-cyan-500/50 transition-all duration-300 overflow-hidden min-h-35"
+            className="group relative p-5 rounded-2xl border border-gray-800 bg-slate-950/50 hover:border-cyan-500/50 transition-colors duration-300 overflow-hidden min-h-35"
         >
             {/* Dither shader background */}
             {iconBg && (

@@ -4,19 +4,52 @@ import React, { useRef, useEffect } from 'react';
 const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape = 'blob' }) => {
     const canvasRef = useRef(null);
     const frameRef = useRef(null);
+    const containerRef = useRef(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        const container = containerRef.current;
+        if (!canvas || !container) return;
 
         const ctx = canvas.getContext('2d');
-        const width = 500;
-        const height = 350;
-        canvas.width = width;
-        canvas.height = height;
+        const dpr = window.devicePixelRatio || 1;
 
-        const centerX = width / 2;
-        const centerY = height / 2;
+        // Reference aspect ratio (original design)
+        const refAspect = 500 / 350;
+
+        // Calculate canvas size: use full width, height based on aspect ratio
+        const updateSize = () => {
+            const parentWidth = container.clientWidth;
+
+            if (parentWidth === 0) {
+                return { width: 500, height: 350 }; // Fallback
+            }
+
+            const canvasWidth = parentWidth;
+            const canvasHeight = parentWidth / refAspect;
+
+            canvas.width = canvasWidth * dpr;
+            canvas.height = canvasHeight * dpr;
+            canvas.style.width = `${canvasWidth}px`;
+            canvas.style.height = `${canvasHeight}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            return { width: canvasWidth, height: canvasHeight };
+        };
+
+        let { width, height } = updateSize();
+        let centerX = width / 2;
+        let centerY = height / 2;
+
+        // Handle resize
+        const handleResize = () => {
+            const size = updateSize();
+            width = size.width;
+            height = size.height;
+            centerX = width / 2;
+            centerY = height / 2;
+        };
+        window.addEventListener('resize', handleResize);
 
         // Use custom colors or shape-specific defaults
         const getDefaultColors = () => {
@@ -60,67 +93,52 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
             const nx = x / width;
             const ny = y / height;
 
-            // Chart curve function with zigzag (descending trend)
+            // Chart curve function with zigzag (descending trend) - steeper slope
+            const slope = 0.55;
+            const zigzagFreq = 4.5;
+            const zigzagAmpBase = 0.05;
+            const zigzagAmpGrow = 0.02;
+
             const getChartY = (xPos) => {
-                const baseTrend = 0.28 + xPos * 0.44; // Descending (y increases = goes down)
-                const zigzagFreq = 4.5;
+                const baseTrend = 0.18 + xPos * slope;
                 const zigzagPhase = xPos * zigzagFreq + t * 0.35;
                 const zigzag = Math.abs((zigzagPhase % 1) - 0.5) * 2 - 0.5;
-                const zigzagAmp = 0.06 + xPos * 0.03;
+                const zigzagAmp = zigzagAmpBase + xPos * zigzagAmpGrow;
                 return baseTrend + zigzag * zigzagAmp + Math.sin(t * 0.3) * 0.015;
             };
 
             const chartY = getChartY(nx);
-            const zigzagFreq = 4.5;
             const zigzagPhase = nx * zigzagFreq + t * 0.35;
             const zigzag = Math.abs((zigzagPhase % 1) - 0.5) * 2 - 0.5;
 
-            // Line thickness
-            const thickness = 0.09 + Math.abs(zigzag) * 0.02 + Math.sin(t * 0.5) * 0.01;
+            // Line thickness - increases towards tip for arrow effect
+            const baseThickness = 0.09 + Math.abs(zigzag) * 0.02 + Math.sin(t * 0.5) * 0.01;
+            const tipX = 0.92;
+            const wideningStart = 0.5;
+            const tipProgress = Math.max(0, (nx - wideningStart) / (tipX - wideningStart));
+            const thickness = baseThickness * (1 + tipProgress * 2.5);
+
             const distFromChart = Math.abs(ny - chartY);
 
-            // Arrow tip - follows the base trend direction (downward)
-            const tipX = 0.85;
-            const tipY = 0.28 + tipX * 0.44 + Math.sin(t * 0.3) * 0.015;
+            // Body with gradual widening towards tip
+            const inside = distFromChart < thickness && nx > 0.08 && nx < tipX;
 
-            // Tangent direction: base trend goes down-right (dx positive, dy positive)
-            const dirX = 1;
-            const dirY = 0.44;
-            const dirLen = Math.sqrt(dirX * dirX + dirY * dirY);
-            const normDirX = dirX / dirLen;
-            const normDirY = dirY / dirLen;
+            // Taper at the end for pointed triangle tip
+            const taperStart = 0.68;
+            let taperFactor = 1;
+            if (nx > taperStart) {
+                const taperProgress = (nx - taperStart) / (tipX - taperStart);
+                taperFactor = 1 - taperProgress;
+            }
+            const taperInside = distFromChart < thickness * taperFactor && nx > 0.08 && nx <= tipX;
 
-            // Perpendicular vector
-            const perpX = -normDirY;
-            const perpY = normDirX;
+            const finalInside = nx < taperStart ? inside : taperInside;
 
-            // Arrow head parameters
-            const arrowLength = 0.14;
-            const arrowWidth = 0.10;
+            // Edge distance
+            const effectiveThickness = nx < taperStart ? thickness : thickness * taperFactor;
+            const edgeDist = finalInside ? (effectiveThickness - distFromChart) * 3 : 0;
 
-            // Vector from tip to current point
-            const toPointX = nx - tipX;
-            const toPointY = ny - tipY;
-
-            // Project onto direction and perpendicular
-            const alongDir = toPointX * normDirX + toPointY * normDirY;
-            const alongPerp = toPointX * perpX + toPointY * perpY;
-
-            // Triangle: starts at tip, extends forward along tangent
-            const maxWidth = arrowWidth * (1 - alongDir / arrowLength);
-            const inArrowHead = alongDir >= 0 && alongDir < arrowLength &&
-                Math.abs(alongPerp) < maxWidth;
-
-            // Body: slight overlap with arrow head for smooth transition
-            const inside = distFromChart < thickness && nx > 0.08 && nx < tipX + 0.03;
-
-            // Edge distance - use same scale as body for consistency
-            const lineEdgeDist = inside ? (thickness - distFromChart) * 3 : 0;
-            // Arrow uses similar calculation: distance from edge, scaled same as body
-            const arrowEdgeDist = inArrowHead ? (maxWidth - Math.abs(alongPerp)) * 3 : 0;
-            const edgeDist = Math.max(lineEdgeDist, arrowEdgeDist);
-
-            return { inside: inside || inArrowHead, edgeDist: Math.max(0.1, edgeDist) };
+            return { inside: finalInside, edgeDist: Math.max(0.1, edgeDist) };
         };
 
         // Upward zigzag growth chart shape function
@@ -128,67 +146,52 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
             const nx = x / width;
             const ny = y / height;
 
-            // Chart curve function (base trend only for arrow, zigzag for body)
+            // Chart curve function with zigzag (ascending trend) - steeper slope
+            const slope = 0.55;
+            const zigzagFreq = 4.5;
+            const zigzagAmpBase = 0.05;
+            const zigzagAmpGrow = 0.02;
+
             const getChartY = (xPos) => {
-                const baseTrend = 0.72 - xPos * 0.44;
-                const zigzagFreq = 4.5;
+                const baseTrend = 0.82 - xPos * slope;
                 const zigzagPhase = xPos * zigzagFreq + t * 0.35;
                 const zigzag = Math.abs((zigzagPhase % 1) - 0.5) * 2 - 0.5;
-                const zigzagAmp = 0.06 + xPos * 0.03;
+                const zigzagAmp = zigzagAmpBase + xPos * zigzagAmpGrow;
                 return baseTrend + zigzag * zigzagAmp + Math.sin(t * 0.3) * 0.015;
             };
 
             const chartY = getChartY(nx);
-            const zigzagFreq = 4.5;
             const zigzagPhase = nx * zigzagFreq + t * 0.35;
             const zigzag = Math.abs((zigzagPhase % 1) - 0.5) * 2 - 0.5;
 
-            // Line thickness
-            const thickness = 0.09 + Math.abs(zigzag) * 0.02 + Math.sin(t * 0.5) * 0.01;
+            // Line thickness - increases towards tip for arrow effect
+            const baseThickness = 0.09 + Math.abs(zigzag) * 0.02 + Math.sin(t * 0.5) * 0.01;
+            const tipX = 0.92;
+            const wideningStart = 0.5;
+            const tipProgress = Math.max(0, (nx - wideningStart) / (tipX - wideningStart));
+            const thickness = baseThickness * (1 + tipProgress * 2.5);
+
             const distFromChart = Math.abs(ny - chartY);
 
-            // Arrow tip - follows the base trend direction (upward)
-            const tipX = 0.85;
-            const tipY = 0.72 - tipX * 0.44 + Math.sin(t * 0.3) * 0.015;
+            // Body with gradual widening towards tip
+            const inside = distFromChart < thickness && nx > 0.08 && nx < tipX;
 
-            // Tangent direction: base trend goes up-right (dx positive, dy negative)
-            const dirX = 1;
-            const dirY = -0.44;
-            const dirLen = Math.sqrt(dirX * dirX + dirY * dirY);
-            const normDirX = dirX / dirLen;
-            const normDirY = dirY / dirLen;
+            // Taper at the end for pointed triangle tip
+            const taperStart = 0.68;
+            let taperFactor = 1;
+            if (nx > taperStart) {
+                const taperProgress = (nx - taperStart) / (tipX - taperStart);
+                taperFactor = 1 - taperProgress;
+            }
+            const taperInside = distFromChart < thickness * taperFactor && nx > 0.08 && nx <= tipX;
 
-            // Perpendicular vector
-            const perpX = -normDirY;
-            const perpY = normDirX;
+            const finalInside = nx < taperStart ? inside : taperInside;
 
-            // Arrow head parameters
-            const arrowLength = 0.14;
-            const arrowWidth = 0.10;
+            // Edge distance
+            const effectiveThickness = nx < taperStart ? thickness : thickness * taperFactor;
+            const edgeDist = finalInside ? (effectiveThickness - distFromChart) * 3 : 0;
 
-            // Vector from tip to current point
-            const toPointX = nx - tipX;
-            const toPointY = ny - tipY;
-
-            // Project onto direction and perpendicular
-            const alongDir = toPointX * normDirX + toPointY * normDirY;
-            const alongPerp = toPointX * perpX + toPointY * perpY;
-
-            // Triangle: starts at tip, extends forward along tangent
-            const maxWidth = arrowWidth * (1 - alongDir / arrowLength);
-            const inArrowHead = alongDir >= 0 && alongDir < arrowLength &&
-                Math.abs(alongPerp) < maxWidth;
-
-            // Body: slight overlap with arrow head for smooth transition
-            const inside = distFromChart < thickness && nx > 0.08 && nx < tipX + 0.03;
-
-            // Edge distance - use same scale as body for consistency
-            const lineEdgeDist = inside ? (thickness - distFromChart) * 3 : 0;
-            // Arrow uses similar calculation: distance from edge, scaled same as body
-            const arrowEdgeDist = inArrowHead ? (maxWidth - Math.abs(alongPerp)) * 3 : 0;
-            const edgeDist = Math.max(lineEdgeDist, arrowEdgeDist);
-
-            return { inside: inside || inArrowHead, edgeDist: Math.max(0.1, edgeDist) };
+            return { inside: finalInside, edgeDist: Math.max(0.1, edgeDist) };
         };
 
         const getShapeFunction = () => {
@@ -208,6 +211,9 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
 
             const points = [];
 
+            // Scale factor based on reference size (500x350)
+            const sizeScale = Math.min(width, height) / 350;
+
             // Organic flowing particles
             for (let i = 0; i < 35; i++) {
                 for (let j = 0; j < 25; j++) {
@@ -218,9 +224,9 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
                     const { inside, edgeDist } = isInsideShape(baseX, baseY, t);
                     if (!inside) continue;
 
-                    // Wave displacement
-                    const wave1 = Math.sin(i * 0.3 + t * 0.4) * Math.cos(j * 0.35 + t * 0.3) * 22;
-                    const wave2 = Math.cos(i * 0.18 + j * 0.25 + t * 0.2) * 16;
+                    // Wave displacement (scaled)
+                    const wave1 = Math.sin(i * 0.3 + t * 0.4) * Math.cos(j * 0.35 + t * 0.3) * 22 * sizeScale;
+                    const wave2 = Math.cos(i * 0.18 + j * 0.25 + t * 0.2) * 16 * sizeScale;
                     const z = wave1 + wave2;
 
                     const x = baseX + wave1 * 0.2;
@@ -236,8 +242,8 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
             points.sort((a, b) => a.z - b.z);
 
             points.forEach(point => {
-                const depth = (point.z + 50) / 100;
-                const size = 1.8 + depth * 2.5;
+                const depth = (point.z / sizeScale + 50) / 100;
+                const size = (1.8 + depth * 2.5) * sizeScale;
                 const baseOpacity = 0.4 + depth * 0.6;
                 const opacity = baseOpacity * point.edgeFade;
 
@@ -274,19 +280,18 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
             if (frameRef.current) {
                 cancelAnimationFrame(frameRef.current);
             }
+            window.removeEventListener('resize', handleResize);
         };
     }, [variant, colors, shape]);
 
     return (
-        <canvas
-            ref={canvasRef}
+        <div
+            ref={containerRef}
             className={className}
-            style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover'
-            }}
-        />
+            style={{ width: '100%' }}
+        >
+            <canvas ref={canvasRef} style={{ display: 'block' }} />
+        </div>
     );
 };
 

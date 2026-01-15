@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { getIcon, accentColors } from './utils';
 
@@ -26,23 +26,28 @@ const InteractiveProcess = ({ process }) => {
 };
 
 // Section Header sub-component
-const SectionHeader = () => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-12 md:mb-16"
-    >
-        <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-            How We Did It
-        </span>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
-            Our Process
-        </h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full" />
-    </motion.div>
-);
+const SectionHeader = () => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12 md:mb-16"
+        >
+            <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
+                How We Did It
+            </span>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
+                Our Process
+            </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full" />
+        </motion.div>
+    );
+};
 
 // Process Timeline sub-component
 const ProcessTimeline = ({ process, activeStep, setActiveStep }) => (
@@ -62,14 +67,16 @@ const ProcessTimeline = ({ process, activeStep, setActiveStep }) => (
 
 // Process Step sub-component
 const ProcessStep = ({ step, index, isActive, isLast, onToggle }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
     const Icon = getIcon(step.icon);
     const accentColor = accentColors[index % accentColors.length];
 
     return (
         <motion.div
+            ref={ref}
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="relative mb-6"
         >

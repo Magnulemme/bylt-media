@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 const ICON_PATHS = {
     User: 'M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
@@ -10,7 +10,7 @@ const ICON_PATHS = {
 export const useIconBackground = (iconName, variant = 0) => {
     const [imageUrl, setImageUrl] = useState(null);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const canvas = document.createElement('canvas');
         const size = 400;
         canvas.width = size;
@@ -61,7 +61,8 @@ export const useIconBackground = (iconName, variant = 0) => {
             ctx.restore();
         }
 
-        setImageUrl(canvas.toDataURL('image/png'));
+        const dataUrl = canvas.toDataURL('image/png');
+        setImageUrl(dataUrl);
     }, [iconName, variant]);
 
     return imageUrl;

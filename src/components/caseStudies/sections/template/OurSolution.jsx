@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { getIcon, accentColors, useWaveBackground } from './utils';
 
 const OurSolution = ({ solution }) => {
@@ -14,25 +14,30 @@ const OurSolution = ({ solution }) => {
 };
 
 // Section Header sub-component
-const SectionHeader = ({ description }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
-    >
-        <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-            Our Approach
-        </span>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
-            The Solution
-        </h2>
-        <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-3xl">
-            {description}
-        </p>
-    </motion.div>
-);
+const SectionHeader = ({ description }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}
+            className="mb-8"
+        >
+            <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
+                Our Approach
+            </span>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
+                The Solution
+            </h2>
+            <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-3xl">
+                {description}
+            </p>
+        </motion.div>
+    );
+};
 
 // Pillars Grid sub-component
 const PillarsGrid = ({ pillars }) => (
@@ -45,17 +50,19 @@ const PillarsGrid = ({ pillars }) => (
 
 // Pillar Card sub-component
 const PillarCard = ({ pillar, index }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
     const Icon = getIcon(pillar.icon);
     const waveBg = useWaveBackground(index);
     const accentColor = accentColors[index % accentColors.length];
 
     return (
         <motion.div
+            ref={ref}
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl border border-gray-800 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-1"
+            className="group relative rounded-2xl border border-gray-800 overflow-hidden hover:border-cyan-500/50 transition-colors duration-300 hover:-translate-y-1"
         >
             {/* Wave Background */}
             {waveBg && (

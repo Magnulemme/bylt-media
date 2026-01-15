@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -85,22 +85,25 @@ const SectionHeader = () => (
 );
 
 const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
     const accentColor = '#06b6d4'; // Cyan for all cards
     const hasDetails = step.details && step.details.length > 0;
     const showAccordion = hasDetails && !isMobile;
 
     const Wrapper = isMobile ? 'div' : motion.div;
     const motionProps = isMobile ? {} : {
+        ref,
         initial: { opacity: 0, y: 20 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true },
+        animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
         transition: { duration: 0.5, delay: index * 0.1 }
     };
 
     return (
         <Wrapper
             {...motionProps}
-            className={`relative rounded-2xl border overflow-hidden transition-all duration-300 h-full ${
+            className={`relative rounded-2xl border overflow-hidden transition-colors duration-300 h-full ${
                 isOpen && !isMobile ? 'border-cyan-500/50 bg-slate-900/50' : 'border-gray-800 bg-slate-950/30 hover:border-gray-700'
             }`}
         >
