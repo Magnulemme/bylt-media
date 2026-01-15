@@ -11,10 +11,11 @@ const signalPageReady = () => {
 };
 
 // Card content component
-const CardContent = ({ study }) => (
+const CardContent = ({ study, overlayOpacity }) => (
     <div
-        className="relative overflow-hidden rounded-2xl bg-slate-900/80 backdrop-blur-sm border border-white/10 shadow-2xl shadow-black/60 group cursor-pointer max-h-[80dvh]"
+        className="relative overflow-hidden rounded-2xl border border-white/10 group cursor-pointer max-h-[80dvh]"
         style={{
+            backgroundColor: '#020617',
             maskImage: 'radial-gradient(white, black)',
             WebkitMaskImage: 'radial-gradient(white, black)',
             isolation: 'isolate',
@@ -27,40 +28,58 @@ const CardContent = ({ study }) => (
                 alt={study.client}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute top-4 left-4">
-                <span className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 backdrop-blur-sm">
-                    {study.category}
-                </span>
-            </div>
+            {/* Gradient fade to background */}
+            <div
+                className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+                style={{ background: 'linear-gradient(to top, #020617, transparent)' }}
+            />
         </div>
 
         {/* Content */}
-        <div className="px-5 pt-5 pb-3 md:px-6 md:pt-6 md:pb-4">
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-1">
+        <div className="px-6 pb-6 md:px-8 md:pb-8">
+            {/* Category - subtle */}
+            <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">
+                {study.category} · {study.industry}
+            </span>
+
+            {/* Client name */}
+            <h3 className="text-2xl md:text-3xl font-bold text-white mt-2 mb-3 line-clamp-1">
                 {study.client}
             </h3>
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4 line-clamp-2">
+
+            {/* Description */}
+            <p className="text-sm text-slate-400 leading-relaxed mb-6 line-clamp-2">
                 {study.description}
             </p>
-            <div className="flex gap-6 mb-4">
+
+            {/* Stats - 2 columns, each stat stacked vertically */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
                 {study.stats.slice(0, 2).map((stat, statIndex) => (
                     <div key={statIndex}>
-                        <div className="text-lg md:text-xl font-bold text-cyan-400">
+                        <span className="block text-xl md:text-2xl font-bold text-white">
                             {stat.value}
-                        </div>
-                        <div className="text-xs text-slate-500 uppercase tracking-wider">
+                        </span>
+                        <span className="text-[10px] text-slate-500 uppercase tracking-wider">
                             {stat.label}
-                        </div>
+                        </span>
                     </div>
                 ))}
             </div>
-            <div className="flex items-center gap-2 text-sm text-cyan-400 group-hover:text-cyan-300 transition-colors">
-                <span>View case study</span>
-                <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </div>
+
+            {/* CTA */}
+            <span className="inline-flex items-center gap-2 text-sm font-medium text-cyan-400 group-hover:text-cyan-300 transition-colors">
+                <span>View Case Study</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </span>
         </div>
+
+        {/* Dark overlay for depth - only rendered when overlayOpacity is provided */}
+        {overlayOpacity && (
+            <motion.div
+                className="absolute inset-0 bg-black rounded-2xl pointer-events-none"
+                style={{ opacity: overlayOpacity }}
+            />
+        )}
     </div>
 );
 
@@ -103,12 +122,22 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
             : [stackRotation, 0, exitDirection * 25]
     );
 
+    // Dark overlay for depth effect - dynamically updates as cards slide away
+    // Each time a card ahead slides away, this card's overlay decreases
+    const progressSteps = [];
+    const overlaySteps = [];
+    for (let i = 0; i <= index; i++) {
+        progressSteps.push(i * segmentSize);
+        overlaySteps.push(Math.max(0, (index - i) * 0.18));
+    }
+    const overlayOpacity = useTransform(scrollYProgress, progressSteps, overlaySteps);
+
     const zIndex = totalCards - index;
 
     return (
         <motion.a
             href={study.link}
-            className="absolute inset-0 block"
+            className="absolute inset-0 block overflow-hidden rounded-2xl"
             style={{
                 x,
                 y,
@@ -119,7 +148,7 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
                 perspective: 1000,
             }}
         >
-            <CardContent study={study} />
+            <CardContent study={study} overlayOpacity={overlayOpacity} />
         </motion.a>
     );
 };
@@ -127,32 +156,57 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
 const CaseStudiesHero = () => {
     const containerRef = useRef(null);
     const cardRef = useRef(null);
+    const stickyRef = useRef(null);
     const [cardHeight, setCardHeight] = useState(500);
-
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start start", "end end"]
-    });
+    const [animationStartOffset, setAnimationStartOffset] = useState(0);
 
     const showcaseStudies = caseStudiesData;
 
     useEffect(() => {
-        const measureHeight = () => {
+        const measure = () => {
             if (cardRef.current) {
                 setCardHeight(cardRef.current.offsetHeight);
             }
         };
 
-        measureHeight();
-        window.addEventListener('resize', measureHeight);
-        return () => window.removeEventListener('resize', measureHeight);
+        measure();
+        window.addEventListener('resize', measure);
+        return () => window.removeEventListener('resize', measure);
     }, []);
+
+    // Calculate animation start offset based on sticky container position
+    useEffect(() => {
+        const calculateOffset = () => {
+            if (stickyRef.current && containerRef.current) {
+                const stickyRect = stickyRef.current.getBoundingClientRect();
+                const containerRect = containerRef.current.getBoundingClientRect();
+
+                // Position of sticky container relative to section
+                const cardY = stickyRect.top - containerRect.top;
+
+                // Sticky point: where card centers in viewport
+                const stickyPoint = window.innerHeight / 2 - cardHeight / 2;
+
+                // Animation starts when card reaches its sticky position
+                setAnimationStartOffset(Math.max(0, cardY - stickyPoint));
+            }
+        };
+
+        calculateOffset();
+        window.addEventListener('resize', calculateOffset);
+        return () => window.removeEventListener('resize', calculateOffset);
+    }, [cardHeight]);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: [`${animationStartOffset}px start`, "end end"]
+    });
 
     const cardsToAnimate = showcaseStudies.length - 1;
     const scrollHeight = `${cardsToAnimate * 100}vh`;
 
     return (
-        <div><div
+        <div style={{ overflow: 'clip' }}><div
         className="sticky z-0 overflow-hidden rounded-2xl"
         style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
     >
@@ -165,7 +219,7 @@ const CaseStudiesHero = () => {
     {/* Content container - positioned over shader */}
     <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100vh' }}>
         {/* Header - scrolls normally */}
-        <div className="pt-16 md:pt-24 pb-32 md:pb-40 text-center px-4 max-w-4xl mx-auto">
+        <div className="pt-16 md:pt-24 pb-16 md:pb-40 text-center px-4 max-w-4xl mx-auto">
             <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
                 {heroContent.badge}
             </span>
@@ -179,6 +233,7 @@ const CaseStudiesHero = () => {
 
         {/* Sticky cards container */}
         <div
+            ref={stickyRef}
             className="sticky"
             style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
         >
