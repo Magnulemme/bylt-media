@@ -18,6 +18,7 @@ export const FloatingNav = ({
   const [hideNavbar, setHideNavbar] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileAccordionOpen, setMobileAccordionOpen] = useState(null);
   const hoverTimeoutRef = useRef(null);
   const lastScrollY = useRef(0);
   const navbarRef = useRef(null);
@@ -122,7 +123,7 @@ export const FloatingNav = ({
             {item.subItems && (
               <div className={cn(
                 "absolute top-full left-0 mt-2 w-auto min-w-[700px] rounded-lg shadow-2xl ring-1 ring-gray-700/50 transition-all duration-300",
-                "bg-[rgba(2,6,23,0.95)] backdrop-blur-xl",
+                "bg-[#020617]",
                 activeDropdown === index ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2 pointer-events-none'
               )}>
                 <div className="py-4 px-2">
@@ -163,7 +164,10 @@ export const FloatingNav = ({
 
       {/* Mobile Menu Button */}
       <button
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        onClick={() => {
+          setMobileMenuOpen(!mobileMenuOpen);
+          if (mobileMenuOpen) setMobileAccordionOpen(null);
+        }}
         className="md:hidden p-2 rounded-md text-gray-300 hover:text-white transition-colors"
       >
         {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -173,7 +177,7 @@ export const FloatingNav = ({
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 mt-4 mx-4 rounded-md shadow-2xl bg-[rgba(2,6,23,0.95)] backdrop-blur-xl border border-gray-700/50 overflow-hidden">
           <div className="px-4 py-4 space-y-2">
-            {menuItems.map((item) => (
+            {menuItems.map((item, index) => (
               <div key={item.name}>
                 {item.href ? (
                   <Link
@@ -185,23 +189,45 @@ export const FloatingNav = ({
                   </Link>
                 ) : (
                   <>
-                    <span className="block px-3 py-2 text-base font-medium text-gray-200">
+                    <button
+                      onClick={() => setMobileAccordionOpen(mobileAccordionOpen === index ? null : index)}
+                      className="flex items-center justify-between w-full px-3 py-2 text-base font-medium text-gray-200 hover:text-[#B8FFFA] transition-colors rounded-md"
+                    >
                       {item.name}
-                    </span>
+                      {item.subItems && (
+                        <ChevronDown
+                          size={18}
+                          className={cn(
+                            "transition-transform duration-300",
+                            mobileAccordionOpen === index && "rotate-180"
+                          )}
+                        />
+                      )}
+                    </button>
                     {item.subItems && (
-                      <div className="pl-4 space-y-1">
-                        {item.subItems.map(subItem => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.href}
-                            className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-[#B8FFFA] transition-colors"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            <span className="text-cyan-400 mr-2">→</span>
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
+                      <motion.div
+                        initial={false}
+                        animate={{
+                          height: mobileAccordionOpen === index ? "auto" : 0,
+                          opacity: mobileAccordionOpen === index ? 1 : 0
+                        }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-4 space-y-1 pt-1">
+                          {item.subItems.map(subItem => (
+                            <Link
+                              key={subItem.name}
+                              href={subItem.href}
+                              className="flex items-center px-3 py-2 text-sm font-medium text-gray-300 hover:text-[#B8FFFA] transition-colors"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              <span className="text-cyan-400 mr-2">→</span>
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
                     )}
                   </>
                 )}
@@ -245,7 +271,7 @@ export const FloatingNav = ({
     >
       <div className={cn(
         "flex inset-x-0 mx-auto rounded-md shadow-2xl items-center justify-between px-6 py-3 max-w-6xl",
-        "bg-[rgba(2,6,23,0.95)] backdrop-blur-xl",
+        "bg-[#020617]",
         isFloating && "border border-gray-700/50",
         className
       )}>
