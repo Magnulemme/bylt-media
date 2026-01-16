@@ -10,7 +10,7 @@ const ServiceHero = ({ service }) => {
     return (
         <section className='z-90 relative '>
             {/* Shader Background */}
-            <ShaderBackground />
+            <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
             {/* Content */}
             <div className="relative z-20 text-white max-w-6xl mx-auto px-4 py-16 md:py-20 lg:py-24">

@@ -13,7 +13,7 @@ const signalPageReady = () => {
 // Card content component
 const CardContent = ({ study, overlayOpacity }) => (
     <div
-        className="relative overflow-hidden rounded-2xl border border-white/10 group cursor-pointer max-h-[80dvh]"
+        className="relative overflow-hidden rounded-2xl border border-white/10 group cursor-pointer"
         style={{
             backgroundColor: '#020617',
             maskImage: 'radial-gradient(white, black)',
