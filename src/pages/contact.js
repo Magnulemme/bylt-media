@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import Layout from '../components/layout';
 import { ProjectMarquee } from '../components/ui/project-marquee';
+import ComparisonTable from '../components/ui/ComparisonTable';
 import { useWaveBackground } from '../components/services/hooks';
+import { whyByltContent } from '../components/caseStudies/constants';
 
 const NeuralContact = dynamic(
     () => import('../components/home/NeuralContact'),
@@ -190,7 +192,7 @@ const FreeAuditSection = () => {
     ];
 
     return (
-        <section className="py-20 md:pt-28" style={{ background: '#020617' }}>
+        <section className="pt-20 md:pt24" style={{ background: '#020617' }}>
             <div className="max-w-6xl mx-auto px-4">
                 <div className="max-w-2xl ml-auto mb-12 md:mb-16">
                     <motion.h2
@@ -203,7 +205,7 @@ const FreeAuditSection = () => {
                         Get Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Free Audit</span>
                     </motion.h2>
                     <motion.p
-                        className="text-gray-400 text-lg md:text-xl text-right"
+                        className="text-gray-400 text-base md:text-lg text-right"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -220,62 +222,28 @@ const FreeAuditSection = () => {
                     ))}
                 </div>
 
-                {/* Benefits Section */}
-                <div className="mt-16 md:mt-24">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="max-w-3xl"
-                    >
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-6">
-                            Why Partner With Us?
-                        </h3>
-                        <div className="space-y-4">
-                            <div className="flex items-start gap-4">
-                                <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center shrink-0 mt-1">
-                                    <svg className="w-3 h-3 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <p className="text-gray-400">
-                                    <span className="text-white font-medium">No commitment required.</span> The audit is completely free with no strings attached.
-                                </p>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center shrink-0 mt-1">
-                                    <svg className="w-3 h-3 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <p className="text-gray-400">
-                                    <span className="text-white font-medium">Dedicated team.</span> Work directly with strategists who understand your industry.
-                                </p>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center shrink-0 mt-1">
-                                    <svg className="w-3 h-3 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <p className="text-gray-400">
-                                    <span className="text-white font-medium">Transparent reporting.</span> Clear metrics and regular updates on your campaign performance.
-                                </p>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="w-6 h-6 rounded-full bg-cyan-400/20 flex items-center justify-center shrink-0 mt-1">
-                                    <svg className="w-3 h-3 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <p className="text-gray-400">
-                                    <span className="text-white font-medium">Results-driven approach.</span> We focus on ROI, not vanity metrics.
-                                </p>
-                            </div>
+                {/* What's Included */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+                >
+                    {[
+                        'Performance score',
+                        'Competitor analysis',
+                        '3 actionable recommendations',
+                        '15-min strategy call',
+                    ].map((item) => (
+                        <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                            <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>{item}</span>
                         </div>
-                    </motion.div>
-                </div>
+                    ))}
+                </motion.div>
 
                 {/* Animated Wave with Text */}
                 <motion.div
@@ -291,29 +259,155 @@ const FreeAuditSection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="absolute inset-0 md:relative md:inset-auto rounded-2xl overflow-hidden md:h-80"
+                        className="absolute inset-0 md:relative md:inset-auto rounded-2xl overflow-hidden md:h-80 flex items-center justify-center"
                     >
-                        <AnimatedWaveCanvas className="rounded-2xl min-w-75 h-full" />
+                        <AnimatedWaveCanvas className="rounded-2xl min-w-75 h-[320px]  flex items-center justify-center flex-1" />
                         {/* Overlay scuro solo su mobile */}
                         <div className="absolute inset-0 bg-black/50 md:hidden rounded-2xl" />
                     </motion.div>
 
                     {/* Text */}
                     <div className="relative z-10 text-center md:text-left py-16 md:py-0">
-                        <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
+                        <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">
+                            Next Step
+                        </p>
+                        <h3 className="text-lg md:text-xl font-medium text-white/90 mb-2">
                             Ready to see what's possible?
                         </h3>
-                        <p className="text-gray-400 mb-4">
+                        <p className="text-slate-400 text-sm md:text-base mb-4 max-w-sm">
                             Fill out the form below and we'll get back to you within 24 hours with your personalized audit.
                         </p>
-                        <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-cyan-400">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-center justify-center md:justify-start gap-2 text-xs text-cyan-400/80">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <span>24h response time</span>
                         </div>
                     </div>
                 </motion.div>
+
+                {/* Why Choose Us - Comparison Table */}
+                <div className="mt-16 md:mt-24">
+                    <div className="max-w-2xl mb-10">
+                        <motion.h3
+                            className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter leading-tight text-white text-left mb-6"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            Why <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Choose Us?</span>
+                        </motion.h3>
+                        <motion.p
+                            className="text-gray-400 text-base md:text-lg text-left"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                        >
+                            {whyByltContent.subheading}
+                        </motion.p>
+                    </div>
+
+                    <ComparisonTable
+                        others={whyByltContent.others}
+                        bylt={whyByltContent.bylt}
+                        showHeader={false}
+                    />
+
+                    {/* Stats */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="mt-12 md:mt-16 flex flex-wrap justify-center gap-8 md:gap-16"
+                    >
+                        {[
+                            { value: '50+', label: 'Happy Clients' },
+                            { value: '48h', label: 'Response Time' },
+                            { value: '95%', label: 'Client Retention' },
+                        ].map((stat) => (
+                            <div key={stat.label} className="text-center">
+                                <div className="text-2xl md:text-3xl font-semibold text-white">
+                                    {stat.value}
+                                </div>
+                                <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{stat.label}</div>
+                            </div>
+                        ))}
+                    </motion.div>
+                </div>
+
+
+            </div>
+        </section>
+    );
+};
+
+const TESTIMONIALS = [
+    {
+        quote: "BYLT transformed our digital presence completely. Their strategic approach and attention to detail exceeded our expectations.",
+        author: "Marketing Director",
+        company: "Nissan Bulgaria"
+    },
+    {
+        quote: "Working with BYLT was a game-changer. They delivered results that actually moved the needle for our business.",
+        author: "CEO",
+        company: "Happy"
+    },
+    {
+        quote: "Professional, creative, and data-driven. BYLT understood our vision and brought it to life beautifully.",
+        author: "Brand Manager",
+        company: "Brickell"
+    }
+];
+
+const TestimonialQuote = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const current = TESTIMONIALS[currentIndex];
+
+    return (
+        <section className="py-16 md:py-24" style={{ background: '#020617' }}>
+            <div className="max-w-4xl mx-auto px-4 text-center">
+                <svg className="w-10 h-10 mx-auto mb-6 text-cyan-400/30" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+
+                <div className="relative h-32 md:h-24">
+                    <AnimatePresence mode="wait">
+                        <motion.blockquote
+                            key={currentIndex}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 text-xl md:text-2xl text-white/90 font-light leading-relaxed"
+                        >
+                            {current.quote}
+                        </motion.blockquote>
+                    </AnimatePresence>
+                </div>
+
+                <AnimatePresence mode="wait">
+                    <motion.p
+                        key={currentIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-sm text-slate-500 mt-6"
+                    >
+                        — {current.author}, {current.company}
+                    </motion.p>
+                </AnimatePresence>
             </div>
         </section>
     );
@@ -346,7 +440,10 @@ const ContactPage = () => {
             </Head>
             <ContactHero />
             <FreeAuditSection />
-            <SuccessStories />
+
+            {/* Testimonial Quote Carousel */}
+            <TestimonialQuote />
+
             <NeuralContact />
         </Layout>
     );
