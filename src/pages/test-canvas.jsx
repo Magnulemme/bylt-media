@@ -3,7 +3,7 @@ import AnimatedWaveCanvas from '../components/services/sections/AnimatedWaveCanv
 
 const TestCanvas = () => {
     return (
-        <div className="min-h-screen bg-slate-950 p-8">
+        <div className="min-h-dvh bg-slate-950 p-8">
             <h1 className="text-white text-2xl font-bold mb-8 text-center">Canvas Shape Test</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">

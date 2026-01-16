@@ -82,7 +82,7 @@ const CaseStudyHero = () => {
     }, [stats.length]);
 
     return (
-        <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden quantum-anim hero-section pt-20">
+        <section id="home" ref={heroRef} className="relative min-h-dvh flex items-center justify-center overflow-hidden quantum-anim hero-section pt-20">
             {/* Case study background image */}
             <div className="absolute inset-0 z-0">
                 <img 
@@ -1051,7 +1051,7 @@ const NapudreniCaseStudyPage = () => {
             </Head>
             <GlobalStyles />
             
-            <div className="min-h-screen bg-slate-900 text-white">
+            <div className="min-h-dvh bg-slate-900 text-white">
                 <style jsx global>{`
                     .quantum-anim {
                         opacity: 0;

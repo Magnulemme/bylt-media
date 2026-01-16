@@ -9,7 +9,7 @@ import { SectionHeader, SectionTitle, SectionIntro } from './section-headers';
  */
 const SectionHeadersShowcase = () => {
   return (
-    <div className="min-h-screen bg-slate-950 py-20 space-y-32">
+    <div className="min-h-dvh bg-slate-950 py-20 space-y-32">
       {/* ========================================
           SECTION 1: SectionHeader Examples
       ======================================== */}

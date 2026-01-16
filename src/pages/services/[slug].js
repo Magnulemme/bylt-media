@@ -6,7 +6,7 @@ export default function ServicePageRoute({ service }) {
     if (!service) {
         return (
             <Layout>
-                <div className="min-h-screen flex items-center justify-center bg-slate-950">
+                <div className="min-h-dvh flex items-center justify-center bg-slate-950">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold text-white mb-4">Service Not Found</h1>
                         <p className="text-gray-400 mb-8">The service you're looking for doesn't exist.</p>

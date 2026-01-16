@@ -72,7 +72,7 @@ const GrainyBgSection = () => {
                 {/* Shader Background - Sticky, oversized to hide rounded corners */}
                 <div
                     className="sticky z-0 overflow-hidden rounded-2xl"
-                    style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
+                    style={{ top: '-12px', height: 'calc(100dvh + 24px)' }}
                 >
                     <ShaderBackgroundStandalone />
                 </div>
@@ -83,7 +83,7 @@ const GrainyBgSection = () => {
                     style={{
                         transform,
                         opacity,
-                        marginTop: '-100vh'
+                        marginTop: '-100dvh'
                     }}
                 >
                     {/* Services Section - Conditional rendering based on screen size */}

@@ -179,7 +179,7 @@ const CaseStudiesShowcase = () => {
             <div style={{ height: `calc(${scrollHeight} + ${cardHeight}px)` }}>
                 <div
                     className="sticky"
-                    style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
+                    style={{ top: `calc(50dvh - ${cardHeight / 2}px)` }}
                 >
                     {/* Cards stack container */}
                     <div className="relative max-w-2xl mx-auto px-6 sm:px-6">

@@ -106,7 +106,12 @@
     --spacing-padding-2xl: 8rem;   /* 128px */
 
     /* Other spacing */
-    --spacing-screen: 100vh;
+    --spacing-screen: 100dvh;
+
+    /* Dynamic viewport height utilities */
+    --height-dvh: 100dvh;
+    --height-svh: 100svh;
+    --height-lvh: 100lvh;
 
     /* ========================================
        SAFETY MARGINS (margini minimi ai lati)
@@ -160,6 +165,39 @@
       /* Safety Margins - Large screens */
       --margin-safe-x: 2rem;  /* 32px - Large desktop */
     }
+  }
+
+  /* ========================================
+     DYNAMIC VIEWPORT HEIGHT UTILITIES
+     Use dvh instead of vh for better mobile support
+     ======================================== */
+
+  @utility h-dvh {
+    height: 100dvh;
+  }
+
+  @utility min-h-dvh {
+    min-height: 100dvh;
+  }
+
+  @utility max-h-dvh {
+    max-height: 100dvh;
+  }
+
+  @utility h-svh {
+    height: 100svh;
+  }
+
+  @utility min-h-svh {
+    min-height: 100svh;
+  }
+
+  @utility h-lvh {
+    height: 100lvh;
+  }
+
+  @utility min-h-lvh {
+    min-height: 100lvh;
   }
 
   /* ========================================

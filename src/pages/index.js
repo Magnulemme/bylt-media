@@ -10,7 +10,7 @@ const HeroSkeleton = () => (
         className="hero-section"
         style={{
             background: '#020617',
-            minHeight: '100vh',
+            minHeight: '100dvh',
             zIndex: 10
         }}
     />

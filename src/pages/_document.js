@@ -61,7 +61,7 @@ export default function Document() {
               .futuristic-app {
                 position: relative;
                 background: var(--dark-bg);
-                min-height: 100vh;
+                min-height: 100dvh;
               }
               
               /* Critical Hero Styles */

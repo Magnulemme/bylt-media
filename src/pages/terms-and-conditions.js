@@ -13,7 +13,7 @@ const TermsAndConditionsPage = () => {
             </Head>
             <GlobalStyles />
             
-            <div className="min-h-screen bg-slate-900 pt-24 pb-16">
+            <div className="min-h-dvh bg-slate-900 pt-24 pb-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="bg-slate-800/50 rounded-lg p-8 backdrop-blur-sm border border-slate-700">
                         <h1 className="text-4xl font-bold text-white mb-8">Terms and Conditions</h1>

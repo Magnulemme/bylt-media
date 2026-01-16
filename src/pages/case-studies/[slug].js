@@ -15,7 +15,7 @@ export default function CaseStudyPage({ study }) {
     if (!study) {
         return (
             <Layout>
-                <div className="min-h-screen flex items-center justify-center">
+                <div className="min-h-dvh flex items-center justify-center">
                     <p className="text-white">Case study not found</p>
                 </div>
             </Layout>

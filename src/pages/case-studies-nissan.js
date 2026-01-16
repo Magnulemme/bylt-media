@@ -72,7 +72,7 @@ const CaseStudyHero = () => {
     }, [stats.length]);
 
     return (
-        <section id="home" ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden quantum-anim hero-section pt-20">
+        <section id="home" ref={heroRef} className="relative min-h-dvh flex items-center justify-center overflow-hidden quantum-anim hero-section pt-20">
             {/* Case study background image */}
             <div className="absolute inset-0 z-0">
                 <img 
@@ -1058,7 +1058,7 @@ const NissanCaseStudyPage = () => {
                 .hero-section {
                     position: relative;
                     isolation: isolate;
-                    min-height: 100vh;
+                    min-height: 100dvh;
                     width: 100%;
                     contain: layout style;
                     transform: translateZ(0); /* Hardware acceleration */

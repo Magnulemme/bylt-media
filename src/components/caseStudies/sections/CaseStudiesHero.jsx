@@ -208,7 +208,7 @@ const CaseStudiesHero = () => {
     return (
         <div style={{ overflow: 'clip' }}><div
         className="sticky z-0 overflow-hidden rounded-2xl"
-        style={{ top: '-12px', height: 'calc(100vh + 24px)' }}
+        style={{ top: '-12px', height: 'calc(100dvh + 24px)' }}
     >
         <ShaderBackground onReady={signalPageReady} />
     </div>
@@ -217,7 +217,7 @@ const CaseStudiesHero = () => {
     
 
     {/* Content container - positioned over shader */}
-    <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100vh' }}>
+    <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100dvh' }}>
         {/* Header - scrolls normally */}
         <div className="pt-16 md:pt-24 pb-16 md:pb-40 text-center px-4 max-w-4xl mx-auto">
             <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
@@ -235,7 +235,7 @@ const CaseStudiesHero = () => {
         <div
             ref={stickyRef}
             className="sticky"
-            style={{ top: `calc(50vh - ${cardHeight / 2}px)` }}
+            style={{ top: `calc(50dvh - ${cardHeight / 2}px)` }}
         >
             <div className="relative max-w-2xl mx-auto px-6">
                 {/* Ghost card for height */}

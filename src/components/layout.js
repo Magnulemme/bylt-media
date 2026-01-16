@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
     useLenis();
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-dvh">
             <Navigation />
             <main>{children}</main>
             <Footer />
