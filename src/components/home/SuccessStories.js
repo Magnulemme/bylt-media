@@ -1,6 +1,6 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
-import { SectionIntro } from '../ui/section-headers';
 import { useProfiler } from '@/hooks/useProfiler';
 
 const SuccessStories = () => {
@@ -61,14 +61,26 @@ const SuccessStories = () => {
         >
             {/* Section intro */}
             <div className="success-stories-header max-w-content mx-auto px-4 sm:px-6 lg:px-8">
-                <SectionIntro
-                    title="Real Results from Real Partners"
-                    subtitle="See why leading brands trust us to drive their growth. Ready to join them?"
-                    align="left"
-                    maxWidth="3xl"
-                    size="xl"
-                    variant="blur"
-                />
+                <div className="max-w-3xl mb-6">
+                    <motion.h2
+                        className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter leading-tight text-white text-left mb-6"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        Real Results from <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Real Partners</span>
+                    </motion.h2>
+                    <motion.p
+                        className="text-gray-400 text-lg md:text-xl text-left"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    >
+                        See why leading brands trust us to drive their growth. Ready to join them?
+                    </motion.p>
+                </div>
             </div>
 
             {/* Infinite Moving Cards - con padding verticale per gli shadow */}
