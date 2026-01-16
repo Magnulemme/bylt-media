@@ -6,9 +6,11 @@ const OurSolution = ({ solution }) => {
     if (!solution) return null;
 
     return (
-        <div className="mb-16 md:mb-24">
-            <SectionHeader description={solution.description} />
-            <PillarsGrid pillars={solution.pillars} />
+        <div className="py-16 md:py-24">
+            <div className="max-w-5xl mx-auto px-4">
+                <SectionHeader description={solution.description} />
+                <PillarsGrid pillars={solution.pillars} />
+            </div>
         </div>
     );
 };
@@ -24,15 +26,15 @@ const SectionHeader = ({ description }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5 }}
-            className="mb-8"
+            className="mb-12 md:mb-16 text-right"
         >
             <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-                Our Approach
+                What We Built
             </span>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
                 The Solution
             </h2>
-            <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-3xl">
+            <p className="text-base md:text-lg text-slate-400 leading-relaxed ml-auto max-w-2xl">
                 {description}
             </p>
         </motion.div>

@@ -7,12 +7,16 @@ const TheChallenge = ({ challenge }) => {
 
     return (
         <div className="mb-16 md:mb-24">
-            <SectionHeader />
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
-                <ChallengeDescription
-                    description={challenge.description}
-                    painPoints={challenge.painPoints}
-                />
+                {/* Colonna sinistra: titolo + content */}
+                <div className="lg:max-w-xl">
+                    <SectionHeader />
+                    <ChallengeDescription
+                        description={challenge.description}
+                        painPoints={challenge.painPoints}
+                    />
+                </div>
+                {/* Colonna destra: freccia + stats */}
                 <ChallengeMetrics metrics={challenge.metrics} />
             </div>
         </div>
@@ -53,7 +57,6 @@ const ChallengeDescription = ({ description, painPoints }) => {
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6 }}
-            className="lg:max-w-xl"
         >
             <p className="text-base md:text-lg text-slate-400 leading-relaxed mb-8">
                 {description}
@@ -163,8 +166,11 @@ const ChallengeMetrics = ({ metrics }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className="shrink-0 relative min-[500px]:flex min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-8">
-            <div className="grid grid-cols-2 gap-4 md:gap-6 min-[500px]:flex-1 relative z-10">
+        <div ref={ref} className="shrink-0 relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col">
+            <div className="absolute inset-0 sm:relative sm:inset-auto opacity-40 sm:opacity-60 max-w-[400px]">
+                <AnimatedWaveCanvas colors={['#ef4444', '#f97316', '#dc2626']} shape="arrow" />
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
                 {metrics.map((metric, index) => (
                     <MetricItem
                         key={index}
@@ -173,9 +179,6 @@ const ChallengeMetrics = ({ metrics }) => {
                         shouldAnimate={isInView}
                     />
                 ))}
-            </div>
-            <div className="absolute inset-0 min-[500px]:relative min-[500px]:inset-auto min-[500px]:flex-1 opacity-40 min-[500px]:opacity-60">
-                <AnimatedWaveCanvas colors={['#ef4444', '#f97316', '#dc2626']} shape="arrow" />
             </div>
         </div>
     );

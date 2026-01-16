@@ -4,7 +4,7 @@ import { ChevronDown } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-const ProcessGrid = ({ process }) => {
+const ProcessGrid = ({ process, description }) => {
     const [openCard, setOpenCard] = useState(null);
 
     if (!process || process.length === 0) return null;
@@ -14,13 +14,13 @@ const ProcessGrid = ({ process }) => {
     };
 
     return (
-        <section className="pb-16 md:pb-24 relative" style={{ background: '#020617' }}>
+        <section className="py-16 md:py-24 relative">
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.02] to-transparent pointer-events-none" />
 
             {/* Header - always padded */}
-            <div className="max-w-5xl mx-auto px-4 relative z-10">
-                <SectionHeader />
+            <div className="max-w-5xl mx-auto px-4 relative ">
+                <SectionHeader description={description} />
             </div>
 
             {/* Mobile Swiper - full width */}
@@ -49,7 +49,7 @@ const ProcessGrid = ({ process }) => {
             </div>
 
             {/* Desktop Grid */}
-            <div className="max-w-5xl mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto px-4 relative">
                 <div className="hidden md:grid grid-cols-2 gap-6">
                     {process.map((step, index) => (
                         <ProcessCard
@@ -66,13 +66,13 @@ const ProcessGrid = ({ process }) => {
     );
 };
 
-const SectionHeader = () => (
+const SectionHeader = ({ description }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-12 md:mb-16"
+        className="mb-12 md:mb-16"
     >
         <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
             How We Did It
@@ -80,7 +80,11 @@ const SectionHeader = () => (
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
             Our Approach
         </h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full" />
+        {description && (
+            <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-2xl">
+                {description}
+            </p>
+        )}
     </motion.div>
 );
 
@@ -103,8 +107,9 @@ const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
     return (
         <Wrapper
             {...motionProps}
+            style={{ background: '#020617' }}
             className={`relative rounded-2xl border overflow-hidden transition-colors duration-300 h-full ${
-                isOpen && !isMobile ? 'border-cyan-500/50 bg-slate-900/50' : 'border-gray-800 bg-slate-950/30 hover:border-gray-700'
+                isOpen && !isMobile ? 'border-cyan-500/50' : 'border-gray-800 hover:border-gray-700'
             }`}
         >
             {/* Content */}

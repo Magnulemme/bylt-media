@@ -9,11 +9,15 @@ const ResultsDashboard = ({ results }) => {
     return (
         <div className="py-16 md:py-24">
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
+                {/* Colonna sinistra: freccia + stats */}
                 <ResultsMetrics metrics={results.metrics} className="order-last lg:order-first" />
-                <ResultsDescription
-                    description={results.description}
-                    highlights={results.highlights}
-                />
+                {/* Colonna destra: titolo + content */}
+                <div className="lg:max-w-xl">
+                    <ResultsDescription
+                        description={results.description}
+                        highlights={results.highlights}
+                    />
+                </div>
             </div>
         </div>
     );
@@ -30,7 +34,6 @@ const ResultsDescription = ({ description, highlights }) => {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.6 }}
-            className="lg:max-w-xl"
         >
             <span className="text-xs tracking-[0.2em] text-emerald-500 uppercase mb-3 block font-inter">
                 Measurable Impact
@@ -145,8 +148,11 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className={`shrink-0 relative min-[500px]:flex min-[500px]:flex-row min-[500px]:items-center min-[500px]:gap-8 ${className}`}>
-            <div className="grid grid-cols-2 gap-4 md:gap-6 min-[500px]:flex-1 relative z-10">
+        <div ref={ref} className={`shrink-0 relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col ${className}`}>
+            <div className="absolute inset-0 sm:relative sm:inset-auto opacity-40 sm:opacity-60 max-w-[400px]">
+                <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
                 {metrics.map((metric, index) => (
                     <MetricItem
                         key={metric.key || index}
@@ -155,9 +161,6 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
                         shouldAnimate={isInView}
                     />
                 ))}
-            </div>
-            <div className="absolute inset-0 min-[500px]:relative min-[500px]:inset-auto min-[500px]:flex-1 opacity-40 min-[500px]:opacity-60">
-                <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
             </div>
         </div>
     );
