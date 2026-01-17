@@ -5,7 +5,7 @@ import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import NeuralServices from './NeuralServices';
 import NeuralServicesMobile from './NeuralServicesMobile';
 import InfinityPhilosophy from './InfinityPhilosophy';
-import PerformanceMetrics from './PerformanceMetrics';
+import CampaignShowcase from './CampaignShowcase';
 import { useProfiler } from '@/hooks/useProfiler';
 
 const GrainyBgSection = () => {
@@ -92,8 +92,8 @@ const GrainyBgSection = () => {
                     {/* Infinity Philosophy Section */}
                     <InfinityPhilosophy />
 
-                    {/* Performance Metrics Section */}
-                    <PerformanceMetrics />
+                    {/* Campaign Showcase Section */}
+                    <CampaignShowcase />
                 </motion.div>
             </div>
         </section>

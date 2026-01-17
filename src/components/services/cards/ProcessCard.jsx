@@ -2,14 +2,16 @@ import React from 'react';
 import { DitherShader } from '../../ui/dither-shader';
 import { useNumberImage } from '../hooks';
 import { ditherPatterns, accentColors } from '../utils';
+import { WobbleCard } from '../../ui/wobble-card';
 
 const ProcessCard = ({ step, index }) => {
     const numberImage = useNumberImage(step.step, index);
     const accentColor = accentColors[index % accentColors.length];
 
     return (
-        <div
-            className="group relative rounded-2xl border border-gray-800 overflow-hidden h-52 cursor-pointer hover:border-cyan-500/50 transition-all duration-300"
+        <WobbleCard
+            containerClassName="group bg-slate-950 border border-gray-800 hover:border-cyan-500/50 h-52 cursor-pointer"
+            className="p-0"
         >
             {/* Dither Background */}
             <div className="absolute inset-0">
@@ -58,7 +60,7 @@ const ProcessCard = ({ step, index }) => {
                     {step.description}
                 </p>
             </div>
-        </div>
+        </WobbleCard>
     );
 };
 

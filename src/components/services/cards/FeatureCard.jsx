@@ -1,6 +1,7 @@
 import React from 'react';
 import { getIcon, accentColors } from '../utils';
 import { useWaveBackground } from '../hooks';
+import { WobbleCard } from '../../ui/wobble-card';
 
 const FeatureCard = ({ feature, index }) => {
     const Icon = getIcon(feature.icon);
@@ -8,14 +9,14 @@ const FeatureCard = ({ feature, index }) => {
     const accentColor = accentColors[index % accentColors.length];
 
     return (
-        <div
-            className="group relative rounded-2xl border border-gray-800 overflow-hidden hover:border-cyan-500/50 transition-all duration-300"
-            style={{ minHeight: '140px' }}
+        <WobbleCard
+            containerClassName="h-full min-h-[140px] bg-slate-950 border border-gray-800 hover:border-cyan-500/50"
+            className="p-6 py-6"
         >
             {/* Wave Background */}
             {waveBg && (
                 <div
-                    className="absolute inset-0 opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                    className="absolute inset-0 opacity-60 transition-opacity duration-300 z-0"
                     style={{
                         backgroundImage: `url(${waveBg})`,
                         backgroundSize: 'cover',
@@ -25,10 +26,10 @@ const FeatureCard = ({ feature, index }) => {
             )}
 
             {/* Dark overlay */}
-            <div className="absolute inset-0 bg-slate-950/70" />
+            <div className="absolute inset-0 bg-slate-950/70 z-0" />
 
             {/* Content */}
-            <div className="relative z-10 p-6">
+            <div className="relative z-10">
                 <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300"
                     style={{
@@ -45,7 +46,7 @@ const FeatureCard = ({ feature, index }) => {
                     {feature.description}
                 </p>
             </div>
-        </div>
+        </WobbleCard>
     );
 };
 

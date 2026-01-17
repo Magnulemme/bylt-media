@@ -1,53 +1,24 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import ShaderBackground from '../../home/ShaderBackground';
 import { FeatureCard, ProcessCard, MainCard } from '../cards';
-import RotatingText from './RotatingText';
 
 const ServiceHero = ({ service }) => {
+    const [isAtEnd, setIsAtEnd] = useState(false);
+
+    const getFadeMask = () => {
+        if (isAtEnd) return 'none';
+        return 'linear-gradient(to right, black, black calc(100% - 80px), transparent)';
+    };
+
     return (
         <section className='z-90 relative '>
             {/* Shader Background */}
             <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
             {/* Content */}
-            <div className="relative z-20 text-white max-w-6xl mx-auto px-4 py-16 md:py-20 lg:py-24">
-                {/* Service Intro */}
-                <div className="text-center mb-14 md:mb-20">
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7 }}
-                        className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-inter leading-[1.3]"
-                    >
-                        {/* Mobile - shorter phrases */}
-                        <span className="block md:hidden text-5xl mt-4">
-                            <RotatingText
-                                phrases={service.rotatingPhrasesMobile || service.rotatingPhrases}
-                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4 animate-gradient"
-                            />
-                        </span>
-                        {/* Tablet/Desktop - full phrases */}
-                        <span className="hidden md:block md:text-6xl lg:text-7xl xl:text-8xl mt-6">
-                            <RotatingText
-                                phrases={service.rotatingPhrases}
-                                className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent pb-4 animate-gradient"
-                            />
-                        </span>
-                    </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto mt-6 md:mt-8"
-                    >
-                        {service.description}
-                    </motion.p>
-                </div>
-
+            <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pt-16 pb-24 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32">
                 {/* Bento Grid - Desktop */}
                 <div className="hidden md:grid grid-cols-2 gap-4">
                     {/* Left Column - Main Card with Image */}
@@ -74,9 +45,6 @@ const ServiceHero = ({ service }) => {
 
                     {/* Features - Vertical Stack */}
                     <div>
-                        <div className="text-center mb-3">
-                            <span className="text-xs tracking-[0.2em] text-slate-500 uppercase">Our Features</span>
-                        </div>
                         <div className="space-y-3">
                             {service.features.map((feature, index) => (
                                 <FeatureCard
@@ -89,14 +57,23 @@ const ServiceHero = ({ service }) => {
                     </div>
 
                     {/* Process Swiper */}
-                    <div>
-                        <div className="text-center mb-3">
-                            <span className="md:hidden text-xs tracking-[0.2em] text-slate-500 uppercase">Our Process</span>
-                        </div>
-                        <div className="-mx-4 px-4">
+                    <div className="overflow-x-clip overflow-y-visible -mx-4">
+                        <div
+                            className="relative pl-4"
+                            style={{
+                                maskImage: getFadeMask(),
+                                WebkitMaskImage: getFadeMask(),
+                                transition: 'mask-image 0.3s ease-out, -webkit-mask-image 0.3s ease-out'
+                            }}
+                        >
                             <Swiper
                                 spaceBetween={12}
                                 slidesPerView={1.15}
+                                slidesOffsetAfter={16}
+                                style={{ overflow: 'visible' }}
+                                onSlideChange={(swiper) => setIsAtEnd(swiper.isEnd)}
+                                onReachEnd={() => setIsAtEnd(true)}
+                                onFromEdge={() => setIsAtEnd(false)}
                             >
                                 {service.process.slice(0, 3).map((step, index) => (
                                     <SwiperSlide key={`process-${step.step}`}>

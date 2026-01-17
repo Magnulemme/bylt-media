@@ -17,7 +17,7 @@ const RotatingText = ({ phrases, className = '' }) => {
             <AnimatePresence mode="wait">
                 <motion.span
                     key={currentIndex}
-                    className={`inline-block ${className}`}
+                    className={`inline-block ${className} pb-4 md:pb-6`}
                     initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
