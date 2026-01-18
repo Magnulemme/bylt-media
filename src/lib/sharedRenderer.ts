@@ -131,6 +131,7 @@ class SharedRendererManager {
 
   /**
    * Rimuove un task
+   * Nota: NON fa dispose del renderer - lo mantiene in memoria per navigazioni veloci
    */
   unregisterTask(id: string): void {
     this.tasks.delete(id);
@@ -138,7 +139,7 @@ class SharedRendererManager {
 
     if (this.tasks.size === 0) {
       this.stop();
-      this.dispose();
+      // NON fare dispose - mantieni il WebGL context per riutilizzarlo
     }
   }
 
@@ -157,8 +158,9 @@ class SharedRendererManager {
    */
   setTaskVisible(id: string, visible: boolean): void {
     const task = this.tasks.get(id);
-    if (task) {
+    if (task && task.visible !== visible) {
       task.visible = visible;
+      console.log(`${visible ? '🟢' : '🔴'} [SharedRenderer] Task "${id}" ${visible ? 'VISIBILE' : 'NASCOSTO'}`);
     }
   }
 

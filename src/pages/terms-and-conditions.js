@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Layout from '../components/layout';
 import GlobalStyles from '../components/globalsyles';
 
 const TermsAndConditionsPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

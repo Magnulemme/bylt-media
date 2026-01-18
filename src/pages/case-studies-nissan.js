@@ -983,6 +983,11 @@ const NeuralContact = () => {
 
 // Main App Component for Nissan Case Study Page
 const NissanCaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

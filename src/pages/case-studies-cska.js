@@ -1036,6 +1036,11 @@ const NeuralContact = () => {
 
 // Main App Component for CSKA Case Study Page
 const CSKACaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

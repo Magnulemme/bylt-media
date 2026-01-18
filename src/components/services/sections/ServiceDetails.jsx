@@ -193,30 +193,33 @@ const ServiceDetails = ({ service }) => {
                 {/* Secondary Section - Outcomes (mirrored layout) */}
                 {secondary && (
                     <div className="mt-16 md:mt-24">
-                        {/* Mobile: vertical layout (wave top, content bottom) */}
-                        <div className="md:hidden">
-                            {/* Wave on top */}
+                        {/* Mobile: wave as background behind text */}
+                        <div className="md:hidden relative rounded-2xl overflow-hidden">
+                            {/* Wave as background */}
                             <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6 }}
-                                className="relative rounded-2xl overflow-hidden h-[200px] mb-6"
+                                className="absolute inset-0 flex items-center justify-center"
                             >
                                 <AnimatedWaveCanvas className="rounded-2xl" />
+                                {/* Dark overlay for text readability */}
+                                <div className="absolute inset-0 bg-black/50 rounded-2xl" />
                             </motion.div>
 
-                            {/* Content below */}
+                            {/* Content with padding */}
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: 0.1 }}
+                                className="relative z-10 p-6"
                             >
                                 <h2 className="text-2xl font-bold text-white font-inter mb-3">
                                     {secondary.heading}
                                 </h2>
-                                <p className="text-sm text-slate-400 leading-relaxed mb-5">
+                                <p className="text-sm text-slate-300 leading-relaxed mb-5">
                                     {secondary.subheading}
                                 </p>
 
@@ -231,10 +234,10 @@ const ServiceDetails = ({ service }) => {
                                             transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
                                             className="flex items-start gap-2"
                                         >
-                                            <span className="text-xs font-mono text-cyan-500/70 mt-0.5">
+                                            <span className="text-xs font-mono text-cyan-400 mt-0.5">
                                                 0{index + 1}
                                             </span>
-                                            <span className="text-slate-400 text-xs leading-snug">
+                                            <span className="text-slate-300 text-xs leading-snug">
                                                 {outcome.title}
                                             </span>
                                         </motion.div>

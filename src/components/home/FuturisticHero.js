@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import { MovingBorderButton } from '../ui/moving-border-button';
@@ -8,51 +9,6 @@ import { useProfiler } from '@/hooks/useProfiler';
 // Callback to signal Hero is ready
 const signalHeroReady = () => {
     window.dispatchEvent(new CustomEvent('hero-ready'));
-};
-
-// Realistic typing effect hook with variable speed
-const useTypingEffect = (texts, baseTypingSpeed = 100, deletingSpeed = 50, pauseTime = 2500) => {
-    const [displayText, setDisplayText] = useState('');
-    const [textIndex, setTextIndex] = useState(0);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [charIndex, setCharIndex] = useState(0);
-
-    useEffect(() => {
-        const currentText = texts[textIndex];
-
-        // Variable typing speed for more realistic effect
-        const getTypingSpeed = () => {
-            // Random variation to simulate human typing
-            const variation = Math.random() * 60 - 30; // -30 to +30ms variation
-            return baseTypingSpeed + variation;
-        };
-
-        const timer = setTimeout(() => {
-            if (!isDeleting) {
-                // Typing
-                if (charIndex < currentText.length) {
-                    setDisplayText(currentText.substring(0, charIndex + 1));
-                    setCharIndex(charIndex + 1);
-                } else {
-                    // Pause before deleting
-                    setTimeout(() => setIsDeleting(true), pauseTime);
-                }
-            } else {
-                // Deleting
-                if (charIndex > 0) {
-                    setDisplayText(currentText.substring(0, charIndex - 1));
-                    setCharIndex(charIndex - 1);
-                } else {
-                    setIsDeleting(false);
-                    setTextIndex((textIndex + 1) % texts.length);
-                }
-            }
-        }, isDeleting ? deletingSpeed : getTypingSpeed());
-
-        return () => clearTimeout(timer);
-    }, [charIndex, isDeleting, textIndex, texts, baseTypingSpeed, deletingSpeed, pauseTime]);
-
-    return displayText;
 };
 
 // Optimized Hero Section with typing effect and side-by-side layout
@@ -89,7 +45,15 @@ const FuturisticHero = () => {
         ];
     }, [isMobile]);
 
-    const displayText = useTypingEffect(texts, 120, 60, 2500);
+    // Rotating text index for fade effect
+    const [textIndex, setTextIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTextIndex((prev) => (prev + 1) % texts.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [texts.length]);
 
 
     return (
@@ -115,10 +79,22 @@ const FuturisticHero = () => {
                                 We Build
                             </div>
                             <div className="animated-text-container">
-                                <span className="text-gradient animated-gradient">
-                                    {displayText}
-                                    <span className="typing-cursor"></span>
-                                </span>
+                                <AnimatePresence mode="wait">
+                                    <motion.span
+                                        key={textIndex}
+                                        className="text-gradient animated-gradient inline-block pb-4"
+                                        initial={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
+                                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                        exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
+                                        transition={{
+                                            duration: 0.8,
+                                            ease: [0.25, 0.1, 0.25, 1],
+                                            opacity: { duration: 0.6 }
+                                        }}
+                                    >
+                                        {texts[textIndex]}
+                                    </motion.span>
+                                </AnimatePresence>
                             </div>
                         </h1>
 

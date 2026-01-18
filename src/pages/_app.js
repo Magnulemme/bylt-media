@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { loadNonCriticalCSS } from '../utils/loadCSS';
 import EnhancedCookieConsent from '@/components/EnhancedCookieConsent';
 import SplashScreen from '@/components/SplashScreen';
+import PageTransition from '@/components/PageTransition';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <SplashScreen />
-      <Component {...pageProps} />
+      <PageTransition>
+        <Component {...pageProps} />
+      </PageTransition>
       <EnhancedCookieConsent />
     </>
   );

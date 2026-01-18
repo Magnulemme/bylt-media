@@ -21,6 +21,7 @@ import {
 const DataVisualization3D = () => {
     const mountRef = useRef(null);
     const animationFrameRef = useRef(null);
+    const isVisibleRef = useRef(true);
 
     // Vertex Shader
     const vertexShader = `
@@ -269,6 +270,11 @@ const DataVisualization3D = () => {
         let time = 0;
 
         const animate = () => {
+            if (!isVisibleRef.current) {
+                animationFrameRef.current = null;
+                return;
+            }
+            animationFrameRef.current = requestAnimationFrame(animate);
             time += 0.016;
 
             // Occasional random deformation (lapillo)
@@ -500,8 +506,27 @@ const DataVisualization3D = () => {
             });
 
             renderer.render(scene, camera);
-            animationFrameRef.current = requestAnimationFrame(animate);
         };
+
+        // Visibility tracking - ferma animazione quando fuori viewport
+        const visibilityObserver = new IntersectionObserver(
+            ([entry]) => {
+                const wasVisible = isVisibleRef.current;
+                isVisibleRef.current = entry.isIntersecting;
+
+                if (entry.isIntersecting && !wasVisible) {
+                    console.log('🟢 [DataVisualization3D] Entrato in viewport - animazione RIPRENDE');
+                    if (!animationFrameRef.current) {
+                        animate();
+                    }
+                } else if (!entry.isIntersecting && wasVisible) {
+                    console.log('🔴 [DataVisualization3D] Uscito da viewport - animazione FERMA');
+                }
+            },
+            { threshold: 0.1 }
+        );
+        visibilityObserver.observe(currentMount);
+        console.log('👁️ [DataVisualization3D] Visibility observer attivato');
 
         animate();
 
@@ -518,6 +543,7 @@ const DataVisualization3D = () => {
             window.removeEventListener('resize', handleResize);
             currentMount.removeEventListener('mousemove', handleMouseMove);
             currentMount.removeEventListener('mouseleave', handleMouseLeave);
+            visibilityObserver.disconnect();
 
             // Cancel animation frame
             if (animationFrameRef.current) {

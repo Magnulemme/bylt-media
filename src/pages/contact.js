@@ -45,7 +45,7 @@ const PROJECTS = [
 const ContactHero = () => {
     return (
         <div className="bg-black service-page">
-            <section className="relative flex items-center justify-center overflow-hidden max-h-screen">
+            <section className="relative flex items-center justify-center overflow-hidden">
                 <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
                 <div className="relative z-20 max-w-6xl mx-auto px-4 py-24 md:py-32">

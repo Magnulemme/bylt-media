@@ -1023,6 +1023,11 @@ const NeuralContact = () => {
 
 // Main App Component for Brickell Case Study Page
 const BrickellCaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

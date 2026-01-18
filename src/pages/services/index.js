@@ -33,6 +33,7 @@ export default function ServicesIndex() {
             >
                 {/* Shader Background - starts below navbar */}
                 <ShaderBackground
+                    onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))}
                     style={{
                         top: '6rem',
                         height: 'calc(100% - 6rem)'

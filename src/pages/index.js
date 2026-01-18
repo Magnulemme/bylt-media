@@ -4,24 +4,10 @@ import dynamic from 'next/dynamic';
 import Layout from '../components/layout';
 import GlobalStyles from '../components/globalsyles';
 
-// Hero skeleton placeholder
-const HeroSkeleton = () => (
-    <section
-        className="hero-section"
-        style={{
-            background: '#020617',
-            minHeight: '100dvh',
-            zIndex: 10
-        }}
-    />
-);
+// Static import per FuturisticHero - nel bundle principale per navigazione veloce
+import FuturisticHero from '../components/home/FuturisticHero';
 
-// Dynamic imports for 3D components (lazy loaded, no SSR)
-const FuturisticHero = dynamic(
-    () => import('../components/home/FuturisticHero'),
-    { ssr: false, loading: () => <HeroSkeleton /> }
-);
-
+// Dynamic imports per componenti below-the-fold (lazy loaded)
 const GrainyBgSection = dynamic(
     () => import('../components/home/GrainyBgSection'),
     { ssr: false }

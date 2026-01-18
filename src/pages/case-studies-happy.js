@@ -992,6 +992,11 @@ const NeuralContact = () => {
 
 // Main App Component for Happy Bar & Grill Case Study Page
 const HappyCaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

@@ -1037,6 +1037,11 @@ const NeuralContact = () => {
 
 // Main App Component for Napudreni Case Study Page
 const NapudreniCaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>

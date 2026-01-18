@@ -1051,6 +1051,11 @@ const NeuralContact = () => {
 
 // Main App Component for Parfium Case Study Page
 const ParfiumCaseStudyPage = () => {
+    // Signal page ready immediately (no shader to wait for)
+    useEffect(() => {
+        window.dispatchEvent(new CustomEvent('hero-ready'));
+    }, []);
+
     return (
         <Layout>
             <Head>
