@@ -11,35 +11,49 @@
 .hero-section {
   @apply relative flex items-center justify-center overflow-hidden;
   @apply px-4;
-  padding-top: var(--navbar-height-mobile);
 }
 
 @media (min-width: 1024px) {
   .hero-section {
     min-height: 100dvh;
-    padding-top: calc(var(--navbar-height-desktop))
+    padding-top: calc(var(--navbar-height-desktop));
   }
 }
 
-/* Gradient Overlay - Overlay radial per depth */
+/* Gradient Overlay - CSS blobs with brand colors */
 .gradient-overlay {
   @apply absolute inset-0 z-10 pointer-events-none;
-  background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15), transparent 50%),
-              radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15), transparent 50%);
+  background:
+    radial-gradient(circle at 20% 30%, rgba(34, 211, 238, 0.15) 0%, transparent 35%),
+    radial-gradient(ellipse 40% 50% at 75% 60%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 30%),
+    radial-gradient(ellipse 35% 45% at 85% 20%, rgba(34, 211, 238, 0.08) 0%, transparent 35%);
   contain: paint;
+  filter: blur(40px);
 }
 
 /* Container Centered - Container centrato max-width */
 .container-centered {
-  @apply relative z-20 w-full max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  @apply relative z-20 w-full max-w-7xl mx-auto;
+  padding: var(--spacing-padding-xs);
+}
+
+@media (min-width: 768px) {
+  .container-centered {
+    padding: var(--spacing-padding-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-centered {
+    padding: var(--spacing-padding-md);
+  }
 }
 
 /* Hero Inner - Container interno hero con rounded e bg */
 .hero-inner {
   @apply relative w-full rounded-2xl;
   @apply flex items-center justify-center;
-  padding-top: var(--padding-xs);
-  padding-bottom: var(--padding-xs);
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
@@ -49,8 +63,7 @@
 
 @media (min-width: 1024px) {
   .hero-inner {
-    padding-top: var(--padding-lg);
-    padding-bottom: var(--padding-xl);
+
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
@@ -59,12 +72,12 @@
 
 /* Hero Grid - Layout grid 2 colonne hero */
 .hero-grid {
-  @apply grid grid-cols-1 lg:grid-cols-2 items-center;
-  gap: var(--padding-md);
+  @apply grid grid-cols-1 xl:grid-cols-2 items-center;
+  gap: var(--spacing-section-md);
 }
 
-/* Hero Grid - Centra elementi su tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
+/* Hero Grid - Centra elementi su tablet e lg */
+@media (min-width: 768px) and (max-width: 1279px) {
   .hero-grid {
     @apply justify-items-center;
   }
@@ -73,20 +86,20 @@
 /* Hero Content - Contenitore contenuto hero */
 .hero-content {
   @apply relative text-white;
-  @apply text-center lg:text-left;
+  @apply text-center xl:text-left;
   display: flex;
   flex-direction: column;
-  gap: var(--padding-md);
+  gap: var(--spacing-padding-xs);
 }
 
 @media (min-width: 768px) {
   .hero-content {
-    gap: var(--padding-sm);
+    gap: var(--spacing-padding-xs);
   }
 }
 
-/* Hero Content - Centra elementi su tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
+/* Hero Content - Centra elementi su tablet e lg */
+@media (min-width: 768px) and (max-width: 1279px) {
   .hero-content {
     @apply max-w-2xl mx-auto;
   }
@@ -97,8 +110,8 @@
   @apply text-4xl md:text-7xl lg:text-8xl font-bold;
 }
 
-/* Hero Title - Enfatizza su tablet */
-@media (min-width: 768px) and (max-width: 1023px) {
+/* Hero Title - Enfatizza su tablet e lg */
+@media (min-width: 768px) and (max-width: 1279px) {
   .hero-title {
     letter-spacing: -0.03em;
     text-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
@@ -107,8 +120,7 @@
 
 /* Animated Text Container - Container per testo animato con typing */
 .animated-text-container {
-  @apply min-h-[60px] md:min-h-[100px] lg:min-h-[120px];
-  @apply whitespace-nowrap font-space font-bold;
+  @apply whitespace-nowrap font-bold;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }

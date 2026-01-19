@@ -7,3 +7,15 @@
   @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
   @apply bg-clip-text text-transparent;
 }
+
+/* services page - Wrapper principale hero */
+.service-page {
+  @apply relative w-full;
+  @apply px-4 pt-2;
+}
+
+@media (min-width: 1024px) {
+  .service-page {
+    padding-top: calc(var(--navbar-height-desktop) + 1.5rem);
+  }
+}

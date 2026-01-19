@@ -15,7 +15,7 @@ export default function SplashScreen() {
 
   // Genera delay casuali per ogni cella della griglia (una sola volta)
   const cellDelays = useMemo(() => {
-    const delays: number[] = [];
+    const delays = [];
     for (let i = 0; i < GRID_COLS * GRID_ROWS; i++) {
       delays.push(Math.random() * 600);
     }
@@ -87,6 +87,8 @@ export default function SplashScreen() {
               opacity: isFading ? 0 : 1,
               transition: 'opacity 300ms ease-out',
               transitionDelay: isFading ? `${cellDelays[i]}ms` : '0ms',
+              // Fix gap subpixel su tablet/viewport non standard
+              outline: '1px solid #020617',
             }}
           />
         ))}

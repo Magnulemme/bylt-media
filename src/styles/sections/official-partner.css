@@ -1,0 +1,78 @@
+/* ====================================
+   OFFICIAL PARTNER SECTION COMPONENTS
+   ==================================== */
+
+/* Official Partner Section - Container principale */
+.official-partner-section {
+  @apply relative overflow-hidden;
+  /* Nessun padding verticale - gestito dalla sezione stessa nel componente se necessario */
+}
+
+/* Scroll Reveal Text Wrapper - Wrapper per testo scroll reveal con padding bottom */
+.scroll-reveal-text-wrapper {
+  @apply relative;
+  padding-bottom: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .scroll-reveal-text-wrapper {
+    padding-bottom: var(--spacing-padding-lg);
+  }
+}
+
+/* Official Partner Container - Wrapper con padding orizzontale e safety margins */
+.official-partner-container {
+  @apply relative z-10;
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .official-partner-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .official-partner-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* Stats Grid - Grid responsive per le statistiche con safety margins */
+.stats-grid {
+  @apply grid grid-cols-2 md:grid-cols-4;
+  gap: var(--spacing-padding-sm);
+  max-width: 1200px; /* Limita larghezza per miglior centraggio */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--margin-safe-x);
+  padding-right: var(--margin-safe-x);
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    gap: var(--spacing-padding-md);
+  }
+}
+
+/* Stats Card - Singola card statistica con gap interno */
+.stats-card {
+  @apply flex flex-col items-center justify-center text-center;
+  gap: 0.5rem; /* 8px - gap molto ridotto per le stat cards */
+  padding: 0.5rem; /* Padding per evitare che il gradiente venga tagliato */
+}
+
+/* Stats Value - Testo gradiente per le statistiche */
+.stats-value {
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent;
+  font-family: var(--font-family-inter);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  line-height: 1.2; /* Line height più generoso per evitare clipping */
+}

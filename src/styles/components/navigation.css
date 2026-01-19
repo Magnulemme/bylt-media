@@ -4,7 +4,7 @@
 
 /* Logo Gradient BYLT - Gradiente per logo BYLT */
 .logo-gradient-bylt {
-  background: linear-gradient(45deg, #B8FFFA 0%, #B8FFB8 50%, #B8FFFA 100%);
+  background: linear-gradient(90deg, #22d3ee 0%, #3b82f6 50%, #a855f7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -12,7 +12,7 @@
 
 /* Logo Gradient MEDIA - Gradiente per logo MEDIA */
 .logo-gradient-media {
-  background: linear-gradient(45deg, #B8FFB8 0%, #B8FFFA 50%, #B8FFB8 100%);
+  background: linear-gradient(90deg, #a855f7 0%, #3b82f6 50%, #22d3ee 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

@@ -1,0 +1,210 @@
+/* ====================================
+   SERVICE SLIDER COMPONENTS
+   ==================================== */
+
+/* Service Slider Navigation - Container frecce di navigazione sopra lo slider */
+.service-slider-nav {
+  @apply absolute right-0 z-20 flex items-center;
+  top: 0;
+  transform: translateY(calc(-100% - var(--spacing-padding-xs)));
+  gap: 0.75rem;
+}
+
+/* Service Slider Navigation Mobile - Frecce navigazione mobile coverflow */
+.service-slider-nav-mobile {
+  @apply flex items-center justify-end;
+  gap: 0.75rem;
+  margin-bottom: var(--spacing-padding-xs);
+}
+
+/* Bottoni navigazione mobile - stile brutalist coerente con desktop */
+.swiper-button-prev-mobile,
+.swiper-button-next-mobile {
+  @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
+}
+
+.swiper-button-prev-mobile:not(:disabled):hover,
+.swiper-button-next-mobile:not(:disabled):hover {
+  @apply border-cyan-400/60 from-cyan-500/20 to-blue-500/20 scale-110 cursor-pointer;
+}
+
+/* ====================================
+   NEURAL SERVICES SECTION COMPONENTS
+   ==================================== */
+
+/* Services Accordion Container - Container principale liste services mobile */
+.services-accordion-container {
+  @apply flex flex-col md:hidden;
+  gap: var(--spacing-padding-xs);
+}
+
+/* Service Accordion Item - Singolo item accordion con shadow offset */
+.service-accordion-item {
+  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Service Card Button - Bottone header accordion */
+.service-card-button {
+  @apply flex justify-between items-start w-full text-left cursor-pointer bg-transparent border-none text-white;
+  gap: 0.75rem;
+  padding: var(--spacing-padding-xs);
+}
+
+@media (min-width: 640px) {
+  .service-card-button {
+    padding: var(--spacing-padding-sm);
+  }
+}
+
+/* Service Coverflow Card Wrapper - Wrapper card coverflow */
+.service-coverflow-card-wrapper {
+  padding-bottom: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Service Coverflow Card - Card base coverflow con layout verticale */
+.service-coverflow-card {
+  @apply rounded-lg backdrop-blur-sm border-2 flex flex-col;
+  padding: 1.5rem;
+  height: 550px;
+  overflow: hidden;
+}
+
+/* Service Coverflow Card Active - Card centrale attiva */
+.service-coverflow-card-active {
+  @apply bg-black border-cyan-400/60;
+  box-shadow: 8px 8px 0px rgba(34, 211, 238, 1);
+}
+
+/* Service Coverflow Card Inactive - Card laterali non attive */
+.service-coverflow-card-inactive {
+  @apply bg-black/80 border-white/20;
+  box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
+}
+
+/* Service Desktop Card - Card base per slider desktop spotlight */
+.service-desktop-card {
+  @apply rounded-lg backdrop-blur-sm border-2 flex flex-col;
+  padding: 2rem;
+  height: 500px;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+/* Service Desktop Card Active - Card centrale in evidenza */
+.service-desktop-card-active {
+  @apply bg-black border-cyan-400/60;
+  box-shadow: 10px 10px 0px rgba(34, 211, 238, 1);
+}
+
+/* Service Desktop Card Inactive - Card laterali */
+.service-desktop-card-inactive {
+  @apply bg-black/80 border-white/20;
+  box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
+  opacity: 0.7;
+}
+
+/* Desktop Navigation Buttons */
+.swiper-button-prev-desktop,
+.swiper-button-next-desktop,
+.swiper-button-prev-services,
+.swiper-button-next-services {
+  @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
+}
+
+.swiper-button-prev-desktop:hover,
+.swiper-button-next-desktop:hover,
+.swiper-button-prev-services:hover,
+.swiper-button-next-services:hover {
+  @apply border-cyan-400/60 from-cyan-500/20 to-blue-500/20 scale-110 cursor-pointer;
+}
+
+/* Service Button Content - Container flex per contenuto button */
+.service-button-content {
+  @apply flex-1 min-w-0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Service Button Icon Container - Container per icona e chevron */
+.service-button-icon-container {
+  @apply flex flex-col items-end flex-shrink-0;
+  gap: 0.5rem;
+}
+
+/* Service Card Content - Contenuto espandibile accordion */
+.service-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-padding-xs);
+  padding-left: var(--spacing-padding-xs);
+  padding-right: var(--spacing-padding-xs);
+  padding-bottom: var(--spacing-padding-xs);
+}
+
+@media (min-width: 640px) {
+  .service-card-content {
+    padding-left: var(--spacing-padding-sm);
+    padding-right: var(--spacing-padding-sm);
+    padding-bottom: var(--spacing-padding-sm);
+  }
+}
+
+/* Service Capabilities Container - Container capabilities con border top */
+.service-capabilities-container {
+  @apply border-t border-white/10;
+  padding-top: var(--spacing-padding-xs);
+}
+
+/* Service Capabilities List - Lista capabilities */
+.service-capabilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Service CTA Link - Link CTA dentro le card services */
+.service-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  transition: color 0.3s ease;
+  margin-top: var(--spacing-padding-xs);
+}
+
+.service-cta-link:hover {
+  color: rgb(34 211 238);
+}
+
+/* Services Bottom CTA Section - Sezione CTA finale sotto tutti i servizi */
+.services-bottom-cta-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-padding-sm);
+  margin-top: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .services-bottom-cta-section {
+    gap: var(--spacing-padding-md);
+    margin-top: var(--spacing-padding-lg);
+  }
+}
+
+/* Services Bottom CTA Content - Contenuto testo CTA */
+.services-bottom-cta-content {
+  max-width: 36rem;
+}
+
+.services-bottom-cta-content p {
+  font-size: 1.125rem;
+  color: rgb(209 213 219);
+  line-height: 1.625;
+}

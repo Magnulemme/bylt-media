@@ -1,0 +1,91 @@
+/* ========================================
+   DEMO REVEAL SECTION COMPONENTS
+   ======================================== */
+
+/* Demo Reveal Section - Container principale con sticky positioning */
+.demo-reveal-section {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 0;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .demo-reveal-section {
+    padding-top: var(--spacing-padding-2xl);
+    padding-bottom: var(--spacing-padding-2xl);
+  }
+}
+
+/* Demo Reveal Container - Wrapper con padding orizzontale */
+.demo-reveal-container {
+  @apply relative z-10 mx-auto;
+  max-width: var(--breakpoint-content);
+  padding-left: var(--spacing-padding-xs);
+  padding-right: var(--spacing-padding-xs);
+}
+
+@media (min-width: 640px) {
+  .demo-reveal-container {
+    padding-left: var(--spacing-padding-sm);
+    padding-right: var(--spacing-padding-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  .demo-reveal-container {
+    padding-left: var(--spacing-padding-md);
+    padding-right: var(--spacing-padding-md);
+  }
+}
+
+/* Partners Container - Flex container per partner */
+.partners-grid {
+  @apply flex flex-col md:flex-row justify-center items-center max-w-5xl mx-auto;
+  gap: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .partners-grid {
+    gap: var(--spacing-padding-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .partners-grid {
+    gap: var(--spacing-padding-2xl);
+  }
+}
+
+/* Partner Card - Card singolo partner con testo centrato */
+.partner-card {
+  @apply text-center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-padding-xs);
+}
+
+/* Partner Logos Group - Gruppo loghi partner orizzontale */
+.partner-logos-group {
+  @apply flex items-center justify-center;
+  gap: var(--spacing-padding-xs);
+}
+
+@media (min-width: 768px) {
+  .partner-logos-group {
+    gap: var(--spacing-padding-sm);
+  }
+}
+
+/* Partner Logo - Stile immagine logo partner */
+.partner-logo {
+  @apply h-16 md:h-20 lg:h-24 w-auto opacity-90 transition-opacity duration-300 brightness-110 mx-auto;
+}
+
+.partner-logo:hover {
+  @apply opacity-100;
+}

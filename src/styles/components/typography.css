@@ -1,0 +1,104 @@
+/* ========================================
+   TYPOGRAPHY SYSTEM
+   Classi standardizzate per heading e testo
+   ======================================== */
+
+/* Headings */
+.heading-display {
+  @apply text-4xl md:text-6xl lg:text-8xl font-bold leading-tight;
+  letter-spacing: -0.03em;
+}
+
+.heading-h1 {
+  @apply text-3xl md:text-5xl lg:text-6xl font-bold leading-tight;
+  letter-spacing: -0.02em;
+}
+
+.heading-h2 {
+  @apply text-2xl md:text-4xl lg:text-5xl font-bold leading-snug;
+  letter-spacing: -0.02em;
+}
+
+.heading-h3 {
+  @apply text-xl md:text-2xl lg:text-3xl font-semibold leading-snug;
+  letter-spacing: -0.01em;
+}
+
+.heading-h4 {
+  @apply text-lg md:text-xl font-semibold leading-snug;
+}
+
+/* Body text - usando slate-* per coerenza con background slate-950 */
+.text-body-lg {
+  @apply text-lg leading-relaxed text-slate-300;
+}
+
+.text-body {
+  @apply text-base leading-relaxed text-slate-400;
+}
+
+.text-body-sm {
+  @apply text-sm leading-normal text-slate-400;
+}
+
+.text-caption {
+  @apply text-xs text-slate-500;
+}
+
+/* Labels & Tags */
+.text-label {
+  @apply text-xs font-medium uppercase text-slate-500;
+  letter-spacing: 0.2em;
+}
+
+/* ========================================
+   SECTION SPACING UTILITIES
+   Classi per padding verticale delle sezioni
+   Usano i token responsive definiti in @theme
+   ======================================== */
+
+.section-xs {
+  padding-top: var(--spacing-section-xs);
+  padding-bottom: var(--spacing-section-xs);
+}
+
+.section-sm {
+  padding-top: var(--spacing-section-sm);
+  padding-bottom: var(--spacing-section-sm);
+}
+
+.section-md {
+  padding-top: var(--spacing-section-md);
+  padding-bottom: var(--spacing-section-md);
+}
+
+.section-lg {
+  padding-top: var(--spacing-section-lg);
+  padding-bottom: var(--spacing-section-lg);
+}
+
+.section-xl {
+  padding-top: var(--spacing-section-xl);
+  padding-bottom: var(--spacing-section-xl);
+}
+
+.section-2xl {
+  padding-top: var(--spacing-section-2xl);
+  padding-bottom: var(--spacing-section-2xl);
+}
+
+/* Container standard con safe margins */
+.container-section {
+  @apply mx-auto w-full;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  max-width: var(--max-width-7xl, 80rem);
+}
+
+/* Container più stretto per contenuti testuali */
+.container-narrow {
+  @apply mx-auto w-full;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  max-width: var(--max-width-4xl, 56rem);
+}

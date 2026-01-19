@@ -1,0 +1,26 @@
+/* ====================================
+   SUCCESS STORIES SECTION COMPONENTS
+   ==================================== */
+
+/* Success Stories Section - Container principale */
+.success-stories-section {
+  @apply relative overflow-hidden;
+  padding-bottom: var(--spacing-padding-xs);
+}
+
+@media (min-width: 768px) {
+  .success-stories-section {
+    padding-bottom: var(--spacing-padding-sm);
+  }
+}
+
+/* Success Stories Header - Container titolo con padding-top */
+.success-stories-header {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .success-stories-header {
+    padding-top: var(--spacing-padding-xl);
+  }
+}

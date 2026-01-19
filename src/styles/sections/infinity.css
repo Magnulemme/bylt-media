@@ -1,0 +1,40 @@
+/* ====================================
+   INFINITY PHILOSOPHY SECTION COMPONENTS
+   ==================================== */
+
+/* Infinity Section - Container principale con padding verticale */
+.infinity-section {
+  @apply max-w-content mx-auto;
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .infinity-section {
+  padding-bottom: var(--spacing-padding-lg);
+  }
+}
+
+/* Infinity Layout - Container principale verticale */
+.infinity-layout {
+  @apply flex flex-col;
+  gap: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .infinity-layout {
+    padding-top: var(--spacing-padding-lg);
+    gap: var(--spacing-padding-md);
+  }
+}
+
+/* Infinity Header - Container titolo con simbolo in background */
+.infinity-header {
+  @apply relative;
+}
+
+/* Infinity Paragraphs - Container paragrafi descrittivi a tutta larghezza */
+.infinity-paragraphs {
+  @apply text-gray-300 text-lg leading-relaxed flex flex-col;
+  gap: var(--spacing-padding-xs);
+}
