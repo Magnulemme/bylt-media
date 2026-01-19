@@ -104,7 +104,7 @@ export const useScrollAnimation = (isMobile = false) => {
     });
 
     return () => unsubscribe();
-  }, [isReady, scrollYProgress, x, isMobile]);
+  }, [isReady, scrollYProgress, x, isMobile, scrollableDistance]);
 
   return {
     containerRef,

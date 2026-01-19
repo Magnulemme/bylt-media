@@ -32,7 +32,7 @@ const VerticalLinesCanvas = ({ className = '' }) => {
             }
         `;
 
-        // Fragment shader - ethereal flowing aurora mist
+        // Fragment shader - dot pattern with aurora colors (like useWaveBackground)
         const fragmentShaderSource = `
             precision mediump float;
             varying vec2 v_uv;
@@ -67,7 +67,7 @@ const VerticalLinesCanvas = ({ className = '' }) => {
                 return 130.0 * dot(m, g);
             }
 
-            // Layered noise for flowing effect - larger scale
+            // Layered noise for flowing effect
             float flowNoise(vec2 uv, float time) {
                 float n = 0.0;
                 n += snoise(uv * 1.0 + vec2(0.0, time * 0.15)) * 0.5;
@@ -81,60 +81,92 @@ const VerticalLinesCanvas = ({ className = '' }) => {
                 float t = u_time * 0.3;
 
                 // Dark background
-                vec3 bg = vec3(0.01, 0.01, 0.02);
+                vec3 bg = vec3(0.008, 0.024, 0.09);
 
-                // Aurora colors - brighter
+                // Dot grid
+                float dotsAcross = 71.0;
+                float aspectRatio = u_resolution.x / u_resolution.y;
+
+                vec2 gridSize = vec2(dotsAcross, dotsAcross / aspectRatio);
+                vec2 gridPos = v_uv * gridSize;
+                vec2 cellId = floor(gridPos);
+                vec2 cellUV = fract(gridPos);
+
+                // Sample UV for this cell's center
+                vec2 sampleUV = (cellId + 0.5) / gridSize;
+
+                // === 3D WAVE DEFORMATION ===
+                // Main wave that controls the "height" of the surface
+                float waveMain = snoise(sampleUV * 2.0 + vec2(t * 0.15, t * 0.1)) * 0.5
+                               + snoise(sampleUV * 3.5 + vec2(-t * 0.1, t * 0.08)) * 0.3
+                               + snoise(sampleUV * 1.2 + vec2(t * 0.05, -t * 0.12)) * 0.2;
+
+                // Normalize wave to 0-1 range (height/depth)
+                float height = (waveMain + 1.0) * 0.5;
+                height = clamp(height, 0.0, 1.0);
+
+                // Apply easing for more dramatic 3D effect
+                float height3D = smoothstep(0.0, 1.0, height);
+                height3D = height3D * height3D; // quadratic for more contrast
+
+                // Dot size based on height (bigger = closer/higher)
+                // Range: 0.08 (far/low) to 0.5 (close/high)
+                float dotRadius = 0.08 + height3D * 0.42;
+
+                // Distance from cell center
+                float dist = length(cellUV - 0.5) * 2.0;
+
+                // Sharp circle
+                float dot = 1.0 - smoothstep(dotRadius - 0.03, dotRadius, dist * 0.5);
+
+                // Opacity based on height (more visible when "raised")
+                float opacity = 0.1 + height3D * 0.5;
+
+                // === COLORS with separate noise layers (like original) ===
                 vec3 cyan = vec3(0.2, 0.85, 0.95);
                 vec3 teal = vec3(0.15, 0.75, 0.65);
                 vec3 purple = vec3(0.6, 0.3, 0.85);
                 vec3 magenta = vec3(0.85, 0.25, 0.6);
-                vec3 blue = vec3(0.3, 0.5, 0.9);
 
-                // Flowing noise layers - larger patterns
-                float n1 = flowNoise(uv * 0.8 + vec2(0.0, t * 0.1), t);
-                float n2 = flowNoise(uv * 0.6 + vec2(t * 0.05, 0.0), t * 0.8);
-                float n3 = flowNoise(uv * 0.5 + vec2(-t * 0.08, t * 0.05), t * 1.2);
+                // Separate noise for each color (like original aurora)
+                float n1 = flowNoise(sampleUV * 0.8 + vec2(0.0, t * 0.1), t);
+                float n2 = flowNoise(sampleUV * 0.6 + vec2(t * 0.05, 0.0), t * 0.8);
+                float n3 = flowNoise(sampleUV * 0.5 + vec2(-t * 0.08, t * 0.05), t * 1.2);
 
-                // Create soft color regions
-                vec3 auroraLight = vec3(0.0);
-
-                // Blend colors based on noise
+                // Color blending based on independent noise
                 float blend1 = smoothstep(-0.3, 0.5, n1);
                 float blend2 = smoothstep(-0.2, 0.6, n2);
                 float blend3 = smoothstep(-0.4, 0.4, n3);
 
-                // Layer colors - balanced background
-                auroraLight += cyan * blend1 * 0.28;
-                auroraLight += purple * blend2 * 0.24;
-                auroraLight += teal * blend3 * 0.2;
+                vec3 dotColor = vec3(0.0);
+                dotColor += cyan * blend1 * 0.35;
+                dotColor += purple * blend2 * 0.55;
+                dotColor += teal * blend3 * 0.5;
 
-                // Add highlight streaks
-                float streak = snoise(vec2(uv.x * 2.0, uv.y * 1.0 + t * 0.2));
+                // Add magenta streaks
+                float streak = snoise(vec2(sampleUV.x * 2.0, sampleUV.y * 1.0 + t * 0.2));
                 streak = smoothstep(0.2, 0.7, streak);
-                auroraLight += magenta * streak * 0.18;
+                dotColor += magenta * streak * 0.45;
 
-                // Vertical fade - stronger at edges
-                float vFade = smoothstep(0.0, 0.35, uv.y) * smoothstep(1.0, 0.5, uv.y);
-                auroraLight *= vFade;
+                // Overall intensity with brightness cap to avoid peaks
+                dotColor = dotColor * 1.35;
+                dotColor = min(dotColor, vec3(0.75));
 
-                // Horizontal concentration towards edges
-                float hFade = 1.0 - smoothstep(0.0, 0.4, abs(uv.x - 0.5));
-                hFade = 0.4 + hFade * 0.6;
-                auroraLight *= hFade;
+                // Vertical fade (expanded active area)
+                float vFade = smoothstep(0.0, 0.15, sampleUV.y) * smoothstep(1.0, 0.75, sampleUV.y);
 
-                // Screen blend
-                vec3 color = bg + auroraLight - bg * auroraLight;
+                // Horizontal fade (wider active area)
+                float hFade = 1.0 - smoothstep(0.0, 0.55, abs(sampleUV.x - 0.5));
+                hFade = 0.5 + hFade * 0.5;
 
-                // Soft vignette
-                vec2 uvCenter = v_uv - 0.5;
-                float vignette = 1.0 - dot(uvCenter, uvCenter) * 0.6;
-                vignette = smoothstep(0.0, 0.85, vignette);
-                color *= vignette;
+                float totalFade = vFade * hFade;
 
                 // Edge fade
-                float edgeFade = smoothstep(0.0, 0.1, v_uv.x) * smoothstep(1.0, 0.9, v_uv.x);
-                edgeFade *= smoothstep(0.0, 0.08, v_uv.y) * smoothstep(1.0, 0.92, v_uv.y);
-                color *= edgeFade;
+                float edgeFade = smoothstep(0.0, 0.08, v_uv.x) * smoothstep(1.0, 0.92, v_uv.x);
+                edgeFade *= smoothstep(0.0, 0.06, v_uv.y) * smoothstep(1.0, 0.94, v_uv.y);
+
+                // Final color
+                vec3 color = bg + dotColor * dot * opacity * totalFade * edgeFade;
 
                 gl_FragColor = vec4(color, 1.0);
             }
