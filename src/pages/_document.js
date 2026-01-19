@@ -18,19 +18,7 @@ export default function Document() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Non-blocking font loading with font-display: swap */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          media="print"
-          onLoad="this.media='all'"
-        />
-        <noscript>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          />
-        </noscript>
+        {/* Fonts are now loaded via next/font in _app.js for better performance */}
 
         {/* Critical CSS with fallback font */}
         <style
@@ -49,13 +37,8 @@ export default function Document() {
                 margin: 0; padding: 0;
                 background: var(--dark-bg);
                 color: #e5e7eb;
-                /* Fallback font stack for immediate rendering */
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-              }
-              
-              /* Apply Inter when loaded */
-              .fonts-loaded body {
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                /* Use CSS variable from next/font - no FOUT */
+                font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
               }
               
               .futuristic-app {
@@ -120,25 +103,7 @@ export default function Document() {
           }}
         />
         
-        {/* Font loading detection script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                if ('fonts' in document) {
-                  document.fonts.ready.then(function() {
-                    document.documentElement.classList.add('fonts-loaded');
-                  });
-                } else {
-                  // Fallback for older browsers
-                  setTimeout(function() {
-                    document.documentElement.classList.add('fonts-loaded');
-                  }, 3000);
-                }
-              })();
-            `,
-          }}
-        />
+        {/* Font loading is now handled by next/font - no detection needed */}
         
         {/* Preconnect for performance */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />

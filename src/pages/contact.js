@@ -44,12 +44,12 @@ const PROJECTS = [
 
 const ContactHero = () => {
     return (
-        <div className="bg-black service-page">
-            <section className="relative flex items-center justify-center overflow-hidden">
+        <div className="bg-black service-page max-w-full">
+            <section className="relative flex items-center justify-center overflow-hidden max-w-full">
                 <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
                 <div className="relative z-20 max-w-6xl mx-auto px-4 py-24 md:py-32">
-                    <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div className="relative flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-full">
                         {/* Octahedron as background on mobile/tablet */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden opacity-30 pointer-events-none">
                             <div className="w-[350px] h-[350px]">
@@ -58,7 +58,7 @@ const ContactHero = () => {
                         </div>
 
                         {/* Text content */}
-                        <div className="relative z-10 text-center lg:text-left">
+                        <div className="relative z-10 text-center lg:text-left w-full lg:w-auto max-w-full">
 
                             <motion.h1
                                 initial={{ opacity: 0, y: 20 }}
@@ -100,7 +100,7 @@ const ContactHero = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
-                        className="mt-16"
+                        className="mt-16 w-full"
                     >
                         <p className="text-xs text-slate-500 uppercase tracking-widest text-left mb-6">
                             Brands We've Helped Grow
@@ -124,14 +124,17 @@ const AuditCard = ({ feature, index }) => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ borderColor: 'rgba(34, 211, 238, 0.3)' }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl border border-white/10 hover:border-cyan-400/30 duration-300 overflow-hidden"
+            className="group relative rounded-2xl border border-white/10 overflow-hidden"
         >
             {/* Wave Background */}
             {waveBg && (
-                <div
-                    className="absolute inset-0 opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                <motion.div
+                    className="absolute inset-0"
+                    initial={{ opacity: 0.6 }}
+                    whileHover={{ opacity: 0.8 }}
                     style={{
                         backgroundImage: `url(${waveBg})`,
                         backgroundSize: 'cover',
@@ -145,9 +148,13 @@ const AuditCard = ({ feature, index }) => {
 
             {/* Content */}
             <div className="relative z-10 p-6 md:p-8">
-                <div className="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform duration-300">
+                <motion.div
+                    className="w-12 h-12 mb-5 rounded-xl bg-gradient-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center text-cyan-400"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                >
                     {feature.icon}
-                </div>
+                </motion.div>
                 <h3 className="text-lg md:text-xl font-semibold text-white mb-3">
                     {feature.title}
                 </h3>

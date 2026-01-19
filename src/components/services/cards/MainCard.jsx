@@ -1,33 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
-import { DitherShader } from '../../ui/dither-shader';
+import Image from 'next/image';
 import { MovingBorderButton } from '../../ui/moving-border-button';
-import { useMainCardWaves } from '../hooks';
 import RotatingText from '../sections/RotatingText';
+import VerticalLinesCanvas from '../sections/VerticalLinesCanvas';
 import { WobbleCard } from '../../ui/wobble-card';
 
 const MainCard = ({ service }) => {
-    const waveBg = useMainCardWaves();
-
     return (
         <WobbleCard
             containerClassName="bg-slate-950 border border-gray-800 hover:border-cyan-500/50 h-full"
             className="p-0 flex flex-col"
         >
-            {/* Wave Background - increased visibility */}
-            {waveBg && (
-                <div
-                    className="absolute inset-0 opacity-70"
-                    style={{
-                        backgroundImage: `url(${waveBg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
-                />
-            )}
+            {/* Aurora Wave Background - extends into padding area */}
+            <VerticalLinesCanvas className="-inset-4 md:-inset-6" />
 
-            {/* Lighter overlay for better wave visibility */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/50 to-slate-950/70" />
+            {/* Lighter overlay for better content visibility */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/40 to-slate-950/60" />
 
             {/* Text Content with Rotating Text */}
             <div className="relative z-10 p-6 md:p-8">
@@ -42,16 +31,14 @@ const MainCard = ({ service }) => {
                 </p>
             </div>
 
-            {/* Image with DitherShader */}
+            {/* Hero Image */}
             <div className="relative z-10 px-8 md:px-10">
                 <div className="relative rounded-xl overflow-hidden border border-gray-700/50 shadow-lg h-48 md:h-56">
-                    <DitherShader
+                    <Image
                         src={service.heroImage}
-                        colorMode="grayscale"
-                        ditherMode="bayer"
-                        gridSize={4}
-                        threshold={0.5}
-                        contrast={1.1}
+                        alt={service.title || 'Service image'}
+                        fill
+                        className="object-cover"
                     />
                 </div>
             </div>

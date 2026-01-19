@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 const CaseStudyCard = ({ study, index, isReversed = false }) => {
@@ -95,17 +96,18 @@ const CaseStudyCard = ({ study, index, isReversed = false }) => {
                 </motion.div>
 
                 {/* CTA Button */}
-                <motion.a
-                    href={study.link}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25"
-                >
-                    <span>View Case Study</span>
-                    <ArrowRight className="w-4 h-4" />
-                </motion.a>
+                <Link href={study.link} passHref legacyBehavior>
+                    <motion.a
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-slate-900 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/25"
+                    >
+                        <span>View Case Study</span>
+                        <ArrowRight className="w-4 h-4" />
+                    </motion.a>
+                </Link>
             </div>
         </motion.div>
     );

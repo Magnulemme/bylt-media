@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import Link from 'next/link';
 import { caseStudiesData } from '../constants';
 
 // Card content component (shared between ghost and real cards)
@@ -107,21 +108,22 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
     const zIndex = totalCards - index;
 
     return (
-        <motion.a
-            href={study.link}
-            className="absolute inset-0 block"
-            style={{
-                x,
-                y,
-                rotate,
-                zIndex,
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-                perspective: 1000,
-            }}
-        >
-            <CardContent study={study} />
-        </motion.a>
+        <Link href={study.link} passHref legacyBehavior>
+            <motion.a
+                className="absolute inset-0 block"
+                style={{
+                    x,
+                    y,
+                    rotate,
+                    zIndex,
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    perspective: 1000,
+                }}
+            >
+                <CardContent study={study} />
+            </motion.a>
+        </Link>
     );
 };
 

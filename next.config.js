@@ -7,7 +7,7 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: ['placehold.co'],
+    domains: ['placehold.co', 'images.unsplash.com'],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
   },

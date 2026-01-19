@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useShaderBackground } from '@/hooks/useShaderBackground';
 import { getIcon } from './utils';
+import ShaderBackground from '@/components/home/ShaderBackground';
 
 // Signal page ready for splash screen
 const signalPageReady = () => {
@@ -37,8 +38,9 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
 
     return (
         <section className="relative overflow-hidden">
+        <ShaderBackground />
             {/* Content */}
-            <div className="flex flex-col items-center justify-center px-4 pt-24 md:pt-32 pb-16">
+            <div className="relative flex flex-col items-center justify-center px-4 pt-24 md:pt-32 pb-16 z-20">
                 <div className="text-center max-w-4xl mx-auto">
                     {/* Headline */}
                     <motion.h1

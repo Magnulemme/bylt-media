@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
+import Link from 'next/link';
 import ShaderBackground from '../../home/ShaderBackground';
 import { caseStudiesData, heroContent } from '../constants';
 
@@ -11,7 +12,7 @@ const signalPageReady = () => {
 };
 
 // Card content component
-const CardContent = ({ study, overlayOpacity }) => (
+const CardContent = ({ study, overlayOpacity }) => ( 
     <div
         className="relative overflow-hidden rounded-2xl border border-white/10 group cursor-pointer"
         style={{
@@ -135,21 +136,22 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
     const zIndex = totalCards - index;
 
     return (
-        <motion.a
-            href={study.link}
-            className="absolute inset-0 block overflow-hidden rounded-2xl"
-            style={{
-                x,
-                y,
-                rotate,
-                zIndex,
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-                perspective: 1000,
-            }}
-        >
-            <CardContent study={study} overlayOpacity={overlayOpacity} />
-        </motion.a>
+        <Link href={study.link} passHref legacyBehavior>
+            <motion.a
+                className="absolute inset-0 block overflow-hidden rounded-2xl"
+                style={{
+                    x,
+                    y,
+                    rotate,
+                    zIndex,
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    perspective: 1000,
+                }}
+            >
+                <CardContent study={study} overlayOpacity={overlayOpacity} />
+            </motion.a>
+        </Link>
     );
 };
 
@@ -162,7 +164,8 @@ const CaseStudiesHero = () => {
 
     const showcaseStudies = caseStudiesData;
 
-    useEffect(() => {
+    // Use useLayoutEffect for measurements to prevent layout shift
+    useLayoutEffect(() => {
         const measure = () => {
             if (cardRef.current) {
                 setCardHeight(cardRef.current.offsetHeight);
@@ -175,7 +178,7 @@ const CaseStudiesHero = () => {
     }, []);
 
     // Calculate animation start offset based on sticky container position
-    useEffect(() => {
+    useLayoutEffect(() => {
         const calculateOffset = () => {
             if (stickyRef.current && containerRef.current) {
                 const stickyRect = stickyRef.current.getBoundingClientRect();
@@ -220,9 +223,6 @@ const CaseStudiesHero = () => {
     <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100dvh' }}>
         {/* Header - scrolls normally */}
         <div className="pt-16 md:pt-24 pb-16 md:pb-40 text-center px-4 max-w-4xl mx-auto">
-            <span className="text-xs tracking-[0.2em] text-slate-500 uppercase mb-4 block font-inter">
-                {heroContent.badge}
-            </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter leading-[1.1] mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
                 Featured Projects
             </h1>
