@@ -128,7 +128,7 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onTo
                 <div className="xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center">
                     <div className="project-link-content relative flex items-center gap-4 md:gap-8">
                         {/* Number */}
-                        <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 flex-shrink-0 min-w-[2rem]">
+                        <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 shrink-0 min-w-[2rem]">
                             {String(project.id).padStart(2, '0')}
                         </span>
 
@@ -231,7 +231,7 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onTo
                         >
                             <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                                 {/* Image */}
-                                <div className="lg:w-80 flex-shrink-0">
+                                <div className="lg:w-80 shrink-0">
                                     <div className="relative rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[4/3]">
                                         <img
                                             src={project.image}
@@ -254,10 +254,10 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onTo
                                 {/* Content */}
                                 <div className="flex-1 flex flex-col justify-between">
                                     <div>
-                                        <span className="text-cyan-400 text-xs font-semibold uppercase tracking-widest">
+                                        <span className="text-label text-cyan-400 font-semibold">
                                             {project.category} · {project.service}
                                         </span>
-                                        <p className="text-white/80 text-base md:text-lg leading-relaxed mt-3 max-w-xl">
+                                        <p className="text-body-lg text-white/80 mt-3 max-w-xl">
                                             {project.description}
                                         </p>
                                     </div>

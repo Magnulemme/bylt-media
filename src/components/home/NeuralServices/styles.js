@@ -67,7 +67,7 @@ export const SWIPER_STYLES = `
     }
 
     .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content:hover div[class*="w-14 h-14"] svg {
-      color: rgba(156, 163, 175, 1);
+      color: rgb(148, 163, 184); /* slate-400 */
     }
 
     .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content {
@@ -147,11 +147,11 @@ export const SWIPER_STYLES = `
     }
 
     .services-3d-swiper .swiper-slide .service-title {
-      color: rgb(107, 114, 128);
+      color: rgb(100, 116, 139); /* slate-500 */
     }
 
     .services-3d-swiper .swiper-slide .service-subtitle {
-      color: rgb(75, 85, 99);
+      color: rgb(71, 85, 105); /* slate-600 */
     }
 
     .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content div[class*="w-14 h-14"] {
@@ -160,7 +160,7 @@ export const SWIPER_STYLES = `
     }
 
     .services-3d-swiper .swiper-slide:not(.swiper-slide-active) .service-slide-content div[class*="w-14 h-14"] svg {
-      color: rgb(107, 114, 128);
+      color: rgb(100, 116, 139); /* slate-500 */
     }
 
     /* Active slide full color */

@@ -50,7 +50,7 @@ const SocialProofBento = () => {
                 {/* Section Header */}
                 <div className="mb-12 text-center">
                     <motion.h2
-                        className="text-3xl md:text-5xl font-bold text-white mb-4"
+                        className="heading-h1 text-white mb-4"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -89,8 +89,8 @@ const SocialProofBento = () => {
                             </div>
 
                             <h3 className="text-4xl md:text-6xl font-bold text-white mb-3">5.0</h3>
-                            <p className="text-lg md:text-xl text-gray-300 mb-2">Client Satisfaction</p>
-                            <p className="text-xs md:text-sm text-gray-400">Based on 50+ reviews</p>
+                            <p className="text-body-lg mb-2">Client Satisfaction</p>
+                            <p className="text-caption">Based on 50+ reviews</p>
                         </div>
                     </motion.div>
 
@@ -106,7 +106,7 @@ const SocialProofBento = () => {
 
                         <div className="relative z-10">
                             <Award className="w-8 h-8 text-yellow-400 mb-4" />
-                            <h4 className="text-xl md:text-2xl font-bold text-white mb-4">Official Partners</h4>
+                            <h4 className="heading-h3 text-white mb-4">Official Partners</h4>
 
                             <div className="flex flex-wrap items-center justify-start gap-6 md:gap-8">
                                 <img
@@ -136,17 +136,17 @@ const SocialProofBento = () => {
                         <div className="relative z-10 h-full flex flex-col justify-between">
                             <div>
                                 <Zap className="w-10 h-10 text-cyan-400 mb-4" />
-                                <h4 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                                <h4 className="heading-h2 text-white mb-3">
                                     Performance First
                                 </h4>
-                                <p className="text-sm text-gray-400 leading-relaxed">
+                                <p className="text-body-sm leading-relaxed">
                                     Data-driven campaigns with transparent reporting and guaranteed ROI
                                 </p>
                             </div>
 
-                            <div className="mt-6 pt-6 border-t border-gray-700">
+                            <div className="mt-6 pt-6 border-t border-slate-700">
                                 <div className="text-3xl font-bold text-cyan-400 mb-1">24/7</div>
-                                <div className="text-xs text-gray-400">Campaign Monitoring</div>
+                                <div className="text-caption">Campaign Monitoring</div>
                             </div>
                         </div>
                     </motion.div>
@@ -163,10 +163,10 @@ const SocialProofBento = () => {
 
                         <div className="relative z-10">
                             <Globe className="w-8 h-8 text-purple-400 mb-4" />
-                            <h4 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            <h4 className="heading-h2 text-white mb-2">
                                 Global Experience
                             </h4>
-                            <p className="text-sm text-gray-400 mb-4">Campaigns across 4 continents</p>
+                            <p className="text-body-sm mb-4">Campaigns across 4 continents</p>
 
                             <div className="flex flex-wrap gap-2">
                                 <span className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/20 rounded-full text-xs text-cyan-400">Europe</span>

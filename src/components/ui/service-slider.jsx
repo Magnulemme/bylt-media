@@ -277,7 +277,7 @@ export const CardContent = ({ className, children, showCTA = false, ctaHref = "#
 
 export const CardTitle = ({ className, children }) => {
   return (
-    <h3 className={cn("text-2xl font-bold text-white font-inter m-0 leading-tight flex-shrink-0", className)}>
+    <h3 className={cn("heading-h3 text-white m-0 shrink-0", className)}>
       {children}
     </h3>
   );
@@ -285,7 +285,7 @@ export const CardTitle = ({ className, children }) => {
 
 export const CardSubtitle = ({ className, children }) => {
   return (
-    <p className={cn("text-sm text-cyan-400 m-0 font-semibold leading-snug flex-shrink-0", className)}>
+    <p className={cn("text-base text-cyan-400 m-0 font-semibold leading-snug shrink-0", className)}>
       {children}
     </p>
   );
@@ -293,7 +293,7 @@ export const CardSubtitle = ({ className, children }) => {
 
 export const CardDescription = ({ className, children }) => {
   return (
-    <p className={cn("text-sm text-gray-300 leading-relaxed flex-1", className)}>
+    <p className={cn("text-body-sm flex-1", className)}>
       {children}
     </p>
   );
@@ -301,13 +301,13 @@ export const CardDescription = ({ className, children }) => {
 
 export const CardCapabilities = ({ capabilities, label = "Key Capabilities", className }) => {
   return (
-    <div className={cn("space-y-3 pt-4 flex-shrink-0 max-lg:hidden", className)}>
-      <p className="text-xs text-cyan-400 font-semibold uppercase tracking-wider">{label}</p>
+    <div className={cn("space-y-3 pt-4 shrink-0 max-lg:hidden", className)}>
+      <p className="text-label text-cyan-400">{label}</p>
       <div className="grid grid-cols-2 gap-2">
         {capabilities.slice(0, 4).map((cap, idx) => (
           <div
             key={idx}
-            className="flex items-start gap-2 text-xs text-gray-400"
+            className="flex items-start gap-2 text-xs text-slate-400"
           >
             <span className="text-cyan-400 mt-0.5">•</span>
             <span className="leading-tight">{cap.name}</span>

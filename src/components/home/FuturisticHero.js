@@ -106,7 +106,7 @@ const FuturisticHero = () => {
                             </div>
 
                             {/* Description Text */}
-                            <p className="relative z-10 text-base md:text-lg  leading-relaxed text-center max-w-lg mx-auto btn-test">
+                            <p className="relative z-10 text-body-lg text-center max-w-lg mx-auto">
                                 A future-forward digital agency driving growth through <span className="font-semibold text-white">performance marketing</span>, <span className="font-semibold text-white">data-driven strategy</span>, and <span className="font-semibold text-white">bespoke AI solutions</span>.
                             </p>
 

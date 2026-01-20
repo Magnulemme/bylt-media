@@ -70,7 +70,7 @@ const InfinityPhilosophy = () => {
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="infinity-header"
                         >
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                            <h2 className="heading-h2 text-white">
                                 Growth that<br />
                                 compounds
                             </h2>

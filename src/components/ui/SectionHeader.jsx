@@ -29,11 +29,11 @@ const SectionHeader = ({
 
   const content = (
     <div className={`flex items-center gap-3 ${alignmentClasses[align]} ${className}`}>
-      <span className="text-white font-mono text-sm tracking-wide">
+      <span className="text-label text-white">
         {title}
       </span>
       {tag && (
-        <span className="text-gray-500 font-mono text-sm tracking-wide">
+        <span className="text-label text-slate-500">
           [{tag}]
         </span>
       )}

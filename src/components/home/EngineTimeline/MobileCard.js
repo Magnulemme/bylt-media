@@ -197,7 +197,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
 
                     {/* Title & Subtitle */}
                     <div className="mb-4 relative z-10">
-                        <h3 className="text-xl font-bold text-white font-inter mb-1">
+                        <h3 className="heading-h3 text-white mb-1">
                             {step.title}
                         </h3>
                         <p className="text-sm text-cyan-400 font-medium">
@@ -206,7 +206,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10 hidden sm:block">
+                    <p className="text-slate-300 leading-relaxed mb-6 text-sm relative z-10 hidden sm:block">
                         {step.description}
                     </p>
 
@@ -215,7 +215,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                         {step.details.map((detail, i) => (
                             <div key={i} className="flex items-start gap-3">
                                 <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
-                                <span className="text-sm text-gray-200 leading-relaxed">
+                                <span className="text-sm text-slate-200 leading-relaxed">
                                     {detail}
                                 </span>
                             </div>
@@ -240,7 +240,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 >
                     {/* Number - white/gray when inactive */}
                     <motion.span
-                        className="relative text-gray-400"
+                        className="relative text-slate-400"
                         style={{
                             opacity: useTransform(isActive, [0, 1], [1, 0])
                         }}
@@ -311,7 +311,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
 
                 {/* Title & Subtitle */}
                 <div className="mb-4 relative z-10">
-                    <h3 className="text-xl font-bold text-white font-inter mb-1">
+                    <h3 className="heading-h3 text-white mb-1">
                         {step.title}
                     </h3>
                     <p className="text-sm text-cyan-400 font-medium">
@@ -320,7 +320,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-300 leading-relaxed mb-6 text-sm relative z-10">
+                <p className="text-slate-300 leading-relaxed mb-6 text-sm relative z-10">
                     {step.description}
                 </p>
 
@@ -329,7 +329,7 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     {step.details.map((detail, i) => (
                         <div key={i} className="flex items-start gap-3">
                             <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
-                            <span className="text-sm text-gray-200 leading-relaxed">
+                            <span className="text-sm text-slate-200 leading-relaxed">
                                 {detail}
                             </span>
                         </div>

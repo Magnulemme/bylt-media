@@ -15,11 +15,11 @@ const KPICards = ({ kpis }) => {
         >
           <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-xl p-4 flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-500 mb-0.5">{kpi.label}</p>
+              <p className="text-xs text-slate-500 mb-0.5">{kpi.label}</p>
               <p className={`text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${kpi.color}`}>
                 {kpi.value}
               </p>
-              <p className="text-[10px] text-gray-600 mt-0.5">{kpi.description}</p>
+              <p className="text-[10px] text-slate-600 mt-0.5">{kpi.description}</p>
             </div>
             <div className="relative w-12 h-12 flex items-center justify-center">
               {/* Background glow */}

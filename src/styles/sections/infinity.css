@@ -35,6 +35,11 @@
 
 /* Infinity Paragraphs - Container paragrafi descrittivi a tutta larghezza */
 .infinity-paragraphs {
-  @apply text-gray-300 text-lg leading-relaxed flex flex-col;
+  @apply flex flex-col;
   gap: var(--spacing-padding-xs);
+}
+
+.infinity-paragraphs p {
+  /* Equivalente a .text-body-lg */
+  @apply text-lg leading-relaxed text-slate-300;
 }

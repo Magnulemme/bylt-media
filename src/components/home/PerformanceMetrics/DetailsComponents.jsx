@@ -18,23 +18,23 @@ export const DetailsSection = ({ leftStat, rightStat, description }) => (
     <div className="flex items-center justify-between">
       {/* Left Stat */}
       <div>
-        <p className="text-xs text-gray-500 mb-1">{leftStat.label}</p>
+        <p className="text-xs text-slate-500 mb-1">{leftStat.label}</p>
         <div className="flex items-baseline gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-0">
           <span className={leftStat.className}>{leftStat.value}</span>
-          {leftStat.unit && <span className="text-xs text-gray-500">{leftStat.unit}</span>}
+          {leftStat.unit && <span className="text-xs text-slate-500">{leftStat.unit}</span>}
         </div>
       </div>
 
       {/* Right Stat */}
       <div className="text-right">
-        <p className="text-xs text-gray-500 mb-1">{rightStat.label}</p>
+        <p className="text-xs text-slate-500 mb-1">{rightStat.label}</p>
         <p className={rightStat.className}>{rightStat.value}</p>
       </div>
     </div>
 
     {/* Description */}
     {description && (
-      <p className="text-xs text-gray-500 mt-3">
+      <p className="text-xs text-slate-500 mt-3">
         {description}
       </p>
     )}

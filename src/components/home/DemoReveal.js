@@ -19,7 +19,7 @@ const DemoReveal = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <p className="text-sm md:text-base text-gray-400 uppercase tracking-wider">
+                        <p className="text-label-lg">
                             Official Partner of
                         </p>
                         <motion.a
@@ -46,7 +46,7 @@ const DemoReveal = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        <p className="text-sm md:text-base text-gray-400 uppercase tracking-wider">
+                        <p className="text-label-lg">
                             MarketiseMe is Official Partner of
                         </p>
                         <div className="partner-logos-group">

@@ -57,19 +57,19 @@ const DesktopSection = ({ performanceData, roasData, channelPerformanceData, tra
                   height: cardHeight
                 }}
               >
-                <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
+                <div className="shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
                   <ChartCard type="conversion" data={channelPerformanceData} />
                 </div>
-                <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
+                <div className="shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
                   <ChartCard type="roas" data={roasData} />
                 </div>
-                <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
+                <div className="shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
                   <ChartCard type="traffic" data={trafficMixData} />
                 </div>
-                <div className="flex-shrink-0 w-[45vw] lg:w-[32vw]">
+                <div className="shrink-0 w-[45vw] lg:w-[32vw]">
                   <KPICard roasData={roasData} kpis={kpis} />
                 </div>
-                <div className="flex-shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
+                <div className="shrink-0 w-[45vw] lg:w-[32vw] [&>div]:!h-full [&>div>div]:!h-full">
                   <ChartCard type="revenue" data={performanceData} />
                 </div>
               </motion.div>
@@ -80,10 +80,10 @@ const DesktopSection = ({ performanceData, roasData, channelPerformanceData, tra
           {showText && (
             <div className="performance-sticky-text-container">
               <div className="performance-sticky-text-content">
-                <h3 className="text-2xl md:text-3xl font-bold text-white">
+                <h3 className="heading-h2 text-white">
                   The Numbers Speak for Themselves
                 </h3>
-                <p className="text-base md:text-lg text-gray-400">
+                <p className="text-subheader">
                   Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
                 </p>
               </div>

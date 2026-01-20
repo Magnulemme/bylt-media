@@ -5,13 +5,12 @@ import { motion } from 'motion/react';
  * SectionTitle Component
  *
  * A flexible title component with multiple animation variants.
- * Note: For scroll-reveal word-by-word animation, use the custom ScrollRevealText
- * component in your specific file (to avoid hydration issues).
+ * Uses centralized typography classes from typography.css
  *
  * @param {string} title - The main title text (required)
  * @param {string} subtitle - Optional subtitle/description text
  * @param {string} align - Alignment: 'left', 'center', 'right' (default: 'center')
- * @param {string} size - Size: 'sm', 'md', 'lg', 'xl' (default: 'lg')
+ * @param {string} size - Size: 'sm', 'md', 'lg', 'xl', 'display' (default: 'xl')
  * @param {string} variant - Animation variant: 'blur', 'fade', 'none' (default: 'blur')
  * @param {string} titleClassName - Additional classes for title
  * @param {string} subtitleClassName - Additional classes for subtitle
@@ -36,27 +35,30 @@ const SectionTitle = ({
     right: 'text-right'
   };
 
-  // Size classes for title
+  // Map size prop to typography.css classes
+  // sm → heading-h4, md → heading-h3, lg → heading-h2, xl → heading-h1, display → heading-display
   const titleSizeClasses = {
-    sm: 'text-xl md:text-2xl',
-    md: 'text-2xl md:text-3xl lg:text-4xl',
-    lg: 'text-2xl md:text-4xl',
-    xl: 'text-3xl md:text-4xl lg:text-5xl'
+    sm: 'heading-h4',
+    md: 'heading-h3',
+    lg: 'heading-h2',
+    xl: 'heading-h1',
+    display: 'heading-display'
   };
 
-  // Size classes for subtitle
+  // Subtitle uses text-body classes from typography.css
   const subtitleSizeClasses = {
-    sm: 'text-sm md:text-base',
-    md: 'text-base md:text-lg',
-    lg: 'text-lg',
-    xl: 'text-lg md:text-xl'
+    sm: 'text-subheader',
+    md: 'text-subheader',
+    lg: 'text-subheader',
+    xl: 'text-subheader',
+    display: 'text-subheader'
   };
 
-  // Default title classes
-  const defaultTitleClasses = `font-bold font-inter leading-tight text-white ${titleSizeClasses[size]} ${alignmentClasses[align]}`;
+  // Title classes: typography class + alignment + white text (headings don't include color)
+  const defaultTitleClasses = `${titleSizeClasses[size]} ${alignmentClasses[align]}`;
 
-  // Default subtitle classes
-  const defaultSubtitleClasses = `text-gray-400 ${subtitleSizeClasses[size]} ${alignmentClasses[align]}`;
+  // Subtitle classes: typography class + alignment (text-body classes include color)
+  const defaultSubtitleClasses = `${subtitleSizeClasses[size]} ${alignmentClasses[align]}`;
 
   /**
    * Blur to Focus variant

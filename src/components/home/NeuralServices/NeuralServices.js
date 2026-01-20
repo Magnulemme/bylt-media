@@ -173,7 +173,7 @@ const NeuralServices = () => {
                                                             <CardCapabilities capabilities={item.capabilities} />
                                                         )}
                                                         {item.ctaText && item.ctaHref && (
-                                                            <span className="group/cta inline-flex items-center gap-2 text-sm font-semibold text-white transition-colors duration-300 mt-4">
+                                                            <span className="group/cta inline-flex items-center gap-2 text-body-sm font-semibold text-white transition-colors duration-300 mt-4">
                                                                 <span>{item.ctaText}</span>
                                                                 <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
                                                             </span>
@@ -192,7 +192,7 @@ const NeuralServices = () => {
                 {/* CTA Section */}
                 <div className="services-bottom-cta-section">
                     <div className="services-bottom-cta-content">
-                        <p>
+                        <p className="text-body-lg">
                             Don't see exactly what you need? We offer <span className="text-cyan-400 font-semibold">custom solutions</span> tailored to your business goals.
                         </p>
                     </div>

@@ -63,7 +63,7 @@ const SuccessStories = () => {
             <div className="success-stories-header max-w-content mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl mb-6">
                     <motion.h2
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter leading-tight text-white text-left mb-6"
+                        className="heading-h1 text-white text-left mb-6"
                         initial={{ opacity: 0, filter: "blur(10px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)" }}
                         viewport={{ once: true }}
@@ -72,7 +72,7 @@ const SuccessStories = () => {
                         Real Results from <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Real Partners</span>
                     </motion.h2>
                     <motion.p
-                        className="text-gray-400 text-lg md:text-xl text-left"
+                        className="text-subheader text-left"
                         initial={{ opacity: 0, filter: "blur(10px)" }}
                         whileInView={{ opacity: 1, filter: "blur(0px)" }}
                         viewport={{ once: true }}

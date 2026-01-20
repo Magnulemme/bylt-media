@@ -87,10 +87,10 @@ const MobileSection = ({ performanceData, roasData, channelPerformanceData, traf
 
       {/* Testo che appare DOPO lo scroll container */}
       <div className="performance-mobile-text-container">
-        <h3 className="text-xl font-bold text-white mb-2">
+        <h3 className="heading-h3 text-white mb-2">
           The Numbers Speak for Themselves
         </h3>
-        <p className="text-sm text-gray-400">
+        <p className="text-body-sm">
           Total transparency on performance. Every metric is tracked, analyzed, and optimized to maximize your return on investment.
         </p>
       </div>

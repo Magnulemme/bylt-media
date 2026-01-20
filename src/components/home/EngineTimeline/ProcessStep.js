@@ -116,7 +116,7 @@ const ProcessStep = ({ step, index }) => {
 
                     {/* Number - white/gray when inactive */}
                     <motion.span
-                        className="relative z-20 text-gray-400"
+                        className="relative z-20 text-slate-400"
                         style={{
                             opacity: useTransform(isActive, [0, 1], [1, 0])
                         }}
@@ -190,13 +190,13 @@ const ProcessStep = ({ step, index }) => {
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-end mb-6 relative z-10">
                     {/* Left: Title + Description */}
                     <div>
-                        <h3 className="text-xl md:text-2xl font-bold text-white font-inter mb-1">
+                        <h3 className="heading-h3 text-white mb-1">
                             {step.title}
                         </h3>
                         <p className="text-sm text-cyan-400 font-medium mb-4">
                             {step.subtitle}
                         </p>
-                        <p className="text-gray-300 leading-relaxed">
+                        <p className="text-body-lg">
                             {step.description}
                         </p>
                     </div>
@@ -228,8 +228,8 @@ const ProcessStep = ({ step, index }) => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 + i * 0.05 }}
                         >
-                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0 mt-1.5" />
-                            <span className="text-sm text-gray-200 leading-relaxed">
+                            <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 mt-1.5" />
+                            <span className="text-sm text-slate-200 leading-relaxed">
                                 {detail}
                             </span>
                         </motion.div>

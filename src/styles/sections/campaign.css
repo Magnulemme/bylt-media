@@ -1,0 +1,32 @@
+/* ====================================
+   CAMPAIGN SHOWCASE SECTION COMPONENTS
+   ==================================== */
+
+/* Campaign Section - Container principale con padding verticale */
+.campaign-showcase-section {
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .campaign-showcase-section {
+    padding-bottom: var(--spacing-padding-2xl);
+  }
+}
+
+/* Campaign Header - Container titolo (sotto le card) */
+.campaign-header {
+  @apply w-full max-w-content mx-auto px-8;
+  padding-top: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .campaign-header {
+    padding-top: var(--spacing-padding-lg);
+  }
+}
+
+/* Campaign Stats - Container per le statistiche dopo lo sticky */
+.campaign-stats {
+  padding-top: var(--spacing-padding-sm);
+}

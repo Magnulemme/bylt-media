@@ -294,7 +294,7 @@ ${formData.message}
             <div ref={sectionRef} className="max-w-content mx-auto px-4 sm:px-6 lg:px-8 relative z-10 quantum-anim">
                 {/* Bridge Header */}
                 <div className="text-center mb-16 max-w-4xl mx-auto">
-                    <div className="text-3xl md:text-5xl font-bold font-inter mb-6">
+                    <div className="heading-h1 mb-6">
                         <ScrollRevealText
                             text="They built their future with us."
                             className="text-white"

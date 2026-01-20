@@ -33,7 +33,7 @@ const ScrollRevealText = ({ lines }) => {
         return (
             <h3
                 key={lineIndex}
-                className="text-3xl md:text-5xl lg:text-6xl font-bold text-center leading-tight text-white"
+                className="heading-h1 text-center text-white"
                 style={{ fontFamily: 'var(--font-family-inter)' }}
             >
                 {words.map((word, i) => {
@@ -92,7 +92,7 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => 
             <div className="stats-value">
                 {prefix}{animatedValue}{suffix}
             </div>
-            <div className="text-sm md:text-base text-gray-400 uppercase tracking-wider font-semibold">
+            <div className="text-label-lg font-bold text-slate-400">
                 {label}
             </div>
         </div>

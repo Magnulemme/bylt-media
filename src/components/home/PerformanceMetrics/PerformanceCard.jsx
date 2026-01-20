@@ -25,9 +25,9 @@ const PerformanceCard = ({
         {/* Header con titolo e legenda */}
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-medium text-gray-400 mb-1">{title}</h3>
+            <h3 className="text-sm font-medium text-slate-400 mb-1">{title}</h3>
             {subtitle && (
-              <p className="text-xs text-gray-600">{subtitle}</p>
+              <p className="text-xs text-slate-600">{subtitle}</p>
             )}
           </div>
           {legend && (
