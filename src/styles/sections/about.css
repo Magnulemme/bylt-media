@@ -1,0 +1,45 @@
+/* ========================================
+   ABOUT PAGE - STICKY REVEAL SECTION
+   ======================================== */
+
+/* About Reveal Section - Sticky positioning per effetto reveal */
+.about-reveal-section {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 0;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-reveal-section {
+    padding-top: var(--spacing-padding-2xl);
+    padding-bottom: var(--spacing-padding-2xl);
+  }
+}
+
+/* About Reveal Container - Wrapper senza padding extra */
+.about-reveal-container {
+  @apply relative z-10 mx-auto max-w-6xl;
+  padding-left: var(--spacing-padding-xs);
+  padding-right: var(--spacing-padding-xs);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 640px) {
+  .about-reveal-container {
+    padding-left: var(--spacing-padding-sm);
+    padding-right: var(--spacing-padding-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-reveal-container {
+    padding-left: var(--spacing-padding-md);
+    padding-right: var(--spacing-padding-md);
+  }
+}

@@ -10,7 +10,7 @@ const FeatureCard = ({ feature, index }) => {
 
     return (
         <WobbleCard
-            containerClassName="h-full min-h-[140px] bg-slate-950 border border-gray-800 hover:border-cyan-500/50"
+            containerClassName="h-full min-h-[140px] bg-slate-950 border border-slate-800 hover:border-cyan-500/50"
             className="p-6 py-6"
         >
             {/* Wave Background */}
@@ -39,10 +39,10 @@ const FeatureCard = ({ feature, index }) => {
                 >
                     <Icon className="w-6 h-6" style={{ color: accentColor }} />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2 font-inter">
+                <h3 className="heading-h4 text-white mb-2">
                     {feature.title}
                 </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
+                <p className="text-body leading-relaxed">
                     {feature.description}
                 </p>
             </div>

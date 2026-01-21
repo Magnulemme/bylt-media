@@ -7,7 +7,7 @@ import React, { useRef, useEffect } from 'react';
  * - Same color palette as OrganicBlobCanvas
  * - Soft gradients and luminous blending
  */
-const VerticalLinesCanvas = ({ className = '' }) => {
+const VerticalLinesCanvas = ({ className = '', dotScale = 1.0 }) => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
 
@@ -38,6 +38,7 @@ const VerticalLinesCanvas = ({ className = '' }) => {
             varying vec2 v_uv;
             uniform float u_time;
             uniform vec2 u_resolution;
+            uniform float u_dotScale;
 
             // Simplex-like noise for organic shapes
             vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -83,8 +84,8 @@ const VerticalLinesCanvas = ({ className = '' }) => {
                 // Dark background
                 vec3 bg = vec3(0.008, 0.024, 0.09);
 
-                // Dot grid
-                float dotsAcross = 71.0;
+                // Dot grid - density increases as dots get smaller
+                float dotsAcross = 71.0 + (1.0 - u_dotScale) * 40.0;
                 float aspectRatio = u_resolution.x / u_resolution.y;
 
                 vec2 gridSize = vec2(dotsAcross, dotsAcross / aspectRatio);
@@ -110,8 +111,8 @@ const VerticalLinesCanvas = ({ className = '' }) => {
                 height3D = height3D * height3D; // quadratic for more contrast
 
                 // Dot size based on height (bigger = closer/higher)
-                // Range: 0.08 (far/low) to 0.5 (close/high)
-                float dotRadius = 0.08 + height3D * 0.42;
+                // Base range: 0.08 (far/low) to 0.5 (close/high), scaled by u_dotScale
+                float dotRadius = (0.08 + height3D * 0.42) * u_dotScale;
 
                 // Distance from cell center
                 float dist = length(cellUV - 0.5) * 2.0;
@@ -221,6 +222,10 @@ const VerticalLinesCanvas = ({ className = '' }) => {
         // Get uniform locations
         const timeLoc = gl.getUniformLocation(program, 'u_time');
         const resolutionLoc = gl.getUniformLocation(program, 'u_resolution');
+        const dotScaleLoc = gl.getUniformLocation(program, 'u_dotScale');
+
+        // Set dot scale uniform
+        gl.uniform1f(dotScaleLoc, dotScale);
 
         // Resize handler
         const updateSize = () => {
@@ -258,7 +263,7 @@ const VerticalLinesCanvas = ({ className = '' }) => {
             gl.deleteShader(fragmentShader);
             gl.deleteBuffer(buffer);
         };
-    }, []);
+    }, [dotScale]);
 
     return (
         <div

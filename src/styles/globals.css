@@ -268,6 +268,7 @@
     @import "./sections/success-stories.css";
     @import "./sections/engine-timeline.css";
     @import "./sections/campaign.css";
+    @import "./sections/about.css";
   }
 
   /* ========================================

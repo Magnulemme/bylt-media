@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import DataVisualization3D from './DataVisualization3D';
 import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
 import { MovingBorderButton } from '../ui/moving-border-button';
-import SectionHeader from '../ui/SectionHeader';
+
 import { useProfiler } from '@/hooks/useProfiler';
 
 // Callback to signal Hero is ready

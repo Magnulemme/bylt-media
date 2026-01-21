@@ -31,8 +31,8 @@ const growthData = [
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-slate-900/95 backdrop-blur-sm border border-gray-700 rounded-lg px-3 py-2 shadow-xl">
-                <p className="text-xs text-slate-500 mb-1">{label}</p>
+            <div className="bg-slate-900/95 backdrop-blur-sm border border-slate-700 rounded-lg px-3 py-2 shadow-xl">
+                <p className="text-caption mb-1">{label}</p>
                 <p className="text-sm font-semibold text-cyan-400">
                     +{payload[0].value}%
                 </p>
@@ -68,13 +68,10 @@ const ServiceDetails = ({ service }) => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-4 block">
-                            Why Choose Us
-                        </span>
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
+                        <h2 className="heading-h2 text-white mb-4">
                             {service.details.heading}
                         </h2>
-                        <p className="text-base md:text-lg text-slate-400 leading-relaxed mb-8">
+                        <p className="text-subheader leading-relaxed mb-6">
                             {service.details.subheading}
                         </p>
 
@@ -93,7 +90,7 @@ const ServiceDetails = ({ service }) => {
                                         <div className="flex-shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mt-0.5">
                                             <Check className="w-3 h-3 text-cyan-400" />
                                         </div>
-                                        <span className="text-slate-400 text-sm md:text-base">
+                                        <span className="text-body">
                                             {benefit.title}
                                         </span>
                                     </motion.li>
@@ -115,7 +112,7 @@ const ServiceDetails = ({ service }) => {
                                         <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                                             {stat.value}
                                         </div>
-                                        <div className="text-xs md:text-sm text-slate-500">
+                                        <div className="text-caption">
                                             {stat.label}
                                         </div>
                                     </motion.div>
@@ -130,7 +127,7 @@ const ServiceDetails = ({ service }) => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="relative rounded-2xl border border-gray-800 bg-slate-950/50 p-6 overflow-hidden max-md:mt-8"
+                        className="relative rounded-2xl border border-slate-800 bg-slate-950/50 p-6 overflow-hidden max-md:mt-8"
                     >
                         {/* Subtle glow effect */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -138,16 +135,16 @@ const ServiceDetails = ({ service }) => {
                         <div className="relative z-10">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h3 className="text-lg font-bold text-white font-inter">
+                                    <h3 className="heading-h4 text-white">
                                         Performance Growth
                                     </h3>
-                                    <p className="text-sm text-slate-500">
+                                    <p className="text-body-sm text-slate-500">
                                         Year over year improvement
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-cyan-400" />
-                                    <span className="text-xs text-slate-500">Growth %</span>
+                                    <span className="text-caption">Growth %</span>
                                 </div>
                             </div>
 
@@ -216,10 +213,10 @@ const ServiceDetails = ({ service }) => {
                                 transition={{ duration: 0.6, delay: 0.1 }}
                                 className="relative z-10 p-6"
                             >
-                                <h2 className="text-2xl font-bold text-white font-inter mb-3">
+                                <h2 className="heading-h2 text-white mb-4">
                                     {secondary.heading}
                                 </h2>
-                                <p className="text-sm text-slate-300 leading-relaxed mb-5">
+                                <p className="text-subheader leading-relaxed mb-6">
                                     {secondary.subheading}
                                 </p>
 
@@ -234,10 +231,10 @@ const ServiceDetails = ({ service }) => {
                                             transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
                                             className="flex items-start gap-2"
                                         >
-                                            <span className="text-xs font-mono text-cyan-400 mt-0.5">
+                                            <span className="text-caption text-cyan-400 mt-0.5">
                                                 0{index + 1}
                                             </span>
-                                            <span className="text-slate-300 text-xs leading-snug">
+                                            <span className="text-body text-slate-300 leading-snug">
                                                 {outcome.title}
                                             </span>
                                         </motion.div>
@@ -258,7 +255,7 @@ const ServiceDetails = ({ service }) => {
                                                 <div className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                                                     {stat.value}
                                                 </div>
-                                                <div className="text-xs text-slate-500">
+                                                <div className="text-caption">
                                                     {stat.label}
                                                 </div>
                                             </motion.div>
@@ -288,10 +285,10 @@ const ServiceDetails = ({ service }) => {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                                <h2 className="text-2xl md:text-3xl font-bold text-white font-inter mb-3">
+                                <h2 className="heading-h2 text-white mb-4">
                                     {secondary.heading}
                                 </h2>
-                                <p className="text-base text-slate-400 leading-relaxed mb-6">
+                                <p className="text-subheader leading-relaxed mb-6">
                                     {secondary.subheading}
                                 </p>
 
@@ -306,10 +303,10 @@ const ServiceDetails = ({ service }) => {
                                             transition={{ duration: 0.4, delay: index * 0.08 }}
                                             className="flex items-start gap-3"
                                         >
-                                            <span className="text-xs font-mono text-cyan-500/70 mt-0.5">
+                                            <span className="text-caption text-cyan-500/70">
                                                 0{index + 1}
                                             </span>
-                                            <span className="text-slate-400 text-sm leading-snug">
+                                            <span className="text-body leading-snug">
                                                 {outcome.title}
                                             </span>
                                         </motion.div>
@@ -328,7 +325,7 @@ const ServiceDetails = ({ service }) => {
                                         <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                                             {stat.value}
                                         </div>
-                                        <div className="text-xs md:text-sm text-slate-500">
+                                        <div className="text-caption">
                                             {stat.label}
                                         </div>
                                     </motion.div>

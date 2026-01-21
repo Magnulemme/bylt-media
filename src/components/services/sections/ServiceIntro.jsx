@@ -13,7 +13,7 @@ const ServiceIntro = ({ service }) => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-xs tracking-[0.2em] text-gray-500 uppercase mb-4 block"
+                    className="text-label text-slate-500 mb-4 block"
                 >
                     {service.heroTag}
                 </motion.span>
@@ -23,7 +23,7 @@ const ServiceIntro = ({ service }) => {
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     animate={{ opacity: 1, filter: "blur(0px)" }}
                     transition={{ duration: 0.8, delay: 0.1 }}
-                    className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter mb-4 text-white"
+                    className="heading-display mb-4 text-white"
                 >
                     {service.title}
                 </motion.h1>
@@ -33,7 +33,7 @@ const ServiceIntro = ({ service }) => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="text-xl md:text-2xl text-gray-400"
+                    className="text-subheader text-slate-400"
                 >
                     {service.subtitle}
                 </motion.p>

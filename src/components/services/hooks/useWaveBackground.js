@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // Generate 3D wave background with dots - contemporary generative art style
-export const useWaveBackground = (variant = 0) => {
+export const useWaveBackground = (variant = 0, transparent = false) => {
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
@@ -10,9 +10,11 @@ export const useWaveBackground = (variant = 0) => {
         canvas.height = 250;
         const ctx = canvas.getContext('2d');
 
-        // Dark base
-        ctx.fillStyle = '#020617';
-        ctx.fillRect(0, 0, 500, 250);
+        // Dark base (skip if transparent for mask usage)
+        if (!transparent) {
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, 500, 250);
+        }
 
         // 3-color gradients for each variant [start, mid, end]
         const gradients = [
@@ -137,7 +139,7 @@ export const useWaveBackground = (variant = 0) => {
 
         ctx.globalAlpha = 1;
         setImageUrl(canvas.toDataURL('image/png'));
-    }, [variant]);
+    }, [variant, transparent]);
 
     return imageUrl;
 };

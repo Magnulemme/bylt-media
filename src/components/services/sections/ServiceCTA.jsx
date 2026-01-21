@@ -11,10 +11,10 @@ const ServiceCTA = () => {
             }}
         >
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 font-inter">
+                <h2 className="heading-h1 text-white mb-6">
                     Ready to Get Started?
                 </h2>
-                <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
+                <p className="text-subheader mb-8 max-w-2xl mx-auto">
                     Let's discuss how we can help you achieve your goals. Get a free audit and see what's possible.
                 </p>
                 <div className="relative z-10 flex justify-center w-full pt-8 pb-8">

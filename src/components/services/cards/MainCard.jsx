@@ -9,7 +9,7 @@ import { WobbleCard } from '../../ui/wobble-card';
 const MainCard = ({ service }) => {
     return (
         <WobbleCard
-            containerClassName="bg-slate-950 border border-gray-800 hover:border-cyan-500/50 h-full"
+            containerClassName="bg-slate-950 border border-slate-800 hover:border-cyan-500/50 h-full"
             className="p-0 flex flex-col"
         >
             {/* Aurora Wave Background - extends into padding area */}
@@ -20,20 +20,20 @@ const MainCard = ({ service }) => {
 
             {/* Text Content with Rotating Text */}
             <div className="relative z-10 p-6 md:p-8">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter">
+            <h1 className="heading-h1">
             <RotatingText
                         phrases={service.rotatingPhrases}
                         className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
                     />
                 </h1>
-                <p className="text-sm md:text-base text-slate-400 leading-relaxed">
+                <p className="text-body-lg leading-relaxed">
                     {service.description}
                 </p>
             </div>
 
             {/* Hero Image */}
             <div className="relative z-10 px-8 md:px-10">
-                <div className="relative rounded-xl overflow-hidden border border-gray-700/50 shadow-lg h-48 md:h-56">
+                <div className="relative rounded-xl overflow-hidden border border-slate-700/50 shadow-lg h-48 md:h-56">
                     <Image
                         src={service.heroImage}
                         alt={service.title || 'Service image'}

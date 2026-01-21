@@ -10,7 +10,7 @@ const ProcessCard = ({ step, index }) => {
 
     return (
         <WobbleCard
-            containerClassName="group bg-slate-950 border border-gray-800 hover:border-cyan-500/50 h-52 cursor-pointer"
+            containerClassName="group bg-slate-950 border border-slate-800 hover:border-cyan-500/50 h-52 cursor-pointer"
             className="p-0"
         >
             {/* Dither Background */}
@@ -39,24 +39,24 @@ const ProcessCard = ({ step, index }) => {
 
             {/* Default State - Title at bottom (desktop only) */}
             <div className="absolute inset-0 hidden md:flex flex-col justify-end p-6 transition-all duration-300 group-hover:opacity-0">
-                <h3 className="text-lg font-bold text-white font-inter drop-shadow-lg">
+                <h3 className="heading-h4 text-white drop-shadow-lg">
                     {step.title}
                 </h3>
             </div>
 
             {/* Mobile/Tablet - Title only at bottom */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 lg:hidden">
-                <h3 className="text-lg font-bold text-white font-inter drop-shadow-lg">
+                <h3 className="heading-h4 text-white drop-shadow-lg">
                     {step.title}
                 </h3>
             </div>
 
             {/* Desktop Hover State - Full Content */}
             <div className="absolute inset-0 hidden lg:flex flex-col justify-center p-6 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white font-inter mb-3">
+                <h3 className="heading-h4 text-white mb-3">
                     {step.title}
                 </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
+                <p className="text-body-sm leading-relaxed">
                     {step.description}
                 </p>
             </div>
