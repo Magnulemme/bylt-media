@@ -8,25 +8,12 @@ const MovingBorder = ({
   duration = 3000,
   rx,
   ry,
+  dimensions,
+  randomOffset = 0,
   ...otherProps
 }) => {
   const pathRef = useRef(null);
   const progress = useMotionValue(0);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const updateDimensions = () => {
-      const { width, height } = containerRef.current.getBoundingClientRect();
-      setDimensions({ width, height });
-    };
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
 
   useAnimationFrame((time) => {
     if (!pathRef.current) return;
@@ -35,7 +22,8 @@ const MovingBorder = ({
       const length = pathRef.current.getTotalLength();
       if (length && length > 0) {
         const pxPerMillisecond = length / duration;
-        const progressValue = (time * pxPerMillisecond) % length;
+        const offsetTime = time + randomOffset * duration;
+        const progressValue = (offsetTime * pxPerMillisecond) % length;
         progress.set(progressValue);
       }
     } catch (error) {
@@ -65,12 +53,12 @@ const MovingBorder = ({
 
   const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
 
-  const pathD = dimensions.width > 0 && dimensions.height > 0
+  const pathD = dimensions?.width > 0 && dimensions?.height > 0
     ? `M 0 0 H ${dimensions.width} V ${dimensions.height} H 0 Z`
     : '';
 
   return (
-    <div ref={containerRef} className="absolute inset-0">
+    <div className="absolute inset-0">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
@@ -109,10 +97,41 @@ export const MovingBorderButton = ({
   duration,
   className,
   hoverColor = "#0ea5e9",
+  variant = "button",
+  color = "cyan",
   ...otherProps
 }) => {
   const [isReady, setIsReady] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [randomOffset] = useState(() => Math.random());
+  const containerRef = useRef(null);
+
+  const isTag = variant === "tag";
+
+  const tagColors = {
+    cyan: "#06b6d4",
+    purple: "#a855f7",
+  };
+  const borderColor = tagColors[color] || tagColors.cyan;
+  const computedBorderRadius = isTag ? "0.75rem" : borderRadius;
+
+  // Misura dimensioni dal componente padre
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateDimensions = () => {
+      const { width, height } = containerRef.current.getBoundingClientRect();
+      setDimensions({ width, height });
+    };
+
+    updateDimensions();
+
+    const resizeObserver = new ResizeObserver(updateDimensions);
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   // Pre-warm il blur layer
   useEffect(() => {
@@ -123,54 +142,67 @@ export const MovingBorderButton = ({
 
   return (
     <Component
+      ref={containerRef}
       className={cn(
-        "relative h-16 w-40 bg-transparent p-[1px] text-xl",
+        "relative bg-transparent p-[1px]",
+        isTag ? "h-auto w-auto" : "h-16 w-40 text-xl",
         containerClassName
       )}
       style={{
-        borderRadius: borderRadius,
+        borderRadius: computedBorderRadius,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       {...otherProps}>
-      {/* Glow effect on hover - sottile e solo in basso */}
-      <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-        style={{
-          borderRadius: borderRadius,
-          opacity: isHovered ? 0.6 : 0,
-          boxShadow: `0 8px 16px -4px ${hoverColor}`,
-        }}
-      />
+      {/* Glow effect on hover - solo per button */}
+      {!isTag && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{
+            borderRadius: computedBorderRadius,
+            opacity: isHovered ? 0.6 : 0,
+            boxShadow: `0 8px 16px -4px ${hoverColor}`,
+          }}
+        />
+      )}
 
       {/* Moving border con CSS mask per mostrare solo l'anello */}
       <div
         className="absolute inset-0 pointer-events-none p-[1px] overflow-hidden"
         style={{
-          borderRadius: borderRadius,
+          borderRadius: computedBorderRadius,
           WebkitMask:
             "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           WebkitMaskComposite: "xor",
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "exclude",
         }}>
-        <MovingBorder duration={duration} rx="30%" ry="30%">
+        <MovingBorder duration={duration || (isTag ? 2500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={isTag ? randomOffset : 0}>
           <div
             className={cn(
-              "h-20 w-20 bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
+              isTag
+                ? "h-20 w-20 opacity-90"
+                : "h-20 w-20 bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
               borderClassName
-            )} />
+            )}
+            style={isTag ? {
+              background: `radial-gradient(circle, ${borderColor} 40%, transparent 60%)`
+            } : undefined}
+          />
         </MovingBorder>
       </div>
 
-      {/* Button content - background trasparente + blur overlay */}
+      {/* Content */}
       <div
         className={cn(
-          "relative z-10 flex h-full w-full items-center justify-center text-sm text-white antialiased",
+          "relative z-10 flex h-full w-full items-center justify-center antialiased",
+          isTag
+            ? "text-label-sm text-white px-3 py-1.5 border border-slate-700 bg-slate-950/80"
+            : "text-sm text-white",
           className
         )}
         style={{
-          borderRadius: `calc(${borderRadius} * 0.96)`,
+          borderRadius: `calc(${computedBorderRadius} * 0.96)`,
           willChange: "backdrop-filter",
           transform: "translateZ(0)",
           WebkitBackdropFilter: "blur(8px)",

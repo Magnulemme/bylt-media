@@ -5,9 +5,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../components/layout';
 import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
 import { DitherShader } from '../components/ui/dither-shader';
-import { Linkedin, ExternalLink, Award, Briefcase, TrendingUp, Mic } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import { useWaveBackground } from '../components/services/hooks';
+import VerticalLinesCanvas from '../components/services/sections/VerticalLinesCanvas';
 import ShaderBackground from '../components/home/ShaderBackground';
 import { cn } from '@/lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
@@ -150,7 +151,7 @@ export default function About() {
 
             {/* Hero Section with Our Story + Why Choose */}
             <section
-                className="relative flex flex-col overflow-hidden service-page"
+                className="relative flex flex-col service-page overflow-x-clip"
                 style={{
                     background: '#020617',
                     zIndex: 10
@@ -238,24 +239,14 @@ export default function About() {
                             </div>
                         </div>
                     </div>
-
-                    {/* Mission Statement */}
-                    <div className="mt-12 text-center max-w-2xl mx-auto">
-                        <p className="text-body-lg text-slate-300 italic">
-                            "We don't just run campaigns. We build growth engines that transform businesses."
-                        </p>
-                    </div>
                 </div>
                 </div>
             </section>
 
-            {/* What Sets Us Apart */}
-            <section
-                className="py-20 relative overflow-hidden about-reveal-section"
-                style={{ background: '#020617' }}
-            >
+            {/* What Sets Us Apart - Sticky Reveal Section */}
+            <section className="about-reveal-section">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-                    <div className="text-right">
+                    <div className="text-center md:text-right">
                         <h2 className="heading-h1 text-white mb-6">
                             What Sets Us Apart
                         </h2>
@@ -302,9 +293,12 @@ export default function About() {
                 }}
             >
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="heading-h1 text-white mb-16 text-center">
+                    <h2 className="heading-h1 text-white mb-6 text-center md:text-left">
                         Meet Our Founders
                     </h2>
+                    <p className="text-subheader md:text-left text-center mb-16 max-w-2xl">
+                        The team behind your success
+                    </p>
 
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Teodor */}
@@ -332,7 +326,7 @@ export default function About() {
                                         <span>LinkedIn</span>
                                     </a>
                                 </div>
-                                <p className="text-body text-center leading-relaxed">
+                                <p className="text-body-lg text-center leading-relaxed">
                                     Over 10 years of deep expertise in digital marketing and business strategy.
                                     Proven track record managing multi-million pound campaigns and mentoring teams across diverse industries.
                                 </p>
@@ -364,7 +358,7 @@ export default function About() {
                                         <span>LinkedIn</span>
                                     </a>
                                 </div>
-                                <p className="text-body text-center leading-relaxed">
+                                <p className="text-body-lg text-center leading-relaxed">
                                     10+ years in digital marketing, from web development to paid media specialisation.
                                     Successfully managed Fortune 500 clients and led international expansion strategies for global brands.
                                 </p>
@@ -514,64 +508,84 @@ export default function About() {
                     <h2 className="heading-h1 text-white mb-6 text-center">
                         Brand Ecosystem
                     </h2>
-                    <p className="text-subheader text-center mb-16 max-w-2xl mx-auto">
+                    <p className="text-subheader text-center mb-12 max-w-2xl mx-auto">
                         Beyond BYLT Media, we've built specialized brands to serve specific industries and communities
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* BookedUp Media */}
-                        <div className="group relative p-8 rounded-2xl  bg-slate-950 backdrop-blur-sm overflow-hidden">
-                            <div className="relative z-10">
-                                <div className="mb-6">
+                        <a
+                            href="https://bookedupmedia.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group relative rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/50 transition-all duration-300"
+                        >
+                            {/* Image */}
+                            <div className="aspect-[16/9] overflow-hidden">
+                                <img
+                                    src="/images/ecosystem/booked.webp"
+                                    alt="BookedUp Media"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                            </div>
+                            {/* Content */}
+                            <div className="p-6 bg-slate-950">
+                                <div className="flex items-center justify-between mb-4">
                                     <img
                                         src="/images/ecosystem/transparent-bookedupmedia.png"
-                                        alt="BookedUp Media"
-                                        className="h-12 object-contain mb-2"
+                                        alt="BookedUp Media Logo"
+                                        className="h-10 object-contain"
                                     />
-                                    <p className="text-caption text-cyan-400">Hospitality Marketing Specialists</p>
+                                    <MovingBorderButton as="div" variant="tag" color="cyan">
+                                        <p className='text-label-sm'>hospitality marketing</p>
+                                    </MovingBorderButton>
                                 </div>
-                                <p className="text-body leading-relaxed mb-6">
+                                <p className="text-body-lg leading-relaxed mb-4">
                                     Our dedicated hospitality marketing agency focuses exclusively on restaurants, hotels, bars, and entertainment venues.
-                                    We understand the unique challenges of the hospitality industry and provide specialized strategies to drive bookings and increase customer loyalty.
                                 </p>
-                                <a
-                                    href="https://bookedupmedia.com"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
-                                >
-                                    <span>Visit Website</span>
-                                    <ExternalLink className="w-4 h-4" />
-                                </a>
+                                <span className="inline-flex items-center gap-2 text-base font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300">
+                                    <span>Explore BookedUp</span>
+                                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                </span>
                             </div>
-                        </div>
+                        </a>
 
                         {/* SEM Stories */}
-                        <div className="group relative p-8 rounded-2xl  bg-slate-950 backdrop-blur-sm overflow-hidden">
-                            <div className="relative z-10">
-                                <div className="mb-6">
+                        <a
+                            href="https://www.semstories.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group relative rounded-2xl border border-slate-800 overflow-hidden hover:border-purple-500/50 transition-all duration-300"
+                        >
+                            {/* Image */}
+                            <div className="aspect-[16/9] overflow-hidden">
+                                <img
+                                    src="/images/ecosystem/sem.webp"
+                                    alt="SEM Stories Events"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                />
+                            </div>
+                            {/* Content */}
+                            <div className="p-6 bg-slate-950">
+                                <div className="flex items-center justify-between mb-4">
                                     <img
                                         src="/images/ecosystem/semstori.webp"
-                                        alt="SEM Stories"
-                                        className="h-12 object-contain mb-2"
+                                        alt="SEM Stories Logo"
+                                        className="h-10 object-contain"
                                     />
-                                    <p className="text-caption text-purple-400">Edinburgh Marketing Events</p>
+                                    <MovingBorderButton as="div" variant="tag" color="purple">
+                                         <p className='text-label-sm'>Marketing Events</p>
+                                    </MovingBorderButton>
                                 </div>
-                                <p className="text-body leading-relaxed mb-6">
+                                <p className="text-body-lg leading-relaxed mb-4">
                                     Our signature marketing event series in Edinburgh brings together industry professionals, thought leaders, and innovators.
-                                    SEM Stories creates a platform for knowledge sharing, networking, and celebrating the evolution of digital marketing.
                                 </p>
-                                <a
-                                    href="https://www.semstories.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors font-medium"
-                                >
-                                    <span>Visit Website</span>
-                                    <ExternalLink className="w-4 h-4" />
-                                </a>
+                                <span className="inline-flex items-center gap-2 text-base font-semibold text-white group-hover:text-purple-400 transition-colors duration-300">
+                                    <span>Discover SEM Stories</span>
+                                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                                </span>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -621,31 +635,40 @@ export default function About() {
 
             {/* CTA Section */}
             <section
-                className="py-12 lg:py-24  relative overflow-hidden max-sm:pb-24"
+                className="py-12 lg:py-24 relative overflow-hidden max-sm:pb-24"
                 style={{
                     background: '#020617',
                     zIndex: 10
                 }}
             >
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className="heading-h1 text-white mb-6">
-                        Ready to Work Together?
-                    </h2>
-                    <p className="text-subheader mb-8 max-w-2xl mx-auto">
-                        Let's discuss how we can help grow your business with data-driven digital marketing.
-                    </p>
-                    <div className="relative z-10 flex justify-center w-full pt-8 pb-8">
-                                        <MovingBorderButton
-                                            type="submit"
-                                            borderRadius="0.75rem"
-                                            containerClassName="min-w-[240px] h-16"
-                                            borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
-                                            className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed bg-slate-950"
-                                            duration={2500}
-                                        >
-                                            Get Free Audit
-                                        </MovingBorderButton>
-                                    </div>
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Card with VerticalLinesCanvas background */}
+                    <div className="relative rounded-3xl border border-slate-800 overflow-hidden">
+                        {/* VerticalLinesCanvas background */}
+                        <VerticalLinesCanvas dotScale={0.8} />
+
+                        {/* Content */}
+                        <div className="relative z-10 p-8 lg:p-12 text-center">
+                            <h2 className="heading-h1 text-white mb-6">
+                                Ready to Work Together?
+                            </h2>
+                            <p className="text-subheader mb-8 max-w-2xl mx-auto">
+                                Let's discuss how we can help grow your business with data-driven digital marketing.
+                            </p>
+                            <div className="flex justify-center w-full pt-8 pb-8">
+                                <MovingBorderButton
+                                    type="submit"
+                                    borderRadius="0.75rem"
+                                    containerClassName="min-w-[240px] h-16"
+                                    borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
+                                    className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed bg-slate-950"
+                                    duration={2500}
+                                >
+                                    Get Free Audit
+                                </MovingBorderButton>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </Layout>

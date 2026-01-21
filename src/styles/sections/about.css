@@ -4,20 +4,17 @@
 
 /* About Reveal Section - Sticky positioning per effetto reveal */
 .about-reveal-section {
-  @apply relative overflow-hidden;
   position: sticky;
   bottom: 0;
   background: #020617;
   z-index: 0;
   clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
   padding-top: var(--spacing-padding-lg);
-  padding-bottom: var(--spacing-padding-lg);
 }
 
 @media (min-width: 768px) {
   .about-reveal-section {
     padding-top: var(--spacing-padding-2xl);
-    padding-bottom: var(--spacing-padding-2xl);
   }
 }
 

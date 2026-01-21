@@ -152,6 +152,15 @@
 }
 
 /* Labels & Tags */
+.text-label-sm {
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: rgb(100 116 139);
+  letter-spacing: 0.05em;
+}
+
+/* Labels & Tags */
 .text-label {
   font-size: 0.75rem;
   font-weight: 500;
