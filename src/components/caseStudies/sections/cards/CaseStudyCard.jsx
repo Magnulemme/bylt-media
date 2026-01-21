@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { MovingBorderButton } from '../../../ui/moving-border-button';
 
 const CaseStudyCard = ({ study, index, isReversed = false }) => {
     return (
@@ -37,15 +38,17 @@ const CaseStudyCard = ({ study, index, isReversed = false }) => {
             {/* Content */}
             <div className={`${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
                 {/* Category Badge */}
-                <motion.span
+                <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: 0.1 }}
-                    className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase bg-gradient-to-r from-cyan-400/20 to-blue-500/20 text-cyan-400 border border-cyan-400/30 mb-4"
+                    className="mb-4"
                 >
-                    {study.category}
-                </motion.span>
+                    <MovingBorderButton variant="tag" color="cyan" as="span">
+                        <p className="text-tag">{study.category}</p>
+                    </MovingBorderButton>
+                </motion.div>
 
                 {/* Title */}
                 <motion.h2
@@ -53,7 +56,7 @@ const CaseStudyCard = ({ study, index, isReversed = false }) => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4 leading-tight"
+                    className="heading-h2 text-white mb-4"
                 >
                     {study.title}
                 </motion.h2>
@@ -64,7 +67,7 @@ const CaseStudyCard = ({ study, index, isReversed = false }) => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 }}
-                    className="text-base md:text-lg text-slate-400 leading-relaxed mb-8"
+                    className="text-body-lg mb-8"
                 >
                     {study.description}
                 </motion.p>
@@ -85,10 +88,10 @@ const CaseStudyCard = ({ study, index, isReversed = false }) => {
                             {/* Animated top border */}
                             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transform -translate-x-full group-hover/stat:translate-x-0 transition-transform duration-500" />
 
-                            <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-1">
+                            <div className="stats-value-light mb-1">
                                 {stat.value}
                             </div>
-                            <div className="text-sm text-slate-500 font-medium uppercase tracking-wider">
+                            <div className="text-label-sm">
                                 {stat.label}
                             </div>
                         </div>

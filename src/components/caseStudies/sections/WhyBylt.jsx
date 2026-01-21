@@ -36,7 +36,7 @@ const WhyBylt = () => {
                                 <span className="text-2xl font-bold font-inter leading-none bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent">
                                     {step.number}
                                 </span>
-                                <h3 className="text-lg font-semibold text-white mt-1">
+                                <h3 className="heading-h4 text-white mt-1">
                                     {step.title}
                                 </h3>
                             </div>
@@ -45,11 +45,11 @@ const WhyBylt = () => {
                                 <span className="text-2xl font-bold font-inter leading-none bg-gradient-to-r from-cyan-400/30 via-blue-500/30 to-purple-600/30 bg-clip-text text-transparent">
                                     {step.number}
                                 </span>
-                                <h3 className="text-xl font-semibold text-white">
+                                <h3 className="heading-h4 text-white">
                                     {step.title}
                                 </h3>
                             </div>
-                            <p className="text-sm text-slate-500 leading-relaxed text-center md:text-left">
+                            <p className="text-body-sm text-center md:text-left">
                                 {step.description}
                             </p>
                         </motion.div>

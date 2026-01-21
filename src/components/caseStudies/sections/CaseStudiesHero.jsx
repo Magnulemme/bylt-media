@@ -1,14 +1,57 @@
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Link from 'next/link';
 import ShaderBackground from '../../home/ShaderBackground';
+import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData, heroContent } from '../constants';
+import { useCardCentering } from '../hooks/useCardCentering';
+import { useCountUp } from '../../../hooks/useCountUp';
 
 // Signal page ready for splash screen
 const signalPageReady = () => {
     if (typeof window !== 'undefined' && window.location.pathname === '/casestudies') {
         window.dispatchEvent(new CustomEvent('hero-ready'));
     }
+};
+
+// Animated Stat Component
+const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => setIsVisible(true), delay);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [delay]);
+
+    const animatedValue = useCountUp(value, 2000, isVisible);
+
+    return (
+        <div ref={ref} className="stats-card">
+            <div className="stats-value">
+                {prefix}{animatedValue}{suffix}
+            </div>
+            <div className="text-label-lg font-bold text-slate-400">
+                {label}
+            </div>
+        </div>
+    );
 };
 
 // Card content component
@@ -38,18 +81,25 @@ const CardContent = ({ study, overlayOpacity }) => (
 
         {/* Content */}
         <div className="px-6 pb-6 md:px-8 md:pb-8">
-            {/* Category - subtle */}
-            <span className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">
-                {study.category} · {study.industry}
-            </span>
+            {/* Category tag */}
+            <div className='md:flex justify-between flex-row-reverse items-center pt-4'>
+            <div className="flex gap-2 flex-wrap h-fit">
+                <MovingBorderButton variant="tag" color="cyan" as="span">
+                    <p className="text-tag">{study.category}</p>
+                </MovingBorderButton>
+                <MovingBorderButton variant="tag" color="purple" as="span">
+                    <p className="text-tag">{study.industry}</p>
+                </MovingBorderButton>
+            </div>
 
             {/* Client name */}
-            <h3 className="text-2xl md:text-3xl font-bold text-white mt-2 mb-3 line-clamp-1">
+            <h3 className="heading-h3 text-white mt-3 mb-3 line-clamp-1">
                 {study.client}
             </h3>
+            </div>
 
             {/* Description */}
-            <p className="text-sm text-slate-400 leading-relaxed mb-6 line-clamp-2">
+            <p className="text-body-sm mb-6 line-clamp-2">
                 {study.description}
             </p>
 
@@ -57,10 +107,10 @@ const CardContent = ({ study, overlayOpacity }) => (
             <div className="grid grid-cols-2 gap-4 mb-6">
                 {study.stats.slice(0, 2).map((stat, statIndex) => (
                     <div key={statIndex}>
-                        <span className="block text-xl md:text-2xl font-bold text-white">
+                        <span className="block stats-value-light">
                             {stat.value}
                         </span>
-                        <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+                        <span className="text-label-sm">
                             {stat.label}
                         </span>
                     </div>
@@ -68,9 +118,9 @@ const CardContent = ({ study, overlayOpacity }) => (
             </div>
 
             {/* CTA */}
-            <span className="inline-flex items-center gap-2 text-sm font-medium text-cyan-400 group-hover:text-cyan-300 transition-colors">
+            <span className="group/cta inline-flex items-center gap-2 text-base font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300">
                 <span>View Case Study</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
             </span>
         </div>
 
@@ -159,10 +209,14 @@ const CaseStudiesHero = () => {
     const containerRef = useRef(null);
     const cardRef = useRef(null);
     const stickyRef = useRef(null);
+    const stickyContentRef = useRef(null);
     const [cardHeight, setCardHeight] = useState(500);
     const [animationStartOffset, setAnimationStartOffset] = useState(0);
 
     const showcaseStudies = caseStudiesData;
+
+    // Calculate centering and text visibility
+    const { showText, stickyTop, stickyTopNumeric } = useCardCentering(stickyContentRef, cardHeight);
 
     // Use useLayoutEffect for measurements to prevent layout shift
     useLayoutEffect(() => {
@@ -187,8 +241,8 @@ const CaseStudiesHero = () => {
                 // Position of sticky container relative to section
                 const cardY = stickyRect.top - containerRect.top;
 
-                // Sticky point: where card centers in viewport
-                const stickyPoint = window.innerHeight / 2 - cardHeight / 2;
+                // Sticky point: use the calculated stickyTop from the hook
+                const stickyPoint = stickyTopNumeric;
 
                 // Animation starts when card reaches its sticky position
                 setAnimationStartOffset(Math.max(0, cardY - stickyPoint));
@@ -198,7 +252,7 @@ const CaseStudiesHero = () => {
         calculateOffset();
         window.addEventListener('resize', calculateOffset);
         return () => window.removeEventListener('resize', calculateOffset);
-    }, [cardHeight]);
+    }, [cardHeight, stickyTopNumeric]);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -216,17 +270,14 @@ const CaseStudiesHero = () => {
         <ShaderBackground onReady={signalPageReady} />
     </div>
 <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
-    {/* Shader Background - sticky, oversized to hide rounded corners */}
-    
-
     {/* Content container - positioned over shader */}
     <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100dvh' }}>
         {/* Header - scrolls normally */}
-        <div className="pt-16 md:pt-24 pb-16 md:pb-40 text-center px-4 max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-inter leading-[1.1] mb-6 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+        <div className="pt-16 md:pt-24 pb-16 md:pb-24 xl:pb-32 text-center px-4 max-w-4xl mx-auto">
+            <h1 className="heading-page bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
                 Featured Projects
             </h1>
-            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-body-lg mt-6 max-w-2xl mx-auto">
                 {heroContent.description}
             </p>
         </div>
@@ -235,41 +286,66 @@ const CaseStudiesHero = () => {
         <div
             ref={stickyRef}
             className="sticky"
-            style={{ top: `calc(50dvh - ${cardHeight / 2}px)` }}
+            style={{ top: stickyTop }}
         >
-            <div className="relative max-w-2xl mx-auto px-6">
-                {/* Ghost card for height */}
-                <div ref={cardRef} className="invisible">
-                    <CardContent study={showcaseStudies[0]} />
+            <div ref={stickyContentRef} className="flex flex-col">
+                <div className="relative mx-auto px-6 max-w-[min(768px,85vw)] md:max-w-[min(768px,90vw)]">
+                    {/* Ghost card for height */}
+                    <div ref={cardRef} className="invisible">
+                        <CardContent study={showcaseStudies[0]} />
+                    </div>
+
+                    {/* Actual stacked cards */}
+                    <div className="absolute inset-y-0 left-6 right-6">
+                        {showcaseStudies.map((study, index) => (
+                            <StackedCard
+                                key={study.id}
+                                study={study}
+                                index={index}
+                                totalCards={showcaseStudies.length}
+                                scrollYProgress={scrollYProgress}
+                            />
+                        ))}
+                    </div>
                 </div>
 
-                {/* Actual stacked cards */}
-                <div className="absolute inset-y-0 left-6 right-6">
-                    {showcaseStudies.map((study, index) => (
-                        <StackedCard
-                            key={study.id}
-                            study={study}
-                            index={index}
-                            totalCards={showcaseStudies.length}
-                            scrollYProgress={scrollYProgress}
-                        />
-                    ))}
-                </div>
+                {/* Title below cards - conditionally shown based on available space */}
+                {showText && (
+                    <div className="text-center pt-12 px-4 max-w-5xl mx-auto">
+                        <h3 className="heading-h2 text-white mb-3">
+                            Results That Speak for Themselves
+                        </h3>
+                        <p className="text-body">
+                            Every project is a partnership built on data, creativity, and measurable outcomes.
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
-        {/* Content dopo sticky - sale via con la fine del background */}
     </div>
 
-    
 </section>
-            <div className='relative z-20 text-center pb-24 px-4 max-w-2xl mx-auto'>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    Results That Speak for Themselves
-                </h3>
-                <p className="text-base text-slate-400">
-                    Every project is a partnership built on data, creativity, and measurable outcomes.
-                </p>
-            </div>
+
+{/* Stats grid - scrolls up after sticky section */}
+<div className="relative z-20 text-center pb-24 px-4 max-w-5xl mx-auto">
+    {/* Title shown here when not enough space in sticky section */}
+    {!showText && (
+        <div className="text-center pt-12 pb-12 max-w-5xl mx-auto">
+            <h3 className="heading-h2 text-white mb-3">
+                Results That Speak for Themselves
+            </h3>
+            <p className="text-body">
+                Every project is a partnership built on data, creativity, and measurable outcomes.
+            </p>
+        </div>
+    )}
+    <div className="stats-grid">
+        <AnimatedStat value={50} suffix="+" label="Projects" delay={0} />
+        <AnimatedStat value={150} suffix="%" label="Avg Growth" delay={100} />
+        <AnimatedStat value={12} suffix="+" label="Industries" delay={200} />
+        <AnimatedStat value={98} suffix="%" label="Satisfaction" delay={300} />
+    </div>
+</div>
 </div>
     );
 };

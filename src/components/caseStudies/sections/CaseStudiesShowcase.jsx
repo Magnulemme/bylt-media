@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Link from 'next/link';
+import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData } from '../constants';
 
 // Card content component (shared between ghost and real cards)
@@ -21,27 +22,27 @@ const CardContent = ({ study }) => (
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute top-4 left-4">
-                <span className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-cyan-500/20 text-cyan-400 rounded-full border border-cyan-500/30 backdrop-blur-sm">
-                    {study.category}
-                </span>
+                <MovingBorderButton variant="tag" color="cyan" as="span">
+                    <p className="text-tag">{study.category}</p>
+                </MovingBorderButton>
             </div>
         </div>
 
         {/* Content */}
         <div className="p-5 md:p-6">
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-2 line-clamp-1">
+            <h3 className="heading-h3 text-white mb-2 line-clamp-1">
                 {study.client}
             </h3>
-            <p className="text-sm md:text-base text-slate-400 leading-relaxed mb-4 line-clamp-2">
+            <p className="text-body-sm mb-4 line-clamp-2">
                 {study.description}
             </p>
             <div className="flex gap-6 mb-4">
                 {study.stats.slice(0, 2).map((stat, statIndex) => (
                     <div key={statIndex}>
-                        <div className="text-lg md:text-xl font-bold text-cyan-400">
+                        <div className="stats-value-light">
                             {stat.value}
                         </div>
-                        <div className="text-xs text-slate-500 uppercase tracking-wider">
+                        <div className="text-label-sm">
                             {stat.label}
                         </div>
                     </div>
@@ -169,10 +170,10 @@ const CaseStudiesShowcase = () => {
 
             {/* Header - normal flow */}
             <div className="relative z-10 pt-16 md:pt-24 pb-12 md:pb-36 text-center px-4">
-                <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
+                <span className="text-label text-cyan-500 mb-3 block">
                     Our Work
                 </span>
-                <h2 className="text-2xl md:text-4xl font-bold text-white font-inter">
+                <h2 className="heading-h2 text-white">
                     Featured Projects
                 </h2>
             </div>

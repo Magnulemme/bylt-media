@@ -197,7 +197,7 @@ export const MovingBorderButton = ({
         className={cn(
           "relative z-10 flex h-full w-full items-center justify-center antialiased",
           isTag
-            ? "text-label-sm text-white px-3 py-1.5 border border-slate-700 bg-slate-950/80"
+            ? "text-white px-3 py-1.5 border border-slate-700 bg-slate-950/80"
             : "text-sm text-white",
           className
         )}

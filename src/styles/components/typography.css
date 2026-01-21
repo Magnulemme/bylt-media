@@ -183,6 +183,16 @@
   }
 }
 
+/* Tag text - per MovingBorderButton variant="tag" */
+.text-tag {
+  font-size: 0.75rem;     /* text-xs */
+  font-weight: 600;       /* font-semibold */
+  text-transform: uppercase;
+  color: rgb(148 163 184); /* text-slate-400 */
+  letter-spacing: 0.1em;  /* tracking-wider */
+  padding-top: 0.125rem;  /* pt-0.5 */
+}
+
 /* ========================================
    SECTION SPACING UTILITIES
    Classi per padding verticale delle sezioni

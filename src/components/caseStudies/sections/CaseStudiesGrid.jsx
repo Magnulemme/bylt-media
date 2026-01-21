@@ -35,13 +35,13 @@ const CaseStudiesGrid = () => {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16 md:mb-20"
                 >
-                    <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-4 block font-inter">
+                    <span className="text-label text-cyan-500 mb-4 block">
                         Our Work
                     </span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white font-inter mb-4">
+                    <h2 className="heading-h1 text-white mb-4">
                         Featured Case Studies
                     </h2>
-                    <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-body-lg max-w-2xl mx-auto">
                         Real results from real partnerships. Discover how we help brands achieve measurable growth.
                     </p>
                 </motion.div>
