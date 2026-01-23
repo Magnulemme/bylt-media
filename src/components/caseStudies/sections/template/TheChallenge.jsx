@@ -6,7 +6,7 @@ const TheChallenge = ({ challenge }) => {
     if (!challenge) return null;
 
     return (
-        <div className="mb-16 md:mb-24">
+        <div className="mb-8 md:mb-12">
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
                 {/* Colonna sinistra: titolo + content */}
                 <div className="lg:max-w-xl">
@@ -36,10 +36,7 @@ const SectionHeader = () => {
             transition={{ duration: 0.5 }}
             className="mb-8"
         >
-            <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-                The Problem
-            </span>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter">
+            <h2 className="heading-h1 text-white">
                 The Challenge
             </h2>
         </motion.div>
@@ -58,7 +55,7 @@ const ChallengeDescription = ({ description, painPoints }) => {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6 }}
         >
-            <p className="text-base md:text-lg text-slate-400 leading-relaxed mb-8">
+            <p className="text-subheader mb-8">
                 {description}
             </p>
             <ul className="space-y-4">
@@ -73,7 +70,7 @@ const ChallengeDescription = ({ description, painPoints }) => {
                         <div className="flex-shrink-0 w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center mt-0.5">
                             <div className="w-2 h-2 bg-red-400 rounded-full" />
                         </div>
-                        <span className="text-slate-300 text-sm md:text-base">{point}</span>
+                        <span className="text-body">{point}</span>
                     </motion.li>
                 ))}
             </ul>
@@ -148,10 +145,10 @@ const MetricItem = ({ metric, index, shouldAnimate }) => {
                 delay: index * 0.1
             }}
         >
-            <span className="block text-3xl md:text-4xl font-bold text-red-500 font-inter">
+            <span className="block stats-value-light bg-none! text-red-500!">
                 {animatedValue}
             </span>
-            <span className="block text-slate-500 text-sm uppercase tracking-wider mt-1">
+            <span className="block text-label-sm mt-1">
                 {metric.label}
             </span>
         </motion.div>

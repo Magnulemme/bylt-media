@@ -17,7 +17,6 @@ const MovingBorder = ({
 
   useAnimationFrame((time) => {
     if (!pathRef.current) return;
-
     try {
       const length = pathRef.current.getTotalLength();
       if (length && length > 0) {
@@ -65,6 +64,7 @@ const MovingBorder = ({
         className="absolute h-full w-full"
         width="100%"
         height="100%"
+        viewBox={dimensions?.width > 0 ? `0 0 ${dimensions.width} ${dimensions.height}` : undefined}
         {...otherProps}>
         {pathD && (
           <path
@@ -108,19 +108,21 @@ export const MovingBorderButton = ({
   const containerRef = useRef(null);
 
   const isTag = variant === "tag";
+  const isCard = variant === "card";
 
-  const tagColors = {
+  const variantColors = {
     cyan: "#06b6d4",
     purple: "#a855f7",
   };
-  const borderColor = tagColors[color] || tagColors.cyan;
-  const computedBorderRadius = isTag ? "0.75rem" : borderRadius;
+  const borderColor = color.startsWith("#") ? color : (variantColors[color] || variantColors.cyan);
+  const computedBorderRadius = isTag ? "0.75rem" : isCard ? "1rem" : borderRadius;
 
   // Misura dimensioni dal componente padre
   useEffect(() => {
     if (!containerRef.current) return;
 
     const updateDimensions = () => {
+      if (!containerRef.current) return;
       const { width, height } = containerRef.current.getBoundingClientRect();
       setDimensions({ width, height });
     };
@@ -145,7 +147,7 @@ export const MovingBorderButton = ({
       ref={containerRef}
       className={cn(
         "relative bg-transparent p-[1px]",
-        isTag ? "h-auto w-auto" : "h-16 w-40 text-xl",
+        isTag ? "h-auto w-auto" : isCard ? "h-auto w-auto" : "h-16 w-40 text-xl",
         containerClassName
       )}
       style={{
@@ -154,21 +156,21 @@ export const MovingBorderButton = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       {...otherProps}>
-      {/* Glow effect on hover - solo per button */}
+      {/* Glow effect on hover - per button e card */}
       {!isTag && (
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
             borderRadius: computedBorderRadius,
-            opacity: isHovered ? 0.6 : 0,
-            boxShadow: `0 8px 16px -4px ${hoverColor}`,
+            opacity: isHovered ? (isCard ? 0.4 : 0.6) : 0,
+            boxShadow: `0 8px 16px -4px ${isCard ? borderColor : hoverColor}`,
           }}
         />
       )}
 
       {/* Moving border con CSS mask per mostrare solo l'anello */}
       <div
-        className="absolute inset-0 pointer-events-none p-[1px] overflow-hidden"
+        className="absolute inset-0 pointer-events-none p-[1px]"
         style={{
           borderRadius: computedBorderRadius,
           WebkitMask:
@@ -177,18 +179,30 @@ export const MovingBorderButton = ({
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "exclude",
         }}>
-        <MovingBorder duration={duration || (isTag ? 2500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={isTag ? randomOffset : 0}>
-          <div
-            className={cn(
-              isTag
-                ? "h-20 w-20 opacity-90"
-                : "h-20 w-20 bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
-              borderClassName
-            )}
-            style={isTag ? {
-              background: `radial-gradient(circle, ${borderColor} 40%, transparent 60%)`
-            } : undefined}
-          />
+        <MovingBorder duration={duration || (isTag ? 2500 : isCard ? 3500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={(isTag || isCard) ? randomOffset : 0}>
+          {(() => {
+            // Calcola dimensione dot dinamica per card basata sul perimetro
+            const dotSize = isCard
+              ? Math.max(80, (dimensions.width + dimensions.height) * 0.4)
+              : 80; // 80px = h-20/w-20 in Tailwind
+
+            return (
+              <div
+                className={cn(
+                  "opacity-90",
+                  !isTag && !isCard && "bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
+                  borderClassName
+                )}
+                style={{
+                  width: isTag ? 80 : dotSize,
+                  height: isTag ? 80 : dotSize,
+                  background: (isTag || isCard)
+                    ? `radial-gradient(circle, ${borderColor} 40%, transparent 60%)`
+                    : undefined
+                }}
+              />
+            );
+          })()}
         </MovingBorder>
       </div>
 
@@ -198,6 +212,8 @@ export const MovingBorderButton = ({
           "relative z-10 flex h-full w-full items-center justify-center antialiased",
           isTag
             ? "text-white px-3 py-1.5 border border-slate-700 bg-slate-950/80"
+            : isCard
+            ? "text-white border border-slate-700 bg-slate-950/90"
             : "text-sm text-white",
           className
         )}

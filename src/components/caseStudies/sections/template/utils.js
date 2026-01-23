@@ -1,16 +1,120 @@
 import { useState, useEffect } from 'react';
 import {
     Car, Target, Users, TrendingUp, Search, Code, Rocket,
-    MousePointerClick, Building, Clock, Globe, Briefcase
+    MousePointerClick, Building, Clock, Globe, Briefcase, User
 } from 'lucide-react';
 
 // Icon mapping for dynamic icon rendering
 export const iconMap = {
     Car, Target, Users, TrendingUp, Search, Code, Rocket,
-    MousePointerClick, Building, Clock, Globe, Briefcase
+    MousePointerClick, Building, Clock, Globe, Briefcase, User
 };
 
 export const getIcon = (iconName) => iconMap[iconName] || Target;
+
+// Dither patterns for variety
+export const ditherPatterns = ['bayer', 'halftone', 'crosshatch'];
+
+// Generate icon image for dither shader - renders icon with stylized background
+export const useIconImage = (iconName, variant = 0) => {
+    const [imageUrl, setImageUrl] = useState(null);
+
+    useEffect(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+
+        // Pure black base
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, 200, 200);
+
+        // Smooth diagonal gradient (different direction per variant)
+        const gradientConfigs = [
+            { x1: 0, y1: 0, x2: 200, y2: 200 },
+            { x1: 200, y1: 0, x2: 0, y2: 200 },
+            { x1: 0, y1: 100, x2: 200, y2: 100 },
+            { x1: 100, y1: 0, x2: 100, y2: 200 },
+        ];
+        const config = gradientConfigs[variant % 4];
+
+        const bgGradient = ctx.createLinearGradient(config.x1, config.y1, config.x2, config.y2);
+        bgGradient.addColorStop(0, '#000000');
+        bgGradient.addColorStop(0.5, '#404040');
+        bgGradient.addColorStop(1, '#000000');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, 200, 200);
+
+        // Subtle radial spotlight
+        const spotPositions = [
+            { x: 60, y: 60 },
+            { x: 140, y: 60 },
+            { x: 100, y: 140 },
+            { x: 100, y: 100 },
+        ];
+        const spot = spotPositions[variant % 4];
+        const radial = ctx.createRadialGradient(spot.x, spot.y, 0, spot.x, spot.y, 100);
+        radial.addColorStop(0, '#505050');
+        radial.addColorStop(0.5, '#252525');
+        radial.addColorStop(1, '#000000');
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = radial;
+        ctx.fillRect(0, 0, 200, 200);
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Get SVG path data for the icon
+        const iconPaths = {
+            Car: 'M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2 M7 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z M17 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+            Target: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0 M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0',
+            Users: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M12 7a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
+            TrendingUp: 'M22 7l-8.5 8.5-5-5L2 17 M16 7h6v6',
+            Search: 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z M21 21l-4.35-4.35',
+            Code: 'M16 18l6-6-6-6 M8 6l-6 6 6 6',
+            Rocket: 'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0 M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5',
+            MousePointerClick: 'M9 9l5 12 1.8-5.2L21 14Z M7.2 2.2L8 5.1 M5.1 8l-2.9-.8 M14 4.1L12 6 M6 12l-1.9 2',
+            Building: 'M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2 M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2 M10 6h4 M10 10h4 M10 14h4 M10 18h4',
+            Clock: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M12 6v6l4 2',
+            Globe: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z',
+            Briefcase: 'M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16 M2 10a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2Z M12 14v4',
+            User: 'M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z M20 21a8 8 0 1 0-16 0',
+        };
+
+        const pathData = iconPaths[iconName] || iconPaths.Target;
+
+        // Draw the icon
+        ctx.save();
+        ctx.translate(100, 100);
+        ctx.scale(5.5, 5.5);
+        ctx.translate(-12, -12);
+
+        // Shadow for depth
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        const shadowPath = new Path2D(pathData);
+        ctx.save();
+        ctx.translate(0.3, 0.3);
+        ctx.stroke(shadowPath);
+        ctx.restore();
+
+        // Icon with gradient
+        const iconGradient = ctx.createLinearGradient(4, 4, 20, 20);
+        iconGradient.addColorStop(0, '#ffffff');
+        iconGradient.addColorStop(0.5, '#b0b0b0');
+        iconGradient.addColorStop(1, '#ffffff');
+        ctx.strokeStyle = iconGradient;
+        ctx.lineWidth = 2;
+        const iconPath = new Path2D(pathData);
+        ctx.stroke(iconPath);
+
+        ctx.restore();
+
+        setImageUrl(canvas.toDataURL('image/png'));
+    }, [iconName, variant]);
+
+    return imageUrl;
+};
 
 // Accent colors matching the site design
 export const accentColors = ['#06b6d4', '#0ea5e9', '#14b8a6', '#10b981'];

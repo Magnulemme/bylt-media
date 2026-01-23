@@ -28,13 +28,13 @@ const SectionHeader = ({ description }) => {
             transition={{ duration: 0.5 }}
             className="mb-12 md:mb-16 text-right"
         >
-            <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-                What We Built
-            </span>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
+                            <span className="text-label text-cyan-500 mb-3 block">
+                            Our touch
+                        </span>
+            <h2 className="heading-h2 text-white mb-4">
                 The Solution
             </h2>
-            <p className="text-base md:text-lg text-slate-400 leading-relaxed ml-auto max-w-2xl">
+            <p className="text-subheader ml-auto max-w-2xl">
                 {description}
             </p>
         </motion.div>
@@ -92,10 +92,10 @@ const PillarCard = ({ pillar, index }) => {
                 >
                     <Icon className="w-7 h-7" style={{ color: accentColor }} />
                 </div>
-                <h4 className="font-bold text-white text-lg mb-3 font-inter group-hover:text-cyan-300 transition-colors">
+                <h4 className="heading-h4 text-white mb-3 group-hover:text-cyan-300 transition-colors">
                     {pillar.title}
                 </h4>
-                <p className="text-slate-400 text-sm leading-relaxed">
+                <p className="text-body-sm">
                     {pillar.text}
                 </p>
             </div>

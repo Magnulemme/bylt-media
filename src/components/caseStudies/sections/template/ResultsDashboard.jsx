@@ -35,13 +35,10 @@ const ResultsDescription = ({ description, highlights }) => {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.6 }}
         >
-            <span className="text-xs tracking-[0.2em] text-emerald-500 uppercase mb-3 block font-inter">
-                Measurable Impact
-            </span>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-6">
+            <h2 className="heading-h1 text-white mb-6">
                 The Results
             </h2>
-            <p className="text-base md:text-lg text-slate-400 leading-relaxed mb-8">
+            <p className="text-subheader mb-8">
                 {description}
             </p>
             {highlights && highlights.length > 0 && (
@@ -57,7 +54,7 @@ const ResultsDescription = ({ description, highlights }) => {
                             <div className="shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
                                 <Check className="w-3 h-3 text-emerald-400" />
                             </div>
-                            <span className="text-slate-300 text-sm md:text-base">{highlight}</span>
+                            <span className="text-body">{highlight}</span>
                         </motion.li>
                     ))}
                 </ul>
@@ -130,10 +127,10 @@ const MetricItem = ({ metric, index, shouldAnimate }) => {
                 delay: index * 0.1
             }}
         >
-            <span className="block text-3xl md:text-4xl font-bold text-emerald-500 font-inter">
+            <span className="block stats-value-light bg-none! text-emerald-500!">
                 {animatedValue}
             </span>
-            <span className="block text-slate-500 text-sm uppercase tracking-wider mt-1">
+            <span className="block text-label-sm mt-1">
                 {metric.title}
             </span>
         </motion.div>

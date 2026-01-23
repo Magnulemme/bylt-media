@@ -271,7 +271,7 @@ const CaseStudiesHero = () => {
     </div>
 <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
     {/* Content container - positioned over shader */}
-    <div className="relative z-10 pb-24 md:pb-32 h-full" style={{ marginTop: '-100dvh' }}>
+    <div className="relative z-10 h-full" style={{ marginTop: '-100dvh' }}>
         {/* Header - scrolls normally */}
         <div className="pt-16 md:pt-24 pb-16 md:pb-24 xl:pb-32 text-center px-4 max-w-4xl mx-auto">
             <h1 className="heading-page bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">

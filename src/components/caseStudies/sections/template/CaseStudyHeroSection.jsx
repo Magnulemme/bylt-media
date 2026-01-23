@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { motion, useInView } from 'motion/react';
-import { useShaderBackground } from '@/hooks/useShaderBackground';
-import { getIcon } from './utils';
 import ShaderBackground from '@/components/home/ShaderBackground';
+import { MovingBorderButton } from '@/components/ui/moving-border-button';
 
 // Signal page ready for splash screen
 const signalPageReady = () => {
@@ -47,7 +46,7 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-inter leading-[1.2] mb-6"
+                        className="heading-page mb-6"
                     >
                         {data.headline.map((line, i) => (
                             <span
@@ -67,7 +66,7 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mb-10"
+                        className="text-subheader max-w-2xl mx-auto mb-10"
                     >
                         {data.subtitle}
                     </motion.p>
@@ -85,28 +84,26 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
                 {/* Project Overview Content - ora dentro la Hero */}
                 {study && (
                     <div className="w-full max-w-6xl mx-auto mt-16">
-                        <ProjectShowcase
-                            imageUrl={imageUrl}
-                            overviewItems={overviewItems}
-                        />
-                        {/* Mobile: solo testo sotto l'immagine */}
-                        <div className="md:hidden mt-6 grid grid-cols-2 gap-4">
+                        {/* Overview info as text - 4 columns, 2 rows */}
+                        <div className="mb-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                             {overviewItems.map((item) => (
-                                <div key={item.title} className="text-center">
-                                    <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
-                                        {item.title}
-                                    </h3>
-                                    <p className="text-sm text-white font-bold font-inter">
-                                        {item.value}
-                                    </p>
+                                <div key={item.title}>
+                                    <p className="text-label-sm mb-1">{item.title}</p>
+                                    <p className="text-body-lg text-white font-bold">{item.value}</p>
                                 </div>
                             ))}
                         </div>
-                        {data.testimonial && <ClientTestimonial testimonial={data.testimonial} />}
+
+                        <ProjectShowcase imageUrl={imageUrl} />
 
                         {/* What We Did - Services */}
                         {study.services && (
                             <WhatWeDid services={study.services} />
+                        )}
+
+                        {/* Client Testimonial */}
+                        {data.testimonial && (
+                            <ClientTestimonial testimonial={data.testimonial} />
                         )}
                     </div>
                 )}
@@ -124,10 +121,10 @@ const ClientTestimonial = ({ testimonial }) => (
         className="mt-12 max-w-2xl mx-auto"
     >
         <blockquote className="relative">
-            <p className="text-lg md:text-xl text-slate-300 italic leading-relaxed">
+            <p className="text-body-lg italic text-slate-300">
                 "{testimonial.quote}"
             </p>
-            <footer className="mt-4 flex items-center justify-center gap-2 text-sm">
+            <footer className="mt-4 flex items-center justify-center gap-2 text-body-sm">
                 <span className="text-white font-medium">{testimonial.author}</span>
                 <span className="text-slate-500">—</span>
                 <span className="text-slate-400">{testimonial.role}</span>
@@ -142,23 +139,11 @@ const ClientTestimonial = ({ testimonial }) => (
     </motion.div>
 );
 
-// Stat Card con shader background
-const StatCard = ({ stat, index, currentStat, totalStats, onClick }) => {
-    const Icon = getIcon(stat.icon);
+// Stat Card - memoized to prevent re-renders affecting border animation
+const StatCard = memo(({ stat, index, currentStat, totalStats, onClick, minWidth }) => {
     const isActive = index === currentStat;
     const isPrevious = index === (currentStat - 1 + totalStats) % totalStats;
     const isNext = index === (currentStat + 1) % totalStats;
-
-    const { containerRef, canvasRef } = useShaderBackground({
-        colors: {
-            color1: 0x22d3ee,
-            color2: 0x06b6d4,
-            color3: 0x0891b2,
-        },
-        priority: 15,
-        targetFPS: 12,
-        enableVisibilityTracking: true,
-    });
 
     let transformClasses = '';
     if (isActive) {
@@ -173,95 +158,71 @@ const StatCard = ({ stat, index, currentStat, totalStats, onClick }) => {
 
     return (
         <div
-            className={`absolute w-fit px-8 p-5 rounded-2xl border border-gray-800 bg-slate-950/60 backdrop-blur-sm transition-all duration-500 ease-out cursor-pointer hover:border-gray-700 overflow-hidden ${transformClasses}`}
+            className={`absolute transition-all duration-500 ease-out cursor-pointer ${transformClasses}`}
             onClick={onClick}
         >
-            {/* Shader background */}
             <div
-                ref={containerRef}
-                className="absolute inset-0 z-0 opacity-40"
+                className={`relative rounded-2xl transition-all duration-300 border border-slate-700 bg-slate-950`}
+                style={{ boxShadow: isActive ? '6px 6px 0px rgba(34, 211, 238, 1)' : '3px 3px 0px rgba(34, 211, 238, 0.4)' }}
             >
-                <canvas
-                    ref={canvasRef}
-                    className="w-full h-full"
-                    style={{ borderRadius: '1rem' }}
-                />
-            </div>
-            {/* Content */}
-            <div className="relative z-10 flex items-center justify-center gap-4">
-                <div className="p-3 rounded-xl bg-cyan-500/10">
-                    <Icon className="w-6 h-6 text-cyan-400" />
-                </div>
-                <div className="text-left">
-                    <div className="text-2xl md:text-3xl font-bold text-white font-inter">
+                <div className="text-center px-6 py-4" style={{ minWidth: minWidth ? `${minWidth}px` : undefined }}>
+                    <div className="stats-value-light">
                         {stat.value}
                     </div>
-                    <div className="text-sm text-slate-400">
+                    <div className="text-label-sm">
                         {stat.label}
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+});
 
 // Stats Carousel sub-component
-const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-        className="relative h-32 md:h-28 flex items-center justify-center"
-    >
-        {stats.map((stat, index) => (
-            <StatCard
-                key={index}
-                stat={stat}
-                index={index}
-                currentStat={currentStat}
-                totalStats={stats.length}
-                onClick={() => setCurrentStat(index)}
-            />
-        ))}
-    </motion.div>
-);
+const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
+    const [maxWidth, setMaxWidth] = useState(0);
+    const measureRef = useRef(null);
 
-// Service Card con shader background
-const ServiceCard = ({ service, index }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-    const { containerRef, canvasRef } = useShaderBackground({
-        colors: {
-            color1: 0x22d3ee,
-            color2: 0x06b6d4,
-            color3: 0x0891b2,
-        },
-        priority: 15,
-        targetFPS: 12,
-        enableVisibilityTracking: true,
-    });
+    // Measure all cards to find the widest one
+    useEffect(() => {
+        if (!measureRef.current) return;
+        const items = measureRef.current.querySelectorAll('[data-measure]');
+        let max = 0;
+        items.forEach((item) => {
+            const width = item.getBoundingClientRect().width;
+            if (width > max) max = width;
+        });
+        if (max > 0) setMaxWidth(max);
+    }, [stats]);
 
     return (
         <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
-            transition={{ duration: 0.4, delay: index * 0.08 }}
-            className="group relative px-5 py-3 rounded-xl border border-cyan-500/30 bg-slate-950/60 hover:border-cyan-500/50 transition-colors duration-300 overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative h-32 md:h-28 flex items-center justify-center"
         >
-            <div
-                ref={containerRef}
-                className="absolute inset-0 z-0 opacity-40"
-            >
-                <canvas
-                    ref={canvasRef}
-                    className="w-full h-full"
-                    style={{ borderRadius: '0.75rem' }}
-                />
+            {/* Hidden container to measure all cards */}
+            <div ref={measureRef} className="absolute opacity-0 pointer-events-none" aria-hidden="true">
+                {stats.map((stat, index) => (
+                    <div key={index} data-measure className="inline-block px-6 py-4">
+                        <div className="stats-value-light">{stat.value}</div>
+                        <div className="text-label-sm">{stat.label}</div>
+                    </div>
+                ))}
             </div>
-            <span className="relative z-10 text-sm text-white group-hover:text-cyan-300 transition-colors">
-                {service}
-            </span>
+
+            {stats.map((stat, index) => (
+                <StatCard
+                    key={index}
+                    stat={stat}
+                    index={index}
+                    currentStat={currentStat}
+                    totalStats={stats.length}
+                    onClick={() => setCurrentStat(index)}
+                    minWidth={maxWidth}
+                />
+            ))}
         </motion.div>
     );
 };
@@ -283,72 +244,23 @@ const WhatWeDid = ({ services }) => {
         >
             <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
                 {services.map((service, index) => (
-                    <ServiceCard key={index} service={service} index={index} />
+                    <MovingBorderButton key={index} variant="tag" color="cyan" as="span">
+                        <p className="text-tag">{service}</p>
+                    </MovingBorderButton>
                 ))}
             </div>
         </motion.div>
     );
 };
 
-// Overview Card con shader background
-const OverviewCard = ({ item, index }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-    const { containerRef, canvasRef } = useShaderBackground({
-        colors: {
-            color1: 0x22d3ee,
-            color2: 0x06b6d4,
-            color3: 0x0891b2,
-        },
-        priority: 15,
-        targetFPS: 12,
-        enableVisibilityTracking: true,
-    });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            className="group relative p-3 lg:p-5 rounded-xl lg:rounded-2xl border border-cyan-500/30 bg-slate-950/60 hover:border-cyan-500/50 transition-colors duration-300 overflow-hidden min-h-24 lg:min-h-35"
-        >
-            <div
-                ref={containerRef}
-                className="absolute inset-0 z-0 opacity-40"
-            >
-                <canvas
-                    ref={canvasRef}
-                    className="w-full h-full"
-                    style={{ borderRadius: '1rem' }}
-                />
-            </div>
-            <div className="relative z-10 flex flex-col items-center justify-center text-center h-full">
-                <h3 className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-2">
-                    {item.title}
-                </h3>
-                <p className="text-sm md:text-base text-white font-bold font-inter group-hover:text-cyan-300 transition-colors">
-                    {item.value}
-                </p>
-            </div>
-        </motion.div>
-    );
-};
-
-// Project Showcase con immagine e cards sovrapposte
-const ProjectShowcase = ({ imageUrl, overviewItems }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-
+// Project Showcase - solo immagine
+const ProjectShowcase = ({ imageUrl }) => {
     if (!imageUrl) return null;
 
     return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative rounded-2xl overflow-hidden"
+        <div
+            className="rounded-2xl overflow-hidden border border-slate-700"
+            style={{ boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)' }}
         >
             <div className="aspect-video">
                 <img
@@ -357,16 +269,7 @@ const ProjectShowcase = ({ imageUrl, overviewItems }) => {
                     className="w-full h-full object-cover"
                 />
             </div>
-
-            {/* Tablet+Desktop: Overview cards al centro */}
-            <div className="hidden md:flex absolute inset-0 items-center justify-center p-6">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl">
-                    {overviewItems.map((item, index) => (
-                        <OverviewCard key={item.title} item={item} index={index} />
-                    ))}
-                </div>
-            </div>
-        </motion.div>
+        </div>
     );
 };
 

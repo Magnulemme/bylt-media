@@ -1,15 +1,8 @@
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
 import Layout from '../../components/layout';
 import GlobalStyles from '../../components/globalsyles';
 import CaseStudyTemplate from '../../components/caseStudies/CaseStudyTemplate';
 import { getCaseStudySlugs, getCaseStudyBySlug } from '../../components/caseStudies/constants';
-
-// Dynamic import for contact section
-const NeuralContact = dynamic(
-    () => import('../../components/home/NeuralContact'),
-    { ssr: false }
-);
 
 export default function CaseStudyPage({ study }) {
     if (!study) {
@@ -39,7 +32,6 @@ export default function CaseStudyPage({ study }) {
             <GlobalStyles />
 
             <CaseStudyTemplate study={study} />
-            <NeuralContact />
         </Layout>
     );
 }

@@ -4,4 +4,8 @@ export { default as InteractiveProcess } from './InteractiveProcess';
 export { default as ProcessGrid } from './ProcessGrid';
 export { default as OurSolution } from './OurSolution';
 export { default as ResultsDashboard } from './ResultsDashboard';
+export { default as BrandMarquee } from './BrandMarquee';
+export { default as PainPointsGrid } from './PainPointsGrid';
+export { default as BeforeByltChart } from './PainPointsCard';
+export { default as AfterByltChart } from './AfterByltChart';
 export { iconMap, getIcon, accentColors } from './utils';

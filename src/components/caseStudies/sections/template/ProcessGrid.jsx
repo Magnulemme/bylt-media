@@ -3,8 +3,52 @@ import { motion, AnimatePresence, useInView } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { DitherShader } from '@/components/ui/dither-shader';
+import { useNumberImage } from '@/components/services/hooks';
 
-const ProcessGrid = ({ process, description }) => {
+// Card styles configuration - different colors and dither modes per card
+const cardStyles = [
+    {
+        color: '#22d3ee', // cyan
+        ditherMode: 'halftone',
+        gridSize: 3,
+        threshold: 0.45,
+        contrast: 1.3,
+        boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)',
+        hoverBorder: 'border-cyan-500/50'
+    },
+    {
+        color: '#a855f7', // purple
+        ditherMode: 'bayer',
+        gridSize: 4,
+        threshold: 0.5,
+        contrast: 1.4,
+        boxShadow: '6px 6px 0px rgba(168, 85, 247, 1)',
+        hoverBorder: 'border-purple-500/50'
+    },
+    {
+        color: '#3b82f6', // blue
+        ditherMode: 'crosshatch',
+        gridSize: 3,
+        threshold: 0.4,
+        contrast: 1.3,
+        boxShadow: '6px 6px 0px rgba(59, 130, 246, 1)',
+        hoverBorder: 'border-blue-500/50'
+    },
+    {
+        color: '#10b981', // emerald
+        ditherMode: 'noise',
+        gridSize: 2,
+        threshold: 0.42,
+        contrast: 1.5,
+        boxShadow: '6px 6px 0px rgba(16, 185, 129, 1)',
+        hoverBorder: 'border-emerald-500/50'
+    }
+];
+
+const DEFAULT_DESCRIPTION = "Every project follows a proven methodology. Here's how we approached this one.";
+
+const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
     const [openCard, setOpenCard] = useState(null);
 
     if (!process || process.length === 0) return null;
@@ -14,17 +58,28 @@ const ProcessGrid = ({ process, description }) => {
     };
 
     return (
-        <section className="py-16 md:py-24 relative">
+        <section className="pt-8 pb-16 md:pt-12 md:pb-24 relative">
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.02] to-transparent pointer-events-none" />
 
-            {/* Header - always padded */}
-            <div className="max-w-5xl mx-auto px-4 relative ">
-                <SectionHeader description={description} />
+            {/* Section Header */}
+            <div className="max-w-5xl mx-auto px-4 relative mb-12 md:mb-16">
+                <h2 className="heading-h1 text-white mb-4">The Process</h2>
+                {description && (
+                    <p className="text-subheader max-w-2xl">
+                        {description}
+                    </p>
+                )}
             </div>
 
             {/* Mobile Swiper - full width */}
-            <div className="md:hidden relative z-10">
+            <div
+                className="md:hidden relative z-10"
+                style={{
+                    maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+                    WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)'
+                }}
+            >
                 <Swiper
                     spaceBetween={12}
                     slidesPerView="auto"
@@ -35,7 +90,7 @@ const ProcessGrid = ({ process, description }) => {
                     {process.map((step, index) => (
                         <SwiperSlide
                             key={step.step}
-                            style={{ width: 'calc(100vw - 64px)' }}
+                            style={{ width: 'calc(100vw - 140px)' }}
                             className="h-auto!"
                         >
                             <ProcessCard
@@ -66,33 +121,12 @@ const ProcessGrid = ({ process, description }) => {
     );
 };
 
-const SectionHeader = ({ description }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="mb-12 md:mb-16"
-    >
-        <span className="text-xs tracking-[0.2em] text-cyan-500 uppercase mb-3 block font-inter">
-            How We Did It
-        </span>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white font-inter mb-4">
-            Our Approach
-        </h2>
-        {description && (
-            <p className="text-base md:text-lg text-slate-400 leading-relaxed max-w-2xl">
-                {description}
-            </p>
-        )}
-    </motion.div>
-);
-
 const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-    const accentColor = '#06b6d4'; // Cyan for all cards
+    // Get style for this card (cycles through styles array)
+    const style = cardStyles[index % cardStyles.length];
     const hasDetails = step.details && step.details.length > 0;
     const showAccordion = hasDetails && !isMobile;
 
@@ -104,40 +138,59 @@ const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
         transition: { duration: 0.5, delay: index * 0.1 }
     };
 
+    // Generate number image with canvas (same as services ProcessCard)
+    const numberImage = useNumberImage(step.step, index);
+
     return (
         <Wrapper
             {...motionProps}
-            style={{ background: '#020617' }}
+            style={{
+                background: '#020617',
+                boxShadow: style.boxShadow
+            }}
             className={`relative rounded-2xl border overflow-hidden transition-colors duration-300 h-full ${
-                isOpen && !isMobile ? 'border-cyan-500/50' : 'border-gray-800 hover:border-gray-700'
+                isOpen && !isMobile ? style.hoverBorder : 'border-slate-700'
             }`}
         >
+            {/* Dither shader background */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+                {numberImage && (
+                    <DitherShader
+                        src={numberImage}
+                        colorMode="duotone"
+                        primaryColor="#020617"
+                        secondaryColor={style.color}
+                        ditherMode={style.ditherMode}
+                        gridSize={style.gridSize}
+                        threshold={style.threshold}
+                        contrast={style.contrast}
+                    />
+                )}
+            </div>
+
             {/* Content */}
-            <div className="p-6">
-                {/* Header: Number + Toggle */}
+            <div className="p-6 relative z-10">
+                {/* Title + Toggle */}
                 <div
-                    className={`flex items-center gap-4 mb-4 ${showAccordion ? 'cursor-pointer' : ''}`}
+                    className={`flex items-center justify-between mb-2 ${showAccordion ? 'cursor-pointer' : ''}`}
                     onClick={showAccordion ? onToggle : undefined}
                 >
-                    <span className="text-3xl font-bold font-inter bg-gradient-to-r from-cyan-400/60 via-blue-500/60 to-purple-600/60 bg-clip-text text-transparent bg-[length:200%_200%] animate-gradient">
-                        {String(step.step).padStart(2, '0')}
-                    </span>
+                    <h3 className="heading-h4 text-white">
+                        {step.title}
+                    </h3>
                     {showAccordion && (
                         <ChevronDown
-                            className={`w-5 h-5 text-slate-500 ml-auto transition-transform duration-300 ${
-                                isOpen ? 'rotate-180 text-cyan-400' : ''
-                            }`}
+                            className="w-5 h-5 transition-all duration-300 flex-shrink-0 ml-4"
+                            style={{
+                                color: isOpen ? style.color : '#64748b',
+                                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+                            }}
                         />
                     )}
                 </div>
 
-                {/* Title */}
-                <h3 className="text-lg font-bold text-white mb-2 font-inter">
-                    {step.title}
-                </h3>
-
                 {/* Description */}
-                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                <p className="text-body-sm mb-4">
                     {step.description}
                 </p>
 
@@ -147,12 +200,8 @@ const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
                         {step.metrics.slice(0, 3).map((metric, i) => (
                             <span
                                 key={i}
-                                className="text-xs px-2.5 py-1 rounded-full border"
-                                style={{
-                                    background: `${accentColor}10`,
-                                    borderColor: `${accentColor}25`,
-                                    color: accentColor
-                                }}
+                                className="text-body-sm px-3 py-1.5 rounded-xl border"
+                                style={{ color: style.color, borderColor: `${style.color}40` }}
                             >
                                 {metric}
                             </span>
@@ -171,16 +220,16 @@ const ProcessCard = ({ step, index, isOpen, onToggle, isMobile = false }) => {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                             >
-                                <div className="border-t border-gray-800 mt-4 pt-4">
-                                    <h4 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-3 font-inter">
+                                <div className="mt-4 pt-4">
+                                    <h4 className="text-tag mb-3">
                                         Details
                                     </h4>
                                     <ul className="space-y-2">
                                         {step.details.map((detail, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-slate-400 text-sm">
+                                            <li key={i} className="flex items-start gap-3 text-body-sm">
                                                 <div
                                                     className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
-                                                    style={{ background: accentColor }}
+                                                    style={{ background: style.color }}
                                                 />
                                                 {detail}
                                             </li>
