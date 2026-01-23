@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
-import SectionIntro from '../ui/SectionIntro';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
 import ShaderBackground from './ShaderBackground';
+import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
 const useLissajousAnimation = (isActive, seed = 0) => {
@@ -381,15 +381,12 @@ const ProjectsShowcase = () => {
                 <ShaderBackground />
 
                 <div className="projects-showcase-container">
-                {/* Section Title */}
-                <SectionIntro
-                    title="Our Work"
-                    subtitle="Explore our portfolio of successful campaigns and strategic partnerships that drive measurable results."
-                    align="center"
-                    maxWidth="3xl"
-                    size="xl"
-                    variant="blur"
-                />
+                {/* Brand Marquee */}
+                <BrandMarquee text="BYLT SHOWS" />
+
+                <p className="text-body-lg text-white/70 text-center max-w-3xl mx-auto mb-12">
+                    Explore our portfolio of successful campaigns and strategic partnerships that drive measurable results.
+                </p>
 
                 {/* Projects List */}
                 <div className="projects-list-container">

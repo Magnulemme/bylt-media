@@ -20,7 +20,7 @@ const MainCard = ({ service }) => {
 
             {/* Text Content with Rotating Text */}
             <div className="relative z-10 p-6 md:p-8">
-            <h1 className="heading-h1">
+            <h1 className="heading-page">
             <RotatingText
                         phrases={service.rotatingPhrases}
                         className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
@@ -32,7 +32,7 @@ const MainCard = ({ service }) => {
             </div>
 
             {/* Hero Image */}
-            <div className="relative z-10 px-8 md:px-10">
+            <div className="relative z-10 px-8 md:px-10 pb-6 md:pb-0">
                 <div className="relative rounded-xl overflow-hidden border border-slate-700/50 shadow-lg h-48 md:h-56">
                     <Image
                         src={service.heroImage}
@@ -43,8 +43,8 @@ const MainCard = ({ service }) => {
                 </div>
             </div>
 
-            {/* CTA */}
-            <div className="relative z-10 flex flex-1 items-center justify-center w-full py-8 md:py-10">
+            {/* CTA - solo desktop */}
+            <div className="relative z-10 hidden md:flex flex-1 items-center justify-center w-full py-8 md:py-10">
                 <Link href="/contact">
                     <MovingBorderButton
                         borderRadius="0.75rem"

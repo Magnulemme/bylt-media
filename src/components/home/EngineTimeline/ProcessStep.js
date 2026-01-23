@@ -1,9 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import ShaderBackground from '../ShaderBackground';
+import { DitherShader } from '@/components/ui/dither-shader';
+import { ditherStyles } from './constants';
+import { useNumberImage } from '@/components/services/hooks';
 
 const ProcessStep = ({ step, index }) => {
     const stepRef = useRef(null);
+    const numberImage = useNumberImage(step.step, index);
 
     const { scrollYProgress } = useScroll({
         target: stepRef,
@@ -100,39 +104,31 @@ const ProcessStep = ({ step, index }) => {
             {/* Step Number Circle - centered vertically to card */}
             <div className="relative shrink-0 rounded-full overflow-visible">
                 <motion.div
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2 overflow-hidden"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center relative z-10 border-2 overflow-hidden"
                     style={{
                         background: circleBackground,
                         borderColor: circleBorderColor
                     }}
                 >
-                    {/* Shader Background dentro il cerchio */}
-                    <motion.div
-                        className="absolute inset-0 pointer-events-none z-0"
-                        style={{ opacity: isActive }}
-                    >
-                        <ShaderBackground priority={8} targetFPS={24} style={{ borderRadius: '9999px', zIndex: 0 }} />
-                    </motion.div>
-
-                    {/* Number - white/gray when inactive */}
-                    <motion.span
-                        className="relative z-20 text-slate-400"
-                        style={{
-                            opacity: useTransform(isActive, [0, 1], [1, 0])
-                        }}
-                    >
-                        {step.step}
-                    </motion.span>
-                    {/* Number - gradient when active */}
-                    <motion.span
-                        className="absolute z-20 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
-                        style={{
-                            opacity: isActive,
-                            animation: 'gradient 3s ease infinite'
-                        }}
-                    >
-                        {step.step}
-                    </motion.span>
+                    {/* Dithered Number */}
+                    {numberImage && (
+                        <motion.div
+                            className="absolute inset-2 z-20"
+                            style={{ opacity: iconOpacity }}
+                        >
+                            <DitherShader
+                                src={numberImage}
+                                colorMode="duotone"
+                                primaryColor="#020617"
+                                secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                                ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                                gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                                threshold={ditherStyles[index % ditherStyles.length].threshold}
+                                contrast={ditherStyles[index % ditherStyles.length].contrast}
+                                objectFit="contain"
+                            />
+                        </motion.div>
+                    )}
                 </motion.div>
                 {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                 <motion.div
@@ -201,18 +197,24 @@ const ProcessStep = ({ step, index }) => {
                         </p>
                     </div>
 
-                    {/* Right: 3D Icon - mantiene 100% opacity quando attivo */}
+                    {/* Right: 3D Icon with Dither Effect */}
                     <motion.div
-                        className="hidden lg:flex items-center justify-center"
+                        className="hidden lg:flex items-center justify-center w-48 h-48"
                         style={{
                             opacity: iconOpacity,
                             rotate: useTransform(isActive, [0, 1], [-5, 0])
                         }}
                     >
-                        <img
+                        <DitherShader
                             src={step.image3d}
-                            alt={step.title}
-                            className="w-48 h-48 object-contain"
+                            colorMode="duotone"
+                            primaryColor="#020617"
+                            secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                            ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                            gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                            threshold={ditherStyles[index % ditherStyles.length].threshold}
+                            contrast={ditherStyles[index % ditherStyles.length].contrast}
+                            objectFit="contain"
                         />
                     </motion.div>
                 </div>

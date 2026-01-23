@@ -1,3 +1,42 @@
+// Dither styles for each step icon
+export const ditherStyles = [
+    {
+        color: '#22d3ee', // cyan
+        ditherMode: 'halftone',
+        gridSize: 3,
+        threshold: 0.45,
+        contrast: 1.3,
+    },
+    {
+        color: '#a855f7', // purple
+        ditherMode: 'bayer',
+        gridSize: 4,
+        threshold: 0.5,
+        contrast: 1.4,
+    },
+    {
+        color: '#3b82f6', // blue
+        ditherMode: 'crosshatch',
+        gridSize: 3,
+        threshold: 0.4,
+        contrast: 1.3,
+    },
+    {
+        color: '#10b981', // emerald
+        ditherMode: 'noise',
+        gridSize: 2,
+        threshold: 0.42,
+        contrast: 1.5,
+    },
+    {
+        color: '#f59e0b', // amber
+        ditherMode: 'bayer',
+        gridSize: 3,
+        threshold: 0.48,
+        contrast: 1.35,
+    }
+];
+
 export const processSteps = [
     {
         step: "01",

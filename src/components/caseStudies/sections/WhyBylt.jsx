@@ -6,13 +6,24 @@ import { DitherShader } from '../../ui/dither-shader';
 import { useNumberImage } from '../../services/hooks';
 import { ditherPatterns, accentColors } from '../../services/utils';
 
+// What you get items
+const benefitsData = [
+    'Data-driven strategies',
+    'Transparent reporting',
+    'Dedicated account manager',
+    'No long-term contracts'
+];
+
 // Process step card with dither shader background
 const ProcessStepCard = ({ step, index }) => {
     const numberImage = useNumberImage(step.number, index);
     const accentColor = accentColors[index % accentColors.length];
 
     return (
-        <div className="relative rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 h-44 bg-slate-950">
+        <div
+            className="relative rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 h-44 bg-slate-950"
+            style={{ boxShadow: '4px 4px 0px rgba(34, 211, 238, 1)' }}
+        >
             {/* Dither Background with number */}
             <div className="absolute inset-0">
                 {numberImage && (
@@ -47,25 +58,58 @@ const ProcessStepCard = ({ step, index }) => {
 };
 
 const WhyBylt = () => {
-    const { badge, heading, subheading, others, bylt } = whyByltContent;
-    const { steps } = processPreviewContent;
+    const { others, bylt } = whyByltContent;
+    const { badge, heading, steps } = processPreviewContent;
 
     return (
         <section
-            className="relative pt-20 md:pt-28 pb-12 md:pb-16 overflow-hidden"
+            className="relative pt-8 md:pt-12 pb-12 md:pb-16 overflow-hidden"
             style={{ background: '#020617' }}
         >
             <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
                 <ComparisonTable
-                    badge={badge}
-                    heading={heading}
-                    subheading={subheading}
                     others={others}
                     bylt={bylt}
+                    showHeader={false}
                 />
 
+                {/* Quote */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="mt-12 md:mt-16 text-center max-w-3xl mx-auto"
+                >
+                    <svg className="w-8 h-8 mx-auto mb-4 text-cyan-400/30" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <blockquote className="text-lg md:text-xl text-white/90 font-light leading-relaxed mb-4">
+                        We don't just run campaigns—we build growth systems that deliver results month after month.
+                    </blockquote>
+                    <p className="text-sm text-slate-500">
+                        — The BYLT Team
+                    </p>
+                </motion.div>
+
+                {/* Process header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center mt-16 md:mt-20 mb-8"
+                >
+                    <span className="text-label-sm text-cyan-500 mb-3 block">
+                        {badge}
+                    </span>
+                    <h3 className="heading-h2 text-white">
+                        {heading}
+                    </h3>
+                </motion.div>
+
                 {/* Process steps */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-12 md:mt-16">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {steps.map((step, index) => (
                         <motion.div
                             key={index}
@@ -78,6 +122,24 @@ const WhyBylt = () => {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Benefits */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+                >
+                    {benefitsData.map((item) => (
+                        <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                            <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>{item}</span>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
         </section>
     );

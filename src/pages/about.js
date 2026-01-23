@@ -8,7 +8,8 @@ import { DitherShader } from '../components/ui/dither-shader';
 import { Linkedin } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import CTASectionCard from '@/components/ui/CTASectionCard';
-import { useWaveBackground } from '../components/services/hooks';
+import { cardStyles } from '@/components/ui/DitherProcessCard';
+import { useWaveBackground, useIconImage } from '../components/services/hooks';
 import ShaderBackground from '../components/home/ShaderBackground';
 import { cn } from '@/lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
@@ -103,8 +104,64 @@ const iconSvgs = {
     mic: `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>')}`,
 };
 
+// Credentials data
+const credentials = [
+    { icon: 'award', title: 'Certified', subtitle: 'Google & Meta' },
+    { icon: 'briefcase', title: 'Fortune 500', subtitle: 'Client Portfolio' },
+    { icon: 'trendingUp', title: '£10M+', subtitle: 'Managed' },
+    { icon: 'mic', title: 'Speakers', subtitle: 'Industry Events' },
+];
+
+// Credential Card component using cardStyles
+const CredentialCard = ({ icon, title, subtitle, index }) => {
+    const style = cardStyles[index % cardStyles.length];
+    const bgImage = useIconImage(iconSvgs[icon], index);
+
+    return (
+        <div className="w-[180px] shrink-0">
+            <div
+                className={`relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:${style.hoverBorder} transition-all duration-300 overflow-hidden h-full`}
+                style={{ boxShadow: style.boxShadow }}
+            >
+                {/* Background: canvas-generated image with dither */}
+                <div className="absolute inset-0 opacity-15 pointer-events-none">
+                    {bgImage && (
+                        <DitherShader
+                            key={`bg-${index}-${style.ditherMode}`}
+                            src={bgImage}
+                            colorMode="duotone"
+                            primaryColor="#020617"
+                            secondaryColor={style.color}
+                            ditherMode={style.ditherMode}
+                            gridSize={style.gridSize}
+                            threshold={style.threshold}
+                            contrast={style.contrast}
+                        />
+                    )}
+                </div>
+                {/* Center icon: original SVG */}
+                <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <DitherShader
+                        key={`icon-${index}-${style.ditherMode}`}
+                        src={iconSvgs[icon]}
+                        colorMode="duotone"
+                        primaryColor="#020617"
+                        secondaryColor={style.color}
+                        ditherMode={style.ditherMode}
+                        gridSize={style.gridSize}
+                        threshold={style.threshold}
+                        contrast={style.contrast}
+                    />
+                </div>
+                <div className="relative z-10 heading-h4 text-white">{title}</div>
+                <div className="relative z-10 text-caption">{subtitle}</div>
+            </div>
+        </div>
+    );
+};
+
 // Card component with shader + wave background
-const ApartCard = ({ number, title, description, index }) => {
+const ApartCard = ({ title, description, index }) => {
     const waveBg = useWaveBackground(index, true); // transparent background
 
     return (
@@ -123,7 +180,6 @@ const ApartCard = ({ number, title, description, index }) => {
 
             {/* Content */}
             <div className="relative z-20 p-6">
-                <span className="text-4xl font-bold bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent leading-none block mb-4">{number}</span>
                 <h3 className="heading-h4 text-white mb-2">{title}</h3>
                 <p className="text-body text-slate-400">{description}</p>
             </div>
@@ -259,7 +315,6 @@ export default function About() {
                 <InfiniteCarousel direction="left" speed="35s">
                     <div className="w-[350px] flex-shrink-0">
                         <ApartCard
-                            number="01"
                             title="We think like business owners"
                             description="Because we are. We understand the pressure of making every pound count. Our recommendations are always tied to real business outcomes, not vanity metrics."
                             index={0}
@@ -267,7 +322,6 @@ export default function About() {
                     </div>
                     <div className="w-[350px] flex-shrink-0">
                         <ApartCard
-                            number="02"
                             title="No black boxes"
                             description="You'll always know exactly what we're doing and why. We share our strategies, explain our decisions, and welcome your questions. Your success is built on understanding, not mystery."
                             index={1}
@@ -275,7 +329,6 @@ export default function About() {
                     </div>
                     <div className="w-[350px] flex-shrink-0">
                         <ApartCard
-                            number="03"
                             title="Long-term partnerships, not quick wins"
                             description="We're not interested in short-term gains that don't last. We build sustainable growth systems that continue delivering results month after month, year after year."
                             index={2}
@@ -369,130 +422,9 @@ export default function About() {
                     {/* Founder Credentials */}
                 </div>
                 <InfiniteCarousel direction="right" speed="30s" className="mt-16">
-                    <div className="w-[180px] shrink-0">
-                        <div className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-cyan-500/50 transition-all duration-300 overflow-hidden h-full">
-                            <div className="absolute inset-0 opacity-15 pointer-events-none">
-                                <DitherShader
-                                    src={iconSvgs.award}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#22d3ee"
-                                    ditherMode="halftone"
-                                    gridSize={3}
-                                    threshold={0.45}
-                                    contrast={1.3}
-                                />
-                            </div>
-                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
-                                <DitherShader
-                                    src={iconSvgs.award}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#22d3ee"
-                                    ditherMode="halftone"
-                                    gridSize={3}
-                                    threshold={0.45}
-                                    contrast={1.3}
-                                />
-                            </div>
-                            <div className="relative z-10 heading-h4 text-white">Certified</div>
-                            <div className="relative z-10 text-caption">Google & Meta</div>
-                        </div>
-                    </div>
-                    <div className="w-[180px] shrink-0">
-                        <div className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-purple-500/50 transition-all duration-300 overflow-hidden h-full">
-                            <div className="absolute inset-0 opacity-15 pointer-events-none">
-                                <DitherShader
-                                    src={iconSvgs.briefcase}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#a855f7"
-                                    ditherMode="bayer"
-                                    gridSize={4}
-                                    threshold={0.5}
-                                    contrast={1.4}
-                                />
-                            </div>
-                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
-                                <DitherShader
-                                    src={iconSvgs.briefcase}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#a855f7"
-                                    ditherMode="bayer"
-                                    gridSize={4}
-                                    threshold={0.5}
-                                    contrast={1.4}
-                                />
-                            </div>
-                            <div className="relative z-10 heading-h4 text-white">Fortune 500</div>
-                            <div className="relative z-10 text-caption">Client Portfolio</div>
-                        </div>
-                    </div>
-                    <div className="w-[180px] shrink-0">
-                        <div className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-blue-500/50 transition-all duration-300 overflow-hidden h-full">
-                            <div className="absolute inset-0 opacity-15 pointer-events-none">
-                                <DitherShader
-                                    src={iconSvgs.trendingUp}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#3b82f6"
-                                    ditherMode="crosshatch"
-                                    gridSize={3}
-                                    threshold={0.4}
-                                    contrast={1.3}
-                                />
-                            </div>
-                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
-                                <DitherShader
-                                    src={iconSvgs.trendingUp}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#3b82f6"
-                                    ditherMode="crosshatch"
-                                    gridSize={3}
-                                    threshold={0.4}
-                                    contrast={1.3}
-                                />
-                            </div>
-                            <div className="relative z-10 heading-h4 text-white">£10M+</div>
-                            <div className="relative z-10 text-caption">Managed</div>
-                        </div>
-                    </div>
-                    <div className="w-[180px] shrink-0">
-                        <div className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-emerald-500/50 transition-all duration-300 overflow-hidden h-full">
-                            <div className="absolute inset-0 opacity-15 pointer-events-none">
-                                <DitherShader
-                                    src={iconSvgs.mic}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#10b981"
-                                    ditherMode="noise"
-                                    gridSize={2}
-                                    threshold={0.42}
-                                    contrast={1.5}
-                                    animated={true}
-                                    animationSpeed={0.01}
-                                />
-                            </div>
-                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
-                                <DitherShader
-                                    src={iconSvgs.mic}
-                                    colorMode="duotone"
-                                    primaryColor="#020617"
-                                    secondaryColor="#10b981"
-                                    ditherMode="noise"
-                                    gridSize={2}
-                                    threshold={0.42}
-                                    contrast={1.5}
-                                    animated={true}
-                                    animationSpeed={0.01}
-                                />
-                            </div>
-                            <div className="relative z-10 heading-h4 text-white">Speakers</div>
-                            <div className="relative z-10 text-caption">Industry Events</div>
-                        </div>
-                    </div>
+                    {credentials.map((cred, index) => (
+                        <CredentialCard key={cred.icon} {...cred} index={index} />
+                    ))}
                 </InfiniteCarousel>
             </section>
 

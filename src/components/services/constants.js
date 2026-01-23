@@ -37,6 +37,7 @@ export const services = {
                 subtitle: 'Data-Driven Foundations',
                 description: 'Comprehensive audit of existing accounts or deep market analysis to identify opportunities.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Full account structure review', 'Competitor analysis', 'Keyword evaluation', 'Conversion audit']
             },
             {
@@ -45,6 +46,7 @@ export const services = {
                 subtitle: 'Blueprint for Success',
                 description: 'Bespoke PPC strategy including audience targeting, keyword selection, and budget allocation.',
                 icon: 'Lightbulb',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Audience persona definition', 'Advanced keyword research', 'Ad copy strategy', 'Budget planning']
             },
             {
@@ -53,6 +55,7 @@ export const services = {
                 subtitle: 'Precision Execution',
                 description: 'Building campaigns from the ground up with focus on quality score and best practices.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80',
                 details: ['Ad group segmentation', 'Compelling copywriting', 'Landing page optimization', 'Staged deployment']
             },
             {
@@ -61,6 +64,7 @@ export const services = {
                 subtitle: 'Iterative Growth',
                 description: 'Continuous monitoring, testing, and refinement to drive incremental improvements.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['A/B testing', 'Bid management', 'Keyword expansion', 'Performance refinement']
             },
             {
@@ -69,11 +73,12 @@ export const services = {
                 subtitle: 'Transparent Performance',
                 description: 'Clear, actionable reports focusing on the data that matters to your bottom line.',
                 icon: 'BarChart',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['Custom dashboards', 'ROI analysis', 'Actionable insights', 'Regular reviews']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Paid Search',
+            heading: 'Why Choose Us for Paid Search',
             subheading: 'We bring together deep expertise, cutting-edge technology, and a relentless focus on ROI to deliver campaigns that outperform.',
             benefits: [
                 {
@@ -167,6 +172,7 @@ export const services = {
                 subtitle: 'Understanding Your Presence',
                 description: 'Deep analysis of your current social footprint and competitive landscape.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80',
                 details: ['Profile analysis', 'Competitor benchmarking', 'Audience research', 'Content audit']
             },
             {
@@ -175,6 +181,7 @@ export const services = {
                 subtitle: 'Your Roadmap',
                 description: 'Custom social strategy aligned with your business goals and target audience.',
                 icon: 'Lightbulb',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Platform selection', 'Content pillars', 'Posting schedule', 'Campaign planning']
             },
             {
@@ -183,6 +190,7 @@ export const services = {
                 subtitle: 'Engaging Stories',
                 description: 'Compelling content that resonates with your audience and drives action.',
                 icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80',
                 details: ['Visual design', 'Copywriting', 'Video production', 'Story creation']
             },
             {
@@ -191,6 +199,7 @@ export const services = {
                 subtitle: 'Building Connections',
                 description: 'Active engagement and community building to foster brand loyalty.',
                 icon: 'Users',
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80',
                 details: ['Response management', 'Engagement tactics', 'Influencer outreach', 'Crisis management']
             },
             {
@@ -199,11 +208,12 @@ export const services = {
                 subtitle: 'Data-Driven Growth',
                 description: 'Continuous analysis and optimization for maximum performance.',
                 icon: 'BarChart',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Performance reports', 'A/B testing', 'Strategy refinement', 'ROI tracking']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Social Media',
+            heading: 'Why Choose Us for Social Media',
             subheading: 'We create authentic connections between brands and audiences through strategic content and community management.',
             benefits: [
                 {
@@ -297,6 +307,7 @@ export const services = {
                 subtitle: 'Foundation Analysis',
                 description: 'Comprehensive audit of technical SEO, content, and backlink profile.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Technical analysis', 'Content evaluation', 'Backlink audit', 'Competitor research']
             },
             {
@@ -305,6 +316,7 @@ export const services = {
                 subtitle: 'Targeting Opportunities',
                 description: 'In-depth keyword research to identify high-value ranking opportunities.',
                 icon: 'Target',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Keyword research', 'Search intent mapping', 'Opportunity analysis', 'Priority ranking']
             },
             {
@@ -313,6 +325,7 @@ export const services = {
                 subtitle: 'Building Strong Foundations',
                 description: 'Implementing technical improvements for better crawlability and indexation.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
                 details: ['Site speed', 'Mobile optimization', 'Schema markup', 'Core Web Vitals']
             },
             {
@@ -321,6 +334,7 @@ export const services = {
                 subtitle: 'Authority Building',
                 description: 'Creating optimized content that ranks and converts.',
                 icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80',
                 details: ['Content creation', 'On-page optimization', 'Internal linking', 'Content updates']
             },
             {
@@ -329,11 +343,12 @@ export const services = {
                 subtitle: 'Tracking Success',
                 description: 'Continuous monitoring and transparent reporting on rankings and traffic.',
                 icon: 'BarChart',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['Rank tracking', 'Traffic analysis', 'Conversion tracking', 'Monthly reports']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for SEO',
+            heading: 'Why Choose Us for SEO',
             subheading: 'We deliver sustainable organic growth through white-hat strategies that stand the test of algorithm updates.',
             benefits: [
                 {
@@ -427,6 +442,7 @@ export const services = {
                 subtitle: 'Understanding Your Vision',
                 description: 'Deep dive into your brand, goals, and target audience to inform the design direction.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Brand analysis', 'Competitor review', 'User research', 'Goal definition']
             },
             {
@@ -435,6 +451,7 @@ export const services = {
                 subtitle: 'Visual Excellence',
                 description: 'Creating stunning designs that align with your brand and user expectations.',
                 icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80',
                 details: ['Wireframing', 'UI design', 'Prototyping', 'Design review']
             },
             {
@@ -443,6 +460,7 @@ export const services = {
                 subtitle: 'Building Excellence',
                 description: 'Clean, performant code that brings the design to life with flawless functionality.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
                 details: ['Frontend development', 'Backend integration', 'CMS setup', 'Performance optimization']
             },
             {
@@ -451,6 +469,7 @@ export const services = {
                 subtitle: 'Quality Assurance',
                 description: 'Rigorous testing across devices and browsers before a seamless launch.',
                 icon: 'Target',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['Cross-browser testing', 'Mobile testing', 'Performance testing', 'Launch support']
             },
             {
@@ -459,11 +478,12 @@ export const services = {
                 subtitle: 'Ongoing Partnership',
                 description: 'Continuous support, maintenance, and optimization to keep your site performing.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['Maintenance', 'Security updates', 'Performance monitoring', 'Feature additions']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Web Development',
+            heading: 'Why Choose Us for Web Development',
             subheading: 'We build beautiful, high-performance websites that are engineered to convert visitors into customers.',
             benefits: [
                 {
@@ -557,6 +577,7 @@ export const services = {
                 subtitle: 'Current State Analysis',
                 description: 'Comprehensive review of your existing analytics setup and data quality.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Tracking audit', 'Data quality check', 'Gap analysis', 'Benchmark setting']
             },
             {
@@ -565,6 +586,7 @@ export const services = {
                 subtitle: 'Proper Foundations',
                 description: 'Setting up or optimizing your analytics infrastructure for accurate data collection.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
                 details: ['GA4 setup', 'Tag management', 'Event tracking', 'Conversion setup']
             },
             {
@@ -573,6 +595,7 @@ export const services = {
                 subtitle: 'Visual Intelligence',
                 description: 'Custom dashboards that surface the metrics that matter most to your business.',
                 icon: 'BarChart',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['KPI definition', 'Dashboard design', 'Automated reporting', 'Real-time views']
             },
             {
@@ -581,6 +604,7 @@ export const services = {
                 subtitle: 'Turning Data into Action',
                 description: 'Deep-dive analysis to uncover insights and optimization opportunities.',
                 icon: 'Brain',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['Trend analysis', 'Funnel optimization', 'Segment analysis', 'Attribution modeling']
             },
             {
@@ -589,11 +613,12 @@ export const services = {
                 subtitle: 'Continuous Improvement',
                 description: 'Regular analysis and recommendations to drive continuous performance improvement.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=80',
                 details: ['Monthly reviews', 'Testing recommendations', 'Strategy refinement', 'Performance tracking']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Analytics',
+            heading: 'Why Choose Us for Analytics',
             subheading: 'We transform raw data into actionable insights that drive smarter decisions and measurable growth.',
             benefits: [
                 {
@@ -687,6 +712,7 @@ export const services = {
                 subtitle: 'Current State Review',
                 description: 'Analysis of your email program, list health, and performance benchmarks.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=600&q=80',
                 details: ['List analysis', 'Deliverability audit', 'Performance review', 'Competitor analysis']
             },
             {
@@ -695,6 +721,7 @@ export const services = {
                 subtitle: 'Your Email Roadmap',
                 description: 'Comprehensive email strategy aligned with your customer journey and goals.',
                 icon: 'Lightbulb',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Journey mapping', 'Segmentation strategy', 'Content calendar', 'Automation planning']
             },
             {
@@ -703,6 +730,7 @@ export const services = {
                 subtitle: 'Compelling Emails',
                 description: 'Beautiful, mobile-responsive emails with copy that converts.',
                 icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80',
                 details: ['Template design', 'Copywriting', 'A/B test variants', 'Dynamic content']
             },
             {
@@ -711,6 +739,7 @@ export const services = {
                 subtitle: 'Scale Your Reach',
                 description: 'Building automated flows that engage customers at the right moments.',
                 icon: 'Zap',
+                image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=80',
                 details: ['Welcome series', 'Abandoned cart', 'Re-engagement', 'Post-purchase']
             },
             {
@@ -719,11 +748,12 @@ export const services = {
                 subtitle: 'Continuous Growth',
                 description: 'Ongoing testing and optimization to maximize email performance.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['A/B testing', 'Send time optimization', 'Subject line testing', 'Performance reports']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Email Marketing',
+            heading: 'Why Choose Us for Email Marketing',
             subheading: 'We create email programs that nurture leads, drive conversions, and build lasting customer relationships.',
             benefits: [
                 {
@@ -817,6 +847,7 @@ export const services = {
                 subtitle: 'Know Your Customer',
                 description: 'Deep audience analysis to build precise targeting segments.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80',
                 details: ['Audience research', 'Segment creation', 'Lookalike modeling', 'Intent mapping']
             },
             {
@@ -825,6 +856,7 @@ export const services = {
                 subtitle: 'Strategic Foundation',
                 description: 'Building campaigns with optimal structure and targeting parameters.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['DSP selection', 'Inventory curation', 'Creative setup', 'Tracking implementation']
             },
             {
@@ -833,6 +865,7 @@ export const services = {
                 subtitle: 'Engaging Formats',
                 description: 'High-impact display and video creative that captures attention.',
                 icon: 'PenTool',
+                image: 'https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80',
                 details: ['Banner design', 'Video production', 'Dynamic creative', 'A/B variants']
             },
             {
@@ -841,6 +874,7 @@ export const services = {
                 subtitle: 'Performance Focus',
                 description: 'Continuous optimization to maximize reach and conversions.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['Bid optimization', 'Frequency management', 'Viewability focus', 'Brand safety']
             },
             {
@@ -849,11 +883,12 @@ export const services = {
                 subtitle: 'Transparent Results',
                 description: 'Comprehensive reporting with actionable insights.',
                 icon: 'BarChart',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['Performance dashboards', 'Attribution analysis', 'Audience insights', 'Optimization recommendations']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Programmatic',
+            heading: 'Why Choose Us for Programmatic',
             subheading: 'We deliver precision-targeted campaigns at scale across premium inventory with real-time optimization.',
             benefits: [
                 {
@@ -947,6 +982,7 @@ export const services = {
                 subtitle: 'Understanding Your Data',
                 description: 'Assess your data landscape and identify high-value opportunities.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=80',
                 details: ['Data audit', 'Opportunity mapping', 'Feasibility analysis', 'ROI estimation']
             },
             {
@@ -955,6 +991,7 @@ export const services = {
                 subtitle: 'Building Foundations',
                 description: 'Clean, transform, and prepare data for analysis and modeling.',
                 icon: 'Database',
+                image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80',
                 details: ['Data cleaning', 'Feature engineering', 'Pipeline development', 'Quality assurance']
             },
             {
@@ -963,6 +1000,7 @@ export const services = {
                 subtitle: 'Building Intelligence',
                 description: 'Develop and train custom models tailored to your business needs.',
                 icon: 'Brain',
+                image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80',
                 details: ['Algorithm selection', 'Model training', 'Validation testing', 'Performance tuning']
             },
             {
@@ -971,6 +1009,7 @@ export const services = {
                 subtitle: 'Production Ready',
                 description: 'Deploy models into production with monitoring and maintenance.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
                 details: ['API development', 'Integration', 'Monitoring setup', 'Documentation']
             },
             {
@@ -979,11 +1018,12 @@ export const services = {
                 subtitle: 'Continuous Improvement',
                 description: 'Monitor performance and continuously improve model accuracy.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Performance monitoring', 'Model retraining', 'Feature updates', 'Business impact tracking']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for Data Science',
+            heading: 'Why Choose Us for Data Science',
             subheading: 'We turn complex data into competitive advantage through advanced analytics and machine learning.',
             benefits: [
                 {
@@ -1077,6 +1117,7 @@ export const services = {
                 subtitle: 'Opportunity Mapping',
                 description: 'Identify where AI can create the most value in your organization.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80',
                 details: ['Process analysis', 'Use case identification', 'Technology assessment', 'ROI projection']
             },
             {
@@ -1085,6 +1126,7 @@ export const services = {
                 subtitle: 'Architecture Planning',
                 description: 'Design the optimal AI solution architecture for your needs.',
                 icon: 'Lightbulb',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Solution architecture', 'Technology selection', 'Integration planning', 'Security design']
             },
             {
@@ -1093,6 +1135,7 @@ export const services = {
                 subtitle: 'Building Your Solution',
                 description: 'Develop and train your custom AI solution.',
                 icon: 'Construction',
+                image: 'https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80',
                 details: ['Model development', 'API integration', 'UI/UX design', 'Testing']
             },
             {
@@ -1101,6 +1144,7 @@ export const services = {
                 subtitle: 'Going Live',
                 description: 'Deploy your AI solution with comprehensive training and support.',
                 icon: 'Zap',
+                image: 'https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&q=80',
                 details: ['Production deployment', 'User training', 'Documentation', 'Support setup']
             },
             {
@@ -1109,11 +1153,12 @@ export const services = {
                 subtitle: 'Continuous Enhancement',
                 description: 'Continuously improve and expand your AI capabilities.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['Performance optimization', 'Feature expansion', 'Model updates', 'New use cases']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for AI Solutions',
+            heading: 'Why Choose Us for AI Solutions',
             subheading: 'We harness the power of artificial intelligence to automate processes and drive innovation.',
             benefits: [
                 {
@@ -1207,6 +1252,7 @@ export const services = {
                 subtitle: 'Finding Opportunities',
                 description: 'Comprehensive analysis of your conversion funnel and user experience.',
                 icon: 'Search',
+                image: 'https://images.unsplash.com/photo-1553484771-371a605b060b?w=600&q=80',
                 details: ['Funnel analysis', 'Heatmap review', 'User flow mapping', 'Competitor benchmarking']
             },
             {
@@ -1215,6 +1261,7 @@ export const services = {
                 subtitle: 'Understanding Behavior',
                 description: 'Qualitative and quantitative research to understand user needs and pain points.',
                 icon: 'Eye',
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80',
                 details: ['Session recordings', 'User surveys', 'Usability testing', 'Customer interviews']
             },
             {
@@ -1223,6 +1270,7 @@ export const services = {
                 subtitle: 'Strategic Planning',
                 description: 'Data-backed hypotheses for testing and optimization.',
                 icon: 'Lightbulb',
+                image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80',
                 details: ['Opportunity prioritization', 'Test planning', 'Wireframing', 'Success metrics']
             },
             {
@@ -1231,6 +1279,7 @@ export const services = {
                 subtitle: 'Validated Improvements',
                 description: 'A/B testing and implementation of winning variations.',
                 icon: 'TestTube',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80',
                 details: ['A/B test setup', 'Statistical analysis', 'Winner implementation', 'Documentation']
             },
             {
@@ -1239,11 +1288,12 @@ export const services = {
                 subtitle: 'Continuous Growth',
                 description: 'Ongoing optimization program to drive continuous conversion improvements.',
                 icon: 'TrendingUp',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
                 details: ['Testing roadmap', 'Performance tracking', 'New hypotheses', 'Quarterly reviews']
             }
         ],
         details: {
-            heading: 'Why Choose BYLT for CRO & UX',
+            heading: 'Why Choose Us for CRO & UX',
             subheading: 'We turn more visitors into customers through data-driven optimization and user experience improvements.',
             benefits: [
                 {

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ServiceHero, ServiceDetails, ServiceCTA } from './sections';
+import { ServiceHero, ServiceWhyBylt, ServiceProcess, ServiceDetails, ServiceCTA } from './sections';
+import BrandMarquee from '@/components/caseStudies/sections/template/BrandMarquee';
 
 const ServicePage = ({ service }) => {
     if (!service) return null;
@@ -13,6 +14,9 @@ const ServicePage = ({ service }) => {
             }}
         >
             <ServiceHero service={service} />
+            <BrandMarquee text="WHY BYLT" />
+            <ServiceWhyBylt service={service} />
+            <ServiceProcess service={service} />
             <ServiceDetails service={service} />
             <ServiceCTA />
         </div>

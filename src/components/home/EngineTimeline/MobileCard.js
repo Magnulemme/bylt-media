@@ -1,9 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useTransform } from 'motion/react';
 import ShaderBackground from '../ShaderBackground';
+import { DitherShader } from '@/components/ui/dither-shader';
+import { ditherStyles } from './constants';
+import { useNumberImage } from '@/components/services/hooks';
 
 const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' }) => {
     const thisCardRef = useRef(null);
+    const numberImage = useNumberImage(step.step, index);
 
     // Range dinamico per ogni card basato sull'indice
     // progress 0 = card 1 visibile, progress 1 = card 5 visibile
@@ -148,29 +152,34 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
     if (variant === 'content-only') {
         return (
             <div ref={thisCardRef} className="timeline-mobile-card flex flex-col items-center gap-4">
-                {/* Step Number Circle - con shader background */}
+                {/* Step Number Circle - con dither */}
                 <div className="relative shrink-0 rounded-full">
                     <motion.div
-                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2 overflow-hidden"
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center relative z-10 border-2 overflow-hidden"
                         style={{
                             background: circleBackground,
                             borderColor: circleBorderColor
                         }}
                     >
-                        {/* Shader Background dentro il cerchio */}
-                        <motion.div
-                            className="absolute inset-0 pointer-events-none z-0"
-                            style={{ opacity: isActive }}
-                        >
-                            <ShaderBackground priority={8} targetFPS={24} style={{ borderRadius: '9999px', zIndex: 0 }} />
-                        </motion.div>
-                        {/* Number */}
-                        <motion.span
-                            className="relative z-20 text-white"
-                            style={{ opacity: iconOpacity }}
-                        >
-                            {step.step}
-                        </motion.span>
+                        {/* Dithered Number */}
+                        {numberImage && (
+                            <motion.div
+                                className="absolute inset-2 z-20"
+                                style={{ opacity: iconOpacity }}
+                            >
+                                <DitherShader
+                                    src={numberImage}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                                    ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                                    gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                                    threshold={ditherStyles[index % ditherStyles.length].threshold}
+                                    contrast={ditherStyles[index % ditherStyles.length].contrast}
+                                    objectFit="contain"
+                                />
+                            </motion.div>
+                        )}
                     </motion.div>
                 </div>
 
@@ -181,17 +190,23 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                         <ShaderBackground />
                     </div>
 
-                    {/* 3D Icon */}
+                    {/* 3D Icon with Dither Effect */}
                     <motion.div
-                        className="flex items-center justify-center mb-6 relative z-10"
+                        className="flex items-center justify-center mb-6 relative z-10 w-32 h-32 mx-auto"
                         style={{
                             opacity: iconOpacity
                         }}
                     >
-                        <img
+                        <DitherShader
                             src={step.image3d}
-                            alt={step.title}
-                            className="w-32 h-32 object-contain"
+                            colorMode="duotone"
+                            primaryColor="#020617"
+                            secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                            ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                            gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                            threshold={ditherStyles[index % ditherStyles.length].threshold}
+                            contrast={ditherStyles[index % ditherStyles.length].contrast}
+                            objectFit="contain"
                         />
                     </motion.div>
 
@@ -232,31 +247,31 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
             {/* Step Number Circle - centered vertically to card */}
             <div className="relative shrink-0 rounded-full overflow-visible">
                 <motion.div
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center font-mono font-bold text-lg md:text-xl relative z-10 border-2"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center relative z-10 border-2 overflow-hidden"
                     style={{
                         background: circleBackground,
                         borderColor: circleBorderColor
                     }}
                 >
-                    {/* Number - white/gray when inactive */}
-                    <motion.span
-                        className="relative text-slate-400"
-                        style={{
-                            opacity: useTransform(isActive, [0, 1], [1, 0])
-                        }}
-                    >
-                        {step.step}
-                    </motion.span>
-                    {/* Number - gradient when active */}
-                    <motion.span
-                        className="absolute bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:200%_200%]"
-                        style={{
-                            opacity: isActive,
-                            animation: 'gradient 3s ease infinite'
-                        }}
-                    >
-                        {step.step}
-                    </motion.span>
+                    {/* Dithered Number */}
+                    {numberImage && (
+                        <motion.div
+                            className="absolute inset-2 z-20"
+                            style={{ opacity: iconOpacity }}
+                        >
+                            <DitherShader
+                                src={numberImage}
+                                colorMode="duotone"
+                                primaryColor="#020617"
+                                secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                                ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                                gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                                threshold={ditherStyles[index % ditherStyles.length].threshold}
+                                contrast={ditherStyles[index % ditherStyles.length].contrast}
+                                objectFit="contain"
+                            />
+                        </motion.div>
+                    )}
                 </motion.div>
                 {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                 <motion.div
@@ -295,17 +310,23 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
                     <ShaderBackground />
                 </div>
 
-                {/* 3D Icon */}
+                {/* 3D Icon with Dither Effect */}
                 <motion.div
-                    className="flex items-center justify-center mb-6 relative z-10"
+                    className="flex items-center justify-center mb-6 relative z-10 w-32 h-32 mx-auto"
                     style={{
                         opacity: iconOpacity
                     }}
                 >
-                    <img
+                    <DitherShader
                         src={step.image3d}
-                        alt={step.title}
-                        className="w-32 h-32 object-contain"
+                        colorMode="duotone"
+                        primaryColor="#020617"
+                        secondaryColor={ditherStyles[index % ditherStyles.length].color}
+                        ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
+                        gridSize={ditherStyles[index % ditherStyles.length].gridSize}
+                        threshold={ditherStyles[index % ditherStyles.length].threshold}
+                        contrast={ditherStyles[index % ditherStyles.length].contrast}
+                        objectFit="contain"
                     />
                 </motion.div>
 

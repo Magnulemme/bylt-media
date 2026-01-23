@@ -315,6 +315,20 @@
     animation: gradient-shift 6s ease-in-out infinite;
   }
 
+  /* Infinite scroll animation */
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
+
   /* Process Swiper Pagination Dots */
   .process-swiper .swiper-pagination {
     position: relative;

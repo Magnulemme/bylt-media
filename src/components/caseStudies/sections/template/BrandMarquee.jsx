@@ -11,6 +11,20 @@ const BrandMarquee = ({
     const scrollerRef = useRef(null);
     const [start, setStart] = useState(false);
 
+    // Render text with BYLT in gradient
+    const renderText = (str) => {
+        const parts = str.split(/(BYLT)/gi);
+        return parts.map((part, i) =>
+            /BYLT/i.test(part) ? (
+                <span key={i} className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                    {part}
+                </span>
+            ) : (
+                <span key={i} className="text-white">{part}</span>
+            )
+        );
+    };
+
     useEffect(() => {
         if (containerRef.current && scrollerRef.current) {
             const scrollerContent = Array.from(scrollerRef.current.children);
@@ -54,9 +68,9 @@ const BrandMarquee = ({
                 >
                     {[...Array(4)].map((_, idx) => (
                         <div key={idx} className="flex items-center gap-8 md:gap-16 shrink-0">
-                            <span className="heading-h1 font-black font-inter tracking-tight text-white">
-                                {text}
-                            </span>
+                            <span className="heading-h1 font-black font-inter tracking-tight">
+                                    {renderText(text)}
+                                </span>
                             <span className="text-cyan-500 heading-h2">✦</span>
                         </div>
                     ))}

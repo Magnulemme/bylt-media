@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Infinity } from 'lucide-react';
+import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
 
 const InfinityPhilosophy = () => {
     return (
@@ -62,19 +62,8 @@ const InfinityPhilosophy = () => {
                     className="relative z-10"
                 >
                     <div className="infinity-layout">
-                        {/* Titolo */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="infinity-header"
-                        >
-                            <h2 className="heading-h2 text-white">
-                                Growth that<br />
-                                compounds
-                            </h2>
-                        </motion.div>
+                        {/* Brand Marquee */}
+                        <BrandMarquee text="BYLT COMPOUNDS" className="mb-0" />
 
                         {/* Paragrafi a tutta larghezza */}
                         <motion.div
