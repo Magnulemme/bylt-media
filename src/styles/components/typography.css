@@ -260,6 +260,25 @@
    Classi per statistiche animate
    ======================================== */
 
+/* Stats Grid - Grid responsive per le statistiche */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  gap: var(--spacing-padding-sm);
+  padding-left: var(--margin-safe-x);
+  padding-right: var(--margin-safe-x);
+}
+
+@media (min-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-padding-md);
+  }
+}
+
 /* Stats Card - Container per singola statistica */
 .stats-card {
   display: flex;

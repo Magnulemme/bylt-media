@@ -79,7 +79,7 @@ const GrainyBgSection = () => {
 
                 <motion.div
                     ref={sectionRef}
-                    className="grainy-bg-content h-full pt-16 md:pt-24 lg:pt-32"
+                    className="grainy-bg-content h-full"
                     style={{
                         transform,
                         opacity,

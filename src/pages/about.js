@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../components/layout';
 import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
@@ -8,6 +7,7 @@ import { DitherShader } from '../components/ui/dither-shader';
 import { Linkedin } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import CTASectionCard from '@/components/ui/CTASectionCard';
+import PartnersLogos from '@/components/shared/PartnersLogos';
 import { cardStyles } from '@/components/ui/DitherProcessCard';
 import { useWaveBackground, useIconImage } from '../components/services/hooks';
 import ShaderBackground from '../components/home/ShaderBackground';
@@ -254,47 +254,7 @@ export default function About() {
                     </div>
 
                     {/* Official Partner Section */}
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center py-8">
-                        {/* BYLT Partner of MarketiseMe */}
-                        <div className="text-center">
-                            <p className="text-label mb-4">Official Partner of</p>
-                            <a
-                                href="https://marketiseme.com/en/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-block transition-transform duration-300 hover:-translate-y-1"
-                            >
-                                <Image
-                                    src="/images/partners/marketise-me-logo.svg"
-                                    alt="MarketiseMe"
-                                    width={180}
-                                    height={80}
-                                    className="opacity-80 hover:opacity-100 transition-opacity"
-                                />
-                            </a>
-                        </div>
-
-                        {/* MarketiseMe Partner of Google & Meta */}
-                        <div className="text-center">
-                            <p className="text-label mb-4">MarketiseMe is Official Partner of</p>
-                            <div className="flex items-center justify-center gap-6">
-                                <Image
-                                    src="/images/partners/partners logos/google-partner-logo-min.svg"
-                                    alt="Google Partner"
-                                    width={140}
-                                    height={60}
-                                    className="opacity-80"
-                                />
-                                <Image
-                                    src="/images/partners/partners logos/meta_partner_logo.png"
-                                    alt="Meta Business Partner"
-                                    width={140}
-                                    height={60}
-                                    className="opacity-80"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    <PartnersLogos />
                 </div>
                 </div>
             </section>

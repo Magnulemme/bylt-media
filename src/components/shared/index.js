@@ -6,3 +6,5 @@ export { default as StatValue } from './StatValue';
 export { default as AnimatedCounter } from './AnimatedCounter';
 export { default as MetricTag } from './MetricTag';
 export { default as GlowEffect } from './GlowEffect';
+export { default as StatsGrid } from './StatsGrid';
+export { default as PartnersLogos } from './PartnersLogos';

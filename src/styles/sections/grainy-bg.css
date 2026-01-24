@@ -12,22 +12,15 @@
 
 @media (min-width: 768px) {
   .grainy-bg-section {
-    padding-top: var(--spacing-padding-2xl);
+    padding-top: var(--spacing-padding-xl);
   }
 }
 
-/* Grainy BG Card - Card con effetto 3D e transform con safety margins ridotti di 4px */
+/* Grainy BG Card - Card con effetto 3D e transform */
 .grainy-bg-card {
   @apply relative h-full w-full rounded-2xl overflow-visible;
   background: #020617;
   transform-style: preserve-3d;
-  padding-top: var(--spacing-padding-lg);
-}
-
-@media (min-width: 768px) {
-  .grainy-bg-card {
-    padding-top: var(--spacing-padding-2xl);
-  }
 }
 
 /* Grainy BG Content - Wrapper per contenuti interni */
