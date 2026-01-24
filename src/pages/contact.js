@@ -270,7 +270,7 @@ const FreeAuditSection = () => {
                     >
                         <AnimatedWaveCanvas className="rounded-2xl min-w-75 h-[320px]  flex items-center justify-center flex-1" />
                         {/* Overlay scuro solo su mobile */}
-                        <div className="absolute inset-0 bg-black/50 md:hidden rounded-2xl" />
+                        <div className="absolute inset-0 bg-[#020617]/50 md:hidden rounded-2xl" />
                     </motion.div>
 
                     {/* Text */}

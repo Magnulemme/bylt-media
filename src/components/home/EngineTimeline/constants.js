@@ -22,18 +22,18 @@ export const ditherStyles = [
         contrast: 1.3,
     },
     {
-        color: '#10b981', // emerald
-        ditherMode: 'noise',
-        gridSize: 2,
-        threshold: 0.42,
-        contrast: 1.5,
-    },
-    {
         color: '#f59e0b', // amber
         ditherMode: 'bayer',
         gridSize: 3,
-        threshold: 0.48,
-        contrast: 1.35,
+        threshold: 0.45,
+        contrast: 1.3,
+    },
+    {
+        color: '#10b981', // emerald
+        ditherMode: 'bayer',
+        gridSize: 3,
+        threshold: 0.45,
+        contrast: 1.3,
     }
 ];
 
@@ -82,7 +82,7 @@ export const processSteps = [
         title: "Reporting & Analytics",
         subtitle: "Transparency & Insights",
         description: "We believe in complete transparency. Our reports provide comprehensive insights and actionable recommendations.",
-        image3d: "/3d icons/3dicons-chart-dynamic-color.png",
+        image3d: "/3d icons/3dicons-folder-dynamic-color.png",
         details: [
             "Real-time dashboard creation",
             "Comprehensive performance reports",

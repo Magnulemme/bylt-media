@@ -55,7 +55,7 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="flex-1 lg:max-w-lg"
                 >
-                    <div className="bg-black/40 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6">
+                    <div className="bg-[#020617]/40 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6">
                         <div className="flex items-center justify-between mb-4">
                             <h4 className="text-sm font-medium text-slate-400">Growth Over Time</h4>
                             <div className="flex items-center gap-4 text-xs">

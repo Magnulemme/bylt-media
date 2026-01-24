@@ -288,7 +288,7 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
         <div
             ref={containerRef}
             className={className}
-            style={{ width: '100%' }}
+            style={{ width: '100%', background: '#020617' }}
         >
             <canvas ref={canvasRef} style={{ display: 'block' }} />
         </div>

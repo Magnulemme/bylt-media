@@ -113,18 +113,18 @@ const ProcessStep = ({ step, index }) => {
                     {/* Dithered Number */}
                     {numberImage && (
                         <motion.div
-                            className="absolute inset-2 z-20"
+                            className="absolute inset-0 z-20"
                             style={{ opacity: iconOpacity }}
                         >
                             <DitherShader
                                 src={numberImage}
                                 colorMode="duotone"
-                                primaryColor="#020617"
+                                primaryColor="#0f172a"
                                 secondaryColor={ditherStyles[index % ditherStyles.length].color}
                                 ditherMode={ditherStyles[index % ditherStyles.length].ditherMode}
-                                gridSize={ditherStyles[index % ditherStyles.length].gridSize}
-                                threshold={ditherStyles[index % ditherStyles.length].threshold}
-                                contrast={ditherStyles[index % ditherStyles.length].contrast}
+                                gridSize={4}
+                                threshold={0.35}
+                                contrast={1.6}
                                 objectFit="contain"
                             />
                         </motion.div>

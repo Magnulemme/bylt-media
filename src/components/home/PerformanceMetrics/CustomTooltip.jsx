@@ -6,7 +6,7 @@ const CustomTooltip = ({ active, payload, label }) => {
     const displayLabel = label || (payload[0]?.payload?.name);
 
     return (
-      <div className="bg-black/95 backdrop-blur-xl border border-cyan-500/30 rounded-lg p-3 shadow-2xl">
+      <div className="bg-[#020617]/95 backdrop-blur-xl border border-cyan-500/30 rounded-lg p-3 shadow-2xl">
         {displayLabel && (
           <p className="text-xs text-gray-400 mb-1.5 font-medium border-b border-white/10 pb-1.5">{displayLabel}</p>
         )}

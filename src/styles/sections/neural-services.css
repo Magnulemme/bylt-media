@@ -79,7 +79,7 @@
 
 /* Service Coverflow Card Inactive - Card laterali non attive */
 .service-coverflow-card-inactive {
-  @apply bg-black/80 border-white/20;
+  @apply bg-[#020617]/80 border-white/20;
   box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
 }
 
@@ -100,7 +100,7 @@
 
 /* Service Desktop Card Inactive - Card laterali */
 .service-desktop-card-inactive {
-  @apply bg-black/80 border-white/20;
+  @apply bg-[#020617]/80 border-white/20;
   box-shadow: 6px 6px 0px rgba(34, 211, 238, 0.4);
   opacity: 0.7;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 const KPICard = ({ roasData, kpis }) => (
-  <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
+  <div className="relative bg-[#020617]/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
     <div className="mb-4">
       <h3 className="text-sm font-medium text-slate-400 mb-1">Performance Overview</h3>
       <p className="text-xs text-slate-600">Your key marketing metrics</p>

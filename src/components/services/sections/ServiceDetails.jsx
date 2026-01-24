@@ -31,7 +31,7 @@ const ServiceDetails = ({ service }) => {
                     >
                         <AnimatedWaveCanvas className="rounded-2xl" />
                         {/* Dark overlay for text readability */}
-                        <div className="absolute inset-0 bg-black/50 rounded-2xl" />
+                        <div className="absolute inset-0 bg-[#020617]/50 rounded-2xl" />
                     </motion.div>
 
                     {/* Content with padding */}

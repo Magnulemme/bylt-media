@@ -21,7 +21,7 @@ const PerformanceCard = ({
       transition={{ duration: 0.6, delay }}
       className="relative"
     >
-      <div className="relative bg-black/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
+      <div className="relative bg-[#020617]/60 backdrop-blur-sm border border-white/10 rounded-2xl p-6 h-full flex flex-col">
         {/* Header con titolo e legenda */}
         <div className="flex items-center justify-between mb-4">
           <div>

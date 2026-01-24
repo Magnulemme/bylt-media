@@ -212,7 +212,7 @@ export const Card = ({ className, children, href, ...props }) => {
       {...linkProps}
       {...props}
       className={cn(
-        "rounded-lg h-full w-full p-6 bg-black/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] no-underline",
+        "rounded-lg h-full w-full p-6 bg-[#020617]/60 backdrop-blur-sm border-2 border-white/10 hover:border-cyan-400/60 relative z-10 transition-all duration-300 flex flex-col items-start text-left gap-4 group-hover:translate-x-[2px] group-hover:translate-y-[2px] no-underline",
         href ? "cursor-pointer" : "",
         className
       )}
