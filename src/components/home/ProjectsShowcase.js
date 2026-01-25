@@ -1,11 +1,12 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
-import { MovingBorderButton } from '../ui/moving-border-button';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { motion, useMotionValue } from 'motion/react'; // useAnimationFrame rimosso per debug
+import CTASectionCard from '../ui/CTASectionCard';
 import { useProfiler } from '@/hooks/useProfiler';
 import ShaderBackground from './ShaderBackground';
 import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
+// TEMPORANEAMENTE DISABILITATO per debug performance
 const useLissajousAnimation = (isActive, seed = 0) => {
     const rotateX = useMotionValue(0);
     const rotateY = useMotionValue(0);
@@ -13,42 +14,7 @@ const useLissajousAnimation = (isActive, seed = 0) => {
     const y = useMotionValue(0);
     const scale = useMotionValue(1);
 
-    useAnimationFrame((time) => {
-        if (!isActive) {
-            // Ritorna a 0 quando non in hover
-            rotateX.set(0);
-            rotateY.set(0);
-            x.set(0);
-            y.set(0);
-            scale.set(1);
-            return;
-        }
-
-        // Time in secondi con seed offset - velocizzato
-        const t = (time / 1000 + seed) * 0.8;
-
-        // Lissajous curve: x = A*sin(at + δ), y = B*sin(bt)
-        // Ratio 2:1 crea figura a "8" orizzontale (infinity)
-        const phase = seed;
-
-        // Movimento ellittico a "8" - più deciso
-        const lissajousX = Math.sin(2 * t + phase) * 12;
-        const lissajousY = Math.sin(t) * 10;
-
-        // Rotazione 3D sincronizzata - più marcata
-        const rotation3DX = Math.sin(t + Math.PI / 4) * 8;
-        const rotation3DY = Math.sin(2 * t) * 10;
-
-        // Scale pulsante più evidente
-        const scalePulse = Math.sin(t * 0.7) * 0.05;
-
-        // Applica i valori direttamente (senza spring)
-        x.set(lissajousX);
-        y.set(lissajousY);
-        rotateX.set(rotation3DX);
-        rotateY.set(rotation3DY);
-        scale.set(1 + scalePulse);
-    });
+    // DISABILITATO - nessun useAnimationFrame
 
     return {
         rotateX,
@@ -60,33 +26,14 @@ const useLissajousAnimation = (isActive, seed = 0) => {
 };
 
 // Component per singolo progetto con scroll reveal su mobile
-const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onToggleExpand, isActive, isScrollBgEnabled, onVisibilityChange }) => {
+const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExpanded, onToggleExpand, isActive, isScrollBgEnabled, itemRef }) => {
     const isHovered = hoveredProject?.id === project.id;
     const lissajousAnimation = useLissajousAnimation(isHovered, index * 1.5);
-    const itemRef = useRef(null);
-
-    // Notifica al parent quando entra/esce dalla zona centrale
-    useEffect(() => {
-        const element = itemRef.current;
-        if (!element) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                onVisibilityChange(project.id, entry.isIntersecting);
-            },
-            {
-                rootMargin: '-40% 0px -40% 0px',
-                threshold: 0,
-            }
-        );
-
-        observer.observe(element);
-        return () => observer.disconnect();
-    }, [project.id, onVisibilityChange]);
 
     return (
         <motion.div
             ref={itemRef}
+            data-project-id={project.id}
             className="relative"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -292,7 +239,7 @@ const ProjectItem = ({ project, index, onHover, hoveredProject, isExpanded, onTo
             </div>
         </motion.div>
     );
-};
+});
 
 const ProjectsShowcase = () => {
     useProfiler('ProjectsShowcase');
@@ -302,7 +249,35 @@ const ProjectsShowcase = () => {
     const [isScrollBgEnabled, setIsScrollBgEnabled] = useState(true);
     const visibleProjectsRef = useRef(new Set());
 
-    const handleToggleExpand = (projectId) => {
+    // IntersectionObserver centralizzato - UN SOLO observer per tutti gli items
+    const observerRef = useRef(null);
+
+    // Inizializza l'observer una sola volta
+    useEffect(() => {
+        observerRef.current = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    const projectId = Number(entry.target.dataset.projectId);
+                    if (entry.isIntersecting) {
+                        visibleProjectsRef.current.add(projectId);
+                    } else {
+                        visibleProjectsRef.current.delete(projectId);
+                    }
+                });
+
+                const visibleIds = Array.from(visibleProjectsRef.current).sort((a, b) => a - b);
+                setActiveProjectId(visibleIds.length > 0 ? visibleIds[0] : null);
+            },
+            {
+                rootMargin: '-40% 0px -40% 0px',
+                threshold: 0,
+            }
+        );
+
+        return () => observerRef.current?.disconnect();
+    }, []);
+
+    const handleToggleExpand = useCallback((projectId) => {
         setExpandedProjectId(prev => {
             if (prev === projectId) {
                 // Sta chiudendo - aspetta prima di riabilitare il bg
@@ -313,18 +288,13 @@ const ProjectsShowcase = () => {
             setIsScrollBgEnabled(false);
             return projectId;
         });
-    };
+    }, []);
 
-    // Callback per quando un progetto entra/esce dalla zona centrale
-    const handleVisibilityChange = useCallback((projectId, isVisible) => {
-        if (isVisible) {
-            visibleProjectsRef.current.add(projectId);
-        } else {
-            visibleProjectsRef.current.delete(projectId);
+    // Callback ref che osserva gli elementi quando vengono montati
+    const getItemRef = useCallback(() => (el) => {
+        if (el && observerRef.current) {
+            observerRef.current.observe(el);
         }
-
-        const visibleIds = Array.from(visibleProjectsRef.current).sort((a, b) => a - b);
-        setActiveProjectId(visibleIds.length > 0 ? visibleIds[0] : null);
     }, []);
 
     const projects = [
@@ -380,13 +350,82 @@ const ProjectsShowcase = () => {
                 {/* Shader Background */}
                 <ShaderBackground />
 
-                <div className="projects-showcase-container">
-                {/* Brand Marquee */}
-                <BrandMarquee text="BYLT SHOWS" />
+                {/* Layout wrapper con flex-col per struttura verticale (come infinity-layout) */}
+                <div className="projects-layout">
+                    {/* Brand Marquee - fuori dal container per coerenza con InfinityPhilosophy */}
+                    <BrandMarquee text="BYLT SHOWS" className="px-3 pt-0 mb-0 md:mb-0 max-w-content w-full" />
 
-                <p className="text-body-lg text-white/70 text-center max-w-3xl mx-auto mb-12">
-                    Explore our portfolio of successful campaigns and strategic partnerships that drive measurable results.
-                </p>
+                    <div className="projects-showcase-container">
+
+                {/* Content with icon background */}
+                <div className="projects-content">
+                    {/* Sparkle symbol as background */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.2 }}
+                        className="absolute inset-0 pointer-events-none flex items-center justify-center"
+                    >
+                        {/* Glow layer */}
+                        <div className="absolute blur-3xl opacity-30">
+                            <svg
+                                viewBox="0 0 100 100"
+                                className="w-[280px] md:w-[400px] lg:w-[520px] h-auto"
+                                fill="currentColor"
+                            >
+                                <defs>
+                                    <linearGradient id="sparkleGradientGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style={{ stopColor: 'rgb(34, 211, 238)', stopOpacity: 0.15 }} />
+                                        <stop offset="50%" style={{ stopColor: 'rgb(59, 130, 246)', stopOpacity: 0.15 }} />
+                                        <stop offset="100%" style={{ stopColor: 'rgb(168, 85, 247)', stopOpacity: 0.15 }} />
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#sparkleGradientGlow)" d="M50 0 L56 44 L100 50 L56 56 L50 100 L44 56 L0 50 L44 44 Z" />
+                            </svg>
+                        </div>
+
+                        {/* Main symbol */}
+                        <div className="relative">
+                            <svg
+                                viewBox="0 0 100 100"
+                                className="w-[280px] md:w-[400px] lg:w-[520px] h-auto"
+                                fill="currentColor"
+                            >
+                                <defs>
+                                    <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style={{ stopColor: 'rgb(34, 211, 238)', stopOpacity: 0.08 }} />
+                                        <stop offset="50%" style={{ stopColor: 'rgb(59, 130, 246)', stopOpacity: 0.08 }} />
+                                        <stop offset="100%" style={{ stopColor: 'rgb(168, 85, 247)', stopOpacity: 0.08 }} />
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#sparkleGradient)" d="M50 0 L56 44 L100 50 L56 56 L50 100 L44 56 L0 50 L44 44 Z" />
+                            </svg>
+                        </div>
+                    </motion.div>
+
+                    {/* Background gradient glow */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/5 via-transparent to-transparent blur-3xl -z-10" />
+
+                    {/* Paragraphs */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        className="projects-paragraphs relative z-10"
+                    >
+                        <p>
+                            Numbers tell stories. <span className="text-white font-semibold">These are the brands that trusted us to write theirs.</span>
+                        </p>
+                        <p>
+                            From automotive giants to emerging e-commerce players, we've partnered with ambitious brands ready to dominate their markets through data-driven strategies and relentless optimization.
+                        </p>
+                        <p className="text-cyan-400 font-semibold">
+                            Real results. Real growth. Real partnerships.
+                        </p>
+                    </motion.div>
+                </div>
 
                 {/* Projects List */}
                 <div className="projects-list-container">
@@ -403,33 +442,22 @@ const ProjectsShowcase = () => {
                                 isExpanded={expandedProjectId === project.id}
                                 isScrollBgEnabled={isScrollBgEnabled}
                                 onToggleExpand={handleToggleExpand}
-                                onVisibilityChange={handleVisibilityChange}
+                                itemRef={getItemRef()}
                             />
                         ))}
                     </div>
                 </div>
 
                 {/* CTA */}
-                <motion.div
-                    className="projects-cta-section"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <div className="flex justify-center">
-                                                <MovingBorderButton
-                                                    type="submit"
-                                                    borderRadius="0.75rem"
-                                                    containerClassName="min-w-[240px] h-16"
-                                                    borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
-                                                    className="border-2 border-slate-700/80 text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed bg-slate-950"
-                                                    duration={2500}
-                                                >
-                                                    View all projects
-                                                </MovingBorderButton>
-                                            </div>
-                </motion.div>
+                <CTASectionCard
+                    title="Want to see your brand here?"
+                    description="Let's create your next success story together."
+                    buttonText="Start Your Project"
+                    buttonHref="/contact"
+                    background="transparent"
+                    variant="soft"
+                />
+                </div>
                 </div>
             </div>
         </section>
