@@ -1,7 +1,7 @@
 import React, { useRef, useState, useLayoutEffect, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Link from 'next/link';
-import ShaderBackground from '../../home/ShaderBackground';
+import ShaderBackgroundDirect from '../../home/ShaderBackgroundDirect';
 import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData, heroContent } from '../constants';
 import { useCardCentering } from '../hooks/useCardCentering';
@@ -267,7 +267,7 @@ const CaseStudiesHero = () => {
         className="sticky z-0 overflow-hidden rounded-2xl"
         style={{ top: '-12px', height: 'calc(100dvh + 24px)' }}
     >
-        <ShaderBackground onReady={signalPageReady} />
+        <ShaderBackgroundDirect onReady={signalPageReady} />
     </div>
 <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
     {/* Content container - positioned over shader */}

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import useQuantumScrollAnim from '../../hooks/useQuantumScrollAnim';
-import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
+import ShaderBackgroundDirect from './ShaderBackgroundDirect';
 import NeuralServices from './NeuralServices';
 import NeuralServicesMobile from './NeuralServicesMobile';
 import InfinityPhilosophy from './InfinityPhilosophy';
@@ -74,7 +74,7 @@ const GrainyBgSection = () => {
                     className="sticky z-0 overflow-hidden rounded-2xl"
                     style={{ top: '-12px', height: 'calc(100dvh + 24px)' }}
                 >
-                    <ShaderBackgroundStandalone />
+                    <ShaderBackgroundDirect />
                 </div>
 
                 <motion.div

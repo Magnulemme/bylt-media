@@ -1,15 +1,15 @@
 import React from 'react';
-import ShaderBackground from '../../home/ShaderBackground';
+import ShaderBackgroundDirect from '../../home/ShaderBackgroundDirect';
 import { FeatureCard, MainCard } from '../cards';
 
 const ServiceHero = ({ service }) => {
     return (
-        <section className='z-90 relative '>
+        <section className='service-hero-section z-90 relative'>
             {/* Shader Background */}
-            <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
+            <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
             {/* Content */}
-            <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pt-16 pb-24 md:pt-20 md:pb-28 lg:pt-24 lg:pb-32">
+            <div className="service-hero-container relative z-20 text-white">
                 {/* Bento Grid - Desktop */}
                 <div className="hidden md:grid grid-cols-2 gap-4">
                     {/* Left Column - Main Card with Image */}

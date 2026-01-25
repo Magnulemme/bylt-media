@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import DataVisualization3D from './DataVisualization3D';
-import ShaderBackgroundStandalone from './ShaderBackgroundStandalone';
+import ShaderBackgroundDirect from './ShaderBackgroundDirect';
 import { MovingBorderButton } from '../ui/moving-border-button';
 
 import { useProfiler } from '@/hooks/useProfiler';
@@ -68,7 +68,7 @@ const FuturisticHero = () => {
         >
             <div className="hero-inner bg-hero">
                 {/* Shader Background */}
-                <ShaderBackgroundStandalone onReady={signalHeroReady} />
+                <ShaderBackgroundDirect onReady={signalHeroReady} />
 
                 <div className="container-centered">
                 <div className="hero-grid">

@@ -257,24 +257,30 @@ export const DitherShader = ({
     threshold,
   ]);
 
-  // Setup resize observer for responsive sizing
+  // Setup resize observer for responsive sizing (with debounce)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    let debounceTimer;
     const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          dimensionsRef.current = { width, height };
-          setDimensions({ width, height });
+      // Debounce resize events to avoid excessive reprocessing
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        for (const entry of entries) {
+          const { width, height } = entry.contentRect;
+          if (width > 0 && height > 0) {
+            dimensionsRef.current = { width, height };
+            setDimensions({ width, height });
+          }
         }
-      }
+      }, 100);
     });
 
     resizeObserver.observe(container);
 
     return () => {
+      clearTimeout(debounceTimer);
       resizeObserver.disconnect();
     };
   }, []);

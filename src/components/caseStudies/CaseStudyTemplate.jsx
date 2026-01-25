@@ -10,7 +10,7 @@ import {
     AfterByltChart
 } from './sections/template';
 import CTASectionCard from '../ui/CTASectionCard';
-import ShaderBackground from '../home/ShaderBackground';
+import ShaderBackgroundDirect from '../home/ShaderBackgroundDirect';
 
 const CaseStudyTemplate = ({ study }) => {
     if (!study) return null;
@@ -39,7 +39,7 @@ const CaseStudyTemplate = ({ study }) => {
                 {/* Process + Solution con ShaderBackground continuo */}
                 <div className="relative overflow-hidden">
                     <div className="absolute inset-0 z-0 h-full w-full">
-                        <ShaderBackground />
+                        <ShaderBackgroundDirect />
                     </div>
                     <div className="relative">
                     <BrandMarquee />

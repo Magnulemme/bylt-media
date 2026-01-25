@@ -4,13 +4,13 @@ import { MovingBorderButton } from '../../ui/moving-border-button';
 const ServiceCTA = () => {
     return (
         <section
-            className="py-24 relative overflow-hidden"
+            className="service-cta-section relative overflow-hidden"
             style={{
                 background: '#020617',
                 zIndex: 10
             }}
         >
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="service-cta-container text-center">
                 <h2 className="heading-h1 text-white mb-6">
                     Ready to Get Started?
                 </h2>

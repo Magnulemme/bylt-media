@@ -2,7 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../components/layout';
-import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
+import ShaderBackgroundDirect from '../components/home/ShaderBackgroundDirect';
 import { DitherShader } from '../components/ui/dither-shader';
 import { Linkedin } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
@@ -214,7 +214,7 @@ export default function About() {
                 }}
             >
                 <div className='service-page relative'>
-                <ShaderBackgroundStandalone onReady={signalPageReady} />
+                <ShaderBackgroundDirect onReady={signalPageReady} />
 
                 <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pb-16 lg:pb-24 flex-1 flex flex-col justify-center max-lg:pt-16">
                     {/* Text + Torus side by side */}

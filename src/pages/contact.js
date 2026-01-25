@@ -13,8 +13,8 @@ const NeuralContact = dynamic(
     { ssr: false }
 );
 
-const ShaderBackground = dynamic(
-    () => import('../components/home/ShaderBackground'),
+const ShaderBackgroundDirect = dynamic(
+    () => import('../components/home/ShaderBackgroundDirect'),
     { ssr: false }
 );
 
@@ -46,7 +46,7 @@ const ContactHero = () => {
     return (
         <div className="bg-black service-page max-w-full">
             <section className="relative flex items-center justify-center overflow-hidden max-w-full">
-                <ShaderBackground onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
+                <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
                 <div className="relative z-20 max-w-6xl mx-auto px-4 py-24 md:py-32">
                     <div className="relative flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-full">

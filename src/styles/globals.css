@@ -269,6 +269,7 @@
     @import "./sections/engine-timeline.css";
     @import "./sections/campaign.css";
     @import "./sections/about.css";
+    @import "./sections/service-page.css";
     @import "./sections/footer.css";
   }
 
@@ -327,6 +328,10 @@
     animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
     will-change: transform;
     backface-visibility: hidden;
+    /* Force GPU layer to isolate from mask-image compositing */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    contain: layout style;
   }
 
   /* Process Swiper Pagination Dots */

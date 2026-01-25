@@ -1,0 +1,236 @@
+/* ========================================
+   SERVICE PAGE - SPACING DESIGN SYSTEM
+   ======================================== */
+
+/* Service Page Wrapper */
+.service-page {
+  /* No padding - just a container */
+}
+
+/* ----------------------------------------
+   SERVICE HERO SECTION
+   ---------------------------------------- */
+.service-hero-section {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #020617;
+}
+
+.service-hero-container {
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-xl);
+}
+
+@media (min-width: 640px) {
+  .service-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 768px) {
+  .service-hero-container {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-2xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
+   SERVICE BRAND MARQUEE
+   ---------------------------------------- */
+.service-brand-marquee {
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+  background: #020617;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .service-brand-marquee {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+/* ----------------------------------------
+   SERVICE WHY BYLT SECTION
+   ---------------------------------------- */
+.service-why-bylt-container {
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.service-why-bylt-grid {
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .service-why-bylt-grid {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-why-bylt-grid {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
+   SERVICE PROCESS SECTION
+   ---------------------------------------- */
+.service-process-section {
+  padding-top: var(--spacing-padding-lg);
+  max-width: var(--breakpoint-content);
+}
+
+@media (min-width: 768px) {
+  .service-process-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.service-process-header {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  margin-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 640px) {
+  .service-process-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 768px) {
+  .service-process-header {
+    margin-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-process-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+.service-process-carousel {
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .service-process-carousel {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-process-carousel {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
+   SERVICE DETAILS SECTION
+   ---------------------------------------- */
+.service-details-section {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .service-details-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.service-details-container {
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .service-details-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-details-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
+   SERVICE CTA SECTION
+   ---------------------------------------- */
+.service-cta-section {
+  padding-top: var(--spacing-padding-xl);
+  padding-bottom: var(--spacing-padding-xl);
+}
+
+@media (min-width: 768px) {
+  .service-cta-section {
+    padding-top: var(--spacing-padding-2xl);
+    padding-bottom: var(--spacing-padding-2xl);
+  }
+}
+
+.service-cta-container {
+  max-width: var(--breakpoint-lg);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .service-cta-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-cta-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}

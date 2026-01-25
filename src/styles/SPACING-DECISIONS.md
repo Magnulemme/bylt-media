@@ -381,6 +381,69 @@ section.projects-showcase-section (px-4 per inset card arrotondata)
 
 ---
 
+### 9. Service Page (tutti i componenti)
+**File:** `src/styles/sections/service-page.css`
+**Data:** 2026-01-25
+
+#### Struttura
+```
+div.service-page (container pagina)
+  ├── section.service-hero-section
+  │     └── div.service-hero-container (max-w-content, container pattern)
+  │           ├── Desktop Bento Grid
+  │           └── Mobile Layout
+  │
+  ├── div.demo-reveal-section
+  │     └── BrandMarquee
+  │
+  ├── section.service-why-bylt-section
+  │     └── div.service-why-bylt-container (max-w-content)
+  │           └── div.service-why-bylt-grid (container pattern, 2-col grid)
+  │                 ├── Content Column
+  │                 └── Chart Column
+  │
+  ├── section.service-process-section
+  │     ├── div.service-process-header (max-w-content, container pattern)
+  │     └── InfiniteMovingCards (full-bleed)
+  │
+  ├── section.service-details-section
+  │     └── div.service-details-container (max-w-content, container pattern)
+  │           ├── Mobile Layout (wave background)
+  │           └── Desktop 2-col grid
+  │
+  └── section.service-cta-section
+        └── div.service-cta-container (max-w-lg, container pattern)
+```
+
+#### Scelte applicate
+
+| Elemento | Proprietà | Mobile | Desktop | Motivazione |
+|----------|-----------|--------|---------|-------------|
+| `.service-hero-section` | padding-top | nessuno | nessuno | Prima sezione con shader background, nessun padding-top necessario. |
+| `.service-hero-container` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Spazio interno per content sotto shader. |
+| `.service-hero-container` | padding-bottom | `--spacing-padding-xl` (96px) | `--spacing-padding-2xl` (160px) @768px | Respiro visivo verso BrandMarquee. |
+| `.service-hero-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.service-why-bylt-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.service-why-bylt-grid` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.service-process-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.service-process-header` | padding-x | container pattern standard | xs → sm → md | Safe margins, header allineato al content standard. |
+| `.service-process-header` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap tra header e carousel. |
+| `.service-details-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.service-details-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.service-cta-section` | padding-top | `--spacing-padding-xl` (96px) | `--spacing-padding-2xl` (160px) @768px | CTA finale, padding generoso. |
+| `.service-cta-section` | padding-bottom | `--spacing-padding-xl` (96px) | `--spacing-padding-2xl` (160px) @768px | Eccezione: ultima sezione della pagina, serve respiro visivo verso footer. |
+| `.service-cta-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+
+#### Note
+- Hero container usa `--breakpoint-content` (1440px) come max-width per consistenza col resto del sito
+- Process section: header con container pattern, carousel InfiniteMovingCards full-bleed (nessun padding-x)
+- CTA usa `--breakpoint-lg` (1024px) come max-width per testo più stretto e leggibile
+- Eccezione padding-bottom per CTA: ultima sezione della pagina, serve respiro visivo verso il footer
+- BrandMarquee eredita le classi da `.demo-reveal-section` già esistente
+- Spacing interni ai componenti (gap-8, gap-12, mb-4, mb-6, etc.) mantenuti con Tailwind: tutti ≤32px
+
+---
+
 ## Template per nuovi componenti
 
 ```markdown
@@ -478,3 +541,4 @@ Note:
 - **2026-01-24**: InfinityPhilosophy: BrandMarquee ora usa `px-(--margin-safe-x)` per safe margins laterali.
 - **2026-01-24**: EngineTimeline: applicato design system spacing. Container pattern standard. Padding-bottom aggiunto (eccezione: sezione successiva ha struttura diversa).
 - **2026-01-24**: ProjectsShowcase: rimosso padding-bottom da inner card, aggiunta classe `.projects-description` per spacing, CTA sostituita con CTASectionCard variant="soft".
+- **2026-01-25**: Service Page: creato `service-page.css`, applicato design system a tutti i componenti (Hero, WhyBylt, Process, Details, CTA). Container pattern standard con safe margins.

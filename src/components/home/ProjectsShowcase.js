@@ -3,7 +3,7 @@ import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
 import CTASectionCard from '../ui/CTASectionCard';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
-import ShaderBackground from './ShaderBackground';
+import ShaderBackgroundDirect from './ShaderBackgroundDirect';
 import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
@@ -13,11 +13,10 @@ const useLissajousAnimation = (isActive, seed = 0) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const scale = useMotionValue(1);
-    const wasActiveRef = useRef(false); // Traccia stato precedente per reset una tantum
+    const wasActiveRef = useRef(false);
 
     useAnimationFrame((time) => {
         if (!isActive) {
-            // Reset solo una volta quando diventa inattivo, poi skip
             if (wasActiveRef.current) {
                 rotateX.set(0);
                 rotateY.set(0);
@@ -26,30 +25,20 @@ const useLissajousAnimation = (isActive, seed = 0) => {
                 scale.set(1);
                 wasActiveRef.current = false;
             }
-            return; // Skip tutto il calcolo quando non attivo
+            return;
         }
 
         wasActiveRef.current = true;
 
-        // Time in secondi con seed offset - velocizzato
         const t = (time / 1000 + seed) * 0.8;
-
-        // Lissajous curve: x = A*sin(at + δ), y = B*sin(bt)
-        // Ratio 2:1 crea figura a "8" orizzontale (infinity)
         const phase = seed;
 
-        // Movimento ellittico a "8" - più deciso
         const lissajousX = Math.sin(2 * t + phase) * 12;
         const lissajousY = Math.sin(t) * 10;
-
-        // Rotazione 3D sincronizzata - più marcata
         const rotation3DX = Math.sin(t + Math.PI / 4) * 8;
         const rotation3DY = Math.sin(2 * t) * 10;
-
-        // Scale pulsante più evidente
         const scalePulse = Math.sin(t * 0.7) * 0.05;
 
-        // Applica i valori direttamente (senza spring)
         x.set(lissajousX);
         y.set(lissajousY);
         rotateX.set(rotation3DX);
@@ -57,13 +46,7 @@ const useLissajousAnimation = (isActive, seed = 0) => {
         scale.set(1 + scalePulse);
     });
 
-    return {
-        rotateX,
-        rotateY,
-        x,
-        y,
-        scale,
-    };
+    return { rotateX, rotateY, x, y, scale };
 };
 
 // Component per singolo progetto con scroll reveal su mobile
@@ -408,8 +391,8 @@ const ProjectsShowcase = () => {
     return (
         <section className="projects-showcase-section">
             <div className="projects-showcase-inner">
-                {/* Shader Background */}
-                <ShaderBackground />
+                {/* Shader Background - versione diretta senza sharedRenderer */}
+                <ShaderBackgroundDirect />
 
                 {/* Layout wrapper con flex-col per struttura verticale (come infinity-layout) */}
                 <div className="projects-layout">

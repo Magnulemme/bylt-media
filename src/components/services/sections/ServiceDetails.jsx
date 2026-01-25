@@ -15,10 +15,10 @@ const ServiceDetails = ({ service }) => {
 
     return (
         <section
-            className="relative py-16 md:py-24"
+            className="service-details-section relative"
             style={{ background: '#020617' }}
         >
-            <div className="relative z-10 max-w-6xl mx-auto px-4">
+            <div className="service-details-container relative z-10">
                 {/* Mobile: wave as background behind text */}
                 <div className="md:hidden relative rounded-2xl overflow-hidden">
                     {/* Wave as background */}

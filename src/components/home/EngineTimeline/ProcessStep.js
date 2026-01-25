@@ -43,33 +43,36 @@ const ProcessStep = ({ step, index }) => {
     const glowScale = useTransform(isActive, [0, 1], [1, 1.8]);
 
     // Wave effect per il glow - ciclo continuo quando la card è attiva
-    const [glowWave, setGlowWave] = React.useState(0);
-    const isAnimatingRef = React.useRef(false); // Guard per prevenire loop multipli
+    // Usa ref invece di state per evitare re-render a 60fps
+    const glowRef1 = React.useRef(null);
+    const glowRef2 = React.useRef(null);
+    const isAnimatingRef = React.useRef(false);
 
     React.useEffect(() => {
         let animationFrameId;
         let startTime = Date.now();
 
         const animate = () => {
-            if (!isAnimatingRef.current) return; // Esci se l'animazione è stata fermata
+            if (!isAnimatingRef.current) return;
             const elapsed = Date.now() - startTime;
-            // Onda sinusoidale: oscilla tra 0.8 e 1.2 con periodo di 2 secondi
             const wave = 1 + Math.sin(elapsed / 1000 * Math.PI) * 0.2;
-            setGlowWave(wave);
+            // Aggiorna direttamente il DOM senza passare per React state
+            if (glowRef1.current) glowRef1.current.style.transform = `scale(${wave})`;
+            if (glowRef2.current) glowRef2.current.style.transform = `scale(${wave})`;
             animationFrameId = requestAnimationFrame(animate);
         };
 
         const unsubscribe = isActive.on('change', (v) => {
             if (v > 0.5 && !isAnimatingRef.current) {
-                // Avvia l'animazione solo se non già in corso
                 isAnimatingRef.current = true;
                 startTime = Date.now();
                 animate();
             } else if (v <= 0.5) {
-                // Ferma l'animazione quando non è attiva
                 isAnimatingRef.current = false;
                 cancelAnimationFrame(animationFrameId);
-                setGlowWave(0);
+                // Reset scale quando non attivo
+                if (glowRef1.current) glowRef1.current.style.transform = 'scale(1)';
+                if (glowRef2.current) glowRef2.current.style.transform = 'scale(1)';
             }
         });
 
@@ -122,6 +125,7 @@ const ProcessStep = ({ step, index }) => {
                 </motion.div>
                 {/* Luminous glow effect around circle - Safari fix with will-change + wave effect */}
                 <motion.div
+                    ref={glowRef1}
                     className="absolute inset-0 rounded-full pointer-events-none -z-10"
                     style={{
                         background: 'radial-gradient(circle, rgba(103, 232, 249, 0.6) 0%, rgba(103, 232, 249, 0.3) 50%, transparent 70%)',
@@ -130,12 +134,12 @@ const ProcessStep = ({ step, index }) => {
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />
                 {/* Outer glow ring - Safari fix with will-change + wave effect */}
                 <motion.div
+                    ref={glowRef2}
                     className="absolute -inset-4 rounded-full pointer-events-none -z-20"
                     style={{
                         background: 'radial-gradient(circle, transparent 40%, rgba(103, 232, 249, 0.4) 60%, transparent 80%)',
@@ -144,7 +148,6 @@ const ProcessStep = ({ step, index }) => {
                             return `blur(${blur}px)`;
                         }),
                         opacity: isActive,
-                        transform: `scale(${glowWave || 1})`,
                         willChange: 'transform, filter, opacity'
                     }}
                 />

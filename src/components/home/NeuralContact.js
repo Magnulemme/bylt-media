@@ -6,7 +6,7 @@ import { BackgroundBeams } from '../ui/background-beams';
 import { useFooterStore } from '../../store/footerStore';
 import { cn } from '@/lib/utils';
 import SectionHeader from '../ui/SectionHeader';
-import ShaderBackground from './ShaderBackground';
+import ShaderBackgroundDirect from './ShaderBackgroundDirect';
 
 // Moving Border Button Component (inline to avoid import issues)
 const MovingBorder = ({
@@ -328,7 +328,7 @@ ${formData.message}
                 {/* Contact Form Container */}
                 <div className="relative max-w-3xl mx-auto mb-12">
                     <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                        <ShaderBackground />
+                        <ShaderBackgroundDirect />
                     </div>
                     <form
                         onSubmit={handleSubmit}

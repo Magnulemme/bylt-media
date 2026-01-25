@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { motion, useTransform, useMotionValue } from 'motion/react';
 import { useFooterStore } from '../store/footerStore';
 import { useEffect } from 'react';
-import ShaderBackgroundStandalone from './home/ShaderBackgroundStandalone';
+import ShaderBackgroundDirect from './home/ShaderBackgroundDirect';
 
 const Content = () => {
     return (
         <footer className="footer-content">
             {/* Shader Background */}
-            <ShaderBackgroundStandalone />
+            <ShaderBackgroundDirect />
 
             <div className="footer-container max-w-content mx-auto relative z-10 h-full flex flex-col justify-between">
                 <div className="footer-grid grid grid-cols-2 md:grid-cols-4">

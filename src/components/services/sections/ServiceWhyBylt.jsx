@@ -51,11 +51,11 @@ const ServiceWhyBylt = ({ service }) => {
 
     return (
         <section
-            className="relative py-16 md:py-24"
+            className="service-why-bylt-section relative"
             style={{ background: '#020617' }}
         >
-            <div className="relative z-10 max-w-6xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-4">
+            <div className="service-why-bylt-container relative z-10">
+                <div className="service-why-bylt-grid grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     {/* Left - Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}

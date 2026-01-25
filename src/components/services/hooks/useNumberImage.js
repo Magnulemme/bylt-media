@@ -1,11 +1,22 @@
 import { useState, useEffect } from 'react';
 
+// Cache per evitare rigenerazione delle immagini
+const iconImageCache = new Map();
+const numberImageCache = new Map();
+
 // Generate icon image with gradient background for dithering
 export const useIconImage = (svgDataUrl, variant = 0) => {
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
         if (!svgDataUrl) return;
+
+        // Check cache first
+        const cacheKey = `${svgDataUrl}-${variant}`;
+        if (iconImageCache.has(cacheKey)) {
+            setImageUrl(iconImageCache.get(cacheKey));
+            return;
+        }
 
         const canvas = document.createElement('canvas');
         canvas.width = 500;
@@ -65,7 +76,9 @@ export const useIconImage = (svgDataUrl, variant = 0) => {
             // Main icon with slight glow effect
             ctx.drawImage(img, x, y, iconSize, iconSize);
 
-            setImageUrl(canvas.toDataURL('image/png'));
+            const dataUrl = canvas.toDataURL('image/png');
+            iconImageCache.set(cacheKey, dataUrl);
+            setImageUrl(dataUrl);
         };
         img.src = svgDataUrl;
     }, [svgDataUrl, variant]);
@@ -78,6 +91,13 @@ export const useNumberImage = (number, variant = 0) => {
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
+        // Check cache first
+        const cacheKey = `${number}-${variant}`;
+        if (numberImageCache.has(cacheKey)) {
+            setImageUrl(numberImageCache.get(cacheKey));
+            return;
+        }
+
         const canvas = document.createElement('canvas');
         canvas.width = 500;
         canvas.height = 500;
@@ -135,7 +155,9 @@ export const useNumberImage = (number, variant = 0) => {
         ctx.fillStyle = numGradient;
         ctx.fillText(number.toString(), 250, 260);
 
-        setImageUrl(canvas.toDataURL('image/png'));
+        const dataUrl = canvas.toDataURL('image/png');
+        numberImageCache.set(cacheKey, dataUrl);
+        setImageUrl(dataUrl);
     }, [number, variant]);
 
     return imageUrl;
