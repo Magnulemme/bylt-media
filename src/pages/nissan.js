@@ -495,7 +495,7 @@ const NeuralContact = () => {
 const QuantumFooter = () => {
     return (
         <footer className="quantum-footer relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
+            <div className="max-w-[var(--breakpoint-content)] mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
                 <div className="footer-content">
                     <div className="footer-brand">
                         <h3 className="text-2xl font-bold text-white font-inter">BYLT.MEDIA</h3>

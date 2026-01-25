@@ -63,7 +63,7 @@ export default function ServicesIndex() {
                     zIndex: 10
                 }}
             >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-[var(--breakpoint-content)] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {serviceList.map((service) => {
                             const iconName = service.features[0]?.icon;

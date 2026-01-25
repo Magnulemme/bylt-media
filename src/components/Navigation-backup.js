@@ -45,7 +45,7 @@ const Navigation = () => {
 
     return (
         <nav className={`fixed w-full z-50 transition-all duration-500 ${navClass}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div className="max-w-[var(--breakpoint-content)] mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <div className="flex justify-between items-center h-20 w-full">
                     <div className="flex-shrink-0 min-w-0">
                         <Link href="/" className="text-3xl font-bold tracking-wider font-inter">

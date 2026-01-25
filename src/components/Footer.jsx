@@ -15,7 +15,7 @@ const Content = () => {
             {/* Shader Background */}
             <ShaderBackgroundStandalone />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 h-full flex flex-col justify-between">
+            <div className="max-w-[var(--breakpoint-content)] mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 h-full flex flex-col justify-between">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
                     <div className="col-span-2 md:col-span-1">
                         <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent font-inter mb-3">

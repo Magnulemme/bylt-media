@@ -34,7 +34,8 @@
 
 /* Container Centered - Container centrato max-width */
 .container-centered {
-  @apply relative z-20 w-full max-w-7xl mx-auto;
+  @apply relative z-20 w-full mx-auto;
+  max-width: var(--breakpoint-content);
   padding: var(--spacing-padding-xs);
 }
 

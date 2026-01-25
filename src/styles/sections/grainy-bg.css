@@ -25,7 +25,8 @@
 
 /* Grainy BG Content - Wrapper per contenuti interni */
 .grainy-bg-content {
-  @apply relative z-10 max-w-7xl mx-auto;
+  @apply relative z-10 mx-auto;
+  max-width: var(--breakpoint-content);
   padding-top: var(--spacing-padding-lg);
 }
 

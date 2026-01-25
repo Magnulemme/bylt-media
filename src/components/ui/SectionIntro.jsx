@@ -33,7 +33,7 @@ const SectionIntro = ({
     '2xl': 'max-w-2xl',
     '3xl': 'max-w-3xl',
     '5xl': 'max-w-5xl',
-    '7xl': 'max-w-7xl',
+    '7xl': 'max-w-[var(--breakpoint-content)]',
     full: 'max-w-full'
   };
 

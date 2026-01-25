@@ -13,7 +13,7 @@ const SectionHeadersShowcase = () => {
       {/* ========================================
           SECTION 1: SectionHeader Examples
       ======================================== */}
-      <section className="max-w-7xl mx-auto px-4">
+      <section className="max-w-[var(--breakpoint-content)] mx-auto px-4">
         <h1 className="text-4xl font-bold text-white mb-12 text-center">
           SectionHeader Examples
         </h1>
@@ -42,7 +42,7 @@ const SectionHeadersShowcase = () => {
       {/* ========================================
           SECTION 2: SectionTitle Examples
       ======================================== */}
-      <section className="max-w-7xl mx-auto px-4">
+      <section className="max-w-[var(--breakpoint-content)] mx-auto px-4">
         <h1 className="text-4xl font-bold text-white mb-12 text-center">
           SectionTitle Examples
         </h1>
@@ -96,7 +96,7 @@ const SectionHeadersShowcase = () => {
       {/* ========================================
           SECTION 3: SectionIntro Examples
       ======================================== */}
-      <section className="max-w-7xl mx-auto px-4">
+      <section className="max-w-[var(--breakpoint-content)] mx-auto px-4">
         <h1 className="text-4xl font-bold text-white mb-12 text-center">
           SectionIntro Examples (All-in-One)
         </h1>
@@ -177,7 +177,7 @@ const SectionHeadersShowcase = () => {
       {/* ========================================
           SECTION 4: Real World Use Cases
       ======================================== */}
-      <section className="max-w-7xl mx-auto px-4">
+      <section className="max-w-[var(--breakpoint-content)] mx-auto px-4">
         <h1 className="text-4xl font-bold text-white mb-12 text-center">
           Real World Use Cases
         </h1>

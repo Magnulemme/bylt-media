@@ -15,7 +15,7 @@ const Custom3DSwiper = () => {
 
     return (
         <div className="min-h-dvh bg-slate-950 flex items-center justify-center p-8">
-            <div className="w-full max-w-7xl">
+            <div className="w-full max-w-[var(--breakpoint-content)]">
                 <h1 className="text-4xl font-bold text-white mb-12 text-center">
                     Custom 3D Swiper Test
                 </h1>
