@@ -269,6 +269,7 @@
     @import "./sections/engine-timeline.css";
     @import "./sections/campaign.css";
     @import "./sections/about.css";
+    @import "./sections/footer.css";
   }
 
   /* ========================================

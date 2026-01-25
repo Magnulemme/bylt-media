@@ -1,0 +1,57 @@
+/* ====================================
+   FOOTER SECTION COMPONENTS
+   ==================================== */
+
+/* Footer Section - Wrapper esterno con inset per card arrotondata */
+.footer-section {
+  @apply sticky bottom-0 -z-50;
+  padding: 1rem; /* px-4 per inset card */
+  background: #020617;
+  perspective: 1000px;
+}
+
+/* Footer Content - Contenuto interno */
+.footer-content {
+  @apply w-full overflow-hidden relative;
+  background: #020617;
+}
+
+/* Footer Container - Container pattern standard */
+.footer-container {
+  padding-top: var(--spacing-padding-md);
+  padding-bottom: var(--spacing-padding-md);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .footer-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* Footer Grid - Gap tra colonne */
+.footer-grid {
+  gap: var(--spacing-padding-xs);
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    gap: var(--spacing-padding-sm);
+  }
+}
+
+/* Footer Bottom - Copyright e link legali */
+.footer-bottom {
+  margin-top: var(--spacing-padding-xs);
+  padding-top: var(--spacing-padding-xs);
+  @apply border-t border-gray-700/50;
+}

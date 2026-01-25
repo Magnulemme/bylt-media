@@ -6,17 +6,12 @@ import ShaderBackgroundStandalone from './home/ShaderBackgroundStandalone';
 
 const Content = () => {
     return (
-        <footer
-            className="w-full overflow-hidden relative"
-            style={{
-                background: '#020617',
-            }}
-        >
+        <footer className="footer-content">
             {/* Shader Background */}
             <ShaderBackgroundStandalone />
 
-            <div className="max-w-[var(--breakpoint-content)] mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10 h-full flex flex-col justify-between">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+            <div className="footer-container max-w-content mx-auto relative z-10 h-full flex flex-col justify-between">
+                <div className="footer-grid grid grid-cols-2 md:grid-cols-4">
                     <div className="col-span-2 md:col-span-1">
                         <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent font-inter mb-3">
                             BYLT.MEDIA
@@ -84,7 +79,7 @@ const Content = () => {
                     </div>
                 </div>
 
-                <div className="mt-4 pt-8 border-t border-gray-700/50">
+                <div className="footer-bottom">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-gray-500 text-xs">
                             © {new Date().getFullYear()} BYLT Media. All Rights Reserved.
@@ -154,7 +149,7 @@ export default function Footer() {
     const transform = useTransform(translateZ, (z) => `translateZ(${z}px)`);
 
     return (
-        <div className="sticky bottom-0 -z-50 p-4" style={{ background: '#020617', perspective: '1000px' }}>
+        <div className="footer-section">
             <motion.div
                 className="rounded-2xl overflow-hidden"
                 style={{

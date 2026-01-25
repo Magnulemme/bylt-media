@@ -60,7 +60,7 @@ const SuccessStories = () => {
             style={{ background: '#020617' }}
         >
             {/* Section intro */}
-            <div className="success-stories-header max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="success-stories-header max-w-content mx-auto">
                 <div className="max-w-3xl mb-6">
                     <motion.h2
                         className="heading-h1 text-white text-left mb-6"
