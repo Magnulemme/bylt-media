@@ -120,7 +120,7 @@ const NeuralServicesMobile = () => {
     return (
         <>
             {/* Section intro */}
-            <div className="max-w-content mx-auto px-(--margin-safe-x)">
+            <div className="max-w-content mx-auto">
                 <SectionIntro
                     title="A synergistic approach to digital dominance"
                     subtitle="Each service is a component of a greater strategy, designed to deliver comprehensive and exponential results"
@@ -136,7 +136,7 @@ const NeuralServicesMobile = () => {
                 <div className="relative overflow-visible services-slider-expander">
 
                     {/* Navigation Buttons */}
-                    <div className="service-slider-nav-mobile relative z-10 mb-(--spacing-padding-xs) md:mb-(--spacing-padding-sm) px-(--margin-safe-x)">
+                    <div className="service-slider-nav-mobile relative z-10 px-(--margin-safe-x)">
                         <button
                             className="swiper-button-prev-services swiper-button-prev-mobile"
                             aria-label="Previous service"
@@ -187,7 +187,7 @@ const NeuralServicesMobile = () => {
                         onSwiper={(swiper) => {
                             swiperRef.current = swiper;
                         }}
-                        className="services-mobile-swiper pb-8"
+                        className="services-mobile-swiper"
                     >
                         {services.map((item, index) => (
                             <SwiperSlide key={`${item.id}-${index}`}>

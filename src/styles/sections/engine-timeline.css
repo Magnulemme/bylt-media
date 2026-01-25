@@ -2,7 +2,7 @@
    ENGINE TIMELINE SECTION COMPONENTS
    ==================================== */
 
-/* Engine Timeline Section - Container principale con padding-top */
+/* Engine Timeline Section - Container principale con padding verticale */
 .engine-timeline-section {
   @apply relative;
   background: #020617;
@@ -12,12 +12,12 @@
 
 @media (min-width: 768px) {
   .engine-timeline-section {
-    padding-top: var(--spacing-padding-2xl);
-    padding-bottom: var(--spacing-padding-2xl);
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
   }
 }
 
-/* Engine Timeline Container - Wrapper con max-width e safety margins */
+/* Engine Timeline Container - Wrapper con max-width e container pattern standard */
 .engine-timeline-container {
   @apply relative z-10;
   max-width: var(--breakpoint-content);
@@ -41,7 +41,21 @@
   }
 }
 
-/* Process Step - Singolo step con gap e margin */
+/* Engine Timeline Title Container - Gap tra titolo/sottotitolo e separazione dagli steps */
+.engine-timeline-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-padding-xs);
+  padding-bottom: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .engine-timeline-title-container {
+    padding-bottom: var(--spacing-padding-lg);
+  }
+}
+
+/* Process Step - Singolo step con gap e spacing */
 .process-step {
   @apply relative flex items-center justify-center;
   gap: var(--spacing-padding-xs);
@@ -53,6 +67,11 @@
     gap: var(--spacing-padding-sm);
     margin-bottom: var(--spacing-padding-md);
   }
+}
+
+/* Ultimo step senza margin-bottom */
+.process-step:last-child {
+  margin-bottom: 0;
 }
 
 /* Process Step Card - Card contenuto step */
@@ -67,30 +86,67 @@
   }
 }
 
+/* ====================================
+   MOBILE TIMELINE COMPONENTS
+   ==================================== */
+
+/* Mobile Timeline Container - Wrapper con padding orizzontale */
+.mobile-timeline-container {
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
 @media (min-width: 640px) {
   .mobile-timeline-container {
-    margin-bottom: var(--spacing-padding-sm);
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
   }
 }
 
-/* Mobile Timeline Sticky Wrapper - Wrapper sticky per scroll orizzontale */
-.mobile-timeline-sticky {
-  @apply sticky flex items-center overflow-x-clip;
-  padding-top: var(--spacing-padding-md);
-  padding-bottom: var(--spacing-padding-md);
+/* Mobile Timeline Title - Gap dal contenuto */
+.mobile-timeline-title {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: var(--spacing-padding-sm);
 }
 
-/* Mobile Timeline Card Wrapper - Wrapper singola card mobile */
-.mobile-timeline-card-wrapper {
-  @apply flex-shrink-0 w-full flex flex-col items-center justify-center self-stretch;
-  padding-left: var(--margin-safe-x);
-  padding-right: var(--margin-safe-x);
+@media (min-width: 768px) {
+  .mobile-timeline-title {
+    gap: 1.5rem;
+    padding-bottom: var(--spacing-padding-md);
+  }
 }
 
-/* Mobile Timeline Card - Card contenuto mobile */
-.mobile-timeline-card {
-  @apply w-full max-w-sm bg-slate-800/50 backdrop-blur-lg rounded-2xl border flex flex-col flex-1;
-  padding: var(--spacing-padding-xs);
+/* Mobile Timeline Wrapper - Padding verticale per effetto sticky */
+.mobile-timeline-wrapper {
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .mobile-timeline-wrapper {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+/* Mobile Timeline Glow Layer - Match wrapper padding */
+.mobile-timeline-glow-layer {
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .mobile-timeline-glow-layer {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+/* Mobile Timeline Cards - Gap tra cards */
+.mobile-timeline-cards {
+  gap: 1rem;
 }
 
 /* ====================================

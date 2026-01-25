@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { SectionIntro } from '../../ui/section-headers';
-import { MovingBorderButton } from '../../ui/moving-border-button';
+import CTASectionCard from '../../ui/CTASectionCard';
 import { Card, CardNumber, CardIcon, CardContent, CardTitle, CardSubtitle, CardDescription, CardCapabilities } from '../../ui/service-slider';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -136,7 +136,7 @@ const NeuralServices = () => {
                             onSwiper={(swiper) => {
                                 swiperRef.current = swiper;
                             }}
-                            className="services-3d-swiper pb-8"
+                            className="services-3d-swiper"
                         >
                             {SERVICES.map((item, index) => (
                                 <SwiperSlide key={`${item.id}-${index}`}>
@@ -189,24 +189,17 @@ const NeuralServices = () => {
                     </div>
                 </div>
 
-                {/* CTA Section */}
-                <div className="services-bottom-cta-section">
-                    <div className="services-bottom-cta-content">
-                        <p className="text-body-lg">
-                            Don't see exactly what you need? We offer <span className="text-cyan-400 font-semibold">custom solutions</span> tailored to your business goals.
-                        </p>
-                    </div>
-                    <MovingBorderButton
-                        borderRadius="0.75rem"
-                        containerClassName="min-w-[240px] h-16"
-                        borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
-                        className="border-2 border-slate-700/80 text-white font-bold text-base bg-slate-950"
-                        duration={2500}
-                    >
-                        Discuss Your Project
-                    </MovingBorderButton>
-                </div>
             </div>
+
+            {/* CTA Section */}
+            <CTASectionCard
+                title="Don't see exactly what you need?"
+                description="We offer custom solutions tailored to your business goals."
+                buttonText="Discuss Your Project"
+                buttonHref="/contact"
+                background="transparent"
+                variant="soft"
+            />
 
             <style jsx global>{SWIPER_STYLES}</style>
         </>

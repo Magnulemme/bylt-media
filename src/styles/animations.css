@@ -2,21 +2,6 @@
    ANIMATIONS & KEYFRAMES
    ======================================== */
 
-/* Infinite Scroll Animation */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-25%);
-  }
-}
-
-.animate-scroll {
-  animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
-  will-change: transform;
-}
-
 /* Typing cursor animation */
 @keyframes blink {
   0%, 50% { opacity: 1; }

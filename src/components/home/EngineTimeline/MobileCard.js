@@ -44,12 +44,14 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
 
     // Wave effect per il glow - ciclo continuo quando la card è attiva
     const [glowWave, setGlowWave] = React.useState(0);
+    const isAnimatingRef = React.useRef(false); // Guard per prevenire loop multipli
 
     React.useEffect(() => {
         let animationFrameId;
         let startTime = Date.now();
 
         const animate = () => {
+            if (!isAnimatingRef.current) return; // Esci se l'animazione è stata fermata
             const elapsed = Date.now() - startTime;
             // Onda sinusoidale: oscilla tra 0.8 e 1.2 con periodo di 2 secondi
             const wave = 1 + Math.sin(elapsed / 1000 * Math.PI) * 0.2;
@@ -58,18 +60,21 @@ const MobileCard = ({ step, index, totalSteps, scrollProgress, variant = 'full' 
         };
 
         const unsubscribe = isActive.on('change', (v) => {
-            if (v > 0.5) {
-                // Avvia l'animazione quando la card diventa attiva
+            if (v > 0.5 && !isAnimatingRef.current) {
+                // Avvia l'animazione solo se non già in corso
+                isAnimatingRef.current = true;
                 startTime = Date.now();
                 animate();
-            } else {
+            } else if (v <= 0.5) {
                 // Ferma l'animazione quando non è attiva
+                isAnimatingRef.current = false;
                 cancelAnimationFrame(animationFrameId);
                 setGlowWave(0);
             }
         });
 
         return () => {
+            isAnimatingRef.current = false;
             cancelAnimationFrame(animationFrameId);
             unsubscribe();
         };

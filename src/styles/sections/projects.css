@@ -13,7 +13,6 @@
 /* Projects Showcase Inner - Blocco arrotondato con shader background */
 .projects-showcase-inner {
   @apply relative w-full rounded-2xl;
-  @apply flex items-center justify-center;
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -22,10 +21,23 @@
   overflow: hidden;
 }
 
+/* Projects Layout - Container verticale per marquee e contenuto (come infinity-layout) */
+.projects-layout {
+  @apply flex flex-col w-full relative mx-auto;
+  gap: var(--spacing-padding-sm);
+  z-index: 10;
+  max-width: var(--breakpoint-content);
+}
+
+@media (min-width: 768px) {
+  .projects-layout {
+    gap: var(--spacing-padding-md);
+  }
+}
+
 @media (min-width: 768px) {
   .projects-showcase-inner {
     padding-top: var(--spacing-padding-xl);
-    padding-bottom: var(--spacing-padding-lg);
   }
 }
 
@@ -34,7 +46,6 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding-top: var(--spacing-padding-2xl);
-    padding-bottom: var(--spacing-padding-lg);
   }
 }
 
@@ -61,6 +72,27 @@
     padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
   }
+}
+
+/* Projects Content - Container con icona background e paragrafi */
+.projects-content {
+  @apply relative;
+}
+
+@media (min-width: 768px) {
+  .projects-content {
+    margin-bottom: var(--spacing-padding-sm);
+  }
+}
+
+/* Projects Paragraphs - Container paragrafi descrittivi */
+.projects-paragraphs {
+  @apply flex flex-col max-w-3xl;
+  gap: var(--spacing-padding-xs);
+}
+
+.projects-paragraphs p {
+  @apply text-lg leading-relaxed text-slate-300;
 }
 
 /* Projects List Container - Container lista progetti */
@@ -114,8 +146,3 @@
   gap: 0.75rem;
 }
 
-/* Projects CTA Section - Sezione CTA finale */
-.projects-cta-section {
-  @apply text-center;
-  padding-top: var(--spacing-padding-lg);
-}

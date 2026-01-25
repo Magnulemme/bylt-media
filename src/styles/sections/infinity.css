@@ -2,16 +2,14 @@
    INFINITY PHILOSOPHY SECTION COMPONENTS
    ==================================== */
 
-/* Infinity Section - Container principale con padding verticale */
+/* Infinity Section - Container principale, full-width per BrandMarquee */
 .infinity-section {
-  @apply max-w-content mx-auto;
   padding-top: var(--spacing-padding-lg);
-  padding-bottom: var(--spacing-padding-sm);
 }
 
 @media (min-width: 768px) {
   .infinity-section {
-  padding-bottom: var(--spacing-padding-lg);
+    padding-top: var(--spacing-padding-xl);
   }
 }
 
@@ -23,23 +21,37 @@
 
 @media (min-width: 768px) {
   .infinity-layout {
-    padding-top: var(--spacing-padding-lg);
     gap: var(--spacing-padding-md);
   }
 }
 
-/* Infinity Header - Container titolo con simbolo in background */
-.infinity-header {
-  @apply relative;
+/* Infinity Content - Container con max-w e padding per i paragrafi */
+.infinity-content {
+  @apply relative max-w-content;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
 }
 
-/* Infinity Paragraphs - Container paragrafi descrittivi a tutta larghezza */
+@media (min-width: 640px) {
+  .infinity-content {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .infinity-content {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* Infinity Paragraphs - Container paragrafi descrittivi */
 .infinity-paragraphs {
-  @apply flex flex-col;
+  @apply flex flex-col max-w-3xl;
   gap: var(--spacing-padding-xs);
 }
 
 .infinity-paragraphs p {
-  /* Equivalente a .text-body-lg */
   @apply text-lg leading-relaxed text-slate-300;
 }

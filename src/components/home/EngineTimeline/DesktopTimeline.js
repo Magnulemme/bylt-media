@@ -10,10 +10,10 @@ const DesktopTimeline = ({ processSteps }) => {
             <div className="engine-timeline-container engine-timeline-title-container">
                 <ScrollRevealText
                     text="Our proven process ensures clarity, efficiency, and exceptional results"
-                    className="heading-h1 text-white text-center mb-6 max-w-4xl mx-auto"
+                    className="heading-h1 text-white text-center max-w-4xl mx-auto"
                 />
                 <motion.p
-                    className="text-subheader max-w-2xl mx-auto text-center mb-20"
+                    className="text-subheader max-w-2xl mx-auto text-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

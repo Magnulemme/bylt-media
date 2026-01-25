@@ -8,26 +8,30 @@ const CTASectionCard = ({
   buttonHref,
   onButtonClick,
   dotScale = 0.8,
+  background = '#020617',
+  variant = "default",
   className = "",
 }) => {
   const buttonProps = buttonHref
     ? { as: "a", href: buttonHref }
     : { type: "button", onClick: onButtonClick };
 
+  const isSoft = variant === "soft";
+
   return (
     <section
-      className={`py-12 lg:py-24 relative overflow-hidden max-sm:pb-24 ${className}`}
+      className={`${isSoft ? '' : 'py-12 lg:py-24 max-sm:pb-24'} relative overflow-hidden ${className}`}
       style={{
-        background: '#020617',
+        background,
         zIndex: 10
       }}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl border border-slate-800 overflow-hidden">
-          <VerticalLinesCanvas dotScale={dotScale} />
+        <div className={`relative ${isSoft ? 'rounded-2xl' : 'rounded-3xl border border-slate-800'} overflow-hidden`}>
+          {!isSoft && <VerticalLinesCanvas dotScale={dotScale} />}
 
           <div className="relative z-10 p-8 lg:p-12 text-center">
-            <h2 className="heading-h1 text-white mb-6">
+            <h2 className={`${isSoft ? 'heading-h2' : 'heading-h1'} text-white mb-6`}>
               {title}
             </h2>
             <p className="text-subheader mb-8 max-w-2xl mx-auto">

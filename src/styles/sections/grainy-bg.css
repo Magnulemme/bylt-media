@@ -26,23 +26,30 @@
 /* Grainy BG Content - Wrapper per contenuti interni */
 .grainy-bg-content {
   @apply relative z-10 max-w-7xl mx-auto;
+  padding-top: var(--spacing-padding-lg);
 }
 
-/* Padding solo per i figli diretti che NON sono NeuralServices o PerformanceMetrics */
-.grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
+@media (min-width: 768px) {
+  .grainy-bg-content {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* Padding solo per i figli diretti che NON gestiscono il proprio padding-x */
+.grainy-bg-content > :not(.services-container-mobile):not(.performance-section):not(.infinity-section):not(.campaign-showcase-section) {
   padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
   padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
 }
 
 @media (min-width: 640px) {
-  .grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
+  .grainy-bg-content > :not(.services-container-mobile):not(.performance-section):not(.infinity-section):not(.campaign-showcase-section) {
     padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
   }
 }
 
 @media (min-width: 1024px) {
-  .grainy-bg-content > :not(.services-container-mobile):not(.performance-section) {
+  .grainy-bg-content > :not(.services-container-mobile):not(.performance-section):not(.infinity-section):not(.campaign-showcase-section) {
     padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
   }
@@ -61,9 +68,4 @@
   .section-intro-container {
     padding-bottom: var(--spacing-padding-md);
   }
-}
-
-/* Section Intro Title Spacing - Spazio tra titolo e sottotitolo */
-.section-intro-title-spacing {
-  margin-bottom: var(--spacing-padding-sm);
 }

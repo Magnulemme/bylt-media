@@ -35,7 +35,15 @@ const TechStackSection = () => {
             direction="left"
             speed="slow"
             pauseOnHover={true}
-            cardSize="compact"
+            renderItem={(item) => (
+              <div className="relative w-[220px] h-[200px] bg-linear-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-cyan-500/20 group flex flex-col items-center justify-center gap-4 p-6"
+                style={{ boxShadow: '0 4px 20px rgba(6, 182, 212, 0.1), 0 0 40px rgba(6, 182, 212, 0.08)' }}>
+                <div className="w-24 h-24 flex items-center justify-center">
+                  <img src={item.logo} alt={item.name} className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110 opacity-90" loading="lazy" />
+                </div>
+                <p className="text-gray-400 font-normal text-sm text-center group-hover:text-gray-300 transition-colors">{item.name}</p>
+              </div>
+            )}
           />
         </div>
 

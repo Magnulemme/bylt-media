@@ -1,20 +1,60 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, useMotionValue } from 'motion/react'; // useAnimationFrame rimosso per debug
+import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
 import CTASectionCard from '../ui/CTASectionCard';
 import { useProfiler } from '@/hooks/useProfiler';
 import ShaderBackground from './ShaderBackground';
 import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
 
 // Hook per animazione Lissajous curve (figura a "8" smooth)
-// TEMPORANEAMENTE DISABILITATO per debug performance
 const useLissajousAnimation = (isActive, seed = 0) => {
     const rotateX = useMotionValue(0);
     const rotateY = useMotionValue(0);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const scale = useMotionValue(1);
+    const wasActiveRef = useRef(false); // Traccia stato precedente per reset una tantum
 
-    // DISABILITATO - nessun useAnimationFrame
+    useAnimationFrame((time) => {
+        if (!isActive) {
+            // Reset solo una volta quando diventa inattivo, poi skip
+            if (wasActiveRef.current) {
+                rotateX.set(0);
+                rotateY.set(0);
+                x.set(0);
+                y.set(0);
+                scale.set(1);
+                wasActiveRef.current = false;
+            }
+            return; // Skip tutto il calcolo quando non attivo
+        }
+
+        wasActiveRef.current = true;
+
+        // Time in secondi con seed offset - velocizzato
+        const t = (time / 1000 + seed) * 0.8;
+
+        // Lissajous curve: x = A*sin(at + δ), y = B*sin(bt)
+        // Ratio 2:1 crea figura a "8" orizzontale (infinity)
+        const phase = seed;
+
+        // Movimento ellittico a "8" - più deciso
+        const lissajousX = Math.sin(2 * t + phase) * 12;
+        const lissajousY = Math.sin(t) * 10;
+
+        // Rotazione 3D sincronizzata - più marcata
+        const rotation3DX = Math.sin(t + Math.PI / 4) * 8;
+        const rotation3DY = Math.sin(2 * t) * 10;
+
+        // Scale pulsante più evidente
+        const scalePulse = Math.sin(t * 0.7) * 0.05;
+
+        // Applica i valori direttamente (senza spring)
+        x.set(lissajousX);
+        y.set(lissajousY);
+        rotateX.set(rotation3DX);
+        rotateY.set(rotation3DY);
+        scale.set(1 + scalePulse);
+    });
 
     return {
         rotateX,
@@ -290,10 +330,26 @@ const ProjectsShowcase = () => {
         });
     }, []);
 
-    // Callback ref che osserva gli elementi quando vengono montati
-    const getItemRef = useCallback(() => (el) => {
-        if (el && observerRef.current) {
-            observerRef.current.observe(el);
+    // Refs per gli elementi osservati - stabile tra i render
+    const itemRefsMap = useRef(new Map());
+
+    // Callback ref factory - memorizzata per project ID
+    const getItemRef = useCallback((projectId) => (el) => {
+        const prevEl = itemRefsMap.current.get(projectId);
+
+        // Se l'elemento è cambiato, unobserve il vecchio
+        if (prevEl && prevEl !== el && observerRef.current) {
+            observerRef.current.unobserve(prevEl);
+        }
+
+        if (el) {
+            itemRefsMap.current.set(projectId, el);
+            if (observerRef.current) {
+                observerRef.current.observe(el);
+            }
+        } else {
+            // Elemento smontato - cleanup
+            itemRefsMap.current.delete(projectId);
         }
     }, []);
 
@@ -442,7 +498,7 @@ const ProjectsShowcase = () => {
                                 isExpanded={expandedProjectId === project.id}
                                 isScrollBgEnabled={isScrollBgEnabled}
                                 onToggleExpand={handleToggleExpand}
-                                itemRef={getItemRef()}
+                                itemRef={getItemRef(project.id)}
                             />
                         ))}
                     </div>

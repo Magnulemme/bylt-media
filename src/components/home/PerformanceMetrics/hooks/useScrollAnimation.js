@@ -11,7 +11,6 @@ export const useScrollAnimation = (isMobile = false) => {
   const wrapperRef = useRef(null);
 
   const [isReady, setIsReady] = useState(false);
-  const [scrollableDistance, setScrollableDistance] = useState(0);
   const scrollableDistanceRef = useRef(0); // Ref per mantenere il valore aggiornato senza ricreare il listener
   const [isAtStart, setIsAtStart] = useState(true); // Sempre inizia a sinistra
   const [isAtEnd, setIsAtEnd] = useState(false);
@@ -33,10 +32,9 @@ export const useScrollAnimation = (isMobile = false) => {
     const visibleWidth = wrapperRef.current.clientWidth;
     const distance = cardsWidth - visibleWidth;
 
-    setScrollableDistance(distance);
     scrollableDistanceRef.current = distance;
     x.set(0);
-  }, [isMobile, x]);
+  }, [x]);
 
   // Inizializzazione con delay più lungo per schermi piccoli
   useEffect(() => {
@@ -91,6 +89,10 @@ export const useScrollAnimation = (isMobile = false) => {
     };
   }, [calculateScrollableDistance, isReady]);
 
+  // Refs per tracciare lo stato senza causare re-render
+  const isAtStartRef = useRef(true);
+  const isAtEndRef = useRef(false);
+
   // Sincronizza scroll con movimento
   useEffect(() => {
     if (!isReady || scrollableDistanceRef.current === 0) return;
@@ -99,12 +101,23 @@ export const useScrollAnimation = (isMobile = false) => {
       const currentDistance = scrollableDistanceRef.current;
       const newX = -currentDistance * progress;
       x.set(newX);
-      setIsAtStart(progress < 0.02);
-      setIsAtEnd(progress > 0.98);
+
+      // Aggiorna lo stato solo se effettivamente cambiato per evitare re-render
+      const newIsAtStart = progress < 0.02;
+      const newIsAtEnd = progress > 0.98;
+
+      if (isAtStartRef.current !== newIsAtStart) {
+        isAtStartRef.current = newIsAtStart;
+        setIsAtStart(newIsAtStart);
+      }
+      if (isAtEndRef.current !== newIsAtEnd) {
+        isAtEndRef.current = newIsAtEnd;
+        setIsAtEnd(newIsAtEnd);
+      }
     });
 
     return () => unsubscribe();
-  }, [isReady, scrollYProgress, x, isMobile, scrollableDistance]);
+  }, [isReady, scrollYProgress, x]); // Rimosso isMobile e scrollableDistance - usiamo ref
 
   return {
     containerRef,

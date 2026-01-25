@@ -90,6 +90,26 @@ const SuccessStories = () => {
                     direction="left"
                     speed="normal"
                     pauseOnHover={false}
+                    renderItem={(item) => (
+                        <div className="px-6 py-6 w-80 max-w-full min-h-[320px] bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-cyan-500/20 flex flex-col"
+                            style={{ boxShadow: '0 4px 20px rgba(6, 182, 212, 0.1), 0 0 40px rgba(6, 182, 212, 0.08)' }}>
+                            {item.rating && (
+                                <div className="flex gap-1 mb-4">
+                                    {[...Array(5)].map((_, i) => (
+                                        <svg key={i} className="w-4 h-4" fill={i < item.rating ? "#fbbf24" : "none"} stroke={i < item.rating ? "#fbbf24" : "#4b5563"} strokeWidth="1" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                        </svg>
+                                    ))}
+                                </div>
+                            )}
+                            <div className="w-full h-16 flex items-center justify-start mb-4">
+                                <img src={item.logo} alt={item.name} className="max-h-full w-auto object-contain opacity-90" loading="lazy" />
+                            </div>
+                            <blockquote className="text-sm leading-relaxed text-gray-300 mb-4 flex-1">"{item.quote}"</blockquote>
+                            {item.metric && <div className="text-cyan-400 font-semibold text-base mb-3">{item.metric}</div>}
+                            {item.author && <div className="text-xs text-gray-500 font-medium">— {item.author}</div>}
+                        </div>
+                    )}
                 />
             </div>
         </section>

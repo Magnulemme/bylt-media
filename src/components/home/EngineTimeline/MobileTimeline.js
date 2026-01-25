@@ -12,10 +12,10 @@ const MobileTimeline = ({ processSteps }) => {
     const topPosition = useCenteredPosition(wrapperRef);
 
     return (
-        <div className="lg:hidden px-4">
+        <div className="lg:hidden mobile-timeline-container">
             {/* Title */}
-            <div className="mb-12">
-                <h2 className="heading-h1 text-white text-center mb-4 max-w-4xl mx-auto">
+            <div className="mobile-timeline-title">
+                <h2 className="heading-h1 text-white text-center max-w-4xl mx-auto">
                     Our proven process ensures clarity, efficiency, and exceptional results
                 </h2>
                 <p className="text-subheader text-center max-w-2xl mx-auto">
@@ -29,7 +29,7 @@ const MobileTimeline = ({ processSteps }) => {
                     <div className="w-full relative">
                         <div
                             ref={wrapperRef}
-                            className="relative py-12"
+                            className="relative mobile-timeline-wrapper"
                             style={{
                                 opacity: isReady ? 1 : 0,
                                 transition: 'opacity 0.2s ease-out',
@@ -38,9 +38,9 @@ const MobileTimeline = ({ processSteps }) => {
                             }}
                         >
                             {/* Layer 1: Glow layer (absolute, no mask, overflow visible) */}
-                            <div className="absolute inset-0 overflow-visible pointer-events-none py-12">
+                            <div className="absolute inset-0 overflow-visible pointer-events-none mobile-timeline-glow-layer">
                                 <motion.div
-                                    className="flex items-stretch gap-4"
+                                    className="flex items-stretch mobile-timeline-cards"
                                     style={{ x }}
                                 >
                                     {processSteps.map((step, index) => (
@@ -65,7 +65,7 @@ const MobileTimeline = ({ processSteps }) => {
                             >
                                 <motion.div
                                     ref={cardsRef}
-                                    className="flex items-stretch gap-4"
+                                    className="flex items-stretch mobile-timeline-cards"
                                     style={{ x }}
                                 >
                                     {processSteps.map((step, index) => (

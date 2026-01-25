@@ -20,6 +20,7 @@ const MovingBorder = ({
   const progress = useMotionValue(0);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const containerRef = useRef(null);
+  const pathLengthRef = useRef(0); // Cache per getTotalLength()
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -27,6 +28,17 @@ const MovingBorder = ({
     const updateDimensions = () => {
       const { width, height } = containerRef.current.getBoundingClientRect();
       setDimensions({ width, height });
+      // Aggiorna la cache della lunghezza del path quando le dimensioni cambiano
+      // Il path verrà aggiornato nel prossimo render, quindi usiamo un timeout
+      setTimeout(() => {
+        if (pathRef.current) {
+          try {
+            pathLengthRef.current = pathRef.current.getTotalLength();
+          } catch {
+            // Path not ready
+          }
+        }
+      }, 0);
     };
 
     updateDimensions();
@@ -34,18 +46,24 @@ const MovingBorder = ({
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  useAnimationFrame((time) => {
-    if (!pathRef.current) return;
-
-    try {
-      const length = pathRef.current.getTotalLength();
-      if (length && length > 0) {
-        const pxPerMillisecond = length / duration;
-        const progressValue = (time * pxPerMillisecond) % length;
-        progress.set(progressValue);
+  // Aggiorna la cache quando il path cambia (dopo render con nuove dimensioni)
+  useEffect(() => {
+    if (pathRef.current && dimensions.width > 0) {
+      try {
+        pathLengthRef.current = pathRef.current.getTotalLength();
+      } catch {
+        // Path not ready
       }
-    } catch (error) {
-      // Path not ready yet, skip this frame
+    }
+  }, [dimensions]);
+
+  useAnimationFrame((time) => {
+    // Usa il valore cachato invece di chiamare getTotalLength() ogni frame
+    const length = pathLengthRef.current;
+    if (length > 0) {
+      const pxPerMillisecond = length / duration;
+      const progressValue = (time * pxPerMillisecond) % length;
+      progress.set(progressValue);
     }
   });
 

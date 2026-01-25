@@ -85,6 +85,12 @@ const ClientsScroll = () => {
                     speed="slow"
                     pauseOnHover={true}
                     className="py-8"
+                    renderItem={(item) => (
+                        <div className="relative w-40 h-28 md:w-48 md:h-32 flex items-center justify-center p-6 rounded-2xl border border-cyan-500/20 bg-linear-to-br from-slate-800/50 to-slate-900/50"
+                            style={{ boxShadow: '0 4px 20px rgba(6, 182, 212, 0.1), 0 0 40px rgba(6, 182, 212, 0.08)' }}>
+                            <img src={item.logo} alt={item.name} className="max-w-full max-h-full w-auto h-auto object-contain grayscale-[20%] brightness-110 hover:grayscale-0 hover:brightness-125 transition-all duration-300" loading="lazy" />
+                        </div>
+                    )}
                 />
             </div>
 
