@@ -94,25 +94,14 @@ const ServiceDetails = ({ service }) => {
                     </motion.div>
                 </div>
 
-                {/* Tablet & Desktop: two columns (wave left, content right) */}
+                {/* Tablet & Desktop: two columns (content left, wave right) */}
                 <div className="hidden md:grid md:grid-cols-2 gap-12 items-center">
-                    {/* Left - Animated Wave */}
+                    {/* Left - Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="relative rounded-2xl overflow-hidden h-[320px]"
-                    >
-                        <AnimatedWaveCanvas className="rounded-2xl" />
-                    </motion.div>
-
-                    {/* Right - Content */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <h2 className="heading-h2 text-white mb-4">
                             {secondary.heading}
@@ -144,7 +133,7 @@ const ServiceDetails = ({ service }) => {
 
                         {/* Secondary Stats - Desktop */}
                         {secondaryStats.length > 0 && (
-                            <div className="flex gap-8 justify-end pt-8">
+                            <div className="flex gap-8 pt-8">
                                 {secondaryStats.map((stat, index) => (
                                     <motion.div
                                         key={index}
@@ -163,6 +152,17 @@ const ServiceDetails = ({ service }) => {
                                 ))}
                             </div>
                         )}
+                    </motion.div>
+
+                    {/* Right - Animated Wave */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="relative rounded-2xl overflow-hidden h-[320px]"
+                    >
+                        <AnimatedWaveCanvas className="rounded-2xl" />
                     </motion.div>
                 </div>
             </div>

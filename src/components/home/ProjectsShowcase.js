@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
 import CTASectionCard from '../ui/CTASectionCard';
+import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
 import ShaderBackground from './ShaderBackground';
 import BrandMarquee from '../caseStudies/sections/template/BrandMarquee';
@@ -199,7 +200,7 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                     </motion.div>
                 </div>
 
-                {/* Expanded Content with CTA - dentro project-link-item, sopra il border */}
+                {/* Expanded Content - dentro project-link-item, sopra il border */}
                 <div
                     className="grid"
                     style={{
@@ -216,63 +217,67 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                 transitionDelay: isExpanded ? '0.1s' : '0s',
                             }}
                         >
-                            <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-                                {/* Image */}
-                                <div className="lg:w-80 shrink-0">
-                                    <div className="relative rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[4/3]">
-                                        <img
-                                            src={project.image}
-                                            alt={project.name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                        {/* Highlight stat overlay */}
-                                        <div className="absolute bottom-4 left-4">
-                                            <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                                                {project.highlight}
-                                            </span>
-                                            <span className="block text-xs text-cyan-300 uppercase tracking-wider mt-1">
-                                                {project.highlightLabel}
-                                            </span>
+                            {/* Card link - tutta l'area è cliccabile */}
+                            <a
+                                href={project.link}
+                                className="group/card block rounded-xl p-4 lg:p-6 border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:bg-white/10"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+                                    {/* Image */}
+                                    <div className="lg:w-80 shrink-0">
+                                        <div className="relative rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[4/3] transition-transform duration-300 group-hover/card:scale-[1.02]">
+                                            <img
+                                                src={project.image}
+                                                alt={project.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                            {/* Highlight stat overlay */}
+                                            <div className="absolute bottom-4 left-4">
+                                                <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+                                                    {project.highlight}
+                                                </span>
+                                                <span className="block text-xs text-cyan-300 uppercase tracking-wider mt-1">
+                                                    {project.highlightLabel}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Content */}
-                                <div className="flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <span className="text-label text-cyan-400 font-semibold">
-                                            {project.category} · {project.service}
+                                    {/* Content */}
+                                    <div className="flex-1 flex flex-col justify-between">
+                                        <div>
+                                            <div className="flex flex-wrap gap-2">
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="cyan"
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.category}
+                                                </MovingBorderButton>
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="cyan"
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.service}
+                                                </MovingBorderButton>
+                                            </div>
+                                            <p className="text-body-lg text-white/80 mt-3 max-w-xl">
+                                                {project.description}
+                                            </p>
+                                        </div>
+
+                                        <span className="inline-flex items-center gap-2 mt-6 text-base font-semibold text-white transition-colors duration-300 group-hover/card:text-cyan-400">
+                                            <span>Read Full Case Study</span>
+                                            <span className="transition-transform duration-300 group-hover/card:translate-x-1">→</span>
                                         </span>
-                                        <p className="text-body-lg text-white/80 mt-3 max-w-xl">
-                                            {project.description}
-                                        </p>
                                     </div>
-
-                                    <a
-                                        href={project.link}
-                                        className="inline-flex items-center gap-2 mt-6 text-cyan-400 font-semibold text-sm group/cta hover:text-cyan-300 transition-colors w-fit"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        <span className="border-b border-cyan-400/50 group-hover/cta:border-cyan-300 pb-0.5">
-                                            Read Full Case Study
-                                        </span>
-                                        <svg
-                                            className="w-4 h-4 transition-transform group-hover/cta:translate-x-1"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                            />
-                                        </svg>
-                                    </a>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -360,7 +365,7 @@ const ProjectsShowcase = () => {
             category: 'Automotive',
             service: 'Lead Generation',
             image: '/images/casestudy/nissan-case-study.webp',
-            link: '/case-studies-nissan',
+            link: '/case-studies/nissan',
             description: 'Transformed a complex user journey into a streamlined lead generation machine, driving qualified test drive requests through precision-targeted campaigns.',
             highlight: '2,000+',
             highlightLabel: 'Test Drives Generated',
@@ -371,7 +376,7 @@ const ProjectsShowcase = () => {
             category: 'Fashion Retail',
             service: 'E-commerce Growth',
             image: '/images/casestudy/napudreni-case-study.webp',
-            link: '/case-studies-napudreni',
+            link: '/case-studies/napudreni',
             description: 'Elevated an emerging fashion brand from limited visibility to market prominence through strategic social engagement and optimized conversion funnels.',
             highlight: '340%',
             highlightLabel: 'Revenue Increase',
@@ -382,7 +387,7 @@ const ProjectsShowcase = () => {
             category: 'Restaurant Chain',
             service: 'Brand Awareness',
             image: '/images/casestudy/happy-case-study.webp',
-            link: '/case-studies-happy',
+            link: '/case-studies/happy',
             description: "Amplified Bulgaria's favorite restaurant chain's digital presence with hyper-localized campaigns that drove foot traffic across 30+ locations nationwide.",
             highlight: '180%',
             highlightLabel: 'Traffic Growth',
@@ -393,7 +398,7 @@ const ProjectsShowcase = () => {
             category: 'E-commerce',
             service: 'Performance Marketing',
             image: '/images/casestudy/parfium.bg-case-study.webp',
-            link: '/case-studies-parfium',
+            link: '/case-studies/parfium',
             description: 'Maximized holiday season impact with surgical ad optimization, turning Black Friday and Christmas into record-breaking revenue periods.',
             highlight: '12.5x',
             highlightLabel: 'ROAS Achieved',

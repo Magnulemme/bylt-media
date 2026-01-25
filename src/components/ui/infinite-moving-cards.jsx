@@ -92,7 +92,7 @@ export const InfiniteMovingCards = ({
       <ul
         ref={scrollerRef}
         className={cn(
-          "flex w-max min-w-full shrink-0 flex-nowrap py-8",
+          "flex w-max min-w-full shrink-0 flex-nowrap items-stretch py-8",
           gap,
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
@@ -100,7 +100,7 @@ export const InfiniteMovingCards = ({
         {items.map((item, idx) => (
           <li
             key={item.id || `${item.name}-${idx}`}
-            className="shrink-0"
+            className="shrink-0 flex"
           >
             {renderItem(item, idx)}
           </li>
