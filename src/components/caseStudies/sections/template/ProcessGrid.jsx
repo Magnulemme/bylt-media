@@ -16,12 +16,12 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
     };
 
     return (
-        <section className="pt-8 pb-16 md:pt-12 md:pb-24 relative">
+        <section className="pt-padding-sm pb-padding-lg relative">
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.02] to-transparent pointer-events-none" />
 
             {/* Section Header */}
-            <div className="max-w-5xl mx-auto px-4 relative mb-12 md:mb-16">
+            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) relative mb-padding-md">
                 <h2 className="heading-h1 text-white mb-4">The Process</h2>
                 {description && (
                     <p className="text-subheader max-w-2xl">
@@ -56,7 +56,7 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
             </FadeMask>
 
             {/* Desktop Grid */}
-            <div className="max-w-5xl mx-auto px-4 relative">
+            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) relative">
                 <div className="hidden md:grid grid-cols-2 gap-6">
                     {process.map((step, index) => (
                         <DitherProcessCard

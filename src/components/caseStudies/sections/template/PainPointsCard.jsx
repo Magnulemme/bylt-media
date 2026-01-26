@@ -18,19 +18,16 @@ const BeforeByltChart = ({ className, headline = "The numbers told the story.", 
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     return (
-        <div className={cn("max-w-6xl mx-auto px-4 pt-0 pb-16 md:pb-24", className)}>
-            <div ref={ref} className="flex flex-col lg:flex-row-reverse lg:justify-between lg:items-center gap-12">
-                {/* Colonna destra (su desktop): titolo + copy */}
-                <div className="lg:max-w-md">
+        <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) pt-0 pb-padding-lg", className)}>
+            <div ref={ref} className="grid lg:grid-cols-2 gap-12 items-center">
+                {/* Colonna destra (su desktop): titolo + copy - order-last su mobile, order-first su lg per reverse */}
+                <div className="lg:order-last">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.5 }}
                         className="mb-8"
                     >
-                        <span className="text-label text-red-400 mb-3 block">
-                            The Reality
-                        </span>
                         <h2 className="heading-h2 text-white">
                             {headline}
                         </h2>
@@ -51,7 +48,6 @@ const BeforeByltChart = ({ className, headline = "The numbers told the story.", 
                     initial={{ opacity: 0, x: -30 }}
                     animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="flex-1 lg:max-w-lg"
                 >
                     <div className="bg-[#020617]/40 backdrop-blur-sm border border-red-500/20 rounded-2xl p-6">
                         <div className="flex items-center justify-between mb-4">

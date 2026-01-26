@@ -123,9 +123,12 @@
     /* ========================================
        BREAKPOINTS & MAX-WIDTH
        ======================================== */
-    --breakpoint-content: 1440px;
+    --breakpoint-outer: 2556px;   /* Sfondi, shader, marquee */
+    --breakpoint-content: 1440px; /* Contenuto principale */
+    --breakpoint-lg: 1024px;
 
-    /* Custom max-width utility */
+    /* Custom max-width utilities */
+    --max-width-outer: 2556px;
     --max-width-content: 1440px;
   }
 
@@ -270,6 +273,8 @@
     @import "./sections/campaign.css";
     @import "./sections/about.css";
     @import "./sections/service-page.css";
+    @import "./sections/case-studies.css";
+    @import "./sections/contact.css";
     @import "./sections/footer.css";
   }
 

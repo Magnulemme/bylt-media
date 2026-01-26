@@ -26,7 +26,7 @@ const BrandMarquee = ({
     const items = [...Array(4)].map((_, idx) => ({ id: idx, text }));
 
     return (
-        <div className={cn("mb-8 md:mb-12 px-4 md:px-(--margin-safe-x) pt-16", className)}>
+        <div className={cn("px-(--margin-safe-x)", className)}>
             <div
                 className="relative overflow-hidden py-2 md:py-4 rounded-2xl border border-slate-700"
                 style={{
@@ -34,19 +34,12 @@ const BrandMarquee = ({
                     boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)'
                 }}
             >
-                {/* Fade overlay left */}
-                <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-linear-to-r from-[#020617] to-transparent z-10 pointer-events-none rounded-l-2xl" />
-
-                {/* Fade overlay right */}
-                <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-linear-to-l from-[#020617] to-transparent z-10 pointer-events-none rounded-r-2xl" />
-
                 <InfiniteMovingCards
                     items={items}
                     direction={reverse ? "right" : "left"}
                     speed={speed}
                     pauseOnHover={false}
                     gap="gap-8 md:gap-16"
-                    className="[mask-image:none]"
                     renderItem={(item) => (
                         <div className="flex items-center gap-8 md:gap-16 whitespace-nowrap">
                             <span className="heading-h1 font-black font-inter tracking-tight">

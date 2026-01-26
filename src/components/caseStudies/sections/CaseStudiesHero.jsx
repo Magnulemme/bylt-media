@@ -265,7 +265,7 @@ const CaseStudiesHero = () => {
     return (
         <div style={{ overflow: 'clip' }}><div
         className="sticky z-0 overflow-hidden rounded-2xl"
-        style={{ top: '-12px', height: 'calc(100dvh + 24px)' }}
+        style={{ top: '-12px', height: 'calc(100dvh + 24px)', background: '#020617' }}
     >
         <ShaderBackgroundDirect onReady={signalPageReady} />
     </div>

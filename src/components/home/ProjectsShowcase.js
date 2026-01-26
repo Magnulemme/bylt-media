@@ -396,10 +396,20 @@ const ProjectsShowcase = () => {
 
                 {/* Layout wrapper con flex-col per struttura verticale (come infinity-layout) */}
                 <div className="projects-layout">
-                    {/* Brand Marquee - fuori dal container per coerenza con InfinityPhilosophy */}
-                    <BrandMarquee text="BYLT SHOWS" className="px-3 pt-0 mb-0 md:mb-0 max-w-content w-full" />
+                    {/* Brand Marquee - usa breakpoint-outer dal CSS */}
+                    <BrandMarquee text="BYLT SHOWS" className="pt-0 mb-0 md:mb-0" />
 
                     <div className="projects-showcase-container">
+                        {/* Section Header */}
+                        <motion.h2
+                            className="heading-h1 pt-padding-sm md:pt-padding-md mb-4"
+                            initial={{ opacity: 0, filter: "blur(10px)" }}
+                            whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                        >
+                            Success Stories
+                        </motion.h2>
 
                 {/* Content with icon background */}
                 <div className="projects-content">

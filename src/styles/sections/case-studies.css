@@ -1,0 +1,121 @@
+/* ========================================
+   CASE STUDIES PAGE
+   Spacing design system applicato
+   ======================================== */
+
+/* ========================================
+   HERO SECTION
+   Prima sezione - nessun padding-top
+   ======================================== */
+
+/* CaseStudiesHero - z-index alto per reveal effect */
+.case-studies-hero-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   WHY BYLT SECTION
+   Sezione con ComparisonTable, Quote, Process steps, Benefits
+   ======================================== */
+
+.case-studies-why-bylt-section {
+  /* padding-top gestito nella reveal-section */
+}
+
+.case-studies-why-bylt-container {
+  max-width: var(--breakpoint-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .case-studies-why-bylt-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-studies-why-bylt-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* Quote section spacing */
+.case-studies-quote {
+  margin-top: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+  .case-studies-quote {
+    margin-top: var(--spacing-padding-lg);
+  }
+}
+
+/* Process header spacing */
+.case-studies-process-header {
+  margin-top: var(--spacing-padding-lg);
+  margin-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .case-studies-process-header {
+    margin-top: var(--spacing-padding-xl);
+    margin-bottom: var(--spacing-padding-md);
+  }
+}
+
+/* Process grid spacing */
+.case-studies-process-grid {
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .case-studies-process-grid {
+    gap: 1.5rem;
+  }
+}
+
+/* Benefits spacing */
+.case-studies-benefits {
+  margin-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-studies-benefits {
+    margin-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ========================================
+   BRAND MARQUEE REVEAL SECTION
+   Effetto sticky reveal dal basso verso l'alto
+   ======================================== */
+
+.case-studies-reveal-section {
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 0;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-studies-reveal-section {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* BrandMarquee inside reveal section - !important per sovrascrivere utility Tailwind */
+.case-studies-marquee {
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+

@@ -20,19 +20,16 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     return (
-        <div className={cn("max-w-6xl mx-auto px-4 py-16 md:py-24", className)}>
-            <div ref={ref} className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
+        <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg", className)}>
+            <div ref={ref} className="grid lg:grid-cols-2 gap-12 items-center">
                 {/* Colonna sinistra: titolo + copy */}
-                <div className="lg:max-w-md">
+                <div>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                         transition={{ duration: 0.5 }}
                         className="mb-8"
                     >
-                        <span className="text-label text-emerald-400 mb-3 block">
-                            The Impact
-                        </span>
                         <h2 className="heading-h2 text-white">
                             {headline}
                         </h2>
@@ -53,7 +50,6 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
                     initial={{ opacity: 0, x: 30 }}
                     animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="flex-1 lg:max-w-lg"
                 >
                     <div className="bg-[#020617]/40 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6">
                         <div className="flex items-center justify-between mb-4">

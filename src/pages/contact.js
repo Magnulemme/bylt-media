@@ -7,6 +7,7 @@ import { ProjectMarquee } from '../components/ui/project-marquee';
 import ComparisonTable from '../components/ui/ComparisonTable';
 import { useWaveBackground } from '../components/services/hooks';
 import { whyByltContent } from '../components/caseStudies/constants';
+import BrandMarquee from '../components/caseStudies/sections/template/BrandMarquee';
 
 const NeuralContact = dynamic(
     () => import('../components/home/NeuralContact'),
@@ -45,11 +46,11 @@ const PROJECTS = [
 const ContactHero = () => {
     return (
         <div className="bg-black service-page max-w-full">
-            <section className="relative flex items-center justify-center overflow-hidden max-w-full">
+            <section className="contact-hero-section relative flex items-center justify-center overflow-hidden max-w-full">
                 <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
-                <div className="relative z-20 max-w-6xl mx-auto px-4 py-24 md:py-32">
-                    <div className="relative flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-full">
+                <div className="contact-hero-container relative z-20">
+                    <div className="contact-hero-grid relative flex flex-col lg:grid lg:grid-cols-2 items-center max-w-full">
                         {/* Octahedron as background on mobile/tablet */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden opacity-30 pointer-events-none">
                             <div className="w-[350px] h-[350px]">
@@ -100,7 +101,7 @@ const ContactHero = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.7, delay: 0.5 }}
-                        className="mt-16 w-full"
+                        className="contact-hero-marquee w-full"
                     >
                         <p className="text-xs text-slate-500 uppercase tracking-widest text-left mb-6">
                             Brands We've Helped Grow
@@ -199,31 +200,26 @@ const FreeAuditSection = () => {
     ];
 
     return (
-        <section className="pt-20 md:pt24" style={{ background: '#020617' }}>
-            <div className="max-w-6xl mx-auto px-4">
-                <div className="max-w-2xl ml-auto mb-12 md:mb-16">
-                    <motion.h2
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter leading-tight text-white text-right mb-6"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        Get Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Free Audit</span>
-                    </motion.h2>
-                    <motion.p
-                        className="text-gray-400 text-base md:text-lg text-right"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                    >
-                        Before we start working together, we offer a complimentary audit of your digital marketing.
-                        This helps us understand your business and shows you exactly where we can add value.
-                    </motion.p>
-                </div>
+        <section className="contact-audit-section">
+            <BrandMarquee text="BYLT FREE AUDIT" className="contact-audit-marquee" />
+            <div className="contact-audit-container">
+                {/* Section Header */}
+                <motion.div
+                    className="pb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <h2 className="heading-h2 text-white mb-4">
+                        Free Digital Audit
+                    </h2>
+                    <p className="text-subheader max-w-2xl">
+                        Get a comprehensive analysis of your digital presence at no cost.
+                    </p>
+                </motion.div>
 
-                <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+                <div className="contact-audit-grid">
                     {auditFeatures.map((feature, index) => (
                         <AuditCard key={feature.title} feature={feature} index={index} />
                     ))}
@@ -235,7 +231,7 @@ const FreeAuditSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="mt-16 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+                    className="contact-audit-included grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
                 >
                     {[
                         'Performance score',
@@ -258,7 +254,7 @@ const FreeAuditSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="mt-12 md:mt-16 relative flex flex-col md:flex-row items-center justify-center gap-8"
+                    className="contact-audit-wave relative flex flex-col md:flex-row items-center justify-center gap-8"
                 >
                     {/* Wave - sfondo su mobile, side-by-side su desktop */}
                     <motion.div
@@ -293,30 +289,28 @@ const FreeAuditSection = () => {
                     </div>
                 </motion.div>
 
-                {/* Why Choose Us - Comparison Table */}
-                <div className="mt-16 md:mt-24">
-                    <div className="max-w-2xl mb-10">
-                        <motion.h3
-                            className="text-3xl md:text-4xl lg:text-5xl font-bold font-inter leading-tight text-white text-left mb-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            Why <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Choose Us?</span>
-                        </motion.h3>
-                        <motion.p
-                            className="text-gray-400 text-base md:text-lg text-left"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                        >
-                            {whyByltContent.subheading}
-                        </motion.p>
-                    </div>
+            </div>
 
-                    <ComparisonTable
+            {/* Why Choose Us - Comparison Table */}
+            <BrandMarquee text="WHY BYLT" className="contact-why-marquee" reverse />
+            <div className="contact-why-container">
+                {/* Section Header */}
+                <motion.div
+                    className="pb-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <h2 className="heading-h2 text-white mb-4">
+                        Why Choose BYLT
+                    </h2>
+                    <p className="text-subheader max-w-2xl">
+                        See how we compare to traditional agencies and why businesses choose us.
+                    </p>
+                </motion.div>
+
+                <ComparisonTable
                         others={whyByltContent.others}
                         bylt={whyByltContent.bylt}
                         showHeader={false}
@@ -328,7 +322,7 @@ const FreeAuditSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="mt-12 md:mt-16 flex flex-wrap justify-center gap-8 md:gap-16"
+                        className="contact-why-stats"
                     >
                         {[
                             { value: '50+', label: 'Happy Clients' },
@@ -343,9 +337,6 @@ const FreeAuditSection = () => {
                             </div>
                         ))}
                     </motion.div>
-                </div>
-
-
             </div>
         </section>
     );
@@ -382,8 +373,8 @@ const TestimonialQuote = () => {
     const current = TESTIMONIALS[currentIndex];
 
     return (
-        <section className="py-16 md:py-24" style={{ background: '#020617' }}>
-            <div className="max-w-4xl mx-auto px-4 text-center">
+        <section className="contact-testimonial-section">
+            <div className="contact-testimonial-container">
                 <svg className="w-10 h-10 mx-auto mb-6 text-cyan-400/30" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                 </svg>

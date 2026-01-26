@@ -15,8 +15,9 @@
 
 /* Infinity Layout - Container principale verticale */
 .infinity-layout {
-  @apply flex flex-col;
+  @apply flex flex-col w-full mx-auto;
   gap: var(--spacing-padding-sm);
+  max-width: var(--breakpoint-outer);
 }
 
 @media (min-width: 768px) {
@@ -27,7 +28,7 @@
 
 /* Infinity Content - Container con max-w e padding per i paragrafi */
 .infinity-content {
-  @apply relative max-w-content;
+  @apply relative w-full max-w-content mx-auto;
   padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
   padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
 }

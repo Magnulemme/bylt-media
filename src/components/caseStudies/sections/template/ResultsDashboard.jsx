@@ -7,12 +7,12 @@ const ResultsDashboard = ({ results }) => {
     if (!results) return null;
 
     return (
-        <div className="py-16 md:py-24">
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
+        <div className="py-padding-lg">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
                 {/* Colonna sinistra: freccia + stats */}
                 <ResultsMetrics metrics={results.metrics} className="order-last lg:order-first" />
                 {/* Colonna destra: titolo + content */}
-                <div className="lg:max-w-xl">
+                <div>
                     <ResultsDescription
                         description={results.description}
                         highlights={results.highlights}
@@ -145,7 +145,7 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className={`shrink-0 relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col ${className}`}>
+        <div ref={ref} className={`relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col ${className}`}>
             <div className="absolute inset-0 sm:relative sm:inset-auto opacity-40 sm:opacity-60 max-w-[400px]">
                 <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
             </div>

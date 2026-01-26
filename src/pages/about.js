@@ -1,15 +1,14 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import React, { useEffect, useState, useRef } from 'react';
 import Layout from '../components/layout';
-import ShaderBackgroundDirect from '../components/home/ShaderBackgroundDirect';
+import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
 import { DitherShader } from '../components/ui/dither-shader';
 import { Linkedin } from 'lucide-react';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import CTASectionCard from '@/components/ui/CTASectionCard';
-import PartnersLogos from '@/components/shared/PartnersLogos';
-import { cardStyles } from '@/components/ui/DitherProcessCard';
-import { useWaveBackground, useIconImage } from '../components/services/hooks';
+import { useWaveBackground } from '../components/services/hooks';
 import ShaderBackground from '../components/home/ShaderBackground';
 import { cn } from '@/lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
@@ -104,68 +103,23 @@ const iconSvgs = {
     mic: `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>')}`,
 };
 
-// Credentials data
-const credentials = [
-    { icon: 'award', title: 'Certified', subtitle: 'Google & Meta' },
-    { icon: 'briefcase', title: 'Fortune 500', subtitle: 'Client Portfolio' },
-    { icon: 'trendingUp', title: '£10M+', subtitle: 'Managed' },
-    { icon: 'mic', title: 'Speakers', subtitle: 'Industry Events' },
-];
-
-// Credential Card component using cardStyles
-const CredentialCard = ({ icon, title, subtitle, index }) => {
-    const style = cardStyles[index % cardStyles.length];
-    const bgImage = useIconImage(iconSvgs[icon], index);
-
-    return (
-        <div className="w-[180px] shrink-0">
-            <div
-                className={`relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:${style.hoverBorder} transition-all duration-300 overflow-hidden h-full`}
-                style={{ boxShadow: style.boxShadow }}
-            >
-                {/* Background: canvas-generated image with dither */}
-                <div className="absolute inset-0 opacity-15 pointer-events-none">
-                    {bgImage && (
-                        <DitherShader
-                            key={`bg-${index}-${style.ditherMode}`}
-                            src={bgImage}
-                            colorMode="duotone"
-                            primaryColor="#020617"
-                            secondaryColor={style.color}
-                            ditherMode={style.ditherMode}
-                            gridSize={style.gridSize}
-                            threshold={style.threshold}
-                            contrast={style.contrast}
-                        />
-                    )}
-                </div>
-                {/* Center icon: original SVG */}
-                <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
-                    <DitherShader
-                        key={`icon-${index}-${style.ditherMode}`}
-                        src={iconSvgs[icon]}
-                        colorMode="duotone"
-                        primaryColor="#020617"
-                        secondaryColor={style.color}
-                        ditherMode={style.ditherMode}
-                        gridSize={style.gridSize}
-                        threshold={style.threshold}
-                        contrast={style.contrast}
-                    />
-                </div>
-                <div className="relative z-10 heading-h4 text-white">{title}</div>
-                <div className="relative z-10 text-caption">{subtitle}</div>
-            </div>
-        </div>
-    );
-};
-
 // Card component with shader + wave background
 const ApartCard = ({ title, description, index }) => {
     const waveBg = useWaveBackground(index, true); // transparent background
 
+    // Brutalist shadow colors based on index
+    const shadowColors = [
+        'rgba(34, 211, 238, 0.8)',  // cyan
+        'rgba(168, 85, 247, 0.8)', // purple
+        'rgba(59, 130, 246, 0.8)', // blue
+    ];
+    const shadowColor = shadowColors[index % shadowColors.length];
+
     return (
-        <div className="relative rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 h-full bg-slate-950">
+        <div
+            className="relative rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 h-full bg-slate-950"
+            style={{ boxShadow: `6px 6px 0px ${shadowColor}` }}
+        >
             {/* Wave dots on top */}
             {waveBg && (
                 <div
@@ -214,7 +168,7 @@ export default function About() {
                 }}
             >
                 <div className='service-page relative'>
-                <ShaderBackgroundDirect onReady={signalPageReady} />
+                <ShaderBackgroundStandalone onReady={signalPageReady} />
 
                 <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pb-16 lg:pb-24 flex-1 flex flex-col justify-center max-lg:pt-16">
                     {/* Text + Torus side by side */}
@@ -254,7 +208,47 @@ export default function About() {
                     </div>
 
                     {/* Official Partner Section */}
-                    <PartnersLogos />
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center py-8">
+                        {/* BYLT Partner of MarketiseMe */}
+                        <div className="text-center">
+                            <p className="text-label mb-4">Official Partner of</p>
+                            <a
+                                href="https://marketiseme.com/en/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-block transition-transform duration-300 hover:-translate-y-1"
+                            >
+                                <Image
+                                    src="/images/partners/marketise-me-logo.svg"
+                                    alt="MarketiseMe"
+                                    width={180}
+                                    height={80}
+                                    className="opacity-80 hover:opacity-100 transition-opacity"
+                                />
+                            </a>
+                        </div>
+
+                        {/* MarketiseMe Partner of Google & Meta */}
+                        <div className="text-center">
+                            <p className="text-label mb-4">MarketiseMe is Official Partner of</p>
+                            <div className="flex items-center justify-center gap-6">
+                                <Image
+                                    src="/images/partners/partners logos/google-partner-logo-min.svg"
+                                    alt="Google Partner"
+                                    width={140}
+                                    height={60}
+                                    className="opacity-80"
+                                />
+                                <Image
+                                    src="/images/partners/partners logos/meta_partner_logo.png"
+                                    alt="Meta Business Partner"
+                                    width={140}
+                                    height={60}
+                                    className="opacity-80"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 </div>
             </section>
@@ -382,9 +376,142 @@ export default function About() {
                     {/* Founder Credentials */}
                 </div>
                 <InfiniteCarousel direction="right" speed="30s" className="mt-16">
-                    {credentials.map((cred, index) => (
-                        <CredentialCard key={cred.icon} {...cred} index={index} />
-                    ))}
+                    <div className="w-[180px] shrink-0">
+                        <div
+                            className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-cyan-500/50 transition-all duration-300 overflow-hidden h-full"
+                            style={{ boxShadow: '6px 6px 0px rgba(34, 211, 238, 0.8)' }}
+                        >
+                            <div className="absolute inset-0 opacity-15 pointer-events-none">
+                                <DitherShader
+                                    src={iconSvgs.award}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#22d3ee"
+                                    ditherMode="halftone"
+                                    gridSize={3}
+                                    threshold={0.45}
+                                    contrast={1.3}
+                                />
+                            </div>
+                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                <DitherShader
+                                    src={iconSvgs.award}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#22d3ee"
+                                    ditherMode="halftone"
+                                    gridSize={3}
+                                    threshold={0.45}
+                                    contrast={1.3}
+                                />
+                            </div>
+                            <div className="relative z-10 heading-h4 text-white">Certified</div>
+                            <div className="relative z-10 text-caption">Google & Meta</div>
+                        </div>
+                    </div>
+                    <div className="w-[180px] shrink-0">
+                        <div
+                            className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-purple-500/50 transition-all duration-300 overflow-hidden h-full"
+                            style={{ boxShadow: '6px 6px 0px rgba(168, 85, 247, 0.8)' }}
+                        >
+                            <div className="absolute inset-0 opacity-15 pointer-events-none">
+                                <DitherShader
+                                    src={iconSvgs.briefcase}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#a855f7"
+                                    ditherMode="bayer"
+                                    gridSize={4}
+                                    threshold={0.5}
+                                    contrast={1.4}
+                                />
+                            </div>
+                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                <DitherShader
+                                    src={iconSvgs.briefcase}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#a855f7"
+                                    ditherMode="bayer"
+                                    gridSize={4}
+                                    threshold={0.5}
+                                    contrast={1.4}
+                                />
+                            </div>
+                            <div className="relative z-10 heading-h4 text-white">Fortune 500</div>
+                            <div className="relative z-10 text-caption">Client Portfolio</div>
+                        </div>
+                    </div>
+                    <div className="w-[180px] shrink-0">
+                        <div
+                            className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-blue-500/50 transition-all duration-300 overflow-hidden h-full"
+                            style={{ boxShadow: '6px 6px 0px rgba(59, 130, 246, 0.8)' }}
+                        >
+                            <div className="absolute inset-0 opacity-15 pointer-events-none">
+                                <DitherShader
+                                    src={iconSvgs.trendingUp}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#3b82f6"
+                                    ditherMode="crosshatch"
+                                    gridSize={3}
+                                    threshold={0.4}
+                                    contrast={1.3}
+                                />
+                            </div>
+                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                <DitherShader
+                                    src={iconSvgs.trendingUp}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#3b82f6"
+                                    ditherMode="crosshatch"
+                                    gridSize={3}
+                                    threshold={0.4}
+                                    contrast={1.3}
+                                />
+                            </div>
+                            <div className="relative z-10 heading-h4 text-white">£10M+</div>
+                            <div className="relative z-10 text-caption">Managed</div>
+                        </div>
+                    </div>
+                    <div className="w-[180px] shrink-0">
+                        <div
+                            className="relative p-6 rounded-xl border border-slate-800 bg-slate-950 text-center group hover:border-emerald-500/50 transition-all duration-300 overflow-hidden h-full"
+                            style={{ boxShadow: '6px 6px 0px rgba(16, 185, 129, 0.8)' }}
+                        >
+                            <div className="absolute inset-0 opacity-15 pointer-events-none">
+                                <DitherShader
+                                    src={iconSvgs.mic}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#10b981"
+                                    ditherMode="noise"
+                                    gridSize={2}
+                                    threshold={0.42}
+                                    contrast={1.5}
+                                    animated={true}
+                                    animationSpeed={0.01}
+                                />
+                            </div>
+                            <div className="relative z-10 w-10 h-10 mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                <DitherShader
+                                    src={iconSvgs.mic}
+                                    colorMode="duotone"
+                                    primaryColor="#020617"
+                                    secondaryColor="#10b981"
+                                    ditherMode="noise"
+                                    gridSize={2}
+                                    threshold={0.42}
+                                    contrast={1.5}
+                                    animated={true}
+                                    animationSpeed={0.01}
+                                />
+                            </div>
+                            <div className="relative z-10 heading-h4 text-white">Speakers</div>
+                            <div className="relative z-10 text-caption">Industry Events</div>
+                        </div>
+                    </div>
                 </InfiniteCarousel>
             </section>
 

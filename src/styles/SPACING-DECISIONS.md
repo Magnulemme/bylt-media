@@ -444,6 +444,124 @@ div.service-page (container pagina)
 
 ---
 
+### 10. About Page
+**File:** `src/styles/sections/about.css`
+**Data:** 2026-01-26
+
+#### Struttura
+```
+page.about
+  ├── section.about-hero-section
+  │     └── div.service-page.relative
+  │           ├── ShaderBackgroundDirect
+  │           └── div.about-hero-container
+  │                 ├── div.about-hero-grid
+  │                 │     ├── Torus3D (mobile background)
+  │                 │     ├── div (text content)
+  │                 │     └── Torus3D (desktop)
+  │                 └── PartnersLogos
+  │
+  ├── section.about-reveal-section (sticky reveal)
+  │     ├── div.about-reveal-header
+  │     └── InfiniteCarousel (What Sets Us Apart cards)
+  │
+  ├── section.about-founders-section
+  │     ├── div.about-founders-container
+  │     │     ├── div.about-founders-header
+  │     │     └── div.about-founders-grid (2-col)
+  │     └── InfiniteCarousel.about-credentials-carousel
+  │
+  ├── section.about-ecosystem-section
+  │     └── div.about-ecosystem-container
+  │           ├── div.about-ecosystem-header
+  │           └── div.about-ecosystem-grid (2-col brand cards)
+  │
+  ├── section.about-developer-section
+  │     └── div.about-developer-container
+  │
+  └── CTASectionCard
+```
+
+#### Scelte applicate
+
+| Elemento | Proprietà | Mobile | Desktop | Motivazione |
+|----------|-----------|--------|---------|-------------|
+| `.about-hero-section` | padding-top | nessuno | nessuno | Prima sezione con shader background, nessun padding-top necessario. |
+| `.about-hero-container` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px, 0 @1024px | Spazio interno per content sotto shader. Desktop: contenuto allineato al centro verticale dal shader. |
+| `.about-hero-container` | padding-bottom | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Respiro visivo verso la sezione reveal. |
+| `.about-hero-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.about-hero-grid` | gap | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap tra colonna testo e Torus. |
+| `.about-hero-grid` | margin-bottom | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Separazione da PartnersLogos. |
+| `.about-reveal-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. Sticky positioning per reveal effect. |
+| `.about-reveal-header` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.about-reveal-header` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap tra header e carousel. |
+| `.about-founders-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.about-founders-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.about-founders-header` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap tra header e founders grid. |
+| `.about-credentials-carousel` | margin-top | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Separazione dal founders grid. |
+| `.about-ecosystem-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.about-ecosystem-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.about-ecosystem-header` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap tra header e brand cards grid. |
+| `.about-developer-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.about-developer-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.about-developer-container` | max-width | `--breakpoint-lg` (1024px) | `--breakpoint-lg` (1024px) | Container più stretto per contenuto centrato. |
+
+#### Note
+- Struttura simile a Service Page: Hero con shader background, sezioni con pattern standard
+- About Reveal Section usa `position: sticky` e `clip-path` per effetto reveal (mantenuto)
+- Hero container usa `--breakpoint-content` (1440px) per allineamento con il resto del sito
+- Developer section usa `--breakpoint-lg` (1024px) per contenuto più stretto e centrato
+- InfiniteCarousel usa spacing interni con classi CSS dedicate (`.about-credentials-carousel`)
+- Spacing interni ai componenti (p-6, p-8, mb-4, mb-6, gap-4, gap-8) mantenuti con Tailwind: tutti ≤32px
+- Rimossi tutti gli inline styles con `background` e `zIndex` - ora gestiti in CSS
+
+---
+
+### 11. Case Studies Page
+**File:** `src/styles/sections/case-studies.css`
+**Data:** 2026-01-26
+
+#### Struttura
+```
+page.casestudies
+  ├── section.CaseStudiesHero (Hero con shader background + stacked cards)
+  │
+  ├── div.case-studies-marquee (BrandMarquee "WHY CHOOSE BYLT")
+  │
+  ├── section.case-studies-why-bylt-section
+  │     └── div.case-studies-why-bylt-container
+  │           ├── ComparisonTable
+  │           ├── motion.div.case-studies-quote (Quote)
+  │           ├── motion.div.case-studies-process-header (Process badge + heading)
+  │           ├── div (Process grid 2x2/4 cards)
+  │           └── motion.div.case-studies-benefits (Benefits checkmarks)
+  │
+  └── CTASectionCard (CTA finale)
+```
+
+#### Scelte applicate
+
+| Elemento | Proprietà | Mobile | Desktop | Motivazione |
+|----------|-----------|--------|---------|-------------|
+| `CaseStudiesHero` | padding-top | nessuno | nessuno | Prima sezione con shader background, nessun padding-top necessario. |
+| `.case-studies-marquee` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Separazione dalla Hero section. |
+| `.case-studies-marquee` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap verso WhyBylt section. |
+| `.case-studies-why-bylt-section` | padding-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Standard sezione. |
+| `.case-studies-why-bylt-container` | padding-x | container pattern standard | xs → sm → md | Safe margins con breakpoint progressivo. |
+| `.case-studies-quote` | margin-top | `--spacing-padding-md` (48px) | `--spacing-padding-lg` (96px) @768px | Separazione dalla ComparisonTable. |
+| `.case-studies-process-header` | margin-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Separazione dalla quote. |
+| `.case-studies-process-header` | margin-bottom | `--spacing-padding-sm` (32px) | `--spacing-padding-md` (64px) @768px | Gap verso process grid. |
+| `.case-studies-benefits` | margin-top | `--spacing-padding-lg` (64px) | `--spacing-padding-xl` (128px) @768px | Separazione dal process grid. |
+
+#### Note
+- Hero con shader background e stacked cards scroll animation (mantiene struttura originale)
+- BrandMarquee usa classe CSS dedicata `.case-studies-marquee` + reset Tailwind (`pt-0 mb-0 md:mb-0`)
+- WhyBylt usa container pattern standard con max-width `--breakpoint-content`
+- CTASectionCard usa il suo spacing interno (non modificato)
+- Spacing interni ai componenti (gap-4, gap-6, mb-4, mb-6) mantenuti con Tailwind: tutti ≤32px
+
+---
+
 ## Template per nuovi componenti
 
 ```markdown
@@ -542,3 +660,5 @@ Note:
 - **2026-01-24**: EngineTimeline: applicato design system spacing. Container pattern standard. Padding-bottom aggiunto (eccezione: sezione successiva ha struttura diversa).
 - **2026-01-24**: ProjectsShowcase: rimosso padding-bottom da inner card, aggiunta classe `.projects-description` per spacing, CTA sostituita con CTASectionCard variant="soft".
 - **2026-01-25**: Service Page: creato `service-page.css`, applicato design system a tutti i componenti (Hero, WhyBylt, Process, Details, CTA). Container pattern standard con safe margins.
+- **2026-01-26**: About Page: applicato design system completo a tutte le sezioni (Hero, Reveal, Founders, Ecosystem, Developer). Rimossi inline styles, creato `about.css` con pattern standard.
+- **2026-01-26**: Case Studies Page: creato `case-studies.css`, applicato design system a CaseStudiesPage (BrandMarquee), WhyBylt (section, container, quote, process header, benefits). Container pattern standard con safe margins.

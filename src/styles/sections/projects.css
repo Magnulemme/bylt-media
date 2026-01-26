@@ -26,7 +26,7 @@
   @apply flex flex-col w-full relative mx-auto;
   gap: var(--spacing-padding-sm);
   z-index: 10;
-  max-width: var(--breakpoint-content);
+  max-width: var(--breakpoint-outer);
 }
 
 @media (min-width: 768px) {

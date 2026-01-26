@@ -6,8 +6,8 @@ const OurSolution = ({ solution }) => {
     if (!solution) return null;
 
     return (
-        <div className="py-16 md:py-24">
-            <div className="max-w-5xl mx-auto px-4">
+        <div className="py-padding-lg">
+            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
                 <SectionHeader description={solution.description} />
                 <PillarsGrid pillars={solution.pillars} />
             </div>
@@ -26,11 +26,8 @@ const SectionHeader = ({ description }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5 }}
-            className="mb-12 md:mb-16 text-right"
+            className="mb-padding-md text-right"
         >
-                            <span className="text-label text-cyan-500 mb-3 block">
-                            Our touch
-                        </span>
             <h2 className="heading-h2 text-white mb-4">
                 The Solution
             </h2>

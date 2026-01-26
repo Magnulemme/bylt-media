@@ -1,0 +1,236 @@
+/* ============================================
+   Contact Page - Spacing Design System
+   ============================================ */
+
+/* ----------------------------------------
+   Contact Hero Section
+   ---------------------------------------- */
+.contact-hero-section {
+    /* Nessun padding-top: prima sezione con shader background */
+}
+
+.contact-hero-container {
+    max-width: var(--breakpoint-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: var(--spacing-padding-lg);
+    padding-bottom: var(--spacing-padding-lg);
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+    .contact-hero-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+}
+
+@media (min-width: 768px) {
+    .contact-hero-container {
+        padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-hero-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+}
+
+.contact-hero-grid {
+    gap: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+    .contact-hero-grid {
+        gap: var(--spacing-padding-md);
+    }
+}
+
+.contact-hero-marquee {
+    margin-top: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+    .contact-hero-marquee {
+        margin-top: var(--spacing-padding-lg);
+    }
+}
+
+/* ----------------------------------------
+   Free Audit Section
+   ---------------------------------------- */
+.contact-audit-section {
+    background: #020617;
+    padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+    .contact-audit-section {
+        padding-top: var(--spacing-padding-xl);
+    }
+}
+
+.contact-audit-marquee {
+    /* Usa breakpoint-outer per full-bleed con safe margins */
+    max-width: var(--breakpoint-outer);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: var(--spacing-padding-lg) !important;
+}
+
+@media (min-width: 768px) {
+    .contact-audit-marquee {
+        margin-bottom: var(--spacing-padding-xl) !important;
+    }
+}
+
+.contact-audit-container {
+    max-width: var(--breakpoint-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+    .contact-audit-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-audit-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+}
+
+.contact-audit-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .contact-audit-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+.contact-audit-included {
+    margin-top: var(--spacing-padding-md);
+}
+
+@media (min-width: 768px) {
+    .contact-audit-included {
+        margin-top: var(--spacing-padding-lg);
+    }
+}
+
+.contact-audit-wave {
+    margin-top: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+    .contact-audit-wave {
+        margin-top: var(--spacing-padding-md);
+    }
+}
+
+/* ----------------------------------------
+   Why BYLT Section (dentro FreeAuditSection)
+   ---------------------------------------- */
+.contact-why-marquee {
+    /* Usa breakpoint-outer per full-bleed con safe margins */
+    max-width: var(--breakpoint-outer);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: var(--spacing-padding-lg);
+    margin-bottom: var(--spacing-padding-lg) !important;
+}
+
+@media (min-width: 768px) {
+    .contact-why-marquee {
+        margin-top: var(--spacing-padding-xl);
+        margin-bottom: var(--spacing-padding-xl) !important;
+    }
+}
+
+.contact-why-container {
+    max-width: var(--breakpoint-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+    .contact-why-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-why-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+}
+
+.contact-why-stats {
+    margin-top: var(--spacing-padding-sm);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .contact-why-stats {
+        margin-top: var(--spacing-padding-md);
+        gap: 4rem;
+    }
+}
+
+/* ----------------------------------------
+   Testimonial Section
+   ---------------------------------------- */
+.contact-testimonial-section {
+    background: #020617;
+    padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+    .contact-testimonial-section {
+        padding-top: var(--spacing-padding-xl);
+    }
+}
+
+.contact-testimonial-container {
+    max-width: var(--breakpoint-lg);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .contact-testimonial-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-testimonial-container {
+        padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+        padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+}

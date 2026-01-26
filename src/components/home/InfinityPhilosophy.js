@@ -5,11 +5,22 @@ const InfinityPhilosophy = () => {
     return (
         <div className="infinity-section">
             <div className="infinity-layout">
-                {/* Brand Marquee - max-w-content per coerenza con le altre card scroll */}
-                <BrandMarquee text="BYLT COMPOUNDS" className="px-3 pt-0 mb-0 md:mb-0 max-w-content w-full" />
+                {/* Brand Marquee - visual divider, usa breakpoint-outer dal CSS */}
+                <BrandMarquee text="BYLT COMPOUNDS" className="pt-0 mb-0 md:mb-0" />
 
                 {/* Contenuto con max-w e container padding */}
                 <div className="infinity-content">
+                    {/* Section Header */}
+                    <motion.h2
+                        className="heading-h1 pt-padding-sm md:pt-padding-md mb-4"
+                        initial={{ opacity: 0, filter: "blur(10px)" }}
+                        whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        The Compound Effect
+                    </motion.h2>
+
                     {/* Infinity symbol come background */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}

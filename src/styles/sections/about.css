@@ -1,5 +1,105 @@
 /* ========================================
-   ABOUT PAGE - STICKY REVEAL SECTION
+   ABOUT PAGE - SPACING DESIGN SYSTEM
+   ======================================== */
+
+/* ========================================
+   1. HERO SECTION
+   ======================================== */
+
+/* Hero - Prima sezione con shader background */
+.about-hero-section {
+  @apply relative flex items-center justify-center overflow-hidden;
+  @apply px-4;
+  background: #020617;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .about-hero-section {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop));
+  }
+}
+
+/* Hero Container - Content area */
+.about-hero-container {
+  @apply relative z-20 mx-auto flex-1 flex flex-col justify-center;
+  max-width: var(--breakpoint-content);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .about-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 768px) {
+  .about-hero-container {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-top: 0;
+  }
+}
+
+/* Hero Grid - Layout testo + torus */
+.about-hero-grid {
+  @apply relative items-center;
+  display: grid;
+  gap: var(--spacing-padding-sm);
+  margin-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-hero-grid {
+    gap: var(--spacing-padding-md);
+    margin-bottom: var(--spacing-padding-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-hero-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* What Sets Us Apart Header - Inside hero */
+.about-apart-header {
+  @apply relative z-20 mx-auto text-center;
+  max-width: var(--breakpoint-content);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  margin-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 640px) {
+  .about-apart-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-apart-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    margin-bottom: var(--spacing-padding-md);
+  }
+}
+
+/* ========================================
+   2. REVEAL SECTION (What Sets Us Apart)
    ======================================== */
 
 /* About Reveal Section - Sticky positioning per effetto reveal */
@@ -14,29 +114,206 @@
 
 @media (min-width: 768px) {
   .about-reveal-section {
-    padding-top: var(--spacing-padding-2xl);
+    padding-top: var(--spacing-padding-xl);
   }
 }
 
-/* About Reveal Container - Wrapper senza padding extra */
-.about-reveal-container {
-  @apply relative z-10 mx-auto max-w-6xl;
-  padding-left: var(--spacing-padding-xs);
-  padding-right: var(--spacing-padding-xs);
-  padding-top: var(--spacing-padding-lg);
-  padding-bottom: var(--spacing-padding-lg);
+/* About Reveal Header */
+.about-reveal-header {
+  @apply mx-auto;
+  max-width: var(--breakpoint-content);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  margin-bottom: var(--spacing-padding-sm);
 }
 
 @media (min-width: 640px) {
-  .about-reveal-container {
-    padding-left: var(--spacing-padding-sm);
-    padding-right: var(--spacing-padding-sm);
+  .about-reveal-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 768px) {
+  .about-reveal-header {
+    margin-bottom: var(--spacing-padding-md);
   }
 }
 
 @media (min-width: 1024px) {
-  .about-reveal-container {
-    padding-left: var(--spacing-padding-md);
-    padding-right: var(--spacing-padding-md);
+  .about-reveal-header {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ========================================
+   3. FOUNDERS SECTION
+   ======================================== */
+
+.about-founders-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-founders-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.about-founders-container {
+  @apply mx-auto;
+  max-width: var(--breakpoint-content);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .about-founders-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-founders-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+.about-founders-header {
+  margin-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .about-founders-header {
+    margin-bottom: var(--spacing-padding-md);
+  }
+}
+
+.about-founders-grid {
+  @apply grid gap-8;
+}
+
+@media (min-width: 768px) {
+  .about-founders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========================================
+   4. BRAND ECOSYSTEM SECTION
+   ======================================== */
+
+.about-ecosystem-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-ecosystem-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.about-ecosystem-container {
+  @apply mx-auto;
+  max-width: var(--breakpoint-content);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .about-ecosystem-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-ecosystem-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+.about-ecosystem-header {
+  margin-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .about-ecosystem-header {
+    margin-bottom: var(--spacing-padding-md);
+  }
+}
+
+.about-ecosystem-grid {
+  @apply grid gap-8;
+}
+
+@media (min-width: 768px) {
+  .about-ecosystem-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========================================
+   5. DEVELOPED BY SECTION
+   ======================================== */
+
+.about-developer-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-developer-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.about-developer-container {
+  @apply mx-auto;
+  max-width: var(--breakpoint-lg);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .about-developer-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-developer-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ========================================
+   6. CREDENTIALS CAROUSEL
+   ======================================== */
+
+.about-credentials-carousel {
+  margin-top: var(--spacing-padding-sm);
+}
+
+@media (min-width: 768px) {
+  .about-credentials-carousel {
+    margin-top: var(--spacing-padding-md);
   }
 }

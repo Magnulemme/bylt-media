@@ -39,7 +39,7 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
         <section className="relative overflow-hidden">
         <ShaderBackground />
             {/* Content */}
-            <div className="relative flex flex-col items-center justify-center px-4 pt-24 md:pt-32 pb-16 z-20">
+            <div className="relative flex flex-col items-center justify-center px-(--margin-safe-x) pt-section-sm pb-padding-lg z-20">
                 <div className="text-center max-w-4xl mx-auto">
                     {/* Headline */}
                     <motion.h1
@@ -83,9 +83,9 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
 
                 {/* Project Overview Content - ora dentro la Hero */}
                 {study && (
-                    <div className="w-full max-w-6xl mx-auto mt-16">
+                    <div className="w-full max-w-(--breakpoint-content) mx-auto mt-padding-lg">
                         {/* Overview info as text - 4 columns, 2 rows */}
-                        <div className="mb-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div className="mb-padding-md grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                             {overviewItems.map((item) => (
                                 <div key={item.title}>
                                     <p className="text-label-sm mb-1">{item.title}</p>

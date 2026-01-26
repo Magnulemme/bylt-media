@@ -26,15 +26,13 @@ const CaseStudyTemplate = ({ study }) => {
             />
 
             {/* Content Section */}
-            <section className="relative z-10">
-                <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
+            <section className="relative z-10 max-w-(--breakpoint-outer) mx-auto">
+                <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
                     <TheChallenge challenge={study.challenge} />
                 </div>
 
                 {/* Before BYLT - grafico che mostra il declino */}
                 <BeforeByltChart headline={study.beforeBylt?.headline || "Something had to change."} />
-
-                {/* Brand Marquee divider - il turning point */}
 
                 {/* Process + Solution con ShaderBackground continuo */}
                 <div className="relative overflow-hidden">
@@ -42,17 +40,20 @@ const CaseStudyTemplate = ({ study }) => {
                         <ShaderBackgroundDirect />
                     </div>
                     <div className="relative">
-                    <BrandMarquee />
+                        {/* Brand Marquee - usa breakpoint-outer */}
+                        <BrandMarquee />
 
-                        <ProcessGrid process={study.process} description={study.processDescription} />
-                        <OurSolution solution={study.solution} />
+                        <div className="max-w-(--breakpoint-content) mx-auto">
+                            <ProcessGrid process={study.process} description={study.processDescription} />
+                            <OurSolution solution={study.solution} />
+                        </div>
                     </div>
                 </div>
 
-                {/* Brand Marquee reverse divider */}
+                {/* Brand Marquee reverse divider - usa breakpoint-outer */}
                 <BrandMarquee text="THE BYLT EFFECT" reverse />
 
-                <div className="max-w-6xl mx-auto px-4">
+                <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
                     <ResultsDashboard results={study.results} />
                 </div>
 

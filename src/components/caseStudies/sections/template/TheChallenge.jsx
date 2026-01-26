@@ -6,10 +6,10 @@ const TheChallenge = ({ challenge }) => {
     if (!challenge) return null;
 
     return (
-        <div className="mb-8 md:mb-12">
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-12">
+        <div className="mb-padding-md">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
                 {/* Colonna sinistra: titolo + content */}
-                <div className="lg:max-w-xl">
+                <div>
                     <SectionHeader />
                     <ChallengeDescription
                         description={challenge.description}
@@ -163,7 +163,7 @@ const ChallengeMetrics = ({ metrics }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className="shrink-0 relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col">
+        <div ref={ref} className="relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col">
             <div className="absolute inset-0 sm:relative sm:inset-auto opacity-40 sm:opacity-60 max-w-[400px]">
                 <AnimatedWaveCanvas colors={['#ef4444', '#f97316', '#dc2626']} shape="arrow" />
             </div>
