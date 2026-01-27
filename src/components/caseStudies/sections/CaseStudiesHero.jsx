@@ -44,10 +44,10 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => 
 
     return (
         <div ref={ref} className="stats-card">
-            <div className="stats-value">
+            <div className="stats-value-light">
                 {prefix}{animatedValue}{suffix}
             </div>
-            <div className="text-label-lg font-bold text-slate-400">
+            <div className="text-label-sm text-slate-400">
                 {label}
             </div>
         </div>
@@ -330,7 +330,7 @@ const CaseStudiesHero = () => {
 <div className="relative z-20 text-center pb-24 px-4 max-w-5xl mx-auto">
     {/* Title shown here when not enough space in sticky section */}
     {!showText && (
-        <div className="text-center pt-12 pb-12 max-w-5xl mx-auto">
+        <div className="text-center pt-12 pb-16 md:pb-20 max-w-5xl mx-auto">
             <h3 className="heading-h2 text-white mb-3">
                 Results That Speak for Themselves
             </h3>
@@ -339,7 +339,7 @@ const CaseStudiesHero = () => {
             </p>
         </div>
     )}
-    <div className="stats-grid">
+    <div className="stats-grid pt-8 md:pt-12">
         <AnimatedStat value={50} suffix="+" label="Projects" delay={0} />
         <AnimatedStat value={150} suffix="%" label="Avg Growth" delay={100} />
         <AnimatedStat value={12} suffix="+" label="Industries" delay={200} />
