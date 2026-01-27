@@ -16,7 +16,7 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
     };
 
     return (
-        <section className="pt-padding-sm pb-padding-lg relative">
+        <section className="pb-padding-lg relative">
             {/* Subtle gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.02] to-transparent pointer-events-none" />
 

@@ -6,7 +6,10 @@
    Contact Hero Section
    ---------------------------------------- */
 .contact-hero-section {
-    /* Nessun padding-top: prima sezione con shader background */
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #020617;
 }
 
 .contact-hero-container {
@@ -64,13 +67,28 @@
    Free Audit Section
    ---------------------------------------- */
 .contact-audit-section {
+    position: relative;
+    z-index: 1;
     background: #020617;
+}
+
+.contact-audit-marquee-wrapper {
+    position: sticky;
+    bottom: 0;
+    z-index: 0;
+    background: #020617;
+    clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+    max-width: var(--breakpoint-outer);
+    margin-left: auto;
+    margin-right: auto;
     padding-top: var(--spacing-padding-lg);
+    padding-bottom: var(--spacing-padding-lg);
 }
 
 @media (min-width: 768px) {
-    .contact-audit-section {
+    .contact-audit-marquee-wrapper {
         padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-xl);
     }
 }
 
@@ -79,13 +97,6 @@
     max-width: var(--breakpoint-outer);
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: var(--spacing-padding-lg) !important;
-}
-
-@media (min-width: 768px) {
-    .contact-audit-marquee {
-        margin-bottom: var(--spacing-padding-xl) !important;
-    }
 }
 
 .contact-audit-container {
@@ -133,30 +144,32 @@
 }
 
 .contact-audit-wave {
-    margin-top: var(--spacing-padding-sm);
+    padding-top: var(--spacing-padding-lg);
+    padding-bottom: var(--spacing-padding-lg);
 }
 
 @media (min-width: 768px) {
     .contact-audit-wave {
-        margin-top: var(--spacing-padding-md);
+        padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-xl);
     }
 }
 
 /* ----------------------------------------
-   Why BYLT Section (dentro FreeAuditSection)
+   Why BYLT Section
    ---------------------------------------- */
 .contact-why-marquee {
     /* Usa breakpoint-outer per full-bleed con safe margins */
     max-width: var(--breakpoint-outer);
     margin-left: auto;
     margin-right: auto;
-    margin-top: var(--spacing-padding-lg);
+    padding-top: var(--spacing-padding-lg);
     margin-bottom: var(--spacing-padding-lg) !important;
 }
 
 @media (min-width: 768px) {
     .contact-why-marquee {
-        margin-top: var(--spacing-padding-xl);
+        padding-top: var(--spacing-padding-xl);
         margin-bottom: var(--spacing-padding-xl) !important;
     }
 }
@@ -202,13 +215,14 @@
    Testimonial Section
    ---------------------------------------- */
 .contact-testimonial-section {
-    background: #020617;
     padding-top: var(--spacing-padding-lg);
+    padding-bottom: var(--spacing-padding-lg);
 }
 
 @media (min-width: 768px) {
     .contact-testimonial-section {
         padding-top: var(--spacing-padding-xl);
+        padding-bottom: var(--spacing-padding-xl);
     }
 }
 

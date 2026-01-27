@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { whyByltContent, processPreviewContent } from '../constants';
 import ComparisonTable from '../../ui/ComparisonTable';
+import QuoteCard from '../../ui/QuoteCard';
 import { DitherShader } from '../../ui/dither-shader';
 import { useNumberImage } from '../../services/hooks';
 import { ditherPatterns, accentColors } from '../../services/utils';
@@ -59,7 +60,7 @@ const ProcessStepCard = ({ step, index }) => {
 
 const WhyBylt = () => {
     const { others, bylt } = whyByltContent;
-    const { badge, heading, steps } = processPreviewContent;
+    const { steps } = processPreviewContent;
 
     return (
         <section
@@ -89,24 +90,36 @@ const WhyBylt = () => {
                     showHeader={false}
                 />
 
-                {/* Quote */}
+                {/* Stats */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                    className="case-studies-quote text-center max-w-3xl mx-auto"
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="case-studies-stats"
                 >
-                    <svg className="w-8 h-8 mx-auto mb-4 text-cyan-400/30" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                    </svg>
-                    <blockquote className="text-lg md:text-xl text-white/90 font-light leading-relaxed mb-4">
-                        We don't just run campaigns—we build growth systems that deliver results month after month.
-                    </blockquote>
-                    <p className="text-sm text-slate-500">
-                        — The BYLT Team
-                    </p>
+                    {[
+                        { value: '50+', label: 'Happy Clients' },
+                        { value: '48h', label: 'Response Time' },
+                        { value: '95%', label: 'Client Retention' },
+                    ].map((stat) => (
+                        <div key={stat.label} className="text-center">
+                            <div className="text-2xl md:text-3xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                                {stat.value}
+                            </div>
+                            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{stat.label}</div>
+                        </div>
+                    ))}
                 </motion.div>
+
+                {/* Quote */}
+                <QuoteCard
+                    quote="We don't just run campaigns—we build growth systems that deliver results month after month."
+                    author="The BYLT Team"
+                    brutalist
+                    showRating
+                    className="case-studies-quote max-w-2xl mx-auto"
+                />
 
                 {/* Process header */}
                 <motion.div
@@ -114,18 +127,18 @@ const WhyBylt = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="case-studies-process-header text-center"
+                    className="case-studies-process-header text-right"
                 >
-                    <span className="text-label-sm text-cyan-500 mb-3 block">
-                        {badge}
-                    </span>
-                    <h3 className="heading-h2 text-white">
-                        {heading}
-                    </h3>
+                    <h2 className="heading-h2 text-white mb-4">
+                        From Idea to Impact
+                    </h2>
+                    <p className="text-subheader max-w-2xl ml-auto">
+                        Our proven process delivers results at every stage.
+                    </p>
                 </motion.div>
 
                 {/* Process steps */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="case-studies-process-grid grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {steps.map((step, index) => (
                         <motion.div
                             key={index}

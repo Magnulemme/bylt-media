@@ -45,7 +45,7 @@ const PROJECTS = [
 
 const ContactHero = () => {
     return (
-        <div className="bg-black service-page max-w-full">
+        <div className="bg-slate-950 service-page max-w-full">
             <section className="contact-hero-section relative flex items-center justify-center overflow-hidden max-w-full">
                 <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
@@ -201,7 +201,6 @@ const FreeAuditSection = () => {
 
     return (
         <section className="contact-audit-section">
-            <BrandMarquee text="BYLT FREE AUDIT" className="contact-audit-marquee" />
             <div className="contact-audit-container">
                 {/* Section Header */}
                 <motion.div
@@ -262,15 +261,15 @@ const FreeAuditSection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="absolute inset-0 md:relative md:inset-auto rounded-2xl overflow-hidden md:h-80 flex items-center justify-center"
+                        className="absolute inset-0 md:relative md:inset-auto rounded-2xl overflow-hidden flex items-center justify-center"
                     >
-                        <AnimatedWaveCanvas className="rounded-2xl min-w-75 h-[320px]  flex items-center justify-center flex-1" />
+                        <AnimatedWaveCanvas className="rounded-2xl min-w-75 h-fit  flex items-center justify-center flex-1" />
                         {/* Overlay scuro solo su mobile */}
                         <div className="absolute inset-0 bg-[#020617]/50 md:hidden rounded-2xl" />
                     </motion.div>
 
                     {/* Text */}
-                    <div className="relative z-10 text-center md:text-left py-16 md:py-0">
+                    <div className="relative z-10 text-center md:text-left">
                         <p className="text-xs text-slate-500 uppercase tracking-widest mb-3">
                             Next Step
                         </p>
@@ -291,7 +290,13 @@ const FreeAuditSection = () => {
 
             </div>
 
-            {/* Why Choose Us - Comparison Table */}
+        </section>
+    );
+};
+
+const WhyByltSection = () => {
+    return (
+        <div className='contact-why-section relative z-30'>
             <BrandMarquee text="WHY BYLT" className="contact-why-marquee" reverse />
             <div className="contact-why-container">
                 {/* Section Header */}
@@ -311,51 +316,54 @@ const FreeAuditSection = () => {
                 </motion.div>
 
                 <ComparisonTable
-                        others={whyByltContent.others}
-                        bylt={whyByltContent.bylt}
-                        showHeader={false}
-                    />
+                    others={whyByltContent.others}
+                    bylt={whyByltContent.bylt}
+                    showHeader={false}
+                />
 
-                    {/* Stats */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="contact-why-stats"
-                    >
-                        {[
-                            { value: '50+', label: 'Happy Clients' },
-                            { value: '48h', label: 'Response Time' },
-                            { value: '95%', label: 'Client Retention' },
-                        ].map((stat) => (
-                            <div key={stat.label} className="text-center">
-                                <div className="text-2xl md:text-3xl font-semibold text-white">
-                                    {stat.value}
-                                </div>
-                                <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{stat.label}</div>
+                {/* Stats */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="contact-why-stats"
+                >
+                    {[
+                        { value: '50+', label: 'Happy Clients' },
+                        { value: '48h', label: 'Response Time' },
+                        { value: '95%', label: 'Client Retention' },
+                    ].map((stat) => (
+                        <div key={stat.label} className="text-center">
+                            <div className="text-2xl md:text-3xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                                {stat.value}
                             </div>
-                        ))}
-                    </motion.div>
+                            <div className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{stat.label}</div>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
-        </section>
+        </div>
     );
 };
 
 const TESTIMONIALS = [
     {
         quote: "BYLT transformed our digital presence completely. Their strategic approach and attention to detail exceeded our expectations.",
-        author: "Marketing Director",
+        author: "Stefan Ivanov",
+        role: "Marketing Director",
         company: "Nissan Bulgaria"
     },
     {
         quote: "Working with BYLT was a game-changer. They delivered results that actually moved the needle for our business.",
-        author: "CEO",
+        author: "Maria Petrova",
+        role: "CEO",
         company: "Happy"
     },
     {
         quote: "Professional, creative, and data-driven. BYLT understood our vision and brought it to life beautifully.",
-        author: "Brand Manager",
+        author: "Alex Dimitrov",
+        role: "Brand Manager",
         company: "Brickell"
     }
 ];
@@ -366,46 +374,84 @@ const TestimonialQuote = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-        }, 5000);
+        }, 6000);
         return () => clearInterval(interval);
     }, []);
 
     const current = TESTIMONIALS[currentIndex];
 
     return (
-        <section className="contact-testimonial-section">
+        <section className="contact-testimonial-section relative z-30">
             <div className="contact-testimonial-container">
-                <svg className="w-10 h-10 mx-auto mb-6 text-cyan-400/30" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
+                {/* Brutalist Card */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="relative rounded-2xl border border-slate-700 bg-slate-950/80 p-8 md:p-10 overflow-hidden"
+                    style={{ boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)' }}
+                >
+                    {/* Gradient Quote Icon */}
+                    <div className="flex justify-center mb-6">
+                        <div className="w-12 h-12 rounded-full bg-linear-to-br from-cyan-400/20 to-blue-500/20 flex items-center justify-center">
+                            <svg className="w-6 h-6 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                            </svg>
+                        </div>
+                    </div>
 
-                <div className="relative h-32 md:h-24">
+                    {/* Quote Text */}
+                    <div className="relative h-28 md:h-20">
+                        <AnimatePresence mode="wait">
+                            <motion.blockquote
+                                key={currentIndex}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.5 }}
+                                className="absolute inset-0 text-quote text-center"
+                            >
+                                "{current.quote}"
+                            </motion.blockquote>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* 5-Star Rating */}
+                    <div className="flex justify-center gap-1 mt-6 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                            <motion.svg
+                                key={i}
+                                initial={{ opacity: 0, scale: 0 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.1 + i * 0.1 }}
+                                className="w-5 h-5 text-cyan-400"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                            >
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </motion.svg>
+                        ))}
+                    </div>
+
+                    {/* Author */}
                     <AnimatePresence mode="wait">
-                        <motion.blockquote
+                        <motion.footer
                             key={currentIndex}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.5 }}
-                            className="absolute inset-0 text-xl md:text-2xl text-white/90 font-light leading-relaxed"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="flex items-center justify-center gap-2 text-sm"
                         >
-                            {current.quote}
-                        </motion.blockquote>
+                            <span className="text-white font-medium">{current.author}</span>
+                            <span className="text-slate-500">—</span>
+                            <span className="text-slate-400">{current.role}</span>
+                            <span className="text-slate-500">@</span>
+                            <span className="text-cyan-400">{current.company}</span>
+                        </motion.footer>
                     </AnimatePresence>
-                </div>
-
-                <AnimatePresence mode="wait">
-                    <motion.p
-                        key={currentIndex}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="text-sm text-slate-500 mt-6"
-                    >
-                        — {current.author}, {current.company}
-                    </motion.p>
-                </AnimatePresence>
+                </motion.div>
             </div>
         </section>
     );
@@ -437,10 +483,19 @@ const ContactPage = () => {
                 <meta name="robots" content="index, follow" />
             </Head>
             <ContactHero />
+            <div className="contact-audit-marquee-wrapper">
+                <BrandMarquee text="BYLT FREE AUDIT" className="contact-audit-marquee" />
+            </div>
             <FreeAuditSection />
 
-            {/* Testimonial Quote Carousel */}
-            <TestimonialQuote />
+            {/* Why BYLT + Testimonials with Shader Background */}
+            <div className="relative overflow-hidden bg-slate-950 px-4">
+                <div className="relative">
+                    <ShaderBackgroundDirect />
+                    <WhyByltSection />
+                    <TestimonialQuote />
+                </div>
+            </div>
 
             <NeuralContact />
         </Layout>

@@ -41,9 +41,11 @@ const CaseStudyTemplate = ({ study }) => {
                     </div>
                     <div className="relative">
                         {/* Brand Marquee - usa breakpoint-outer */}
-                        <BrandMarquee />
+                        <div className="case-study-marquee-wrapper">
+                            <BrandMarquee />
+                        </div>
 
-                        <div className="max-w-(--breakpoint-content) mx-auto">
+                        <div className="case-study-process-solution-wrapper max-w-(--breakpoint-content) mx-auto">
                             <ProcessGrid process={study.process} description={study.processDescription} />
                             <OurSolution solution={study.solution} />
                         </div>
@@ -51,9 +53,11 @@ const CaseStudyTemplate = ({ study }) => {
                 </div>
 
                 {/* Brand Marquee reverse divider - usa breakpoint-outer */}
-                <BrandMarquee text="THE BYLT EFFECT" reverse />
+                <div className="case-study-marquee-reverse-wrapper">
+                    <BrandMarquee text="THE BYLT EFFECT" reverse />
+                </div>
 
-                <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
+                <div className="case-study-results-wrapper max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
                     <ResultsDashboard results={study.results} />
                 </div>
 

@@ -75,6 +75,7 @@ const ShaderBackgroundDirect = ({
     className = '',
     style = {},
     onReady = null,
+    enableVisibilityTracking = true,
 }) => {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
@@ -174,44 +175,53 @@ const ShaderBackgroundDirect = ({
             }
         };
 
-        // IntersectionObserver con rootMargin esteso per pre-rendering
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                const wasVisible = isVisibleRef.current;
-                isVisibleRef.current = entry.isIntersecting;
-
-                // Se entra in viewport (o zona pre-render), avvia il loop
-                if (entry.isIntersecting && !wasVisible) {
-                    startLoop();
-                }
-            },
-            { threshold: 0.1, rootMargin: '300px' }
-        );
-        observer.observe(container);
-
         // ResizeObserver
         const resizeObserver = new ResizeObserver(() => {
             const w = container.offsetWidth;
             const h = container.offsetHeight;
             renderer.setSize(w, h, false);
             material.uniforms.u_resolution.value.set(w, h);
+            // Force immediate render to prevent flickering during resize
+            if (isVisibleRef.current) {
+                renderer.render(scene, camera);
+            }
         });
         resizeObserver.observe(container);
 
-        // L'animazione parte automaticamente quando l'IntersectionObserver
-        // rileva che il componente è visibile (inclusa la zona di pre-render)
+        // IntersectionObserver per lazy rendering (solo se enableVisibilityTracking)
+        let observer = null;
+
+        if (enableVisibilityTracking) {
+            observer = new IntersectionObserver(
+                ([entry]) => {
+                    const wasVisible = isVisibleRef.current;
+                    isVisibleRef.current = entry.isIntersecting;
+
+                    // Se entra in viewport (o zona pre-render), avvia il loop
+                    if (entry.isIntersecting && !wasVisible) {
+                        startLoop();
+                    }
+                },
+                { threshold: 0.1, rootMargin: '300px' }
+            );
+            observer.observe(container);
+        } else {
+            // Senza visibility tracking, avvia subito e gira sempre
+            isVisibleRef.current = true;
+            startLoop();
+        }
 
         return () => {
             if (animationIdRef.current) {
                 cancelAnimationFrame(animationIdRef.current);
             }
-            observer.disconnect();
+            observer?.disconnect();
             resizeObserver.disconnect();
             geometry.dispose();
             material.dispose();
             renderer.dispose();
         };
-    }, [targetFPS, onReady]);
+    }, [targetFPS, onReady, enableVisibilityTracking]);
 
     return (
         <div

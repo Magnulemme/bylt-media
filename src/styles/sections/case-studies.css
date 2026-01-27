@@ -19,8 +19,17 @@
    Sezione con ComparisonTable, Quote, Process steps, Benefits
    ======================================== */
 
-.case-studies-why-bylt-section {
-  /* padding-top gestito nella reveal-section */
+/* CTA section spacing - !important per sovrascrivere py-12/py-24 di CTASectionCard */
+.case-studies-cta {
+  padding-top: var(--spacing-padding-lg) !important;
+  padding-bottom: var(--spacing-padding-lg) !important;
+}
+
+@media (min-width: 768px) {
+  .case-studies-cta {
+    padding-top: var(--spacing-padding-xl) !important;
+    padding-bottom: var(--spacing-padding-xl) !important;
+  }
 }
 
 .case-studies-why-bylt-container {
@@ -45,6 +54,22 @@
   }
 }
 
+/* Stats spacing (after comparison table) */
+.case-studies-stats {
+  margin-top: var(--spacing-padding-sm);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .case-studies-stats {
+    margin-top: var(--spacing-padding-md);
+    gap: 4rem;
+  }
+}
+
 /* Quote section spacing */
 .case-studies-quote {
   margin-top: var(--spacing-padding-md);
@@ -59,35 +84,35 @@
 /* Process header spacing */
 .case-studies-process-header {
   margin-top: var(--spacing-padding-lg);
-  margin-bottom: var(--spacing-padding-sm);
 }
 
 @media (min-width: 768px) {
   .case-studies-process-header {
     margin-top: var(--spacing-padding-xl);
-    margin-bottom: var(--spacing-padding-md);
   }
 }
 
 /* Process grid spacing */
 .case-studies-process-grid {
+  margin-top: var(--spacing-padding-sm);
   gap: 1rem;
 }
 
 @media (min-width: 768px) {
   .case-studies-process-grid {
+    margin-top: var(--spacing-padding-md);
     gap: 1.5rem;
   }
 }
 
 /* Benefits spacing */
 .case-studies-benefits {
-  margin-top: var(--spacing-padding-lg);
+  margin-top: var(--spacing-padding-sm);
 }
 
 @media (min-width: 768px) {
   .case-studies-benefits {
-    margin-top: var(--spacing-padding-xl);
+    margin-top: var(--spacing-padding-md);
   }
 }
 
@@ -117,5 +142,61 @@
 .case-studies-marquee {
   padding-top: 0 !important;
   margin-bottom: 0 !important;
+}
+
+/* ========================================
+   CASE STUDY TEMPLATE - SINGLE PAGE
+   ======================================== */
+
+/* ----------------------------------------
+   BRAND MARQUEE WRAPPER - First (inside shader)
+   ---------------------------------------- */
+.case-study-marquee-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-marquee-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   BRAND MARQUEE WRAPPER - Reverse (after shader)
+   ---------------------------------------- */
+.case-study-marquee-reverse-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-marquee-reverse-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   PROCESS + SOLUTION WRAPPER - After first marquee
+   ---------------------------------------- */
+.case-study-process-solution-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-process-solution-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   RESULTS WRAPPER - After reverse marquee
+   ---------------------------------------- */
+.case-study-results-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-results-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
 }
 

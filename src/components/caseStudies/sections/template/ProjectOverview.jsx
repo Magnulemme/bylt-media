@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useShaderBackground } from '@/hooks/useShaderBackground';
+import QuoteCard from '@/components/ui/QuoteCard';
 
 const ProjectOverview = ({ study, imageUrl, testimonial }) => {
     const overviewItems = [
@@ -137,36 +138,16 @@ const ProjectShowcase = ({ imageUrl, overviewItems }) => {
 };
 
 // Client Testimonial sub-component
-const ClientTestimonial = ({ testimonial }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6 }}
-            className="mt-8 max-w-2xl mx-auto text-center"
-        >
-            <blockquote>
-                <p className="text-lg md:text-xl text-slate-300 italic leading-relaxed">
-                    "{testimonial.quote}"
-                </p>
-                <footer className="mt-4 flex items-center justify-center gap-2 text-sm">
-                    <span className="text-white font-medium">{testimonial.author}</span>
-                    <span className="text-slate-500">—</span>
-                    <span className="text-slate-400">{testimonial.role}</span>
-                    {testimonial.company && (
-                        <>
-                            <span className="text-slate-500">@</span>
-                            <span className="text-cyan-400">{testimonial.company}</span>
-                        </>
-                    )}
-                </footer>
-            </blockquote>
-        </motion.div>
-    );
-};
+const ClientTestimonial = ({ testimonial }) => (
+    <QuoteCard
+        quote={testimonial.quote}
+        author={testimonial.author}
+        role={testimonial.role}
+        company={testimonial.company}
+        brutalist
+        showRating
+        className="mt-8 max-w-2xl mx-auto"
+    />
+);
 
 export default ProjectOverview;

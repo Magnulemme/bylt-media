@@ -167,7 +167,7 @@ export default function About() {
                     zIndex: 10
                 }}
             >
-                <div className='service-page relative'>
+                <div className='service-page relative mb-6'>
                 <ShaderBackgroundStandalone onReady={signalPageReady} />
 
                 <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pb-16 lg:pb-24 flex-1 flex flex-col justify-center max-lg:pt-16">

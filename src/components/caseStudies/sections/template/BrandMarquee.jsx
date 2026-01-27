@@ -26,7 +26,7 @@ const BrandMarquee = ({
     const items = [...Array(4)].map((_, idx) => ({ id: idx, text }));
 
     return (
-        <div className={cn("px-(--margin-safe-x)", className)}>
+        <div className={cn("px-3 md:px-(--margin-safe-x)", className)}>
             <div
                 className="relative overflow-hidden py-2 md:py-4 rounded-2xl border border-slate-700"
                 style={{

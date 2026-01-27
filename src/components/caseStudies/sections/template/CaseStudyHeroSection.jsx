@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, memo } from 'react';
 import { motion, useInView } from 'motion/react';
 import ShaderBackground from '@/components/home/ShaderBackground';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
+import QuoteCard from '@/components/ui/QuoteCard';
 
 // Signal page ready for splash screen
 const signalPageReady = () => {
@@ -37,76 +38,106 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
 
     return (
         <section className="relative overflow-hidden">
-        <ShaderBackground />
+            {/* ShaderBackground sempre visibile */}
+            <ShaderBackground />
+
             {/* Content */}
-            <div className="relative flex flex-col items-center justify-center px-(--margin-safe-x) pt-section-sm pb-padding-lg z-20">
-                <div className="text-center max-w-4xl mx-auto">
-                    {/* Headline */}
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="heading-page mb-6"
-                    >
-                        {data.headline.map((line, i) => (
-                            <span
-                                key={i}
-                                className={`block ${i === data.highlightIndex
-                                    ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
-                                    : 'text-white'
-                                    }`}
-                            >
-                                {line}
-                            </span>
-                        ))}
-                    </motion.h1>
+            <div className="relative z-20 px-(--margin-safe-x) pt-padding-lg pb-padding-lg">
+                <div className="max-w-(--breakpoint-content) mx-auto">
+                    {/* Card con immagine come sfondo su desktop */}
+                    <div className="relative rounded-2xl overflow-hidden lg:min-h-[500px]">
+                        {/* Immagine come sfondo su desktop */}
+                        {imageUrl && (
+                            <div className="absolute inset-0 hidden lg:block">
+                                <img
+                                    src={imageUrl}
+                                    alt="Project showcase"
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Overlay gradient per leggibilità */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/60 to-slate-950/80" />
+                            </div>
+                        )}
 
-                    {/* Subtitle */}
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-subheader max-w-2xl mx-auto mb-10"
-                    >
-                        {data.subtitle}
-                    </motion.p>
+                        {/* Content sovrapposto */}
+                        <div className="relative z-10 py-padding-lg lg:py-padding-xl">
+                            <div className="text-center max-w-4xl mx-auto px-4">
+                                {/* Headline */}
+                                <motion.h1
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.1 }}
+                                    className="heading-page mb-6"
+                                >
+                                    {data.headline.map((line, i) => (
+                                        <span
+                                            key={i}
+                                            className={`block ${i === data.highlightIndex
+                                                ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
+                                                : 'text-white'
+                                                }`}
+                                        >
+                                            {line}
+                                        </span>
+                                    ))}
+                                </motion.h1>
 
-                    {/* Stats carousel */}
-                    {stats.length > 0 && (
-                        <StatsCarousel
-                            stats={stats}
-                            currentStat={currentStat}
-                            setCurrentStat={setCurrentStat}
-                        />
+                                {/* Subtitle */}
+                                <motion.p
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.2 }}
+                                    className="text-subheader max-w-2xl mx-auto mb-10"
+                                >
+                                    {data.subtitle}
+                                </motion.p>
+
+                                {/* Stats carousel */}
+                                {stats.length > 0 && (
+                                    <StatsCarousel
+                                        stats={stats}
+                                        currentStat={currentStat}
+                                        setCurrentStat={setCurrentStat}
+                                    />
+                                )}
+                            </div>
+
+                            {/* Overview info */}
+                            {study && (
+                                <div className="mt-padding-lg px-4">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                                        {overviewItems.map((item) => (
+                                            <div key={item.title}>
+                                                <p className="text-label-sm mb-1">{item.title}</p>
+                                                <p className="text-body-lg text-white font-bold">{item.value}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* What We Did - Services (inside image) */}
+                            {study?.services && (
+                                <WhatWeDid services={study.services} />
+                            )}
+
+                        </div>
+                    </div>
+
+                    {/* Immagine visibile solo su mobile/tablet */}
+                    {imageUrl && (
+                        <div className="lg:hidden mt-padding-md">
+                            <ProjectShowcase imageUrl={imageUrl} />
+                        </div>
+                    )}
+
+                    {/* Client Testimonial - sotto l'immagine */}
+                    {data.testimonial && (
+                        <div className="mt-padding-lg">
+                            <ClientTestimonial testimonial={data.testimonial} />
+                        </div>
                     )}
                 </div>
-
-                {/* Project Overview Content - ora dentro la Hero */}
-                {study && (
-                    <div className="w-full max-w-(--breakpoint-content) mx-auto mt-padding-lg">
-                        {/* Overview info as text - 4 columns, 2 rows */}
-                        <div className="mb-padding-md grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                            {overviewItems.map((item) => (
-                                <div key={item.title}>
-                                    <p className="text-label-sm mb-1">{item.title}</p>
-                                    <p className="text-body-lg text-white font-bold">{item.value}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        <ProjectShowcase imageUrl={imageUrl} />
-
-                        {/* What We Did - Services */}
-                        {study.services && (
-                            <WhatWeDid services={study.services} />
-                        )}
-
-                        {/* Client Testimonial */}
-                        {data.testimonial && (
-                            <ClientTestimonial testimonial={data.testimonial} />
-                        )}
-                    </div>
-                )}
             </div>
         </section>
     );
@@ -114,62 +145,80 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
 
 // Client Testimonial sub-component
 const ClientTestimonial = ({ testimonial }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
+    <QuoteCard
+        quote={testimonial.quote}
+        author={testimonial.author}
+        role={testimonial.role}
+        company={testimonial.company}
+        brutalist
+        showRating
         className="mt-12 max-w-2xl mx-auto"
-    >
-        <blockquote className="relative">
-            <p className="text-body-lg italic text-slate-300">
-                "{testimonial.quote}"
-            </p>
-            <footer className="mt-4 flex items-center justify-center gap-2 text-body-sm">
-                <span className="text-white font-medium">{testimonial.author}</span>
-                <span className="text-slate-500">—</span>
-                <span className="text-slate-400">{testimonial.role}</span>
-                {testimonial.company && (
-                    <>
-                        <span className="text-slate-500">@</span>
-                        <span className="text-cyan-400">{testimonial.company}</span>
-                    </>
-                )}
-            </footer>
-        </blockquote>
-    </motion.div>
+    />
 );
 
 // Stat Card - memoized to prevent re-renders affecting border animation
-const StatCard = memo(({ stat, index, currentStat, totalStats, onClick, minWidth }) => {
+const StatCard = memo(({ stat, index, currentStat, totalStats, onClick }) => {
     const isActive = index === currentStat;
     const isPrevious = index === (currentStat - 1 + totalStats) % totalStats;
     const isNext = index === (currentStat + 1) % totalStats;
+    const isSecondary = isPrevious || isNext;
 
-    let transformClasses = '';
+    // Calcola translateX in base alla posizione
+    let translateX = 0;
+    let scale = 1;
+    let zIndex = 0;
+    let opacity = 1;
+
     if (isActive) {
-        transformClasses = 'opacity-100 scale-100 z-20';
+        translateX = 0;
+        scale = 1;
+        zIndex = 20;
     } else if (isPrevious) {
-        transformClasses = 'opacity-30 scale-75 -translate-x-32 z-10';
+        translateX = -128; // -32 * 4 = -128px
+        scale = 0.75;
+        zIndex = 10;
     } else if (isNext) {
-        transformClasses = 'opacity-30 scale-75 translate-x-32 z-10';
+        translateX = 128;
+        scale = 0.75;
+        zIndex = 10;
     } else {
-        transformClasses = 'opacity-0 scale-50 pointer-events-none';
+        opacity = 0;
+        scale = 0.5;
     }
 
     return (
         <div
-            className={`absolute transition-all duration-500 ease-out cursor-pointer ${transformClasses}`}
+            className="col-start-1 row-start-1 cursor-pointer transition-all duration-500 ease-out"
+            style={{
+                transform: `translateX(${translateX}px) scale(${scale})`,
+                zIndex,
+                opacity,
+                pointerEvents: opacity === 0 ? 'none' : 'auto'
+            }}
             onClick={onClick}
         >
             <div
-                className={`relative rounded-2xl transition-all duration-300 border border-slate-700 bg-slate-950`}
-                style={{ boxShadow: isActive ? '6px 6px 0px rgba(34, 211, 238, 1)' : '3px 3px 0px rgba(34, 211, 238, 0.4)' }}
+                className={`h-full rounded-2xl transition-all duration-300 border backdrop-blur-md ${
+                    isActive
+                        ? 'bg-white/10 border-cyan-400/30 shadow-lg shadow-cyan-500/10'
+                        : 'bg-white/5 border-white/10'
+                }`}
+                style={{
+                    filter: isSecondary ? 'blur(0.5px)' : 'none'
+                }}
             >
-                <div className="text-center px-6 py-4" style={{ minWidth: minWidth ? `${minWidth}px` : undefined }}>
-                    <div className="stats-value-light">
+                <div className="h-full flex flex-col justify-center text-center px-6 py-4">
+                    <div
+                        className="stats-value-light"
+                        style={isSecondary ? {
+                            background: 'linear-gradient(to right, rgba(34,211,238,0.5), rgba(59,130,246,0.5), rgba(147,51,234,0.5))',
+                            WebkitBackgroundClip: 'text',
+                            backgroundClip: 'text'
+                        } : undefined}
+                    >
                         {stat.value}
                     </div>
-                    <div className="text-label-sm">
+                    <div className={isActive ? 'text-label-sm font-medium text-white/90' : 'text-label-sm text-white/50'}>
                         {stat.label}
                     </div>
                 </div>
@@ -180,38 +229,13 @@ const StatCard = memo(({ stat, index, currentStat, totalStats, onClick, minWidth
 
 // Stats Carousel sub-component
 const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
-    const [maxWidth, setMaxWidth] = useState(0);
-    const measureRef = useRef(null);
-
-    // Measure all cards to find the widest one
-    useEffect(() => {
-        if (!measureRef.current) return;
-        const items = measureRef.current.querySelectorAll('[data-measure]');
-        let max = 0;
-        items.forEach((item) => {
-            const width = item.getBoundingClientRect().width;
-            if (width > max) max = width;
-        });
-        if (max > 0) setMaxWidth(max);
-    }, [stats]);
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative h-32 md:h-28 flex items-center justify-center"
+            className="grid w-fit mx-auto"
         >
-            {/* Hidden container to measure all cards */}
-            <div ref={measureRef} className="absolute opacity-0 pointer-events-none" aria-hidden="true">
-                {stats.map((stat, index) => (
-                    <div key={index} data-measure className="inline-block px-6 py-4">
-                        <div className="stats-value-light">{stat.value}</div>
-                        <div className="text-label-sm">{stat.label}</div>
-                    </div>
-                ))}
-            </div>
-
             {stats.map((stat, index) => (
                 <StatCard
                     key={index}
@@ -220,7 +244,6 @@ const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
                     currentStat={currentStat}
                     totalStats={stats.length}
                     onClick={() => setCurrentStat(index)}
-                    minWidth={maxWidth}
                 />
             ))}
         </motion.div>

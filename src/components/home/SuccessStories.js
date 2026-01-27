@@ -105,7 +105,7 @@ const SuccessStories = () => {
                             <div className="w-full h-16 flex items-center justify-start mb-4">
                                 <img src={item.logo} alt={item.name} className="max-h-full w-auto object-contain opacity-90" loading="lazy" />
                             </div>
-                            <blockquote className="text-sm leading-relaxed text-gray-300 mb-4 flex-1">"{item.quote}"</blockquote>
+                            <blockquote className="text-quote text-sm mb-4 flex-1">"{item.quote}"</blockquote>
                             {item.metric && <div className="text-cyan-400 font-semibold text-base mb-3">{item.metric}</div>}
                             {item.author && <div className="text-xs text-gray-500 font-medium">— {item.author}</div>}
                         </div>

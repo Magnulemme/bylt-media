@@ -46,18 +46,15 @@ const ComparisonTable = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="md:hidden rounded-2xl border border-cyan-500/30 overflow-hidden"
-                style={{ background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(6, 182, 212, 0.05) 100%)' }}
+                className="md:hidden rounded-2xl border border-slate-700/50 overflow-hidden"
+                style={{ background: 'rgba(15, 23, 42, 0.8)' }}
             >
                 {/* Header row */}
-                <div
-                    className="grid grid-cols-2 border-b border-slate-800/60"
-                    style={{ background: 'linear-gradient(to right, transparent 30%, rgba(6, 182, 212, 0.08) 100%)' }}
-                >
-                    <div className="p-4 text-center">
+                <div className="grid grid-cols-2">
+                    <div className="p-4 text-center bg-rose-950/30 border-b border-rose-500/20">
                         <span className="text-sm font-semibold text-slate-400">{others.title}</span>
                     </div>
-                    <div className="p-4 text-center">
+                    <div className="p-4 text-center bg-emerald-950/30 border-b border-emerald-500/20">
                         <span className="text-sm font-semibold text-cyan-400">{bylt.title}</span>
                     </div>
                 </div>
@@ -71,14 +68,13 @@ const ComparisonTable = ({
                         viewport={{ once: true }}
                         transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
                         className={`grid grid-cols-2 ${index !== others.items.length - 1 ? 'border-b border-slate-800/40' : ''}`}
-                        style={{ background: 'linear-gradient(to right, transparent 30%, rgba(6, 182, 212, 0.05) 100%)' }}
                     >
-                        <div className="p-4 flex items-start gap-2">
-                            <X className="w-4 h-4 text-slate-600 mt-0.5 shrink-0" strokeWidth={2} />
-                            <span className="text-xs text-slate-500 leading-relaxed">{otherItem}</span>
+                        <div className="p-4 flex items-start gap-2 bg-rose-950/10">
+                            <X className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" strokeWidth={2} />
+                            <span className="text-xs text-slate-400 leading-relaxed">{otherItem}</span>
                         </div>
-                        <div className="p-4 flex items-start gap-2">
-                            <Check className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" strokeWidth={2.5} />
+                        <div className="p-4 flex items-start gap-2 bg-emerald-950/10">
+                            <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" strokeWidth={2.5} />
                             <span className="text-xs text-slate-200 leading-relaxed">{bylt.items[index]}</span>
                         </div>
                     </motion.div>
@@ -93,7 +89,11 @@ const ComparisonTable = ({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
-                    className="rounded-2xl bg-slate-900/50 border border-slate-800/60 p-10"
+                    className="rounded-2xl border border-rose-500/20 p-10 overflow-hidden"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(159, 18, 57, 0.1) 0%, rgba(15, 23, 42, 0.8) 100%)',
+                        boxShadow: 'inset 0 1px 0 0 rgba(244, 63, 94, 0.15)'
+                    }}
                 >
                     <h3 className="text-xl font-semibold text-slate-400 mb-8">
                         {others.title}
@@ -109,8 +109,8 @@ const ComparisonTable = ({
                                 transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
                                 className="flex items-start gap-4"
                             >
-                                <X className="w-5 h-5 text-slate-600 mt-0.5 shrink-0" strokeWidth={2} />
-                                <span className="text-slate-500 leading-relaxed">
+                                <X className="w-5 h-5 text-rose-500 mt-0.5 shrink-0" strokeWidth={2} />
+                                <span className="text-slate-400 leading-relaxed">
                                     {item}
                                 </span>
                             </motion.li>
@@ -124,14 +124,14 @@ const ComparisonTable = ({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="relative rounded-2xl border border-cyan-500/20 p-10 overflow-hidden"
+                    className="relative rounded-2xl border border-emerald-500/20 p-10 overflow-hidden"
                     style={{
-                        background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%)',
-                        boxShadow: 'inset 0 1px 0 0 rgba(6, 182, 212, 0.2)'
+                        background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%)',
+                        boxShadow: 'inset 0 1px 0 0 rgba(52, 211, 153, 0.2)'
                     }}
                 >
                     {/* Subtle glow */}
-                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
                     <h3 className="relative text-xl font-semibold text-white mb-8">
                         {bylt.title}
@@ -147,7 +147,7 @@ const ComparisonTable = ({
                                 transition={{ duration: 0.3, delay: 0.25 + index * 0.05 }}
                                 className="flex items-start gap-4"
                             >
-                                <Check className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" strokeWidth={2.5} />
+                                <Check className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" strokeWidth={2.5} />
                                 <span className="text-slate-200 leading-relaxed">
                                     {item}
                                 </span>

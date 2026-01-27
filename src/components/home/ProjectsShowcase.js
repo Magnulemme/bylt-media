@@ -392,7 +392,8 @@ const ProjectsShowcase = () => {
         <section className="projects-showcase-section">
             <div className="projects-showcase-inner">
                 {/* Shader Background - versione diretta senza sharedRenderer */}
-                <ShaderBackgroundDirect />
+                {/* enableVisibilityTracking=false per evitare che si disattivi durante l'espansione delle card */}
+                <ShaderBackgroundDirect enableVisibilityTracking={false} />
 
                 {/* Layout wrapper con flex-col per struttura verticale (come infinity-layout) */}
                 <div className="projects-layout">
