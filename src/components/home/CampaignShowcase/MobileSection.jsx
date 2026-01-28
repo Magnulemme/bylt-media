@@ -194,7 +194,7 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
         <img
           src={campaign.image}
           alt={campaign.label}
-          className="h-full w-auto object-contain"
+          className="w-[80vw] h-auto object-contain"
         />
       </div>
     );
@@ -238,9 +238,8 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
         <motion.img
           src={campaign.image}
           alt={campaign.label}
-          className="h-full w-auto object-contain"
+          className="w-[80vw] h-auto object-contain"
           style={{
-            height: cardHeight,
             filter: useTransform(blurAmount, (v) => `blur(${v}px)`),
             WebkitMaskImage: `url(${campaign.image})`,
             maskImage: `url(${campaign.image})`,

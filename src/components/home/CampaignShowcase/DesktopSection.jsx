@@ -87,20 +87,17 @@ const DesktopSection = ({ campaigns }) => {
               <motion.div
                 ref={cardsRef}
                 className="flex items-center gap-8 px-8"
-                style={{
-                  x,
-                  height: cardHeight
-                }}
+                style={{ x }}
               >
                 {campaigns.map((campaign) => (
                   <div
                     key={campaign.id}
-                    className="shrink-0 h-full"
+                    className="shrink-0 w-80"
                   >
                     <img
                       src={campaign.image}
                       alt={campaign.label}
-                      className="h-full w-auto object-contain"
+                      className="w-full h-auto object-contain"
                       loading="lazy"
                     />
                   </div>
