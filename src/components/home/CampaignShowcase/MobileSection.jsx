@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useCountUp } from '../../../hooks/useCountUp';
+import StatsGrid from '../../shared/StatsGrid';
 
 /**
  * Hook per calcolare il top position per centrare verticalmente le card mobile
@@ -62,45 +62,13 @@ const useCardHeight = () => {
   return cardHeight;
 };
 
-// Animated Stat Component
-const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [delay]);
-
-  const animatedValue = useCountUp(value, 2000, isVisible);
-
-  return (
-    <div ref={ref} className="stats-card">
-      <div className="stats-value">
-        {prefix}{animatedValue}{suffix}
-      </div>
-      <div className="text-label-lg font-bold text-slate-400">
-        {label}
-      </div>
-    </div>
-  );
-};
+// Stats data for CampaignShowcase
+const campaignStats = [
+  { value: 500, suffix: '+', label: 'Campaigns' },
+  { value: 1, suffix: 'B+', label: 'Impressions' },
+  { value: 50, suffix: '+', label: 'Brands' },
+  { value: 98, suffix: '%', label: 'Retention' },
+];
 
 const MobileSection = ({ campaigns }) => {
   const containerRef = useRef(null);
@@ -164,12 +132,7 @@ const MobileSection = ({ campaigns }) => {
 
       {/* Stats grid con animazione */}
       <div className="campaign-stats">
-        <div className="stats-grid">
-          <AnimatedStat value={500} suffix="+" label="Campaigns" delay={0} />
-          <AnimatedStat value={1} suffix="B+" label="Impressions" delay={100} />
-          <AnimatedStat value={50} suffix="+" label="Brands" delay={200} />
-          <AnimatedStat value={98} suffix="%" label="Retention" delay={300} />
-        </div>
+        <StatsGrid stats={campaignStats} />
       </div>
     </div>
   );

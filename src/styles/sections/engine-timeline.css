@@ -187,3 +187,46 @@
     max-width: 600px;
   }
 }
+
+/* ====================================
+   DEMO TIMELINE MOBILE CARD
+   Wider cards to accommodate charts + step info
+   ==================================== */
+
+.demo-timeline-mobile-card {
+  flex-shrink: 0;
+  width: calc(100% - 40px) !important;
+  min-width: 280px !important;
+  max-width: 460px !important;
+}
+
+@media (max-width: 360px) {
+  .demo-timeline-mobile-card {
+    width: calc(100% - 20px) !important;
+  }
+}
+
+/* Hide description text on very small screens to save vertical space */
+@media (max-width: 349px) {
+  .demo-timeline-mobile-card .demo-card-description {
+    display: none;
+  }
+}
+
+@media (min-width: 500px) {
+  .demo-timeline-mobile-card {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 640px) {
+  .demo-timeline-mobile-card {
+    max-width: 580px;
+  }
+}
+
+@media (min-width: 768px) {
+  .demo-timeline-mobile-card {
+    max-width: 640px;
+  }
+}

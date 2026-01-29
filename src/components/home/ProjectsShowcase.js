@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { motion, useMotionValue, useAnimationFrame } from 'motion/react';
+import { motion, useMotionValue, useAnimationFrame, useInView } from 'motion/react';
 import CTASectionCard from '../ui/CTASectionCard';
 import { MovingBorderButton } from '../ui/moving-border-button';
 import { useProfiler } from '@/hooks/useProfiler';
@@ -50,51 +50,65 @@ const useLissajousAnimation = (isActive, seed = 0) => {
 };
 
 // Component per singolo progetto con scroll reveal su mobile
-const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExpanded, onToggleExpand, isActive, isScrollBgEnabled, itemRef }) => {
+const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExpanded, onToggleExpand, isScrollBgEnabled, isActive, onVisibilityChange, registerElement }) => {
     const isHovered = hoveredProject?.id === project.id;
     const lissajousAnimation = useLissajousAnimation(isHovered, index * 1.5);
+    const itemRef = useRef(null);
+
+    // useInView di framer motion - traccia quando l'elemento è nella zona centrale
+    // Attivazione: quando top della card è al 25% dal bottom (75% dall'alto)
+    // Disattivazione: quando esce dal centro (50% dall'alto)
+    const inView = useInView(itemRef, {
+        margin: "-50% 0px -25% 0px",
+        amount: 0,
+    });
+
+    // Registra l'elemento al parent per il calcolo della posizione
+    useEffect(() => {
+        registerElement(project.id, itemRef.current);
+        return () => registerElement(project.id, null);
+    }, [project.id, registerElement]);
+
+    // Notifica al parent quando cambia la visibilità
+    useEffect(() => {
+        onVisibilityChange(project.id, inView);
+    }, [inView, project.id, onVisibilityChange]);
 
     return (
         <motion.div
             ref={itemRef}
-            data-project-id={project.id}
             className="relative"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
         >
-            {/* Background Image - Scroll Reveal (Mobile fino a lg) */}
-            {isScrollBgEnabled && (
-                <motion.div
-                    className="xl:hidden absolute rounded-xl overflow-hidden -inset-x-2 md:-inset-x-4 pointer-events-none"
-                    style={{
-                        top: 0,
-                        bottom: 0,
-                    }}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{
-                        opacity: isActive ? 1 : 0,
-                        scale: isActive ? 1 : 1.05,
-                    }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                >
-                    <img
-                        src={project.image}
-                        alt={project.name}
-                        className="w-full h-full object-cover"
-                    />
-                    {/* Dark overlay per leggibilità testo */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-                </motion.div>
-            )}
-
             <div
                 className="group project-link-item cursor-pointer"
                 onMouseEnter={() => onHover(project)}
                 onMouseLeave={() => onHover(null)}
                 onClick={() => onToggleExpand(project.id)}
             >
+                {/* Background Image - Scroll Reveal (Mobile fino a lg) */}
+                {isScrollBgEnabled && (
+                    <motion.div
+                        className="xl:hidden absolute inset-0 -mx-2 md:-mx-4 rounded-xl overflow-hidden pointer-events-none"
+                        initial={{ opacity: 0, scale: 1.05 }}
+                        animate={{
+                            opacity: isActive ? 1 : 0,
+                            scale: isActive ? 1 : 1.05,
+                        }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                        <img
+                            src={project.image}
+                            alt={project.name}
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Dark overlay per leggibilità testo */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+                    </motion.div>
+                )}
                 {/* Riga principale con grid solo su XL */}
                 <div className="xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center">
                     <div className="project-link-content relative flex items-center gap-4 md:gap-8">
@@ -103,56 +117,54 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                             {String(project.id).padStart(2, '0')}
                         </span>
 
-                        {/* Project Info with inline plus button */}
-                        <div className="relative z-10 project-info-container flex-1">
-                            <h3 className="project-title inline">
+                        {/* Project Info - titolo e meta */}
+                        <div className="relative z-10 project-info-container">
+                            <h3 className="project-title">
                                 {project.name}
                             </h3>
-                            {/* Plus button inline dopo il titolo */}
-                            <motion.div
-                                className="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-lg backdrop-blur-sm border-2 relative ml-8 align-middle bg-white/5"
-                                style={{
-                                    verticalAlign: 'middle',
-                                }}
-                                initial={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
-                                animate={{
-                                    rotate: isExpanded ? 45 : 0,
-                                    x: isExpanded ? 2 : 0,
-                                    y: isExpanded ? 2 : 0,
-                                    boxShadow: isExpanded
-                                        ? '4px 4px 0px rgba(34, 211, 238, 0.5)'
-                                        : '6px 6px 0px rgba(34, 211, 238, 1)',
-                                    borderColor: isExpanded
-                                        ? 'rgba(34, 211, 238, 0.8)'
-                                        : 'rgba(255, 255, 255, 0.3)',
-                                }}
-                                whileHover={!isExpanded ? {
-                                    x: 2,
-                                    y: 2,
-                                    borderColor: 'rgba(34, 211, 238, 0.6)',
-                                } : {}}
-                                transition={{ duration: 0.2, ease: 'easeOut' }}
-                            >
-                                <svg
-                                    className="w-5 h-5 text-cyan-300"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    strokeWidth={2.5}
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M12 4.5v15m7.5-7.5h-15"
-                                    />
-                                </svg>
-                            </motion.div>
                             <div className="project-meta">
                                 <span>{project.category}</span>
                                 <span className="text-cyan-400/50">•</span>
                                 <span>{project.service}</span>
                             </div>
                         </div>
+
+                        {/* Plus button - accanto al blocco titolo+meta */}
+                        <motion.div
+                            className="shrink-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg backdrop-blur-sm border-2 bg-white/5"
+                            initial={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+                            animate={{
+                                rotate: isExpanded ? 45 : 0,
+                                x: isExpanded ? 2 : 0,
+                                y: isExpanded ? 2 : 0,
+                                boxShadow: isExpanded
+                                    ? '4px 4px 0px rgba(34, 211, 238, 0.5)'
+                                    : '6px 6px 0px rgba(34, 211, 238, 1)',
+                                borderColor: isExpanded
+                                    ? 'rgba(34, 211, 238, 0.8)'
+                                    : 'rgba(255, 255, 255, 0.3)',
+                            }}
+                            whileHover={!isExpanded ? {
+                                x: 2,
+                                y: 2,
+                                borderColor: 'rgba(34, 211, 238, 0.6)',
+                            } : {}}
+                            transition={{ duration: 0.2, ease: 'easeOut' }}
+                        >
+                            <svg
+                                className="w-4 h-4 md:w-5 md:h-5 text-cyan-300"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2.5}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 4.5v15m7.5-7.5h-15"
+                                />
+                            </svg>
+                        </motion.div>
                     </div>
 
                     {/* Image a destra - Solo XL, visibile in hover, nascosta se espanso */}
@@ -272,37 +284,48 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
 const ProjectsShowcase = () => {
     useProfiler('ProjectsShowcase');
     const [hoveredProject, setHoveredProject] = useState(null);
-    const [activeProjectId, setActiveProjectId] = useState(null);
     const [expandedProjectId, setExpandedProjectId] = useState(null);
     const [isScrollBgEnabled, setIsScrollBgEnabled] = useState(true);
+    const [activeProjectId, setActiveProjectId] = useState(null);
     const visibleProjectsRef = useRef(new Set());
+    const itemElementsRef = useRef(new Map()); // Mappa projectId -> elemento DOM
 
-    // IntersectionObserver centralizzato - UN SOLO observer per tutti gli items
-    const observerRef = useRef(null);
+    // Registra l'elemento DOM per ogni progetto
+    const registerElement = useCallback((projectId, element) => {
+        if (element) {
+            itemElementsRef.current.set(projectId, element);
+        } else {
+            itemElementsRef.current.delete(projectId);
+        }
+    }, []);
 
-    // Inizializza l'observer una sola volta
-    useEffect(() => {
-        observerRef.current = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    const projectId = Number(entry.target.dataset.projectId);
-                    if (entry.isIntersecting) {
-                        visibleProjectsRef.current.add(projectId);
-                    } else {
-                        visibleProjectsRef.current.delete(projectId);
-                    }
-                });
+    // Callback per quando un progetto entra/esce dalla zona centrale
+    const handleVisibilityChange = useCallback((projectId, isVisible) => {
+        if (isVisible) {
+            visibleProjectsRef.current.add(projectId);
+        } else {
+            visibleProjectsRef.current.delete(projectId);
+        }
 
-                const visibleIds = Array.from(visibleProjectsRef.current).sort((a, b) => a - b);
-                setActiveProjectId(visibleIds.length > 0 ? visibleIds[0] : null);
-            },
-            {
-                rootMargin: '-40% 0px -40% 0px',
-                threshold: 0,
+        // Trova la card più vicina al centro della zona (62.5% dall'alto = centro tra 50% e 75%)
+        const targetY = window.innerHeight * 0.625;
+        let closestId = null;
+        let closestDistance = Infinity;
+
+        visibleProjectsRef.current.forEach(id => {
+            const element = itemElementsRef.current.get(id);
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                const elementCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(elementCenter - targetY);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestId = id;
+                }
             }
-        );
+        });
 
-        return () => observerRef.current?.disconnect();
+        setActiveProjectId(closestId);
     }, []);
 
     const handleToggleExpand = useCallback((projectId) => {
@@ -316,29 +339,6 @@ const ProjectsShowcase = () => {
             setIsScrollBgEnabled(false);
             return projectId;
         });
-    }, []);
-
-    // Refs per gli elementi osservati - stabile tra i render
-    const itemRefsMap = useRef(new Map());
-
-    // Callback ref factory - memorizzata per project ID
-    const getItemRef = useCallback((projectId) => (el) => {
-        const prevEl = itemRefsMap.current.get(projectId);
-
-        // Se l'elemento è cambiato, unobserve il vecchio
-        if (prevEl && prevEl !== el && observerRef.current) {
-            observerRef.current.unobserve(prevEl);
-        }
-
-        if (el) {
-            itemRefsMap.current.set(projectId, el);
-            if (observerRef.current) {
-                observerRef.current.observe(el);
-            }
-        } else {
-            // Elemento smontato - cleanup
-            itemRefsMap.current.delete(projectId);
-        }
     }, []);
 
     const projects = [
@@ -493,11 +493,12 @@ const ProjectsShowcase = () => {
                                 index={index}
                                 onHover={setHoveredProject}
                                 hoveredProject={hoveredProject}
-                                isActive={activeProjectId === project.id}
                                 isExpanded={expandedProjectId === project.id}
                                 isScrollBgEnabled={isScrollBgEnabled}
+                                isActive={activeProjectId === project.id}
                                 onToggleExpand={handleToggleExpand}
-                                itemRef={getItemRef(project.id)}
+                                onVisibilityChange={handleVisibilityChange}
+                                registerElement={registerElement}
                             />
                         ))}
                     </div>

@@ -2,10 +2,45 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useCountUp } from '../../hooks/useCountUp';
+import { InfiniteMovingCards } from '../ui/infinite-moving-cards';
 
-const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
+// Hook per rilevare mobile
+const useIsMobile = (breakpoint = 768) => {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < breakpoint);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, [breakpoint]);
+
+    return isMobile;
+};
+
+// Stat card statica per mobile (no count-up)
+const StaticStat = ({ value, suffix = '', prefix = '', label, variant = 'default' }) => {
+    const valueClass = variant === 'light' ? 'stats-value-light' : 'stats-value';
+    const labelClass = variant === 'light' ? 'text-label-sm text-slate-400' : 'text-label-lg font-bold text-slate-400';
+
+    return (
+        <div className="stats-card">
+            <div className={valueClass}>
+                {prefix}{value}{suffix}
+            </div>
+            <div className={labelClass}>
+                {label}
+            </div>
+        </div>
+    );
+};
+
+// Stat card animata per desktop (con count-up)
+const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0, variant = 'default' }) => {
     const [isVisible, setIsVisible] = useState(false);
     const ref = useRef(null);
+    const valueClass = variant === 'light' ? 'stats-value-light' : 'stats-value';
+    const labelClass = variant === 'light' ? 'text-label-sm text-slate-400' : 'text-label-lg font-bold text-slate-400';
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -32,17 +67,44 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => 
 
     return (
         <div ref={ref} className="stats-card">
-            <div className="stats-value">
+            <div className={valueClass}>
                 {prefix}{animatedValue}{suffix}
             </div>
-            <div className="text-label-lg font-bold text-slate-400">
+            <div className={labelClass}>
                 {label}
             </div>
         </div>
     );
 };
 
-const StatsGrid = ({ stats, className = '' }) => {
+const StatsGrid = ({ stats, className = '', variant = 'default' }) => {
+    const isMobile = useIsMobile();
+
+    // Mobile: infinite moving cards
+    if (isMobile) {
+        return (
+            <InfiniteMovingCards
+                items={stats}
+                direction="left"
+                speed="slow"
+                pauseOnHover={false}
+                className={className}
+                gap="gap-4"
+                renderItem={(stat, idx) => (
+                    <StaticStat
+                        key={idx}
+                        value={stat.value}
+                        suffix={stat.suffix}
+                        prefix={stat.prefix}
+                        label={stat.label}
+                        variant={variant}
+                    />
+                )}
+            />
+        );
+    }
+
+    // Desktop: grid statico con count-up
     return (
         <div className={`stats-grid ${className}`.trim()}>
             {stats.map((stat, index) => (
@@ -53,6 +115,7 @@ const StatsGrid = ({ stats, className = '' }) => {
                     prefix={stat.prefix}
                     label={stat.label}
                     delay={index * 100}
+                    variant={variant}
                 />
             ))}
         </div>

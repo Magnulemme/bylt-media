@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import DesktopTimeline from './DesktopTimeline';
-import MobileTimeline from './MobileTimeline';
+import DemoTimeline from './DemoTimeline';
+import DemoTimelineMobile from './DemoTimelineMobile';
 import TimelineStyles from './TimelineStyles';
-import { processSteps } from './constants';
 import { useProfiler } from '@/hooks/useProfiler';
 
 const EngineTimeline = () => {
@@ -32,8 +31,8 @@ const EngineTimeline = () => {
                 className="engine-timeline-section"
             >
                 <div className="relative z-10">
-                    <DesktopTimeline processSteps={processSteps} />
-                    <MobileTimeline processSteps={processSteps} />
+                    <DemoTimeline />
+                    <DemoTimelineMobile />
                 </div>
                 <TimelineStyles />
             </section>
@@ -49,9 +48,9 @@ const EngineTimeline = () => {
         >
             <div className="relative z-10">
                 {isMobile ? (
-                    <MobileTimeline processSteps={processSteps} />
+                    <DemoTimelineMobile />
                 ) : (
-                    <DesktopTimeline processSteps={processSteps} />
+                    <DemoTimeline />
                 )}
             </div>
 

@@ -19,7 +19,7 @@ const BeforeByltChart = ({ className, headline = "The numbers told the story.", 
 
     return (
         <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) pt-0 pb-padding-lg", className)}>
-            <div ref={ref} className="grid lg:grid-cols-2 gap-12 items-center">
+            <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna destra (su desktop): titolo + copy - order-last su mobile, order-first su lg per reverse */}
                 <div className="lg:order-last">
                     <motion.div
@@ -28,7 +28,7 @@ const BeforeByltChart = ({ className, headline = "The numbers told the story.", 
                         transition={{ duration: 0.5 }}
                         className="mb-8"
                     >
-                        <h2 className="heading-h2 text-white">
+                        <h2 className="heading-h1 text-white">
                             {headline}
                         </h2>
                     </motion.div>

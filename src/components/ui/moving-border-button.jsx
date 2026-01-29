@@ -10,13 +10,14 @@ const MovingBorder = ({
   ry,
   dimensions,
   randomOffset = 0,
+  paused = false,
   ...otherProps
 }) => {
   const pathRef = useRef(null);
   const progress = useMotionValue(0);
 
   useAnimationFrame((time) => {
-    if (!pathRef.current) return;
+    if (paused || !pathRef.current) return;
     try {
       const length = pathRef.current.getTotalLength();
       if (length && length > 0) {
@@ -99,6 +100,7 @@ export const MovingBorderButton = ({
   hoverColor = "#0ea5e9",
   variant = "button",
   color = "cyan",
+  paused = false,
   ...otherProps
 }) => {
   const [isReady, setIsReady] = useState(false);
@@ -179,7 +181,7 @@ export const MovingBorderButton = ({
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "exclude",
         }}>
-        <MovingBorder duration={duration || (isTag ? 2500 : isCard ? 3500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={(isTag || isCard) ? randomOffset : 0}>
+        <MovingBorder duration={duration || (isTag ? 2500 : isCard ? 3500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={(isTag || isCard) ? randomOffset : 0} paused={paused}>
           {(() => {
             // Calcola dimensione dot dinamica per card basata sul perimetro
             const dotSize = isCard

@@ -260,7 +260,7 @@
    Classi per statistiche animate
    ======================================== */
 
-/* Stats Grid - Flex wrap su mobile, grid 4 colonne da md */
+/* Stats Grid - Flex wrap su mobile, grid 2x2 su tablet, 4 colonne da lg */
 .stats-grid {
   display: flex;
   flex-wrap: wrap;
@@ -276,11 +276,17 @@
 @media (min-width: 768px) {
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-padding-md);
   }
   .stats-card {
     max-width: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -297,6 +303,14 @@
   min-width: 140px;
   max-width: calc(50% - var(--spacing-padding-sm) / 2);
   padding: 0.5rem;
+}
+
+/* Stats Card dentro infinite scroll - larghezza fissa */
+.scroller .stats-card {
+  flex: none;
+  min-width: 160px;
+  max-width: none;
+  width: 160px;
 }
 
 /* Stats Value - Numero grande con gradiente */

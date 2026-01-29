@@ -1,50 +1,18 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../PerformanceMetrics/hooks/useScrollAnimation';
 import { useFadeMask } from '../PerformanceMetrics/hooks/useFadeMask';
 import { useCardHeight } from './hooks/useCardHeight';
-import { useCountUp } from '../../../hooks/useCountUp';
+import StatsGrid from '../../shared/StatsGrid';
 
-// Animated Stat Component
-const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [delay]);
-
-  const animatedValue = useCountUp(value, 2000, isVisible);
-
-  return (
-    <div ref={ref} className="stats-card">
-      <div className="stats-value">
-        {prefix}{animatedValue}{suffix}
-      </div>
-      <div className="text-label-lg font-bold text-slate-400">
-        {label}
-      </div>
-    </div>
-  );
-};
+// Stats data for CampaignShowcase
+const campaignStats = [
+  { value: 500, suffix: '+', label: 'Campaigns' },
+  { value: 1, suffix: 'B+', label: 'Impressions' },
+  { value: 50, suffix: '+', label: 'Brands' },
+  { value: 98, suffix: '%', label: 'Retention' },
+];
 
 const DesktopSection = ({ campaigns }) => {
   const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(false);
@@ -122,12 +90,7 @@ const DesktopSection = ({ campaigns }) => {
 
       {/* Stats dopo lo sticky */}
       <div className="campaign-stats">
-        <div className="stats-grid">
-          <AnimatedStat value={500} suffix="+" label="Campaigns" delay={0} />
-          <AnimatedStat value={1} suffix="B+" label="Impressions" delay={100} />
-          <AnimatedStat value={50} suffix="+" label="Brands" delay={200} />
-          <AnimatedStat value={98} suffix="%" label="Retention" delay={300} />
-        </div>
+        <StatsGrid stats={campaignStats} />
       </div>
     </div>
   );

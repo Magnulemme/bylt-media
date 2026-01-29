@@ -8,7 +8,7 @@ const ResultsDashboard = ({ results }) => {
 
     return (
         <div className="pb-padding-lg">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna sinistra: freccia + stats */}
                 <ResultsMetrics metrics={results.metrics} className="order-last lg:order-first" />
                 {/* Colonna destra: titolo + content */}
@@ -145,11 +145,13 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className={`relative sm:flex sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col ${className}`}>
-            <div className="absolute inset-0 sm:relative sm:inset-auto opacity-40 sm:opacity-60 max-w-[400px]">
+        <div ref={ref} className={`flex flex-col sm:flex-row sm:items-center sm:gap-4 lg:flex-col lg:items-stretch lg:gap-0 2xl:flex-row 2xl:items-center 2xl:gap-8 ${className}`}>
+            {/* Wave: sopra su mobile e lg-xl, accanto su sm-md e 2xl+ */}
+            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto lg:mb-6 2xl:mx-0 2xl:mb-0">
                 <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
             </div>
-            <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
+            {/* Stats grid */}
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
                 {metrics.map((metric, index) => (
                     <MetricItem
                         key={metric.key || index}

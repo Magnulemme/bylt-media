@@ -1,11 +1,11 @@
-import React, { useRef, useState, useLayoutEffect, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Link from 'next/link';
 import ShaderBackgroundDirect from '../../home/ShaderBackgroundDirect';
 import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData, heroContent } from '../constants';
 import { useCardCentering } from '../hooks/useCardCentering';
-import { useCountUp } from '../../../hooks/useCountUp';
+import StatsGrid from '../../shared/StatsGrid';
 
 // Signal page ready for splash screen
 const signalPageReady = () => {
@@ -14,45 +14,13 @@ const signalPageReady = () => {
     }
 };
 
-// Animated Stat Component
-const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => setIsVisible(true), delay);
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
-        };
-    }, [delay]);
-
-    const animatedValue = useCountUp(value, 2000, isVisible);
-
-    return (
-        <div ref={ref} className="stats-card">
-            <div className="stats-value-light">
-                {prefix}{animatedValue}{suffix}
-            </div>
-            <div className="text-label-sm text-slate-400">
-                {label}
-            </div>
-        </div>
-    );
-};
+// Stats data for Case Studies Hero
+const caseStudyStats = [
+    { value: 50, suffix: '+', label: 'Projects' },
+    { value: 150, suffix: '%', label: 'Avg Growth' },
+    { value: 12, suffix: '+', label: 'Industries' },
+    { value: 98, suffix: '%', label: 'Satisfaction' },
+];
 
 // Card content component
 const CardContent = ({ study, overlayOpacity }) => ( 
@@ -339,12 +307,7 @@ const CaseStudiesHero = () => {
             </p>
         </div>
     )}
-    <div className="stats-grid pt-8 md:pt-12">
-        <AnimatedStat value={50} suffix="+" label="Projects" delay={0} />
-        <AnimatedStat value={150} suffix="%" label="Avg Growth" delay={100} />
-        <AnimatedStat value={12} suffix="+" label="Industries" delay={200} />
-        <AnimatedStat value={98} suffix="%" label="Satisfaction" delay={300} />
-    </div>
+    <StatsGrid stats={caseStudyStats} variant="light" className="pt-8 md:pt-12" />
 </div>
 </div>
     );

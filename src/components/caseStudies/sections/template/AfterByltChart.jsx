@@ -21,7 +21,7 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
 
     return (
         <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg", className)}>
-            <div ref={ref} className="grid lg:grid-cols-2 gap-12 items-center">
+            <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna sinistra: titolo + copy */}
                 <div>
                     <motion.div
@@ -30,7 +30,7 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
                         transition={{ duration: 0.5 }}
                         className="mb-8"
                     >
-                        <h2 className="heading-h2 text-white">
+                        <h2 className="heading-h1 text-white">
                             {headline}
                         </h2>
                     </motion.div>

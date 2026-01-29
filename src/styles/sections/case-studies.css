@@ -149,6 +149,30 @@
    ======================================== */
 
 /* ----------------------------------------
+   RESPONSIVE VISIBILITY HELPERS
+   ---------------------------------------- */
+
+/* Show on mobile + tablet (< 1024px), hide on desktop */
+.show-until-lg {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .show-until-lg {
+    display: none;
+  }
+}
+
+/* Show only on desktop (>= 1024px) */
+.show-from-lg {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .show-from-lg {
+    display: block;
+  }
+}
+
+/* ----------------------------------------
    BRAND MARQUEE WRAPPER - First (inside shader)
    ---------------------------------------- */
 .case-study-marquee-wrapper {
