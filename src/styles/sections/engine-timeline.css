@@ -195,9 +195,8 @@
 
 .demo-timeline-mobile-card {
   flex-shrink: 0;
-  width: calc(100% - 40px) !important;
-  min-width: 280px !important;
-  max-width: 460px !important;
+  width: min(80vw, 350px) !important;
+  max-width: min(80vw, 350px) !important;
 }
 
 @media (max-width: 360px) {

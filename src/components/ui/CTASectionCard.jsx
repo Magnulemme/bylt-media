@@ -27,7 +27,7 @@ const CTASectionCard = ({
       }}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`relative ${isSoft ? 'rounded-2xl' : 'rounded-3xl border border-slate-800'} overflow-hidden`}>
+        <div className={`relative ${isSoft ? 'rounded-2xl' : 'rounded-3xl border border-slate-800 overflow-hidden'}`}>
           {!isSoft && <VerticalLinesCanvas dotScale={dotScale} />}
 
           <div className="relative z-10 p-8 lg:p-12 text-center">

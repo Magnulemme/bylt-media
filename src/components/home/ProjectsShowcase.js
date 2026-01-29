@@ -111,11 +111,51 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                 )}
                 {/* Riga principale con grid solo su XL */}
                 <div className="xl:grid xl:grid-cols-[1fr_auto] xl:gap-8 xl:items-center">
-                    <div className="project-link-content relative flex items-center gap-4 md:gap-8">
-                        {/* Number */}
-                        <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 shrink-0 min-w-[2rem]">
-                            {String(project.id).padStart(2, '0')}
-                        </span>
+                    <div className="project-link-content relative flex items-center gap-6 md:gap-8">
+                        {/* Number + Button wrapper - colonna su mobile */}
+                        <div className="flex flex-col items-center gap-2 md:block shrink-0">
+                            {/* Number */}
+                            <span className="relative z-10 text-cyan-400/50 font-mono text-sm md:text-base group-hover:text-cyan-400 transition-colors duration-300 min-w-[2rem] text-center md:text-left">
+                                {String(project.id).padStart(2, '0')}
+                            </span>
+
+                            {/* Plus button - Mobile only (sotto al numero) */}
+                            <motion.div
+                                className="md:hidden shrink-0 flex items-center justify-center w-10 h-10 rounded-lg backdrop-blur-sm border-2 bg-white/5"
+                                initial={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+                                animate={{
+                                    rotate: isExpanded ? 45 : 0,
+                                    x: isExpanded ? 2 : 0,
+                                    y: isExpanded ? 2 : 0,
+                                    boxShadow: isExpanded
+                                        ? '4px 4px 0px rgba(34, 211, 238, 0.5)'
+                                        : '6px 6px 0px rgba(34, 211, 238, 1)',
+                                    borderColor: isExpanded
+                                        ? 'rgba(34, 211, 238, 0.8)'
+                                        : 'rgba(255, 255, 255, 0.3)',
+                                }}
+                                whileHover={!isExpanded ? {
+                                    x: 2,
+                                    y: 2,
+                                    borderColor: 'rgba(34, 211, 238, 0.6)',
+                                } : {}}
+                                transition={{ duration: 0.2, ease: 'easeOut' }}
+                            >
+                                <svg
+                                    className="w-4 h-4 text-cyan-300"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2.5}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 4.5v15m7.5-7.5h-15"
+                                    />
+                                </svg>
+                            </motion.div>
+                        </div>
 
                         {/* Project Info - titolo e meta */}
                         <div className="relative z-10 project-info-container">
@@ -129,9 +169,9 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                             </div>
                         </div>
 
-                        {/* Plus button - accanto al blocco titolo+meta */}
+                        {/* Plus button - Desktop only (a destra) */}
                         <motion.div
-                            className="shrink-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg backdrop-blur-sm border-2 bg-white/5"
+                            className="hidden md:flex shrink-0 items-center justify-center w-12 h-12 rounded-lg backdrop-blur-sm border-2 bg-white/5"
                             initial={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
                             animate={{
                                 rotate: isExpanded ? 45 : 0,
@@ -152,7 +192,7 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                             transition={{ duration: 0.2, ease: 'easeOut' }}
                         >
                             <svg
-                                className="w-4 h-4 md:w-5 md:h-5 text-cyan-300"
+                                className="w-5 h-5 text-cyan-300"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -203,9 +243,9 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                         transition: 'grid-template-rows 0.35s ease-out',
                     }}
                 >
-                    <div className="overflow-hidden">
+                    <div className="overflow-hidden pr-3 pb-3">
                         <div
-                            className="pt-8 pb-4"
+                            className="pt-8 pb-2"
                             style={{
                                 opacity: isExpanded ? 1 : 0,
                                 transition: 'opacity 0.25s ease-out',
@@ -215,39 +255,40 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                             {/* Card link - tutta l'area è cliccabile */}
                             <a
                                 href={project.link}
-                                className="group/card block rounded-xl p-4 lg:p-6 border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-cyan-400/50 hover:bg-white/10"
+                                className="group/card block rounded-lg overflow-hidden border-2 border-white/30 bg-white/5 backdrop-blur-sm transition-all duration-200 hover:translate-x-2 hover:translate-y-2 hover:shadow-[4px_4px_0px_rgba(34,211,238,0.5)] shadow-[6px_6px_0px_rgba(34,211,238,1)] hover:border-cyan-400/60"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-                                    {/* Image */}
+                                <div className="flex flex-col lg:flex-row lg:gap-10 lg:p-6">
+                                    {/* Image - edge-to-edge su mobile/tablet */}
                                     <div className="lg:w-80 shrink-0">
-                                        <div className="relative rounded-xl overflow-hidden aspect-[16/10] lg:aspect-[4/3] transition-transform duration-300 group-hover/card:scale-[1.02]">
+                                        <div className="relative overflow-hidden aspect-[16/10] lg:aspect-[4/3] border-b border-white/20 lg:border lg:rounded-lg">
                                             <img
                                                 src={project.image}
                                                 alt={project.name}
                                                 className="w-full h-full object-cover"
                                             />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                            {/* Highlight stat overlay */}
-                                            <div className="absolute bottom-4 left-4">
-                                                <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-                                                    {project.highlight}
-                                                </span>
-                                                <span className="block text-xs text-cyan-300 uppercase tracking-wider mt-1">
-                                                    {project.highlightLabel}
-                                                </span>
-                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* Content */}
-                                    <div className="flex-1 flex flex-col justify-between">
+                                    {/* Content - padding solo su mobile/tablet */}
+                                    <div className="flex-1 flex flex-col justify-between p-4 lg:p-0">
                                         <div>
-                                            <div className="flex flex-wrap gap-2">
+                                            {/* Highlight stat - sopra tags su mobile */}
+                                            <div className="flex items-center gap-3 mb-3 md:hidden">
+                                                <span className="text-2xl font-bold text-white tracking-tight">
+                                                    {project.highlight}
+                                                </span>
+                                                <span className="text-xs text-cyan-400 uppercase tracking-wider">
+                                                    {project.highlightLabel}
+                                                </span>
+                                            </div>
+                                            {/* Tags + Stat row */}
+                                            <div className="flex flex-wrap items-center gap-2">
                                                 <MovingBorderButton
                                                     as="span"
                                                     variant="tag"
                                                     color="cyan"
+                                                    duration={2200}
                                                     className="text-xs font-semibold"
                                                 >
                                                     {project.category}
@@ -255,13 +296,23 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                 <MovingBorderButton
                                                     as="span"
                                                     variant="tag"
-                                                    color="cyan"
+                                                    color="purple"
+                                                    duration={3000}
                                                     className="text-xs font-semibold"
                                                 >
                                                     {project.service}
                                                 </MovingBorderButton>
+                                                {/* Highlight stat - accanto tags su md+ */}
+                                                <div className="hidden md:flex items-baseline gap-3 ml-auto">
+                                                    <span className="text-2xl font-bold text-white tracking-tight">
+                                                        {project.highlight}
+                                                    </span>
+                                                    <span className="text-xs text-cyan-400 uppercase tracking-wider">
+                                                        {project.highlightLabel}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <p className="text-body-lg text-white/80 mt-3 max-w-xl">
+                                            <p className="text-body-lg text-white/80 mt-6 max-w-xl">
                                                 {project.description}
                                             </p>
                                         </div>

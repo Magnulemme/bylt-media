@@ -55,8 +55,8 @@
   max-width: var(--breakpoint-content);
   margin-left: auto;
   margin-right: auto;
-  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
-  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-left: 1rem;
+  padding-right: 1rem;
   width: 100%;
 }
 
@@ -77,11 +77,12 @@
 /* Projects Content - Container con icona background e paragrafi */
 .projects-content {
   @apply relative;
+  margin-bottom: var(--spacing-padding-sm);
 }
 
 @media (min-width: 768px) {
   .projects-content {
-    margin-bottom: var(--spacing-padding-sm);
+    margin-bottom: var(--spacing-padding-md);
   }
 }
 
@@ -142,7 +143,26 @@
 
 /* Project Meta - Container metadati progetto */
 .project-meta {
-  @apply flex items-center text-gray-400 text-sm md:text-base;
+  @apply flex text-gray-400 text-sm md:text-base;
   gap: 0.75rem;
+}
+
+/* Stack verticalmente su schermi molto piccoli */
+@media (max-width: 349px) {
+  .project-meta {
+    @apply flex-col items-start;
+    gap: 0.25rem;
+  }
+
+  /* Nascondi il separatore • */
+  .project-meta > span:nth-child(2) {
+    @apply hidden;
+  }
+}
+
+@media (min-width: 350px) {
+  .project-meta {
+    @apply items-center;
+  }
 }
 

@@ -228,10 +228,10 @@ const DemoMobileCard = ({ step, index, totalSteps, scrollProgress }) => {
             : [center - transitionWidth, center, center + transitionWidth];
 
     const outputRange = isFirstVisible
-        ? [1, 0]
+        ? [1, 0.35]
         : isLastVisible
-            ? [0, 1]
-            : [0, 1, 0];
+            ? [0.35, 1]
+            : [0.35, 1, 0.35];
 
     const isActive = useTransform(scrollProgress, inputRange, outputRange);
 
@@ -315,7 +315,7 @@ const DemoMobileCard = ({ step, index, totalSteps, scrollProgress }) => {
 const DemoTimelineMobile = () => {
     const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd, scrollYProgress } =
         useScrollAnimation(true);
-    const maskImage = useFadeMask(isAtStart, isAtEnd, 64);
+    const maskImage = useFadeMask(isAtStart, isAtEnd, 32);
     const topPosition = useCenteredPosition(wrapperRef);
 
     return (
