@@ -66,11 +66,12 @@ const DesktopSection = ({ campaigns }) => {
                   <div
                     key={campaign.id}
                     className="shrink-0 w-80"
+                    style={{ height: cardHeight !== 'auto' ? cardHeight : undefined }}
                   >
                     <img
                       src={campaign.image}
                       alt={campaign.label}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-full object-contain"
                       loading="lazy"
                     />
                   </div>
