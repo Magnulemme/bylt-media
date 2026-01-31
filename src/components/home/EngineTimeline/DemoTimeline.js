@@ -409,6 +409,16 @@ const DemoTimeline = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Hook text after timeline */}
+            <div className="campaign-header text-right">
+                <h3 className="heading-h2 text-white">
+                    From Strategy to Scale
+                </h3>
+                <p className="text-subheader mt-4">
+                    A systematic approach that transforms insights into growth. Every step is optimized for maximum impact.
+                </p>
+            </div>
         </div>
     );
 };

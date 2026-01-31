@@ -1,65 +1,79 @@
 "use client";
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { motion, useTransform } from 'framer-motion';
 import StatsGrid from '../../shared/StatsGrid';
-
-/**
- * Hook per calcolare il top position per centrare verticalmente le card mobile
- */
-const useCenteredPosition = (cardRef) => {
-  const [topPosition, setTopPosition] = useState('0');
-
-  const calculatePosition = useCallback(() => {
-    if (!cardRef?.current) return;
-
-    const viewportHeight = window.innerHeight;
-    const cardHeight = cardRef.current.offsetHeight;
-    const calculatedTop = Math.max(0, (viewportHeight - cardHeight) / 2);
-
-    setTopPosition(`${calculatedTop}px`);
-  }, [cardRef]);
-
-  useEffect(() => {
-    const timer = setTimeout(calculatePosition, 100);
-    window.addEventListener('resize', calculatePosition);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', calculatePosition);
-    };
-  }, [calculatePosition]);
-
-  return topPosition;
-};
+import { useScrollProgress } from './hooks/useScrollProgress';
 
 /**
  * Hook per calcolare l'altezza delle card dinamicamente in base alla viewport
  */
+const DEBUG = true;
+const log = (...args) => DEBUG && console.log('📱 [MobileSection]', ...args);
+
 const useCardHeight = () => {
   const [cardHeight, setCardHeight] = useState('auto');
 
-  const calculateHeight = useCallback(() => {
-    const viewportHeight = window.innerHeight;
-    // Usa 65% della viewport come base, con min e max
-    const targetHeight = viewportHeight * 0.65;
-    const minHeight = 280;
-    const maxHeight = 500;
+  useEffect(() => {
+    const calculateHeight = () => {
+      const viewportHeight = window.innerHeight;
+      const targetHeight = viewportHeight * 0.65;
+      const minHeight = 280;
+      const maxHeight = 500;
 
-    const finalHeight = Math.min(Math.max(targetHeight, minHeight), maxHeight);
-    setCardHeight(`${finalHeight}px`);
+      const finalHeight = Math.min(Math.max(targetHeight, minHeight), maxHeight);
+      log('useCardHeight:', { viewportHeight, targetHeight, finalHeight });
+      setCardHeight(`${finalHeight}px`);
+    };
+
+    calculateHeight();
+    window.addEventListener('resize', calculateHeight);
+    return () => window.removeEventListener('resize', calculateHeight);
   }, []);
 
+  return cardHeight;
+};
+
+/**
+ * Hook per calcolare il top position per centrare verticalmente le card mobile.
+ * Dipende da cardHeight per ricalcolare quando l'altezza cambia.
+ */
+const useCenteredPosition = (cardRef, cardHeight) => {
+  const [topPosition, setTopPosition] = useState('0');
+
   useEffect(() => {
-    const timer = setTimeout(calculateHeight, 50);
-    window.addEventListener('resize', calculateHeight);
+    const calculatePosition = () => {
+      if (!cardRef.current) return;
+
+      const viewportHeight = window.innerHeight;
+      const elementHeight = cardRef.current.offsetHeight;
+      const rect = cardRef.current.getBoundingClientRect();
+      const computedStyle = window.getComputedStyle(cardRef.current);
+      const parentStyle = cardRef.current.parentElement ? window.getComputedStyle(cardRef.current.parentElement) : null;
+      const calculatedTop = Math.max(0, (viewportHeight - elementHeight) / 2);
+
+      log('useCenteredPosition:', {
+        viewportHeight,
+        elementHeight,
+        calculatedTop,
+        cardHeight,
+        rect: { top: rect.top, bottom: rect.bottom, height: rect.height },
+        padding: { top: computedStyle.paddingTop, bottom: computedStyle.paddingBottom },
+        parentPadding: parentStyle ? { top: parentStyle.paddingTop, bottom: parentStyle.paddingBottom } : null,
+      });
+
+      setTopPosition(`${calculatedTop}px`);
+    };
+
+    // Aspetta un frame per assicurarsi che il DOM abbia applicato cardHeight
+    requestAnimationFrame(calculatePosition);
+    window.addEventListener('resize', calculatePosition);
 
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', calculateHeight);
+      window.removeEventListener('resize', calculatePosition);
     };
-  }, [calculateHeight]);
+  }, [cardRef, cardHeight]); // Ricalcola quando cardHeight cambia
 
-  return cardHeight;
+  return topPosition;
 };
 
 // Stats data for CampaignShowcase
@@ -71,18 +85,15 @@ const campaignStats = [
 ];
 
 const MobileSection = ({ campaigns }) => {
-  const containerRef = useRef(null);
   const stickyContentRef = useRef(null);
   const cardHeight = useCardHeight();
-  const topPosition = useCenteredPosition(stickyContentRef);
+  const topPosition = useCenteredPosition(stickyContentRef, cardHeight);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  // Usa useScrollProgress per inizializzazione corretta con micro-scroll forzato
+  const { containerRef, scrollYProgress, isReady } = useScrollProgress(true);
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden mt-16">
       {/* Container alto per dare spazio allo scroll */}
       <div
         ref={containerRef}
@@ -93,9 +104,13 @@ const MobileSection = ({ campaigns }) => {
       >
         {/* Area sticky con solo le immagini - centrata verticalmente */}
         <div
-          className="sticky overflow-hidden"
+          className="sticky"
           style={{
-            top: topPosition
+            top: topPosition,
+            overflowX: 'clip',
+            overflowY: 'visible',
+            opacity: isReady ? 1 : 0,
+            transition: 'opacity 0.3s ease-out'
           }}
         >
           <div
@@ -120,12 +135,12 @@ const MobileSection = ({ campaigns }) => {
         </div>
       </div>
 
-      {/* Titolo che appare DOPO lo scroll container */}
-      <div className="campaign-header">
-        <h3 className="heading-h3 text-white mb-2">
+      {/* Titolo che appare DOPO lo scroll container - allineato a sinistra */}
+      <div className="campaign-header text-left">
+        <h3 className="heading-h2 text-white">
           Creative That Converts
         </h3>
-        <p className="text-body-sm">
+        <p className="text-subheader mt-4">
           Every campaign is crafted to stop the scroll and drive action. From concept to conversion, we deliver creative that performs.
         </p>
       </div>
@@ -143,7 +158,7 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
   const start = index * segmentSize;
   const end = (index + 1) * segmentSize;
 
-  // La prima immagine è sempre visibile
+  // La prima immagine è sempre visibile - allineata in basso come le altre
   if (index === 0) {
     return (
       <div
@@ -158,6 +173,7 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
           src={campaign.image}
           alt={campaign.label}
           className="w-[80vw] h-auto object-contain"
+          loading="eager"
         />
       </div>
     );
@@ -190,7 +206,7 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
     >
       {/* Container interno che cresce */}
       <motion.div
-        className="w-full overflow-hidden flex items-end justify-center"
+        className="w-full overflow-hidden flex items-center justify-center"
         style={{
           height: containerHeight,
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%)',

@@ -379,17 +379,38 @@ const ProjectsShowcase = () => {
         setActiveProjectId(closestId);
     }, []);
 
+    const scrollBgTimerRef = useRef(null);
+
     const handleToggleExpand = useCallback((projectId) => {
         setExpandedProjectId(prev => {
             if (prev === projectId) {
                 // Sta chiudendo - aspetta prima di riabilitare il bg
-                setTimeout(() => setIsScrollBgEnabled(true), 600);
+                if (scrollBgTimerRef.current) {
+                    clearTimeout(scrollBgTimerRef.current);
+                }
+                scrollBgTimerRef.current = setTimeout(() => {
+                    setIsScrollBgEnabled(true);
+                    scrollBgTimerRef.current = null;
+                }, 600);
                 return null;
             }
             // Sta aprendo - disabilita il bg
+            if (scrollBgTimerRef.current) {
+                clearTimeout(scrollBgTimerRef.current);
+                scrollBgTimerRef.current = null;
+            }
             setIsScrollBgEnabled(false);
             return projectId;
         });
+    }, []);
+
+    // Cleanup timer on unmount
+    useEffect(() => {
+        return () => {
+            if (scrollBgTimerRef.current) {
+                clearTimeout(scrollBgTimerRef.current);
+            }
+        };
     }, []);
 
     const projects = [

@@ -98,6 +98,7 @@ const CollisionMechanism = React.forwardRef(({ parentRef, containerRef, beamOpti
   });
   const [beamKey, setBeamKey] = useState(0);
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
+  const timeoutRefs = useRef([]);
 
   useEffect(() => {
     const checkCollision = () => {
@@ -135,15 +136,26 @@ const CollisionMechanism = React.forwardRef(({ parentRef, containerRef, beamOpti
 
   useEffect(() => {
     if (collision.detected && collision.coordinates) {
-      setTimeout(() => {
+      // Clear any pending timeouts before creating new ones
+      timeoutRefs.current.forEach(id => clearTimeout(id));
+      timeoutRefs.current = [];
+
+      const timeout1 = setTimeout(() => {
         setCollision({ detected: false, coordinates: null });
         setCycleCollisionDetected(false);
       }, 2000);
 
-      setTimeout(() => {
+      const timeout2 = setTimeout(() => {
         setBeamKey((prevKey) => prevKey + 1);
       }, 2000);
+
+      timeoutRefs.current.push(timeout1, timeout2);
     }
+
+    return () => {
+      timeoutRefs.current.forEach(id => clearTimeout(id));
+      timeoutRefs.current = [];
+    };
   }, [collision]);
 
   return (

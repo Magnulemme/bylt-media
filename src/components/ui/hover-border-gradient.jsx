@@ -1,5 +1,5 @@
-"use client";;
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
@@ -15,15 +15,16 @@ export function HoverBorderGradient({
 }) {
   const [hovered, setHovered] = useState(false);
   const [direction, setDirection] = useState("TOP");
+  const intervalRef = useRef(null);
 
-  const rotateDirection = currentDirection => {
+  const rotateDirection = useCallback((currentDirection) => {
     const directions = ["TOP", "LEFT", "BOTTOM", "RIGHT"];
     const currentIndex = directions.indexOf(currentDirection);
     const nextIndex = clockwise
       ? (currentIndex - 1 + directions.length) % directions.length
       : (currentIndex + 1) % directions.length;
     return directions[nextIndex];
-  };
+  }, [clockwise]);
 
   const movingMap = {
     TOP: "radial-gradient(20.7% 50% at 50% 0%, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0) 100%)",
@@ -38,13 +39,26 @@ export function HoverBorderGradient({
     "radial-gradient(75% 181.15942028985506% at 50% 50%, #3275F8 0%, rgba(255, 255, 255, 0) 100%)";
 
   useEffect(() => {
+    // Always clear any existing interval first
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    // Only start interval when not hovered
     if (!hovered) {
-      const interval = setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setDirection((prevState) => rotateDirection(prevState));
       }, duration * 1000);
-      return () => clearInterval(interval);
     }
-  }, [hovered]);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [hovered, duration, rotateDirection]);
   return (
     <Tag
       onMouseEnter={(event) => {

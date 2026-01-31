@@ -15,7 +15,8 @@ const campaignStats = [
 ];
 
 const DesktopSection = ({ campaigns }) => {
-  const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(false);
+  // reversed=true per scroll da destra a sinistra
+  const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd } = useScrollAnimation(false, true);
   const stickyContentRef = React.useRef(null);
   const { cardHeight, showText, stickyTop } = useCardHeight(stickyContentRef);
   const maskImage = useFadeMask(isAtStart, isAtEnd, 128);
@@ -36,22 +37,26 @@ const DesktopSection = ({ campaigns }) => {
           ref={stickyContentRef}
           className="sticky flex flex-col"
           style={{
-            top: stickyTop
+            top: stickyTop,
+            overflowX: 'clip',
+            overflowY: 'visible'
           }}
         >
-          <div className="w-full overflow-hidden">
+          <div className="w-full" style={{ overflowX: 'clip', overflowY: 'visible' }}>
             {/* Wrapper con fade ai bordi */}
             <div
               ref={wrapperRef}
-              className="mx-auto w-full relative overflow-x-hidden max-w-content"
+              className="mx-auto w-full relative max-w-content"
               style={{
                 opacity: isReady ? 1 : 0,
                 transition: 'opacity 0.3s ease-out',
+                overflowX: 'clip',
+                overflowY: 'visible',
                 maskImage,
                 WebkitMaskImage: maskImage
               }}
             >
-              {/* Container che si muove orizzontalmente */}
+              {/* Container che si muove orizzontalmente - scroll invertito (dx → sx) */}
               <motion.div
                 ref={cardsRef}
                 className="flex items-center gap-8 px-8"
@@ -74,9 +79,9 @@ const DesktopSection = ({ campaigns }) => {
             </div>
           </div>
 
-          {/* Titolo sotto le card */}
+          {/* Titolo sotto le card - allineato a sinistra */}
           {showText && (
-            <div className="campaign-header">
+            <div className="campaign-header text-left">
               <h3 className="heading-h2 text-white">
                 Creative That Converts
               </h3>

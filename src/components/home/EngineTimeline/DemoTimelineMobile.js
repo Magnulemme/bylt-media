@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useTransform, useMotionValueEvent } from 'motion/react';
 import { BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis } from 'recharts';
 import { useScrollAnimation } from '../PerformanceMetrics/hooks/useScrollAnimation';
 import { useFadeMask } from '../PerformanceMetrics/hooks/useFadeMask';
-import { useCenteredPosition } from '../PerformanceMetrics/hooks/useCenteredPosition';
+import { useCardHeight } from '../CampaignShowcase/hooks/useCardHeight';
 import { processSteps, ditherStyles } from './constants';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import { DitherShader } from '@/components/ui/dither-shader';
@@ -315,8 +315,9 @@ const DemoMobileCard = ({ step, index, totalSteps, scrollProgress }) => {
 const DemoTimelineMobile = () => {
     const { containerRef, cardsRef, wrapperRef, x, isReady, isAtStart, isAtEnd, scrollYProgress } =
         useScrollAnimation(true);
+    const stickyContentRef = useRef(null);
     const maskImage = useFadeMask(isAtStart, isAtEnd, 32);
-    const topPosition = useCenteredPosition(wrapperRef);
+    const { showText, stickyTop } = useCardHeight(stickyContentRef);
 
     return (
         <div className="lg:hidden mobile-timeline-container">
@@ -331,10 +332,11 @@ const DemoTimelineMobile = () => {
             </div>
 
             {/* Scroll container */}
-            <div style={{ height: '400vh' }} ref={containerRef}>
+            <div style={{ height: '400vh', position: 'relative' }} ref={containerRef}>
                 <div
+                    ref={stickyContentRef}
                     className="sticky flex flex-col"
-                    style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}
+                    style={{ top: stickyTop, overflowX: 'clip', overflowY: 'visible' }}
                 >
                     {/* Cards */}
                     <div className="w-full relative">
@@ -346,6 +348,7 @@ const DemoTimelineMobile = () => {
                                 transition: 'opacity 0.2s ease-out',
                                 overflowX: 'clip',
                                 overflowY: 'visible',
+                                paddingBottom: showText ? 0 : undefined,
                             }}
                         >
                             {/* Content layer with fade mask */}
@@ -368,8 +371,32 @@ const DemoTimelineMobile = () => {
                             </div>
                         </div>
                     </div>
+
+                    {/* Hook text inside sticky - shown conditionally */}
+                    {showText && (
+                        <div className="campaign-header text-right">
+                            <h3 className="heading-h2 text-white">
+                                From Strategy to Scale
+                            </h3>
+                            <p className="text-subheader mt-4">
+                                A systematic approach that transforms insights into growth. Every step is optimized for maximum impact.
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
+
+            {/* Hook text after scroll - shown when not enough space in sticky */}
+            {!showText && (
+                <div className="campaign-header text-right">
+                    <h3 className="heading-h2 text-white">
+                        From Strategy to Scale
+                    </h3>
+                    <p className="text-subheader mt-4">
+                        A systematic approach that transforms insights into growth. Every step is optimized for maximum impact.
+                    </p>
+                </div>
+            )}
         </div>
     );
 };
