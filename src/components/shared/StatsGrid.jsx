@@ -90,6 +90,7 @@ const StatsGrid = ({ stats, className = '', variant = 'default' }) => {
                 pauseOnHover={false}
                 className={className}
                 gap="gap-4"
+                useNestedMask={true}
                 renderItem={(stat, idx) => (
                     <StaticStat
                         key={idx}

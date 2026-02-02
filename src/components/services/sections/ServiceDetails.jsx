@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'motion/react';
-import AnimatedWaveCanvas from './AnimatedWaveCanvas';
+import ServiceAccordion from './ServiceAccordion';
 
 const ServiceDetails = ({ service }) => {
     if (!service.details) return null;
@@ -19,28 +19,13 @@ const ServiceDetails = ({ service }) => {
             style={{ background: '#020617' }}
         >
             <div className="service-details-container relative z-10">
-                {/* Mobile: wave as background behind text */}
-                <div className="md:hidden relative rounded-2xl overflow-hidden">
-                    {/* Wave as background */}
+                {/* Mobile: stacked */}
+                <div className="md:hidden space-y-6">
                     <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="absolute inset-0 flex items-center justify-center"
-                    >
-                        <AnimatedWaveCanvas className="rounded-2xl" />
-                        {/* Dark overlay for text readability */}
-                        <div className="absolute inset-0 bg-[#020617]/50 rounded-2xl" />
-                    </motion.div>
-
-                    {/* Content with padding */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="relative z-10 p-6"
+                        transition={{ duration: 0.6 }}
                     >
                         <h2 className="heading-h2 text-white mb-4">
                             {secondary.heading}
@@ -49,8 +34,8 @@ const ServiceDetails = ({ service }) => {
                             {secondary.subheading}
                         </p>
 
-                        {/* Outcomes Grid - 2x2 with numbers */}
-                        <div className="grid grid-cols-2 gap-3">
+                        {/* Outcomes Grid */}
+                        <div className="grid grid-cols-1 gap-3">
                             {secondary.outcomes?.map((outcome, index) => (
                                 <motion.div
                                     key={index}
@@ -70,9 +55,21 @@ const ServiceDetails = ({ service }) => {
                             ))}
                         </div>
 
-                        {/* Secondary Stats - Mobile */}
+                    </motion.div>
+
+                    <div className="space-y-6">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                            <ServiceAccordion service={service} />
+                        </motion.div>
+
+                        {/* Secondary Stats */}
                         {secondaryStats.length > 0 && (
-                            <div className="flex gap-6 pt-6">
+                            <div className="flex gap-6 pt-2">
                                 {secondaryStats.map((stat, index) => (
                                     <motion.div
                                         key={index}
@@ -91,11 +88,11 @@ const ServiceDetails = ({ service }) => {
                                 ))}
                             </div>
                         )}
-                    </motion.div>
+                    </div>
                 </div>
 
-                {/* Tablet & Desktop: two columns (content left, wave right) */}
-                <div className="hidden md:grid md:grid-cols-2 gap-12 items-center">
+                {/* Tablet & Desktop: two columns (content left, accordion right) */}
+                <div className="hidden md:grid md:grid-cols-2 gap-12 items-start">
                     {/* Left - Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -106,12 +103,12 @@ const ServiceDetails = ({ service }) => {
                         <h2 className="heading-h2 text-white mb-4">
                             {secondary.heading}
                         </h2>
-                        <p className="text-subheader leading-relaxed mb-6">
+                        <p className="text-subheader leading-relaxed mb-3">
                             {secondary.subheading}
                         </p>
 
-                        {/* Outcomes Grid - 2x2 with numbers */}
-                        <div className="grid grid-cols-2 gap-4">
+                        {/* Outcomes Grid */}
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
                             {secondary.outcomes?.map((outcome, index) => (
                                 <motion.div
                                     key={index}
@@ -131,18 +128,18 @@ const ServiceDetails = ({ service }) => {
                             ))}
                         </div>
 
-                        {/* Secondary Stats - Desktop */}
+                        {/* Secondary Stats - xl only (left column) */}
                         {secondaryStats.length > 0 && (
-                            <div className="flex gap-8 pt-8">
+                            <div className="hidden xl:flex gap-8 pt-8">
                                 {secondaryStats.map((stat, index) => (
                                     <motion.div
                                         key={index}
                                         initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
                                     >
-                                        <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                                        <div className="text-2xl xl:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                                             {stat.value}
                                         </div>
                                         <div className="text-caption">
@@ -154,16 +151,39 @@ const ServiceDetails = ({ service }) => {
                         )}
                     </motion.div>
 
-                    {/* Right - Animated Wave */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="relative rounded-2xl overflow-hidden h-[320px]"
-                    >
-                        <AnimatedWaveCanvas className="rounded-2xl" />
-                    </motion.div>
+                    {/* Right - Accordion + Stats (md/lg) */}
+                    <div className="flex flex-col gap-6 self-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                        >
+                            <ServiceAccordion service={service} />
+                        </motion.div>
+
+                        {/* Secondary Stats - md/lg only (right column) */}
+                        {secondaryStats.length > 0 && (
+                            <div className="flex xl:hidden gap-8 pt-2">
+                                {secondaryStats.map((stat, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                                    >
+                                        <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                                            {stat.value}
+                                        </div>
+                                        <div className="text-caption">
+                                            {stat.label}
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>

@@ -15,22 +15,24 @@ const ServiceProcess = ({ service }) => {
 
             {/* Infinite Moving Cards */}
             <div className="service-process-carousel">
-                <InfiniteMovingCards
-                    items={steps}
-                    direction="left"
-                    speed="slow"
-                    pauseOnHover={true}
-                    gap="gap-5"
-                    renderItem={(step, index) => (
-                        <div className="w-[320px] md:w-95 flex-1 flex flex-col">
-                            <DitherProcessCard
-                                step={step}
-                                index={index}
-                                isMobile
-                            />
-                        </div>
-                    )}
-                />
+                <div className="service-process-carousel-bleed">
+                    <InfiniteMovingCards
+                        items={steps}
+                        direction="left"
+                        speed="slow"
+                        pauseOnHover={true}
+                        gap="gap-5"
+                        renderItem={(step, index) => (
+                            <div className="w-[min(80vw,300px)] md:w-[320px] pb-2 flex-1 flex flex-col">
+                                <DitherProcessCard
+                                    step={step}
+                                    index={index}
+                                    isMobile
+                                />
+                            </div>
+                        )}
+                    />
+                </div>
             </div>
         </section>
     );

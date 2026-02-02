@@ -15,29 +15,50 @@
   top: 0;
   z-index: 10;
   background: #020617;
+  min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
+}
+
+@media (min-width: 1024px) {
+  .service-hero-section {
+    min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
+  }
 }
 
 .service-hero-container {
   max-width: var(--breakpoint-content);
   margin-left: auto;
   margin-right: auto;
-  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
-  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
-  padding-top: var(--spacing-padding-lg);
-  padding-bottom: var(--spacing-padding-xl);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 370px) {
+  .service-hero-container {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 500px) {
+  .service-hero-container {
+    padding-top: var(--spacing-padding-lg);
+    padding-bottom: var(--spacing-padding-lg);
+  }
 }
 
 @media (min-width: 640px) {
   .service-hero-container {
-    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
-    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
   }
 }
 
 @media (min-width: 768px) {
   .service-hero-container {
     padding-top: var(--spacing-padding-xl);
-    padding-bottom: var(--spacing-padding-2xl);
+    padding-bottom: var(--spacing-padding-xl);
   }
 }
 
@@ -45,6 +66,51 @@
   .service-hero-container {
     padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* Carousel bleed: esce dal padding del container, fade allineato ai bordi */
+/* Solo mobile - su md+ i margini vengono rimossi */
+.service-hero-carousel-bleed {
+  --_pad: 1rem;
+  margin-left: calc(-1 * var(--_pad));
+  margin-right: calc(-1 * var(--_pad));
+}
+
+@media (min-width: 768px) {
+  .service-hero-carousel-bleed {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.service-hero-carousel-mask {
+  --_fade: calc(var(--_pad) + 2.5rem);
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    white var(--_fade),
+    white calc(100% - var(--_fade)),
+    transparent
+  ) !important;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    white var(--_fade),
+    white calc(100% - var(--_fade)),
+    transparent
+  ) !important;
+}
+
+@media (min-width: 640px) {
+  .service-hero-carousel-bleed {
+    --_pad: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-hero-carousel-bleed {
+    --_pad: max(var(--margin-safe-x), var(--spacing-padding-md));
   }
 }
 
@@ -163,6 +229,20 @@
   }
 }
 
+/* Process carousel bleed - solo mobile */
+.service-process-carousel-bleed {
+  --_pad: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  margin-left: calc(-1 * var(--_pad));
+  margin-right: calc(-1 * var(--_pad));
+}
+
+@media (min-width: 768px) {
+  .service-process-carousel-bleed {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 /* ----------------------------------------
    SERVICE DETAILS SECTION
    ---------------------------------------- */
@@ -202,14 +282,24 @@
    SERVICE CTA SECTION
    ---------------------------------------- */
 .service-cta-section {
-  padding-top: var(--spacing-padding-xl);
-  padding-bottom: var(--spacing-padding-xl);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
 }
 
 @media (min-width: 768px) {
   .service-cta-section {
-    padding-top: var(--spacing-padding-2xl);
-    padding-bottom: var(--spacing-padding-2xl);
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+.cta-section-soft {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .cta-section-soft {
+    padding-top: var(--spacing-padding-xl);
   }
 }
 
@@ -234,3 +324,5 @@
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
   }
 }
+
+/* Old accordion styles removed - now using brutalist card with Tailwind */

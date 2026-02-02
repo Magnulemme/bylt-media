@@ -15,7 +15,7 @@ const ServicePage = ({ service }) => {
         >
             <ServiceHero service={service} />
             <div className="service-brand-marquee">
-                <BrandMarquee text="WHY BYLT" className="pt-0 mb-0" />
+                <BrandMarquee text="WHY BYLT" reverse />
             </div>
             <ServiceWhyBylt service={service} />
             <ServiceProcess service={service} />

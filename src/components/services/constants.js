@@ -17,16 +17,19 @@ export const services = {
             {
                 icon: 'Target',
                 title: 'Extensive Experience',
+                shortDescription: '7+ years, 4 continents, €20M+ managed.',
                 description: '7+ years in the market with campaigns spanning 4 continents. We\'ve managed over €20 million in ad budgets, delivering consistent results across diverse markets and industries.'
             },
             {
                 icon: 'Brain',
                 title: 'Advanced AI Tools',
+                shortDescription: 'AI-driven strategies and predictive analytics.',
                 description: 'We leverage cutting-edge AI and machine learning tools for data-driven strategies, automated optimisation, and predictive analytics that maximise your ROI.'
             },
             {
                 icon: 'BarChart',
                 title: 'Proven Results',
+                shortDescription: '9.5x average ROAS, data-driven growth.',
                 description: 'Average ROAS of 9.5x and long-term partnerships with leading brands. Our data-driven approach delivers measurable growth for your business.'
             }
         ],
@@ -152,16 +155,19 @@ export const services = {
             {
                 icon: 'Users',
                 title: 'Community Building',
+                shortDescription: 'Authentic engagement that fosters loyalty.',
                 description: 'We build engaged communities around your brand through authentic content and meaningful interactions that foster loyalty.'
             },
             {
                 icon: 'Share2',
                 title: 'Multi-Platform Strategy',
+                shortDescription: 'Facebook, Instagram, LinkedIn, TikTok.',
                 description: 'Tailored strategies for each platform - Facebook, Instagram, LinkedIn, TikTok - maximising your reach and engagement.'
             },
             {
                 icon: 'LineChart',
                 title: 'Performance Tracking',
+                shortDescription: 'Analytics and reporting to measure ROI.',
                 description: 'Comprehensive analytics and reporting to measure ROI and continuously optimize your social presence.'
             }
         ],
@@ -287,16 +293,19 @@ export const services = {
             {
                 icon: 'Search',
                 title: 'Technical Excellence',
+                shortDescription: 'Full technical audits and optimisation.',
                 description: 'Comprehensive technical SEO audits and implementations to ensure your site is fully optimized for search engines.'
             },
             {
                 icon: 'PenTool',
                 title: 'Content Strategy',
+                shortDescription: 'High-value keywords and authority building.',
                 description: 'Data-driven content strategies that target high-value keywords and establish your authority in your industry.'
             },
             {
                 icon: 'Globe',
                 title: 'Link Building',
+                shortDescription: 'White-hat strategies for domain authority.',
                 description: 'White-hat link building strategies that improve domain authority and drive referral traffic.'
             }
         ],
@@ -422,16 +431,19 @@ export const services = {
             {
                 icon: 'Monitor',
                 title: 'Custom Design',
+                shortDescription: 'Bespoke designs that capture your brand.',
                 description: 'Bespoke designs that capture your brand identity and create memorable user experiences that convert.'
             },
             {
                 icon: 'Zap',
                 title: 'Lightning Fast',
+                shortDescription: 'Instant load times, higher rankings.',
                 description: 'Performance-optimized development ensuring your site loads instantly and ranks higher in search results.'
             },
             {
                 icon: 'MousePointer',
                 title: 'Conversion Focused',
+                shortDescription: 'Data-backed UX to maximise conversions.',
                 description: 'Strategic UX/UI design backed by data to maximize conversions and achieve your business goals.'
             }
         ],
@@ -557,16 +569,19 @@ export const services = {
             {
                 icon: 'Database',
                 title: 'Data Collection',
+                shortDescription: 'Capture every meaningful interaction.',
                 description: 'Proper tracking implementation to capture every meaningful interaction and build a solid data foundation.'
             },
             {
                 icon: 'LineChart',
                 title: 'Advanced Analytics',
+                shortDescription: 'Actionable insights beyond surface metrics.',
                 description: 'Deep analysis that goes beyond surface metrics to uncover actionable insights and opportunities.'
             },
             {
                 icon: 'Brain',
                 title: 'Predictive Insights',
+                shortDescription: 'AI-powered trend forecasting.',
                 description: 'Leveraging AI and machine learning to forecast trends and optimize performance proactively.'
             }
         ],
@@ -692,16 +707,19 @@ export const services = {
             {
                 icon: 'Mail',
                 title: 'Campaign Strategy',
+                shortDescription: 'Campaigns that engage and convert.',
                 description: 'Data-driven email campaigns that engage subscribers and drive measurable results.'
             },
             {
                 icon: 'Zap',
                 title: 'Marketing Automation',
+                shortDescription: 'Automated flows that nurture at scale.',
                 description: 'Sophisticated automation flows that nurture leads and convert customers at scale.'
             },
             {
                 icon: 'LineChart',
                 title: 'Performance Analytics',
+                shortDescription: 'A/B testing and continuous optimisation.',
                 description: 'Detailed analytics and A/B testing to continuously optimize email performance.'
             }
         ],
@@ -827,16 +845,19 @@ export const services = {
             {
                 icon: 'Layers',
                 title: 'Premium Inventory',
+                shortDescription: 'Top-tier publishers and ad exchanges.',
                 description: 'Access to top-tier publishers and ad exchanges ensuring your brand appears in quality environments.'
             },
             {
                 icon: 'Target',
                 title: 'Precision Targeting',
+                shortDescription: 'Laser-focused audience segmentation.',
                 description: 'Advanced audience segmentation using first and third-party data for laser-focused campaigns.'
             },
             {
                 icon: 'Zap',
                 title: 'Real-Time Optimization',
+                shortDescription: 'AI-powered bidding in real-time.',
                 description: 'AI-powered bidding and optimization that maximizes performance in real-time.'
             }
         ],
@@ -962,16 +983,19 @@ export const services = {
             {
                 icon: 'Brain',
                 title: 'Machine Learning',
+                shortDescription: 'Custom models that predict and automate.',
                 description: 'Custom ML models that automate decisions, predict outcomes, and uncover hidden patterns in your data.'
             },
             {
                 icon: 'FlaskConical',
                 title: 'Predictive Analytics',
+                shortDescription: 'Forecast trends and business outcomes.',
                 description: 'Forecast trends, customer behavior, and business outcomes with statistical modeling.'
             },
             {
                 icon: 'Database',
                 title: 'Data Engineering',
+                shortDescription: 'Robust pipelines and infrastructure.',
                 description: 'Build robust data pipelines and infrastructure to power your analytics capabilities.'
             }
         ],
@@ -1097,16 +1121,19 @@ export const services = {
             {
                 icon: 'Bot',
                 title: 'Intelligent Automation',
+                shortDescription: 'Streamline ops, reduce manual effort.',
                 description: 'AI-powered automation that streamlines operations and reduces manual effort across your business.'
             },
             {
                 icon: 'Sparkles',
                 title: 'Generative AI',
+                shortDescription: 'Content creation and personalisation.',
                 description: 'Leverage cutting-edge generative AI for content creation, personalization, and creative applications.'
             },
             {
                 icon: 'Cpu',
                 title: 'Custom AI Development',
+                shortDescription: 'Bespoke solutions for your challenges.',
                 description: 'Bespoke AI solutions tailored to your specific business challenges and opportunities.'
             }
         ],
@@ -1232,16 +1259,19 @@ export const services = {
             {
                 icon: 'Eye',
                 title: 'User Research',
+                shortDescription: 'Heatmaps, recordings, and user testing.',
                 description: 'Deep understanding of user behavior through heatmaps, session recordings, and user testing.'
             },
             {
                 icon: 'TestTube',
                 title: 'A/B Testing',
+                shortDescription: 'Rigorous testing, maximum uplift.',
                 description: 'Rigorous experimentation to validate improvements and maximize conversion uplift.'
             },
             {
                 icon: 'LayoutGrid',
                 title: 'UX Optimization',
+                shortDescription: 'Remove friction, guide to conversion.',
                 description: 'Strategic UX improvements that remove friction and guide users to conversion.'
             }
         ],

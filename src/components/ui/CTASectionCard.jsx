@@ -20,7 +20,7 @@ const CTASectionCard = ({
 
   return (
     <section
-      className={`${isSoft ? '' : 'py-12 lg:py-24 max-sm:pb-24'} relative overflow-hidden ${className}`}
+      className={`${isSoft ? 'cta-section-soft' : 'service-cta-section max-sm:pb-24'} relative overflow-hidden ${className}`}
       style={{
         background,
         zIndex: 10
@@ -30,14 +30,14 @@ const CTASectionCard = ({
         <div className={`relative ${isSoft ? 'rounded-2xl' : 'rounded-3xl border border-slate-800 overflow-hidden'}`}>
           {!isSoft && <VerticalLinesCanvas dotScale={dotScale} />}
 
-          <div className="relative z-10 p-8 lg:p-12 text-center">
+          <div className="relative z-10 text-center">
             <h2 className={`${isSoft ? 'heading-h2' : 'heading-h1'} text-white mb-6`}>
               {title}
             </h2>
             <p className="text-subheader mb-8 max-w-2xl mx-auto">
               {description}
             </p>
-            <div className="flex justify-center w-full pt-8 pb-8">
+            <div className="flex justify-center w-full pt-8">
               <MovingBorderButton
                 borderRadius="0.75rem"
                 containerClassName="min-w-[240px] h-16"

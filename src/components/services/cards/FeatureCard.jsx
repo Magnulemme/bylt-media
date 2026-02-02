@@ -3,20 +3,25 @@ import { getIcon, accentColors } from '../utils';
 import { useWaveBackground } from '../hooks';
 import { WobbleCard } from '../../ui/wobble-card';
 
-const FeatureCard = ({ feature, index }) => {
+const FeatureCard = ({ feature, index, variant }) => {
     const Icon = getIcon(feature.icon);
     const waveBg = useWaveBackground(index);
     const accentColor = accentColors[index % accentColors.length];
 
+    // Per tablet variant, sempre shortDescription
+    const isTablet = variant === 'tablet';
+
     return (
         <WobbleCard
-            containerClassName="h-full min-h-[140px] bg-slate-950 border border-slate-800 hover:border-cyan-500/50"
-            className="p-6 py-6"
+            containerClassName={`h-full min-h-[140px] bg-slate-950 border border-slate-800 hover:border-cyan-500/50 ${
+                isTablet ? 'max-w-none' : 'max-w-[min(80vw,300px)] md:max-w-[min(80vw,320px)] xl:max-w-none'
+            }`}
+            className={isTablet ? 'p-4' : 'p-6 py-6'}
         >
             {/* Wave Background */}
             {waveBg && (
                 <div
-                    className="absolute inset-0 opacity-60 transition-opacity duration-300 z-0"
+                    className="absolute inset-0 transition-opacity duration-300 z-0"
                     style={{
                         backgroundImage: `url(${waveBg})`,
                         backgroundSize: 'cover',
@@ -25,8 +30,8 @@ const FeatureCard = ({ feature, index }) => {
                 />
             )}
 
-            {/* Dark overlay */}
-            <div className="absolute inset-0 bg-slate-950/70 z-0" />
+            {/* Dark overlay — allineato a MainCard */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/40 to-slate-950/60 z-0" />
 
             {/* Content */}
             <div className="relative z-10">
@@ -42,9 +47,20 @@ const FeatureCard = ({ feature, index }) => {
                 <h3 className="heading-h4 text-white mb-2">
                     {feature.title}
                 </h3>
-                <p className="text-body leading-relaxed">
-                    {feature.description}
-                </p>
+                {isTablet ? (
+                    <p className="text-body leading-relaxed">
+                        {feature.shortDescription}
+                    </p>
+                ) : (
+                    <>
+                        <p className="text-body leading-relaxed md:hidden">
+                            {feature.shortDescription}
+                        </p>
+                        <p className="text-body leading-relaxed hidden md:block">
+                            {feature.description}
+                        </p>
+                    </>
+                )}
             </div>
         </WobbleCard>
     );

@@ -325,7 +325,7 @@
   /* Infinite scroll animation */
   @keyframes scroll {
     to {
-      transform: translate(calc(-50% - 0.5rem));
+      transform: translateX(calc(-1 * var(--scroll-distance, 50%)));
     }
   }
 

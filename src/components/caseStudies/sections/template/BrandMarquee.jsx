@@ -28,7 +28,7 @@ const BrandMarquee = ({
     return (
         <div className={cn("px-3 md:px-(--margin-safe-x)", className)}>
             <div
-                className="relative overflow-hidden py-2 md:py-4 rounded-2xl border border-slate-700"
+                className="relative overflow-hidden py-8 lg:py-12 rounded-2xl border border-slate-700"
                 style={{
                     background: '#020617',
                     boxShadow: '6px 6px 0px rgba(34, 211, 238, 1)'

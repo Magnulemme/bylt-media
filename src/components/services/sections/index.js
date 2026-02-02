@@ -6,3 +6,4 @@ export { default as ServiceWhyBylt } from './ServiceWhyBylt';
 export { default as ServiceProcess } from './ServiceProcess';
 export { default as ServiceDetails } from './ServiceDetails';
 export { default as ServiceCTA } from './ServiceCTA';
+export { default as ServiceAccordion } from './ServiceAccordion';

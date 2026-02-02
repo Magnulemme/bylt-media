@@ -61,7 +61,7 @@ const SuccessStories = () => {
         >
             {/* Section intro */}
             <div className="success-stories-header max-w-content mx-auto">
-                <div className="max-w-3xl mb-6">
+                <div className="max-w-3xl mb-8 md:mb-12 lg:mb-16">
                     <motion.h2
                         className="heading-h1 text-white text-left mb-6"
                         initial={{ opacity: 0, filter: "blur(10px)" }}

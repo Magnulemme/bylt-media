@@ -1,115 +1,133 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 
+// Unica fonte di verità per la velocità di scroll (px/s)
+const SCROLL_SPEED_PX_PER_S = 50;
 
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
-  speed = "fast",
+  speed = "fast", // mantenuta per retrocompatibilità, ignorata internamente
   pauseOnHover = true,
   className,
   renderItem, // (item, index) => JSX - custom render function
   gap = "gap-6", // Tailwind gap class
+  useNestedMask = false, // true = struttura con wrapper esterno per mask (usata in StatsGrid)
 }) => {
-  const containerRef = React.useRef(null);
-  const scrollerRef = React.useRef(null);
-  const [start, setStart] = useState(false);
-  const hasClonedRef = React.useRef(false); // Guard per prevenire clonazione multipla
+  const containerRef = useRef(null);
+  const scrollerRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  const updateAnimation = useCallback(() => {
+    if (!scrollerRef.current || !containerRef.current) return;
+
+    const children = scrollerRef.current.children;
+    if (children.length < items.length * 2) return;
+
+    // Misura la distanza esatta tra il primo item e il primo clone
+    const firstItem = children[0];
+    const firstClone = children[items.length];
+    const distance =
+      firstClone.getBoundingClientRect().left -
+      firstItem.getBoundingClientRect().left;
+
+    const duration = distance / SCROLL_SPEED_PX_PER_S;
+
+    containerRef.current.style.setProperty("--scroll-distance", `${distance}px`);
+    containerRef.current.style.setProperty("--animation-duration", `${duration}s`);
+  }, [items.length]);
 
   useEffect(() => {
-    addAnimation();
-    // Cleanup: reset del flag quando il componente viene smontato
-    return () => {
-      hasClonedRef.current = false;
+    updateAnimation();
+    setReady(true);
+  }, [updateAnimation]);
+
+  // Ricalcola duration su resize (con debounce)
+  useEffect(() => {
+    if (!ready) return;
+
+    let timeoutId;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(updateAnimation, 150);
     };
-  }, []);
 
-  // Update speed when prop changes
-  useEffect(() => {
-    getSpeed();
-  }, [speed]);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [ready, updateAnimation]);
 
   // Update direction when prop changes
   useEffect(() => {
-    getDirection();
+    if (containerRef.current) {
+      containerRef.current.style.setProperty(
+        "--animation-direction",
+        direction === "left" ? "forwards" : "reverse"
+      );
+    }
   }, [direction]);
 
-  function addAnimation() {
-    if (containerRef.current && scrollerRef.current && !hasClonedRef.current) {
-      hasClonedRef.current = true; // Previene clonazioni multiple
-      const scrollerContent = Array.from(scrollerRef.current.children);
+  const listContent = (
+    <ul
+      ref={scrollerRef}
+      className={cn(
+        "flex w-max min-w-full shrink-0 flex-nowrap items-stretch",
+        gap,
+        ready && "animate-scroll",
+        pauseOnHover && "hover:[animation-play-state:paused]"
+      )}>
+      {/* Set originale */}
+      {items.map((item, idx) => (
+        <li
+          key={`a-${item.id || idx}`}
+          className="shrink-0 flex"
+        >
+          {renderItem(item, idx)}
+        </li>
+      ))}
+      {/* Set duplicato per loop seamless — React gestisce gli hook */}
+      {items.map((item, idx) => (
+        <li
+          key={`b-${item.id || idx}`}
+          className="shrink-0 flex"
+        >
+          {renderItem(item, idx)}
+        </li>
+      ))}
+    </ul>
+  );
 
-      // Duplicate content once for seamless loop (50% + 50% = 100%)
-      scrollerContent.forEach((item) => {
-        const duplicatedItem = item.cloneNode(true);
-        if (scrollerRef.current) {
-          scrollerRef.current.appendChild(duplicatedItem);
-        }
-      });
-
-      getDirection();
-      getSpeed();
-      setStart(true);
-    }
+  // Struttura con wrapper esterno per mask (usata in StatsGrid)
+  if (useNestedMask) {
+    return (
+      <div
+        className={cn(
+          "relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+          className
+        )}>
+        <div
+          ref={containerRef}
+          className="scroller max-w-[var(--breakpoint-content)] mx-auto overflow-hidden"
+        >
+          {listContent}
+        </div>
+      </div>
+    );
   }
 
-  const getDirection = () => {
-    if (containerRef.current) {
-      if (direction === "left") {
-        containerRef.current.style.setProperty("--animation-direction", "forwards");
-      } else {
-        containerRef.current.style.setProperty("--animation-direction", "reverse");
-      }
-    }
-  };
-
-  const getSpeed = () => {
-    if (containerRef.current) {
-      let duration;
-      if (speed === "fast") {
-        duration = "35s";
-      } else if (speed === "normal") {
-        duration = "45s";
-      } else if (speed === "slow") {
-        duration = "60s";
-      } else {
-        // Allow custom speed values (e.g., "10s", "25s")
-        duration = speed;
-      }
-      containerRef.current.style.setProperty("--animation-duration", duration);
-    }
-  };
-
+  // Struttura originale (mask sullo stesso div del containerRef)
   return (
     <div
+      ref={containerRef}
       className={cn(
-        "relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 max-w-[var(--breakpoint-content)] mx-auto overflow-x-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}>
-      <div
-        ref={containerRef}
-        className="scroller max-w-[var(--breakpoint-content)] mx-auto overflow-hidden"
-      >
-        <ul
-          ref={scrollerRef}
-          className={cn(
-            "flex w-max min-w-full shrink-0 flex-nowrap items-stretch py-8",
-            gap,
-            start && "animate-scroll",
-            pauseOnHover && "hover:[animation-play-state:paused]"
-          )}>
-          {items.map((item, idx) => (
-            <li
-              key={item.id || `${item.name}-${idx}`}
-              className="shrink-0 flex"
-            >
-              {renderItem(item, idx)}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {listContent}
     </div>
   );
 };
