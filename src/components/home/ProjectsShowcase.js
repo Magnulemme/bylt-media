@@ -258,23 +258,19 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                 className="group/card block rounded-lg overflow-hidden border-2 border-white/30 bg-white/5 backdrop-blur-sm transition-all duration-200 hover:translate-x-2 hover:translate-y-2 hover:shadow-[4px_4px_0px_rgba(34,211,238,0.5)] shadow-[6px_6px_0px_rgba(34,211,238,1)] hover:border-cyan-400/60"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div className="flex flex-col lg:flex-row lg:gap-10 lg:p-6">
-                                    {/* Image - edge-to-edge su mobile/tablet */}
-                                    <div className="lg:w-80 shrink-0">
-                                        <div className="relative overflow-hidden aspect-[16/10] lg:aspect-[4/3] border-b border-white/20 lg:border lg:rounded-lg">
+                                <div className="flex flex-col md:flex-row md:gap-10 md:p-6">
+                                    {/* Colonna 1: Image + Tags/Results (su md+) */}
+                                    <div className="md:w-80 shrink-0">
+                                        <div className="relative overflow-hidden aspect-[16/10] md:aspect-[4/3] border-b border-white/20 md:border md:rounded-lg">
                                             <img
                                                 src={project.image}
                                                 alt={project.name}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
-                                    </div>
-
-                                    {/* Content - padding solo su mobile/tablet */}
-                                    <div className="flex-1 flex flex-col justify-between p-4 lg:p-0">
-                                        <div>
-                                            {/* Highlight stat - sopra tags su mobile */}
-                                            <div className="flex items-center gap-3 mb-3 md:hidden">
+                                        {/* Results - sotto image su md-xl */}
+                                        <div className="hidden md:block xl:hidden mt-4">
+                                            <div className="flex items-baseline gap-3">
                                                 <span className="text-2xl font-bold text-white tracking-tight">
                                                     {project.highlight}
                                                 </span>
@@ -282,8 +278,45 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                     {project.highlightLabel}
                                                 </span>
                                             </div>
-                                            {/* Tags + Stat row */}
-                                            <div className="flex flex-wrap items-center gap-2">
+                                        </div>
+                                    </div>
+
+                                    {/* Colonna 2: Descrizione + CTA (su md+) / Tutto su mobile */}
+                                    <div className="flex-1 flex flex-col justify-between p-4 md:p-0">
+                                        <div>
+                                            {/* Highlight stat + Tags - solo mobile */}
+                                            <div className="md:hidden">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <span className="text-2xl font-bold text-white tracking-tight">
+                                                        {project.highlight}
+                                                    </span>
+                                                    <span className="text-xs text-cyan-400 uppercase tracking-wider">
+                                                        {project.highlightLabel}
+                                                    </span>
+                                                </div>
+                                                <div className="flex flex-wrap items-center gap-2 mb-4">
+                                                    <MovingBorderButton
+                                                        as="span"
+                                                        variant="tag"
+                                                        color="cyan"
+                                                        duration={2200}
+                                                        className="text-xs font-semibold"
+                                                    >
+                                                        {project.category}
+                                                    </MovingBorderButton>
+                                                    <MovingBorderButton
+                                                        as="span"
+                                                        variant="tag"
+                                                        color="purple"
+                                                        duration={3000}
+                                                        className="text-xs font-semibold"
+                                                    >
+                                                        {project.service}
+                                                    </MovingBorderButton>
+                                                </div>
+                                            </div>
+                                            {/* Tags + Results (xl+) - solo md+ */}
+                                            <div className="hidden md:flex flex-wrap items-center gap-2 mb-4">
                                                 <MovingBorderButton
                                                     as="span"
                                                     variant="tag"
@@ -302,8 +335,8 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                 >
                                                     {project.service}
                                                 </MovingBorderButton>
-                                                {/* Highlight stat - accanto tags su md+ */}
-                                                <div className="hidden md:flex items-baseline gap-3 ml-auto">
+                                                {/* Results inline con tags su xl+ */}
+                                                <div className="hidden xl:flex items-baseline gap-3 ml-auto">
                                                     <span className="text-2xl font-bold text-white tracking-tight">
                                                         {project.highlight}
                                                     </span>
@@ -312,7 +345,7 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p className="text-body-lg text-white/80 mt-6 max-w-xl">
+                                            <p className="text-body-lg text-white/80 md:mt-0 max-w-xl">
                                                 {project.description}
                                             </p>
                                         </div>

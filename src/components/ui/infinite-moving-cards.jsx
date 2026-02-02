@@ -84,28 +84,32 @@ export const InfiniteMovingCards = ({
 
   return (
     <div
-      ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-[var(--breakpoint-content)] mx-auto overflow-x-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}>
-      <ul
-        ref={scrollerRef}
-        className={cn(
-          "flex w-max min-w-full shrink-0 flex-nowrap items-stretch py-8",
-          gap,
-          start && "animate-scroll",
-          pauseOnHover && "hover:[animation-play-state:paused]"
-        )}>
-        {items.map((item, idx) => (
-          <li
-            key={item.id || `${item.name}-${idx}`}
-            className="shrink-0 flex"
-          >
-            {renderItem(item, idx)}
-          </li>
-        ))}
-      </ul>
+      <div
+        ref={containerRef}
+        className="scroller max-w-[var(--breakpoint-content)] mx-auto overflow-hidden"
+      >
+        <ul
+          ref={scrollerRef}
+          className={cn(
+            "flex w-max min-w-full shrink-0 flex-nowrap items-stretch py-8",
+            gap,
+            start && "animate-scroll",
+            pauseOnHover && "hover:[animation-play-state:paused]"
+          )}>
+          {items.map((item, idx) => (
+            <li
+              key={item.id || `${item.name}-${idx}`}
+              className="shrink-0 flex"
+            >
+              {renderItem(item, idx)}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

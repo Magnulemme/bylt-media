@@ -4,15 +4,6 @@ import { motion } from 'framer-motion';
 import { useScrollAnimation } from '../PerformanceMetrics/hooks/useScrollAnimation';
 import { useFadeMask } from '../PerformanceMetrics/hooks/useFadeMask';
 import { useCardHeight } from './hooks/useCardHeight';
-import StatsGrid from '../../shared/StatsGrid';
-
-// Stats data for CampaignShowcase
-const campaignStats = [
-  { value: 500, suffix: '+', label: 'Campaigns' },
-  { value: 1, suffix: 'B+', label: 'Impressions' },
-  { value: 50, suffix: '+', label: 'Brands' },
-  { value: 98, suffix: '%', label: 'Retention' },
-];
 
 const DesktopSection = ({ campaigns }) => {
   // reversed=true per scroll da destra a sinistra
@@ -94,10 +85,28 @@ const DesktopSection = ({ campaigns }) => {
         </div>
       </div>
 
-      {/* Stats dopo lo sticky */}
-      <div className="campaign-stats">
-        <StatsGrid stats={campaignStats} />
-      </div>
+      {/* What's Included */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="campaign-stats grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+      >
+        {[
+          'Performance score',
+          'Competitor analysis',
+          '3 actionable recommendations',
+          '15-min strategy call',
+        ].map((item) => (
+          <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
+            <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{item}</span>
+          </div>
+        ))}
+      </motion.div>
     </div>
   );
 };
