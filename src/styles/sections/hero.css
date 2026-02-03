@@ -64,7 +64,6 @@
 
 @media (min-width: 1024px) {
   .hero-inner {
-
     margin-top: 0;
     margin-bottom: 0;
     min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);

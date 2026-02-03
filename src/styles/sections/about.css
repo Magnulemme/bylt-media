@@ -8,16 +8,20 @@
 
 /* Hero - Prima sezione con shader background */
 .about-hero-section {
-  @apply relative flex items-center justify-center overflow-hidden;
-  @apply px-4;
-  background: #020617;
+  position: sticky;
+  top: 0;
   z-index: 10;
+  background: #020617;
+  min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (min-width: 1024px) {
   .about-hero-section {
-    min-height: 100dvh;
-    padding-top: calc(var(--navbar-height-desktop));
+    min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -49,7 +53,6 @@
   .about-hero-container {
     padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
     padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
-    padding-top: 0;
   }
 }
 

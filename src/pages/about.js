@@ -161,18 +161,18 @@ export default function About() {
 
             {/* Hero Section with Our Story + Why Choose */}
             <section
-                className="relative flex flex-col service-page overflow-x-clip"
+                className="flex flex-col overflow-x-clip hero-section w-full"
                 style={{
                     background: '#020617',
                     zIndex: 10
                 }}
             >
-                <div className='service-page relative mb-6'>
+                <div className='about-hero-section relative w-full flex flex-col'>
                 <ShaderBackgroundStandalone onReady={signalPageReady} />
 
-                <div className="relative z-20 text-white max-w-6xl mx-auto px-4 pb-16 lg:pb-24 flex-1 flex flex-col justify-center max-lg:pt-16">
+                <div className="relative z-20 text-white mx-auto px-4 flex-1 flex flex-col justify-center items-center about-hero-container">
                     {/* Text + Torus side by side */}
-                    <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-20">
+                    <div className="relative flex flex-col lg:flex-row gap-8 lg:gap-12 items-center mb-12 md:bg-16 lg:mb-20 px-4 md:px-6 lg:px-12">
                         {/* Torus come sfondo su mobile/tablet */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden opacity-30 pointer-events-none">
                             <div className="w-[450px] h-[450px]">
@@ -180,27 +180,27 @@ export default function About() {
                             </div>
                         </div>
 
-                        <div className="relative z-10 text-center lg:text-left">
+                        <div className="relative z-10 text-center lg:text-left flex-1">
                             <h1 className="heading-page mb-6">
                                 <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
                                     Our Story
                                 </span>
                             </h1>
-                            <p className="text-body-lg mb-4">
+                            <p className="text-body-lg mb-4 max-w-xl">
                                 BYLT Media was founded with a simple mission: to help businesses thrive in the digital age.
                                 With over a decade of combined experience in performance marketing, we've helped brands
                                 of all sizes achieve measurable growth.
                             </p>
-                            <p className="text-body-lg">
+                            <p className="text-body-lg max-w-xl">
                                 From startups to Fortune 500 companies, we bring the same level of dedication,
                                 strategic thinking, and data-driven approach to every project.
                             </p>
                         </div>
 
                         {/* Torus visibile solo su desktop */}
-                        <div className="hidden lg:block relative h-[350px] overflow-hidden">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-[500px] h-[500px]">
+                        <div className="hidden lg:block relative h-[350px] aspect-square overflow-hidden shrink-0 ">
+                            <div className="absolute inset-0 flex items-center justify-center ">
+                                <div className="w-[500px] h-[500px] ">
                                     <Torus3D />
                                 </div>
                             </div>
@@ -208,7 +208,7 @@ export default function About() {
                     </div>
 
                     {/* Official Partner Section */}
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center py-8">
+                    <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center justify-around py-8 w-full px-4 md:px-6 lg:px-12">
                         {/* BYLT Partner of MarketiseMe */}
                         <div className="text-center">
                             <p className="text-label mb-4">Official Partner of</p>

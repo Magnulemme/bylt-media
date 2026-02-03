@@ -1131,7 +1131,13 @@ export const services = {
             secondaryStats: [
                 { value: '1-2 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "BYLT's programmatic campaigns delivered exceptional reach and brand awareness across premium inventory. Their targeting precision and real-time optimization significantly improved our campaign performance.",
+                author: "Parfium",
+                role: "Luxury Brand",
+                company: "Brand Awareness"
+            }
         }
     },
     'data-science': {
@@ -1288,7 +1294,13 @@ export const services = {
             secondaryStats: [
                 { value: '4-8 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "The predictive models BYLT developed have transformed how we make decisions. Their data science team delivered actionable insights that directly impacted our bottom line.",
+                author: "Brickell",
+                role: "Real Estate",
+                company: "Predictive Analytics"
+            }
         }
     },
     'ai-solutions': {
@@ -1445,7 +1457,13 @@ export const services = {
             secondaryStats: [
                 { value: '4-12 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "BYLT's AI automation solutions have revolutionized our operations. We've cut manual processing time by 70% and our team can now focus on strategic initiatives instead of repetitive tasks.",
+                author: "CSKA",
+                role: "Sports Organization",
+                company: "Process Automation"
+            }
         }
     },
     'cro': {
@@ -1602,7 +1620,13 @@ export const services = {
             secondaryStats: [
                 { value: '2-4 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "The CRO audit from BYLT identified critical friction points we had missed. After implementing their recommendations, our conversion rate increased by 42% within the first month.",
+                author: "Nissan",
+                role: "Automotive Group",
+                company: "Conversion Optimization"
+            }
         }
     }
 };
