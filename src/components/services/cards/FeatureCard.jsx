@@ -1,62 +1,43 @@
 import React from 'react';
-import { getIcon, accentColors } from '../utils';
-import { useWaveBackground } from '../hooks';
+import { cn } from '@/lib/utils';
 import { WobbleCard } from '../../ui/wobble-card';
+import { accentColors } from '../utils';
 
-const FeatureCard = ({ feature, index, variant }) => {
-    const Icon = getIcon(feature.icon);
-    const waveBg = useWaveBackground(index);
-    const accentColor = accentColors[index % accentColors.length];
-
-    // Per tablet variant, sempre shortDescription
+const FeatureCard = ({ feature, index, variant, h, fullWidth }) => {
     const isTablet = variant === 'tablet';
+    const isFull = h === 'full';
+    const accentColor = accentColors[index % accentColors.length];
+    const variantColors = {
+        cyan: "#06b6d4",
+        purple: "#a855f7",
+    };
+    const titleColor = accentColor.startsWith("#") ? accentColor : (variantColors[accentColor] || variantColors.cyan);
 
     return (
         <WobbleCard
-            containerClassName={`h-full min-h-[140px] bg-slate-950 border border-slate-800 hover:border-cyan-500/50 ${
-                isTablet ? 'max-w-none' : 'max-w-[min(80vw,300px)] md:max-w-[min(80vw,320px)] xl:max-w-none'
-            }`}
+            containerClassName={cn(
+                "bg-slate-950 border border-slate-800 hover:border-cyan-500/50",
+                isTablet || fullWidth ? 'max-w-none' : 'max-w-[min(80vw,300px)] md:max-w-[min(80vw,320px)] laptop:max-w-none laptop:min-w-[350px]',
+                isFull && "h-full"
+            )}
             className={isTablet ? 'p-4' : 'p-6 py-6'}
         >
-            {/* Wave Background */}
-            {waveBg && (
-                <div
-                    className="absolute inset-0 transition-opacity duration-300 z-0"
-                    style={{
-                        backgroundImage: `url(${waveBg})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
-                />
-            )}
-
-            {/* Dark overlay — allineato a MainCard */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/40 to-slate-950/60 z-0" />
-
-            {/* Content */}
             <div className="relative z-10">
-                <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300"
-                    style={{
-                        background: `linear-gradient(135deg, ${accentColor}20, ${accentColor}10)`,
-                        boxShadow: `0 0 20px ${accentColor}10`
-                    }}
-                >
-                    <Icon className="w-6 h-6" style={{ color: accentColor }} />
-                </div>
-                <h3 className="heading-h4 text-white mb-2">
+                {/* Title */}
+                <h4 className="mb-2 text-lg font-semibold" style={{ color: titleColor }}>
                     {feature.title}
-                </h3>
+                </h4>
+                {/* Description */}
                 {isTablet ? (
-                    <p className="text-body leading-relaxed">
-                        {feature.shortDescription}
+                    <p className="text-body-sm text-slate-400">
+                        {feature.description}
                     </p>
                 ) : (
                     <>
-                        <p className="text-body leading-relaxed md:hidden">
-                            {feature.shortDescription}
+                        <p className="text-body-sm text-slate-400 md:hidden">
+                            {feature.description}
                         </p>
-                        <p className="text-body leading-relaxed hidden md:block">
+                        <p className="text-body-sm text-slate-400 hidden md:block">
                             {feature.description}
                         </p>
                     </>

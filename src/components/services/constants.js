@@ -33,6 +33,25 @@ export const services = {
                 description: 'Average ROAS of 9.5x and long-term partnerships with leading brands. Our data-driven approach delivers measurable growth for your business.'
             }
         ],
+        heroFeaturesHeadline: 'Precision campaigns that deliver results',
+        heroBenefitsHeadline: 'What it means for your brand',
+        heroBenefits: [
+            {
+                icon: 'Search',
+                title: 'Be There When It Matters',
+                description: 'Appear at the top of Google exactly when potential customers are actively searching for your products or services.'
+            },
+            {
+                icon: 'Sliders',
+                title: 'Full Budget Control',
+                description: 'Set your own limits, pause anytime, and scale up when you see results. No long-term commitments, just performance.'
+            },
+            {
+                icon: 'Target',
+                title: 'Outrank Bigger Competitors',
+                description: 'Level the playing field. Smart bidding and quality ads let you compete with industry giants regardless of their budget.'
+            }
+        ],
         process: [
             {
                 step: '01',
@@ -151,6 +170,25 @@ export const services = {
             description: 'Build your brand with strategic social media marketing. We create engaging content and run high-converting paid social campaigns.',
             canonical: 'https://www.byltmedia.com/services/social-media'
         },
+        heroFeaturesHeadline: 'Strategic content that builds communities',
+        heroBenefitsHeadline: 'Grow your brand presence',
+        heroBenefits: [
+            {
+                icon: 'Users',
+                title: 'Build Loyal Communities',
+                description: 'Transform followers into brand advocates through authentic engagement and meaningful content.'
+            },
+            {
+                icon: 'TrendingUp',
+                title: 'Amplify Your Reach',
+                description: 'Extend your brand visibility across Meta, TikTok, and LinkedIn with data-driven paid campaigns.'
+            },
+            {
+                icon: 'Heart',
+                title: 'Drive Real Engagement',
+                description: 'Create scroll-stopping content that sparks conversations and builds lasting connections.'
+            }
+        ],
         features: [
             {
                 icon: 'Users',
@@ -289,6 +327,25 @@ export const services = {
             description: 'Boost your organic visibility with our comprehensive SEO services. Technical optimization, content strategy, and link building.',
             canonical: 'https://www.byltmedia.com/services/seo'
         },
+        heroFeaturesHeadline: 'Sustainable growth through organic search',
+        heroBenefitsHeadline: 'Own your search presence',
+        heroBenefits: [
+            {
+                icon: 'TrendingUp',
+                title: 'Traffic That Compounds',
+                description: 'Build organic visibility that grows over time, reducing your dependency on paid advertising.'
+            },
+            {
+                icon: 'Target',
+                title: 'Capture High-Intent Searches',
+                description: 'Rank for keywords your customers actually use when ready to buy or engage.'
+            },
+            {
+                icon: 'Shield',
+                title: 'Future-Proof Rankings',
+                description: 'White-hat strategies that withstand algorithm updates and build lasting authority.'
+            }
+        ],
         features: [
             {
                 icon: 'Search',
@@ -427,6 +484,25 @@ export const services = {
             description: 'Custom website design and development that combines stunning aesthetics with high performance and conversion optimization.',
             canonical: 'https://www.byltmedia.com/services/websites'
         },
+        heroFeaturesHeadline: 'Design meets performance',
+        heroBenefitsHeadline: 'Your digital storefront',
+        heroBenefits: [
+            {
+                icon: 'Zap',
+                title: 'Lightning Fast Loading',
+                description: 'Sub-2 second load times that keep visitors engaged and boost your search rankings.'
+            },
+            {
+                icon: 'MousePointer',
+                title: 'Built to Convert',
+                description: 'Strategic UX design that guides visitors toward action and maximizes conversions.'
+            },
+            {
+                icon: 'Smartphone',
+                title: 'Flawless on Every Device',
+                description: 'Responsive design that delivers a perfect experience from desktop to mobile.'
+            }
+        ],
         features: [
             {
                 icon: 'Monitor',
@@ -565,6 +641,25 @@ export const services = {
             description: 'Unlock the power of your data with comprehensive analytics services. From setup to insights that drive growth.',
             canonical: 'https://www.byltmedia.com/services/analytics'
         },
+        heroFeaturesHeadline: 'Turn data into decisions',
+        heroBenefitsHeadline: 'See what really works',
+        heroBenefits: [
+            {
+                icon: 'Eye',
+                title: 'Complete Visibility',
+                description: 'Know exactly what\'s working and what\'s not with accurate tracking across all channels.'
+            },
+            {
+                icon: 'Target',
+                title: 'Attribute Revenue Correctly',
+                description: 'Understand the true value of each marketing touchpoint in your customer journey.'
+            },
+            {
+                icon: 'Lightbulb',
+                title: 'Actionable Insights',
+                description: 'Get clear recommendations, not just reports. Know what to do next to grow.'
+            }
+        ],
         features: [
             {
                 icon: 'Database',
@@ -703,6 +798,25 @@ export const services = {
             description: 'Drive conversions with strategic email marketing. From automation flows to campaign management.',
             canonical: 'https://www.byltmedia.com/services/email-marketing'
         },
+        heroFeaturesHeadline: 'Your list is a revenue engine',
+        heroBenefitsHeadline: 'Nurture and convert at scale',
+        heroBenefits: [
+            {
+                icon: 'Zap',
+                title: 'Automated Revenue Streams',
+                description: 'Set up flows that work 24/7—welcome series, abandoned carts, and win-back campaigns.'
+            },
+            {
+                icon: 'Users',
+                title: 'Nurture Relationships',
+                description: 'Build lasting connections with personalized content that keeps your brand top of mind.'
+            },
+            {
+                icon: 'BarChart',
+                title: 'Highest ROI Channel',
+                description: 'Email delivers 25x+ ROI on average. Own your audience without platform fees.'
+            }
+        ],
         features: [
             {
                 icon: 'Mail',
@@ -841,6 +955,25 @@ export const services = {
             description: 'Scale your reach with programmatic display and video advertising. Precision targeting across premium inventory.',
             canonical: 'https://www.byltmedia.com/services/programmatic'
         },
+        heroFeaturesHeadline: 'Precision reach at scale',
+        heroBenefitsHeadline: 'Be everywhere that matters',
+        heroBenefits: [
+            {
+                icon: 'Globe',
+                title: 'Massive Scale',
+                description: 'Reach millions across premium publishers, apps, and connected TV with a single campaign.'
+            },
+            {
+                icon: 'Target',
+                title: 'Laser-Focused Targeting',
+                description: 'Find your exact audience using first-party data, intent signals, and lookalike modeling.'
+            },
+            {
+                icon: 'ShieldCheck',
+                title: 'Brand-Safe Placements',
+                description: 'Your ads appear only in quality, verified environments with full transparency.'
+            }
+        ],
         features: [
             {
                 icon: 'Layers',
@@ -979,6 +1112,25 @@ export const services = {
             description: 'Unlock insights with advanced data science. Machine learning, predictive analytics, and custom models.',
             canonical: 'https://www.byltmedia.com/services/data-science'
         },
+        heroFeaturesHeadline: 'Unlock patterns, predict outcomes',
+        heroBenefitsHeadline: 'Data as your edge',
+        heroBenefits: [
+            {
+                icon: 'Brain',
+                title: 'Predict Before It Happens',
+                description: 'Forecast customer behavior, demand, and trends before your competitors see them.'
+            },
+            {
+                icon: 'Cog',
+                title: 'Automate Complex Decisions',
+                description: 'Let ML models handle repetitive analysis while your team focuses on strategy.'
+            },
+            {
+                icon: 'Sparkles',
+                title: 'Uncover Hidden Patterns',
+                description: 'Find insights in your data that humans alone would never discover.'
+            }
+        ],
         features: [
             {
                 icon: 'Brain',
@@ -1117,6 +1269,25 @@ export const services = {
             description: 'Custom AI solutions for business automation, chatbots, content generation, and intelligent workflows.',
             canonical: 'https://www.byltmedia.com/services/ai-solutions'
         },
+        heroFeaturesHeadline: 'AI that works for your business',
+        heroBenefitsHeadline: 'Automate and innovate',
+        heroBenefits: [
+            {
+                icon: 'Zap',
+                title: 'Reclaim Hours Daily',
+                description: 'Automate repetitive tasks and free your team to focus on high-value work.'
+            },
+            {
+                icon: 'Bot',
+                title: '24/7 Operations',
+                description: 'AI assistants and automations that work around the clock without breaks.'
+            },
+            {
+                icon: 'Scale',
+                title: 'Scale Without Hiring',
+                description: 'Handle 10x the volume with the same team using intelligent automation.'
+            }
+        ],
         features: [
             {
                 icon: 'Bot',
@@ -1255,6 +1426,25 @@ export const services = {
             description: 'Boost conversions with data-driven CRO and UX optimization. A/B testing, user research, and conversion audits.',
             canonical: 'https://www.byltmedia.com/services/cro'
         },
+        heroFeaturesHeadline: 'Turn visitors into customers',
+        heroBenefitsHeadline: 'Maximize every click',
+        heroBenefits: [
+            {
+                icon: 'TrendingUp',
+                title: 'More Revenue, Same Traffic',
+                description: 'Improve conversions without spending more on ads—get more from what you already have.'
+            },
+            {
+                icon: 'TestTube',
+                title: 'Decisions Backed by Data',
+                description: 'Stop guessing. A/B test every change and know exactly what works.'
+            },
+            {
+                icon: 'MousePointer',
+                title: 'Frictionless User Experience',
+                description: 'Remove obstacles that stop visitors from converting and watch your metrics climb.'
+            }
+        ],
         features: [
             {
                 icon: 'Eye',

@@ -127,6 +127,13 @@
     --breakpoint-content: 1440px; /* Contenuto principale */
     --breakpoint-lg: 1024px;
 
+    /* ========================================
+       RESPONSIVE BREAKPOINTS (Tailwind v4)
+       Aggiunge breakpoint custom per classi responsive
+       Usage: laptop:flex, laptop:hidden, etc.
+       ======================================== */
+    --breakpoint-laptop: 72rem;   /* 1152px - tra lg (1024) e xl (1280) */
+
     /* Custom max-width utilities */
     --max-width-outer: 2556px;
     --max-width-content: 1440px;

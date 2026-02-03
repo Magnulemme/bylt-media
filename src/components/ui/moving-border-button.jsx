@@ -110,6 +110,7 @@ export const MovingBorderButton = ({
   const containerRef = useRef(null);
 
   const isTag = variant === "tag";
+  const isTitle = variant === "title";
   const isCard = variant === "card";
 
   const variantColors = {
@@ -117,7 +118,16 @@ export const MovingBorderButton = ({
     purple: "#a855f7",
   };
   const borderColor = color.startsWith("#") ? color : (variantColors[color] || variantColors.cyan);
-  const computedBorderRadius = isTag ? "0.75rem" : isCard ? "1rem" : borderRadius;
+  // Per title, schiarisce il colore del 30%
+  const lightenColor = (hex, percent) => {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const r = Math.min(255, (num >> 16) + Math.round((255 - (num >> 16)) * percent));
+    const g = Math.min(255, ((num >> 8) & 0x00FF) + Math.round((255 - ((num >> 8) & 0x00FF)) * percent));
+    const b = Math.min(255, (num & 0x0000FF) + Math.round((255 - (num & 0x0000FF)) * percent));
+    return `#${(r << 16 | g << 8 | b).toString(16).padStart(6, '0')}`;
+  };
+  const titleBorderColor = isTitle ? lightenColor(borderColor, 0.3) : borderColor;
+  const computedBorderRadius = isTag || isTitle ? "0.75rem" : isCard ? "1rem" : borderRadius;
 
   // Misura dimensioni dal componente padre
   useEffect(() => {
@@ -149,7 +159,7 @@ export const MovingBorderButton = ({
       ref={containerRef}
       className={cn(
         "relative bg-transparent p-[1px]",
-        isTag ? "h-auto w-auto" : isCard ? "h-auto w-auto" : "h-16 w-40 text-xl",
+        isTag || isTitle ? "h-auto w-auto" : isCard ? "h-auto w-auto" : "h-16 w-40 text-xl",
         containerClassName
       )}
       style={{
@@ -159,7 +169,7 @@ export const MovingBorderButton = ({
       onMouseLeave={() => setIsHovered(false)}
       {...otherProps}>
       {/* Glow effect on hover - per button e card */}
-      {!isTag && (
+      {!isTag && !isTitle && (
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
@@ -181,25 +191,27 @@ export const MovingBorderButton = ({
           mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
           maskComposite: "exclude",
         }}>
-        <MovingBorder duration={duration || (isTag ? 2500 : isCard ? 3500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={(isTag || isCard) ? randomOffset : 0} paused={paused}>
+        <MovingBorder duration={duration || (isTag || isTitle ? 2500 : isCard ? 3500 : 3000)} rx="30%" ry="30%" dimensions={dimensions} randomOffset={(isTag || isTitle || isCard) ? randomOffset : 0} paused={paused}>
           {(() => {
             // Calcola dimensione dot dinamica per card basata sul perimetro
             const dotSize = isCard
               ? Math.max(80, (dimensions.width + dimensions.height) * 0.4)
               : 80; // 80px = h-20/w-20 in Tailwind
 
+            const effectiveColor = isTitle ? titleBorderColor : borderColor;
+
             return (
               <div
                 className={cn(
                   "opacity-90",
-                  !isTag && !isCard && "bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
+                  !isTag && !isTitle && !isCard && "bg-[radial-gradient(#0ea5e9_40%,transparent_60%)] opacity-[0.8]",
                   borderClassName
                 )}
                 style={{
-                  width: isTag ? 80 : dotSize,
-                  height: isTag ? 80 : dotSize,
-                  background: (isTag || isCard)
-                    ? `radial-gradient(circle, ${borderColor} 40%, transparent 60%)`
+                  width: isTag || isTitle ? 80 : dotSize,
+                  height: isTag || isTitle ? 80 : dotSize,
+                  background: (isTag || isTitle || isCard)
+                    ? `radial-gradient(circle, ${effectiveColor} 40%, transparent 60%)`
                     : undefined
                 }}
               />
@@ -214,6 +226,8 @@ export const MovingBorderButton = ({
           "relative z-10 flex h-full w-full items-center justify-center antialiased",
           isTag
             ? "text-white px-3 py-1.5 border border-slate-700 bg-slate-950/80"
+            : isTitle
+            ? "text-white px-4 py-2 border border-slate-700 bg-slate-950/80 text-body-lg font-bold"
             : isCard
             ? "text-white border border-slate-700 bg-slate-950/90"
             : "text-sm text-white",
