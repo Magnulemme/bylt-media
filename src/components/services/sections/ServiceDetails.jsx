@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { motion } from 'motion/react';
-import ServiceAccordion from './ServiceAccordion';
+import QuoteCard from '@/components/ui/QuoteCard';
 
 const ServiceDetails = ({ service }) => {
     if (!service.details) return null;
@@ -58,14 +58,24 @@ const ServiceDetails = ({ service }) => {
                     </motion.div>
 
                     <div className="space-y-6">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                            <ServiceAccordion service={service} />
-                        </motion.div>
+                        {/* Testimonial Quote - mobile */}
+                        {service.details.testimonial && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                            >
+                                <QuoteCard
+                                    quote={service.details.testimonial.quote}
+                                    author={service.details.testimonial.author}
+                                    role={service.details.testimonial.role}
+                                    company={service.details.testimonial.company}
+                                    brutalist
+                                    showIcon
+                                />
+                            </motion.div>
+                        )}
 
                         {/* Secondary Stats */}
                         {secondaryStats.length > 0 && (
@@ -91,7 +101,7 @@ const ServiceDetails = ({ service }) => {
                     </div>
                 </div>
 
-                {/* Tablet & Desktop: two columns (content left, accordion right) */}
+                {/* Tablet & Desktop: two columns (content left, quote right) */}
                 <div className="hidden md:grid md:grid-cols-2 gap-12 items-start">
                     {/* Left - Content */}
                     <motion.div
@@ -128,43 +138,9 @@ const ServiceDetails = ({ service }) => {
                             ))}
                         </div>
 
-                        {/* Secondary Stats - xl only (left column) */}
+                        {/* Secondary Stats - always left */}
                         {secondaryStats.length > 0 && (
-                            <div className="hidden xl:flex gap-8 pt-8">
-                                {secondaryStats.map((stat, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                                    >
-                                        <div className="text-2xl xl:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                                            {stat.value}
-                                        </div>
-                                        <div className="text-caption">
-                                            {stat.label}
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        )}
-                    </motion.div>
-
-                    {/* Right - Accordion + Stats (md/lg) */}
-                    <div className="flex flex-col gap-6 self-center">
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <ServiceAccordion service={service} />
-                        </motion.div>
-
-                        {/* Secondary Stats - md/lg only (right column) */}
-                        {secondaryStats.length > 0 && (
-                            <div className="flex xl:hidden gap-8 pt-2">
+                            <div className="flex gap-8 pt-8">
                                 {secondaryStats.map((stat, index) => (
                                     <motion.div
                                         key={index}
@@ -183,7 +159,27 @@ const ServiceDetails = ({ service }) => {
                                 ))}
                             </div>
                         )}
-                    </div>
+                    </motion.div>
+
+                    {/* Right - Quote only */}
+                    {service.details.testimonial && (
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="self-center"
+                        >
+                            <QuoteCard
+                                quote={service.details.testimonial.quote}
+                                author={service.details.testimonial.author}
+                                role={service.details.testimonial.role}
+                                company={service.details.testimonial.company}
+                                brutalist
+                                showIcon
+                            />
+                        </motion.div>
+                    )}
                 </div>
             </div>
         </section>

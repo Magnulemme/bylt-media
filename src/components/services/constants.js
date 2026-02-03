@@ -153,7 +153,13 @@ export const services = {
             secondaryStats: [
                 { value: '2-4 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "Since the start of work we have achieved an All Time High in the sale of cars from an online campaign, their team of designers and performance managers are true professionals.",
+                author: "Nissan",
+                role: "Automotive Group",
+                company: "Lead Generation"
+            }
         }
     },
     'social-media': {
@@ -310,7 +316,13 @@ export const services = {
             secondaryStats: [
                 { value: '1-2 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "Our partnership with BYLT has added a lot to our already established good image. The campaigns they create on a monthly basis significantly increase brand engagement and traffic to our website.",
+                author: "Happy Bar & Grill",
+                role: "Restaurant Chain",
+                company: "Awareness Campaign"
+            }
         }
     },
     'seo': {
@@ -467,7 +479,13 @@ export const services = {
             secondaryStats: [
                 { value: '3-6 months', label: 'First Results' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "We have been working together for several years and have fitted in quickly as a team. They are creative and have quite a lot of knowledge about all the new things in marketing.",
+                author: "Napudreni",
+                role: "Fashion Brand",
+                company: "E-Commerce Growth"
+            }
         }
     },
     'websites': {
@@ -624,7 +642,13 @@ export const services = {
             secondaryStats: [
                 { value: '4-8 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "With BYLT, we've been able to increase the volume of quality inquiries that come from digital ads. At the same time, this increased the number of cars sold on a monthly and annual basis.",
+                author: "Peugeot",
+                role: "Automotive Brand",
+                company: "Lead Generation"
+            }
         }
     },
     'analytics': {
@@ -781,7 +805,13 @@ export const services = {
             secondaryStats: [
                 { value: '1-2 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "With BYLT, we achieved serious sales volumes on three different projects of ours. What we like about working with them is the quick response, flexibility and expertise.",
+                author: "Smart Consultants",
+                role: "Business Consulting",
+                company: "Multi-Project Growth"
+            }
         }
     },
     'email-marketing': {
@@ -938,7 +968,13 @@ export const services = {
             secondaryStats: [
                 { value: '2-3 weeks', label: 'Delivery' },
                 { value: '100%', label: 'Satisfaction' }
-            ]
+            ],
+            testimonial: {
+                quote: "Our partnership with BYLT has added a lot to our already established good image. The campaigns they create on a monthly basis significantly increase brand engagement and traffic to our website.",
+                author: "Happy Bar & Grill",
+                role: "Restaurant Chain",
+                company: "Awareness Campaign"
+            }
         }
     },
     'programmatic': {

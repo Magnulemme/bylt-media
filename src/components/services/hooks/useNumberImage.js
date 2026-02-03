@@ -162,3 +162,76 @@ export const useNumberImage = (number, variant = 0) => {
 
     return imageUrl;
 };
+
+// Cache per quote image
+const quoteImageCache = new Map();
+
+// Generate quote image with large quotation mark for dithering
+export const useQuoteImage = (variant = 0) => {
+    const [imageUrl, setImageUrl] = useState(null);
+
+    useEffect(() => {
+        // Check cache first
+        const cacheKey = `quote-${variant}`;
+        if (quoteImageCache.has(cacheKey)) {
+            setImageUrl(quoteImageCache.get(cacheKey));
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 500;
+        canvas.height = 500;
+        const ctx = canvas.getContext('2d');
+
+        // Pure black base
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, 500, 500);
+
+        // Smooth diagonal gradient
+        const gradientConfigs = [
+            { x1: 0, y1: 0, x2: 500, y2: 500 },
+            { x1: 500, y1: 0, x2: 0, y2: 500 },
+        ];
+        const config = gradientConfigs[variant % 2];
+
+        const bgGradient = ctx.createLinearGradient(config.x1, config.y1, config.x2, config.y2);
+        bgGradient.addColorStop(0, '#000000');
+        bgGradient.addColorStop(0.5, '#353535');
+        bgGradient.addColorStop(1, '#000000');
+        ctx.fillStyle = bgGradient;
+        ctx.fillRect(0, 0, 500, 500);
+
+        // Subtle radial spotlight
+        const radial = ctx.createRadialGradient(150, 150, 0, 150, 150, 300);
+        radial.addColorStop(0, '#404040');
+        radial.addColorStop(0.5, '#202020');
+        radial.addColorStop(1, '#000000');
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.fillStyle = radial;
+        ctx.fillRect(0, 0, 500, 500);
+        ctx.globalCompositeOperation = 'source-over';
+
+        // Large quotation mark - centered
+        ctx.font = '900 400px Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Shadow for depth
+        ctx.fillStyle = '#000000';
+        ctx.fillText('"', 255, 255);
+
+        // Quote with gradient
+        const quoteGradient = ctx.createLinearGradient(100, 100, 400, 400);
+        quoteGradient.addColorStop(0, '#ffffff');
+        quoteGradient.addColorStop(0.5, '#999999');
+        quoteGradient.addColorStop(1, '#ffffff');
+        ctx.fillStyle = quoteGradient;
+        ctx.fillText('"', 250, 250);
+
+        const dataUrl = canvas.toDataURL('image/png');
+        quoteImageCache.set(cacheKey, dataUrl);
+        setImageUrl(dataUrl);
+    }, [variant]);
+
+    return imageUrl;
+};

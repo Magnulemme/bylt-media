@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Check } from 'lucide-react';
 import { WhyByltChart } from './WhyByltCharts';
+import ServiceAccordion from './ServiceAccordion';
 
 const ServiceWhyBylt = ({ service }) => {
     if (!service.details) return null;
@@ -17,7 +18,7 @@ const ServiceWhyBylt = ({ service }) => {
         >
             <div className="service-why-bylt-container relative z-10">
                 <div className="service-why-bylt-grid grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                    {/* Left - Header + Description + Benefits */}
+                    {/* Left - Header + Description + Accordion */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -32,15 +33,21 @@ const ServiceWhyBylt = ({ service }) => {
                             {service.details.subheading}
                         </p>
 
+                        {/* Accordion */}
+                        <div className="hidden lg:block">
+                            <ServiceAccordion service={service} />
+                        </div>
+
+                        {/* Benefits Checklist */}
                         {keyBenefits.length > 0 && (
-                            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
                                 {keyBenefits.map((benefit, index) => (
                                     <motion.li
                                         key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
-                                        transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                                        transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
                                         className="flex items-start gap-3"
                                     >
                                         <div className="shrink-0 w-5 h-5 rounded-full bg-cyan-500/20 flex items-center justify-center mt-0.5">
@@ -65,6 +72,8 @@ const ServiceWhyBylt = ({ service }) => {
                     >
                         {/* Subtle glow effect */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl" />
+
+                        {/* Chart */}
                         <WhyByltChart serviceSlug={service.slug} />
                     </motion.div>
 

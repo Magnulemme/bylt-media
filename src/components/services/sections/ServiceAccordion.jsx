@@ -72,18 +72,16 @@ const ServiceAccordion = ({ service }) => {
     };
 
     return (
-        <div className="relative rounded-2xl border border-slate-800 bg-slate-950 overflow-hidden">
-            <div className="p-6 md:p-8">
-                {items.map((item, index) => (
-                    <AccordionItem
-                        key={index}
-                        item={item}
-                        index={index}
-                        isOpen={openItems[index] || false}
-                        onToggle={() => toggleItem(index)}
-                    />
-                ))}
-            </div>
+        <div className="space-y-0">
+            {items.map((item, index) => (
+                <AccordionItem
+                    key={index}
+                    item={item}
+                    index={index}
+                    isOpen={openItems[index] || false}
+                    onToggle={() => toggleItem(index)}
+                />
+            ))}
         </div>
     );
 };
