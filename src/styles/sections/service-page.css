@@ -34,17 +34,10 @@
   padding-bottom: var(--spacing-padding-sm);
 }
 
-@media (min-width: 370px) {
+@media (min-width: 500px) {
   .service-hero-container {
     padding-top: var(--spacing-padding-md);
     padding-bottom: var(--spacing-padding-md);
-  }
-}
-
-@media (min-width: 500px) {
-  .service-hero-container {
-    padding-top: var(--spacing-padding-lg);
-    padding-bottom: var(--spacing-padding-lg);
   }
 }
 
@@ -57,8 +50,8 @@
 
 @media (min-width: 768px) {
   .service-hero-container {
-    padding-top: var(--spacing-padding-xl);
-    padding-bottom: var(--spacing-padding-xl);
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
   }
 }
 
