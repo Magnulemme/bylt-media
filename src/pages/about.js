@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import Layout from '../components/layout';
 import ShaderBackgroundStandalone from '../components/home/ShaderBackgroundStandalone';
 import { DitherShader } from '../components/ui/dither-shader';
@@ -10,52 +10,19 @@ import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import CTASectionCard from '@/components/ui/CTASectionCard';
 import ShaderBackground from '../components/home/ShaderBackground';
 import { cn } from '@/lib/utils';
-import { useCountUp } from '../hooks/useCountUp';
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards';
 import BrandMarquee from '@/components/caseStudies/sections/template/BrandMarquee';
 import FeaturesAccordion from '@/components/services/cards/FeaturesAccordion';
 import AboutGrowthChart from '@/components/about/AboutGrowthChart';
+import StatsGrid from '@/components/shared/StatsGrid';
 
-// Animated Stat Component
-const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0 }) => {
-    const [isVisible, setIsVisible] = useState(false);
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => setIsVisible(true), delay);
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        if (ref.current) {
-            observer.observe(ref.current);
-        }
-
-        return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
-            }
-        };
-    }, [delay]);
-
-    const animatedValue = useCountUp(value, 2000, isVisible);
-
-    return (
-        <div ref={ref} className="stats-card">
-            <div className="stats-value-light">
-                {prefix}{animatedValue}{suffix}
-            </div>
-            <div className="text-label font-bold text-slate-400">
-                {label}
-            </div>
-        </div>
-    );
-};
-
+// Stats data for the about page
+const aboutStats = [
+    { value: 10, prefix: '£', suffix: 'M+', label: 'Ad Spend Managed' },
+    { value: 150, suffix: '%', label: 'Average ROI' },
+    { value: 95, suffix: '%', label: 'Client Retention' },
+    { value: 50, suffix: '+', label: 'Brands Scaled' },
+];
 
 const Torus3D = dynamic(() => import('../components/about/Torus3D'), { ssr: false });
 
@@ -198,33 +165,7 @@ export default function About() {
                     </div>
 
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <AnimatedStat
-                            value={10}
-                            prefix="£"
-                            suffix="M+"
-                            label="Ad Spend Managed"
-                            delay={0}
-                        />
-                        <AnimatedStat
-                            value={150}
-                            suffix="%"
-                            label="Average ROI"
-                            delay={100}
-                        />
-                        <AnimatedStat
-                            value={95}
-                            suffix="%"
-                            label="Client Retention"
-                            delay={200}
-                        />
-                        <AnimatedStat
-                            value={50}
-                            suffix="+"
-                            label="Brands Scaled"
-                            delay={300}
-                        />
-                    </div>
+                    <StatsGrid stats={aboutStats} variant="light" oscillate oscillateAmplitude={10} oscillateSpeed={0.025} />
                 </div>
             </section>
 
@@ -372,7 +313,7 @@ export default function About() {
                                         alt="BookedUp Media Logo"
                                         className="h-10 object-contain"
                                     />
-                                    <MovingBorderButton as="div" variant="tag" color="cyan">
+                                    <MovingBorderButton as="div" variant="tag" color="cyan" splitted>
                                         <p className='text-label-sm'>hospitality marketing</p>
                                     </MovingBorderButton>
                                 </div>
@@ -409,7 +350,7 @@ export default function About() {
                                         alt="SEM Stories Logo"
                                         className="h-10 object-contain"
                                     />
-                                    <MovingBorderButton as="div" variant="tag" color="purple">
+                                    <MovingBorderButton as="div" variant="tag" color="purple" splitted>
                                          <p className='text-label-sm'>Marketing Events</p>
                                     </MovingBorderButton>
                                 </div>

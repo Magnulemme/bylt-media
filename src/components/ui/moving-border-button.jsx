@@ -101,6 +101,7 @@ export const MovingBorderButton = ({
   variant = "button",
   color = "cyan",
   paused = false,
+  splitted = false, // Split text into 2 lines on very small screens (<420px)
   ...otherProps
 }) => {
   const [isReady, setIsReady] = useState(false);
@@ -231,6 +232,7 @@ export const MovingBorderButton = ({
             : isCard
             ? "text-white border border-slate-700 bg-slate-950/90"
             : "text-sm text-white",
+          splitted && "tag-splitted",
           className
         )}
         style={{

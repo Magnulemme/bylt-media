@@ -358,3 +358,21 @@
   }
 }
 
+/* ========================================
+   7. TAG SPLITTED - Mobile breakpoint
+   ======================================== */
+
+/* Split tag text into 2 lines on very small screens */
+@media (max-width: 420px) {
+  .tag-splitted {
+    max-width: 120px;
+    text-align: center;
+  }
+
+  .tag-splitted p {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+  }
+}
+

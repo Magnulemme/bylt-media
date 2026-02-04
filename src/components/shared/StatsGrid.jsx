@@ -77,7 +77,14 @@ const AnimatedStat = ({ value, suffix = '', prefix = '', label, delay = 0, varia
     );
 };
 
-const StatsGrid = ({ stats, className = '', variant = 'default' }) => {
+const StatsGrid = ({
+    stats,
+    className = '',
+    variant = 'default',
+    oscillate = false,
+    oscillateAmplitude = 8,
+    oscillateSpeed = 0.02
+}) => {
     const isMobile = useIsMobile();
 
     // Mobile: infinite moving cards
@@ -91,6 +98,9 @@ const StatsGrid = ({ stats, className = '', variant = 'default' }) => {
                 className={className}
                 gap="gap-4"
                 useNestedMask={true}
+                oscillate={oscillate}
+                oscillateAmplitude={oscillateAmplitude}
+                oscillateSpeed={oscillateSpeed}
                 renderItem={(stat, idx) => (
                     <StaticStat
                         key={idx}

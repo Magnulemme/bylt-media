@@ -13,6 +13,15 @@ const authorLogos = {
     'Napudreni': '/images/logos/clients-reshapepng.png',
 };
 
+// Dither variation presets for visual diversity
+const ditherVariations = [
+    { mode: 'bayer', gridSize: 3, threshold: 0.5, contrast: 1.2, color: '#22d3ee' },
+    { mode: 'halftone', gridSize: 4, threshold: 0.4, contrast: 1.3, color: '#a855f7' },
+    { mode: 'crosshatch', gridSize: 3, threshold: 0.6, contrast: 1.1, color: '#10b981' },
+    { mode: 'bayer', gridSize: 5, threshold: 0.45, contrast: 1.4, color: '#f59e0b' },
+    { mode: 'halftone', gridSize: 3, threshold: 0.55, contrast: 1.2, color: '#06b6d4' },
+];
+
 /**
  * QuoteCard - Reusable quote/testimonial component BYLT style
  *
@@ -26,6 +35,7 @@ const authorLogos = {
  * @param {boolean} brutalist - Use brutalist card style with cyan shadow (default: false)
  * @param {boolean} showDither - Show dither background effect (default: true for brutalist)
  * @param {boolean} animate - Animate on scroll (default: true)
+ * @param {number} index - Index for dither variation (default: 0)
  * @param {string} className - Additional classes
  */
 const QuoteCard = ({
@@ -39,10 +49,12 @@ const QuoteCard = ({
     brutalist = false,
     showDither = true,
     animate = true,
+    index = 0,
     className = ''
 }) => {
     const authorLogo = logo || authorLogos[author];
-    const quoteImage = useQuoteImage(0);
+    const ditherVariant = ditherVariations[index % ditherVariations.length];
+    const quoteImage = useQuoteImage(index % 5);
     const Wrapper = animate ? motion.div : 'div';
     const animationProps = animate ? {
         initial: { opacity: 0, y: 20 },
@@ -65,18 +77,18 @@ const QuoteCard = ({
             className={`${cardClasses} ${className}`}
             style={cardStyle}
         >
-            {/* Dither Background */}
+            {/* Dither Background - varied per card */}
             {brutalist && showDither && quoteImage && (
                 <div className="absolute inset-0 opacity-15 pointer-events-none">
                     <DitherShader
                         src={quoteImage}
                         colorMode="duotone"
                         primaryColor="#020617"
-                        secondaryColor="#22d3ee"
-                        gridSize={3}
-                        ditherMode="bayer"
-                        threshold={0.5}
-                        contrast={1.2}
+                        secondaryColor={ditherVariant.color}
+                        gridSize={ditherVariant.gridSize}
+                        ditherMode={ditherVariant.mode}
+                        threshold={ditherVariant.threshold}
+                        contrast={ditherVariant.contrast}
                     />
                 </div>
             )}

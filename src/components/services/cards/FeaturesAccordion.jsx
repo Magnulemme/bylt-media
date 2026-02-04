@@ -53,7 +53,7 @@ const AccordionItem = ({ feature, isOpen, onToggle, index }) => {
     );
 };
 
-const FeaturesAccordion = ({ features, waveBackground, headline, description }) => {
+const FeaturesAccordion = ({ features, waveBackground, headerBackground, headline, description }) => {
     const [openItems, setOpenItems] = useState({ 0: true }); // First item open by default
 
     const toggleItem = (index) => {
@@ -65,10 +65,16 @@ const FeaturesAccordion = ({ features, waveBackground, headline, description }) 
 
     return (
         <div className="rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500/50 transition-colors overflow-hidden">
-            {/* Header with wave background - contained within its own section */}
+            {/* Header with background - contained within its own section */}
             <div className="relative overflow-hidden">
-                {/* Wave background - only in header */}
-                {waveBackground && (
+                {/* Custom React component background (e.g., DitherShader) */}
+                {headerBackground && (
+                    <div className="absolute inset-0 z-0">
+                        {headerBackground}
+                    </div>
+                )}
+                {/* Wave background image - only in header */}
+                {waveBackground && !headerBackground && (
                     <div
                         className="absolute inset-0 transition-opacity duration-300 z-0"
                         style={{
@@ -78,7 +84,7 @@ const FeaturesAccordion = ({ features, waveBackground, headline, description }) 
                         }}
                     />
                 )}
-                {waveBackground && (
+                {(waveBackground || headerBackground) && (
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/40 to-slate-950/60 z-0" />
                 )}
                 <div className="relative z-10 p-6">
@@ -95,7 +101,7 @@ const FeaturesAccordion = ({ features, waveBackground, headline, description }) 
 
             {/* Accordion items - no wave background */}
             <div className="px-6 pb-6">
-                {features.slice(0, 3).map((feature, index) => (
+                {features.map((feature, index) => (
                     <AccordionItem
                         key={index}
                         feature={feature}

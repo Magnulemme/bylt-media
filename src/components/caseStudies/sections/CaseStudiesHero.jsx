@@ -5,8 +5,6 @@ import ShaderBackgroundDirect from '../../home/ShaderBackgroundDirect';
 import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData, heroContent } from '../constants';
 import { useCardCentering } from '../hooks/useCardCentering';
-import StatsGrid from '../../shared/StatsGrid';
-
 // Signal page ready for splash screen
 const signalPageReady = () => {
     if (typeof window !== 'undefined' && window.location.pathname === '/casestudies') {
@@ -14,12 +12,12 @@ const signalPageReady = () => {
     }
 };
 
-// Stats data for Case Studies Hero
-const caseStudyStats = [
-    { value: 50, suffix: '+', label: 'Projects' },
-    { value: 150, suffix: '%', label: 'Avg Growth' },
-    { value: 12, suffix: '+', label: 'Industries' },
-    { value: 98, suffix: '%', label: 'Satisfaction' },
+// Checklist data
+const checklistItems = [
+    'Data-driven strategies',
+    'Transparent reporting',
+    'Dedicated account manager',
+    'No long-term contracts'
 ];
 
 // Card content component
@@ -307,7 +305,16 @@ const CaseStudiesHero = () => {
             </p>
         </div>
     )}
-    <StatsGrid stats={caseStudyStats} variant="light" className="pt-8 md:pt-12" />
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        {checklistItems.map((item) => (
+            <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
+                <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+            </div>
+        ))}
+    </div>
 </div>
 </div>
     );

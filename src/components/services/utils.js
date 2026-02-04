@@ -10,4 +10,4 @@ export const getIcon = (iconName) => {
 export const ditherPatterns = ['bayer', 'halftone', 'crosshatch'];
 
 // Different accent colors for each card
-export const accentColors = ['#06b6d4', '#8b5cf6', '#10b981'];
+export const accentColors = ['#06b6d4', '#8b5cf6', '#10b981', '#f59e0b'];

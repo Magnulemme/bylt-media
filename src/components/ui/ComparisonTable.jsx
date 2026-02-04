@@ -67,7 +67,7 @@ const ComparisonTable = ({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
-                        className={`grid grid-cols-2 ${index !== others.items.length - 1 ? 'border-b border-slate-800/40' : ''}`}
+                        className="grid grid-cols-2 border-b border-slate-800/40"
                     >
                         <div className="p-4 flex items-start gap-2 bg-rose-950/10">
                             <X className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" strokeWidth={2} />
@@ -79,6 +79,28 @@ const ComparisonTable = ({
                         </div>
                     </motion.div>
                 ))}
+
+                {/* Stats row - Mobile */}
+                {(others.stats || bylt.stats) && (
+                    <div className="grid grid-cols-2">
+                        <div className="p-4 bg-rose-950/20 flex flex-wrap justify-center gap-3">
+                            {others.stats?.map((stat, index) => (
+                                <div key={index} className="text-center">
+                                    <div className="text-base font-bold text-rose-400">{stat.value}</div>
+                                    <div className="text-[10px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="p-4 bg-emerald-950/20 flex flex-wrap justify-center gap-3">
+                            {bylt.stats?.map((stat, index) => (
+                                <div key={index} className="text-center">
+                                    <div className="text-base font-bold text-emerald-400">{stat.value}</div>
+                                    <div className="text-[10px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </motion.div>
 
             {/* Desktop: Two cards */}
@@ -116,6 +138,18 @@ const ComparisonTable = ({
                             </motion.li>
                         ))}
                     </ul>
+
+                    {/* Stats - Others */}
+                    {others.stats && (
+                        <div className="mt-8 pt-6 border-t border-rose-500/20 flex justify-between">
+                            {others.stats.map((stat, index) => (
+                                <div key={index} className="text-center">
+                                    <div className="text-xl font-bold text-rose-400">{stat.value}</div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </motion.div>
 
                 {/* BYLT card */}
@@ -154,6 +188,18 @@ const ComparisonTable = ({
                             </motion.li>
                         ))}
                     </ul>
+
+                    {/* Stats - BYLT */}
+                    {bylt.stats && (
+                        <div className="relative mt-8 pt-6 border-t border-emerald-500/20 flex justify-between">
+                            {bylt.stats.map((stat, index) => (
+                                <div key={index} className="text-center">
+                                    <div className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">{stat.value}</div>
+                                    <div className="text-xs text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </motion.div>
             </div>
         </div>

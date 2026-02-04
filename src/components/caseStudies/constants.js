@@ -1013,6 +1013,11 @@ export const whyByltContent = {
             'Months before seeing results',
             'Hidden fees and budget surprises',
             'Vanity metrics without real impact'
+        ],
+        stats: [
+            { value: '~40%', label: 'Client Turnover' },
+            { value: '3-6mo', label: 'To See Results' },
+            { value: '???', label: 'Hidden Fees' }
         ]
     },
     bylt: {
@@ -1022,6 +1027,11 @@ export const whyByltContent = {
             'Rapid delivery in weeks, not months',
             'Transparent pricing, no surprises',
             'Data-driven, measurable results'
+        ],
+        stats: [
+            { value: '95%', label: 'Client Retention' },
+            { value: '48h', label: 'Response Time' },
+            { value: '50+', label: 'Happy Clients' }
         ]
     }
 };
