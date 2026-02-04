@@ -15,10 +15,46 @@ export const InfiniteMovingCards = ({
   renderItem, // (item, index) => JSX - custom render function
   gap = "gap-6", // Tailwind gap class
   useNestedMask = false, // true = struttura con wrapper esterno per mask (usata in StatsGrid)
+  oscillate = false, // Creative coding: y = sin(angle) oscillation effect
+  oscillateAmplitude = 8, // Amplitude in pixels
+  oscillateSpeed = 0.02, // Angular speed
 }) => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const [offsets, setOffsets] = useState([]);
+  const animationRef = useRef(null);
+  const angleRef = useRef(0);
+
+  // Oscillation animation loop - wave effect with phase offset per item
+  useEffect(() => {
+    if (!oscillate || !ready) return;
+
+    const totalItems = items.length * 2; // Original + clones
+    const phaseStep = (Math.PI * 2 * 0.5) / items.length; // 0.5 = half wave visible
+
+    const animate = () => {
+      angleRef.current += oscillateSpeed;
+
+      const newOffsets = [];
+      for (let i = 0; i < totalItems; i++) {
+        const itemPhase = (i % items.length) * phaseStep;
+        const y = Math.sin(angleRef.current + itemPhase) * oscillateAmplitude;
+        newOffsets.push(y);
+      }
+      setOffsets(newOffsets);
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [oscillate, ready, items.length, oscillateAmplitude, oscillateSpeed]);
 
   const updateAnimation = useCallback(() => {
     if (!scrollerRef.current || !containerRef.current) return;
@@ -85,6 +121,9 @@ export const InfiniteMovingCards = ({
         <li
           key={`a-${item.id || idx}`}
           className="shrink-0 flex"
+          style={oscillate && offsets.length > 0 ? {
+            transform: `translateY(${offsets[idx]}px)`
+          } : undefined}
         >
           {renderItem(item, idx)}
         </li>
@@ -94,6 +133,9 @@ export const InfiniteMovingCards = ({
         <li
           key={`b-${item.id || idx}`}
           className="shrink-0 flex"
+          style={oscillate && offsets.length > 0 ? {
+            transform: `translateY(${offsets[items.length + idx]}px)`
+          } : undefined}
         >
           {renderItem(item, idx)}
         </li>
