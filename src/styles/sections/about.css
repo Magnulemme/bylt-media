@@ -6,10 +6,22 @@
    1. HERO SECTION
    ======================================== */
 
+/* About Page Hero Wrapper - Classe specifica per il wrapper esterno about */
+.about-page-hero {
+  @apply relative flex flex-col overflow-x-clip w-full;
+  background: #020617;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .about-page-hero {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop));
+  }
+}
+
 /* Hero - Prima sezione con shader background */
 .about-hero-section {
-  position: sticky;
-  top: 0;
   z-index: 10;
   background: #020617;
   min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
@@ -151,7 +163,46 @@
 }
 
 /* ========================================
-   3. FOUNDERS SECTION
+   3. WHAT SETS US APART SECTION
+   ======================================== */
+
+.about-apart-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .about-apart-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+.about-apart-container {
+  @apply mx-auto;
+  max-width: var(--breakpoint-content);
+  padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+}
+
+@media (min-width: 640px) {
+  .about-apart-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-apart-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ========================================
+   4. FOUNDERS SECTION
    ======================================== */
 
 .about-founders-section {
@@ -210,7 +261,7 @@
 }
 
 /* ========================================
-   4. BRAND ECOSYSTEM SECTION
+   5. BRAND ECOSYSTEM SECTION
    ======================================== */
 
 .about-ecosystem-section {
@@ -269,7 +320,7 @@
 }
 
 /* ========================================
-   5. DEVELOPED BY SECTION
+   6. DEVELOPED BY SECTION
    ======================================== */
 
 .about-developer-section {
@@ -307,16 +358,3 @@
   }
 }
 
-/* ========================================
-   6. CREDENTIALS CAROUSEL
-   ======================================== */
-
-.about-credentials-carousel {
-  margin-top: var(--spacing-padding-sm);
-}
-
-@media (min-width: 768px) {
-  .about-credentials-carousel {
-    margin-top: var(--spacing-padding-md);
-  }
-}

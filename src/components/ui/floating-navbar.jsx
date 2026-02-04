@@ -79,7 +79,7 @@ export const FloatingNav = ({
       ],
     },
     { name: 'About', href: '/about' },
-    { name: 'Case Studies', href: '/casestudies' },
+    { name: 'Case Studies', href: '/case-studies' },
     { name: 'Contact', href: '/contact' },
   ];
 

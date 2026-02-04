@@ -8,12 +8,13 @@ const ServiceHero = ({ service }) => {
     const featuresHeaderWave = useWaveBackground(0);
     const benefitsHeaderWave = useWaveBackground(2);
     return (
-        <section className='service-hero-section z-90 relative'>
-            {/* Shader Background */}
-            <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
+        <section className='service-page-hero'>
+            <div className='service-hero-section relative w-full flex flex-col'>
+                {/* Shader Background */}
+                <ShaderBackgroundDirect onReady={() => window.dispatchEvent(new CustomEvent('hero-ready'))} />
 
-            {/* Content */}
-            <div className="service-hero-container relative z-20 text-white">
+                {/* Content */}
+                <div className="service-hero-container relative z-20 text-white">
                 {/* Mobile only - MainCard + What is X + Features + Benefits */}
                 <div className="md:hidden space-y-4">
                     <MainCard service={service} />
@@ -182,6 +183,7 @@ const ServiceHero = ({ service }) => {
                         </div>
                     )}
                 </div>
+            </div>
             </div>
         </section>
     );

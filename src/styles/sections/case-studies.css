@@ -3,15 +3,61 @@
    Spacing design system applicato
    ======================================== */
 
+/* Case Studies Page Wrapper - Classe specifica */
+.case-studies-page {
+  @apply relative w-full;
+  max-width: var(--breakpoint-outer);
+  margin-left: auto;
+  margin-right: auto;
+  background: #020617;
+  z-index: 10;
+}
+
 /* ========================================
    HERO SECTION
    Prima sezione - nessun padding-top
    ======================================== */
 
+/* ----------------------------------------
+   CASE STUDIES PAGE HERO - Wrapper esterno (come about-page-hero)
+   ---------------------------------------- */
+.case-studies-page-hero {
+  @apply relative flex flex-col overflow-x-clip w-full;
+  position: relative;
+  z-index: 1;
+
+}
+
+/* ----------------------------------------
+   CASE STUDIES HERO SECTION - Wrapper interno (come about-hero-section)
+   ---------------------------------------- */
+.case-studies-hero-section {
+  z-index: 10;
+  background: #020617;
+  min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .case-studies-hero-section {
+    min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
+    margin-bottom: 1.5rem;
+  }
+}
+
 /* CaseStudiesHero - z-index alto per reveal effect */
 .case-studies-hero-wrapper {
   position: relative;
-  z-index: 1;
+  background: #020617;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .case-studies-hero-wrapper {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop) + 1rem);
+  }
 }
 
 /* ========================================

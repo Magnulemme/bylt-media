@@ -4,8 +4,8 @@ import BrandMarquee from './sections/template/BrandMarquee';
 
 const CaseStudiesPage = () => {
     return (
-        <div className="relative service-page max-w-(--breakpoint-outer) mx-auto" style={{ background: '#020617', zIndex: 10 }}>
-            <div className="case-studies-hero-wrapper">
+        <div className="case-studies-page">
+            <div className="case-studies-hero-wrapper px-4">
                 <CaseStudiesHero />
             </div>
             <div className="case-studies-reveal-section">

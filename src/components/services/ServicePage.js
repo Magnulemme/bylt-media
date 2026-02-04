@@ -7,7 +7,7 @@ const ServicePage = ({ service }) => {
 
     return (
         <div
-            className="relative service-page"
+            className="relative service-section px-4"
             style={{
                 background: '#020617',
                 zIndex: 10

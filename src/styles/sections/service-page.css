@@ -2,25 +2,38 @@
    SERVICE PAGE - SPACING DESIGN SYSTEM
    ======================================== */
 
-/* Service Page Wrapper */
-.service-page {
-  /* No padding - just a container */
+/* ----------------------------------------
+   SERVICE PAGE HERO - Wrapper esterno (come about-page-hero)
+   ---------------------------------------- */
+.service-page-hero {
+  @apply relative flex flex-col overflow-x-clip w-full;
+  background: #020617;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .service-page-hero {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop));
+  }
 }
 
 /* ----------------------------------------
-   SERVICE HERO SECTION
+   SERVICE HERO SECTION - Wrapper interno (come about-hero-section)
    ---------------------------------------- */
 .service-hero-section {
-  position: sticky;
-  top: 0;
   z-index: 10;
   background: #020617;
   min-height: calc(100dvh - 70px - 0.5rem - 0.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (min-width: 1024px) {
   .service-hero-section {
     min-height: calc(100dvh - var(--navbar-height-desktop) - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 }
 
