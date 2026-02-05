@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'motion/react';
 import { Plus, Minus } from 'lucide-react';
 import { accentColors } from './utils';
+import AnimatedWaveCanvas from '../../../services/sections/AnimatedWaveCanvas';
 
 const DEFAULT_DESCRIPTION = "Every project follows a proven methodology. Here's how we approached this one.";
 
@@ -36,7 +37,7 @@ const AccordionItem = ({ step, isOpen, onToggle, index }) => {
                     >
                         {step.step}
                     </span>
-                    <span className="heading-h4 text-white">{step.title}</span>
+                    <span className={`heading-h4 ${isOpen ? 'bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent' : 'text-white'}`}>{step.title}</span>
                 </div>
                 <motion.div
                     className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full border transition-all"
@@ -125,18 +126,31 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
                 )}
             </div>
 
-            {/* Accordion Card */}
-            <div className="rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500/50 transition-colors overflow-hidden">
-                <div className="p-6">
-                    {process.map((step, index) => (
-                        <AccordionItem
-                            key={step.step || index}
-                            step={step}
-                            index={index}
-                            isOpen={openItems[index] || false}
-                            onToggle={() => toggleItem(index)}
-                        />
-                    ))}
+            {/* Accordion + Wave Canvas Grid */}
+            <div className="grid grid-cols-1 laptop:grid-cols-2 gap-6 items-stretch">
+                {/* Accordion Card */}
+                <div className="laptop:order-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:border-cyan-500/30 hover:bg-white/[0.07] transition-all overflow-hidden shadow-[6px_6px_0px_rgba(34,211,238,1)]">
+                    <div className="p-6">
+                        {process.map((step, index) => (
+                            <AccordionItem
+                                key={step.step || index}
+                                step={step}
+                                index={index}
+                                isOpen={openItems[index] || false}
+                                onToggle={() => toggleItem(index)}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Animated Wave Canvas - visible on laptop+ */}
+                <div className="hidden laptop:flex laptop:order-2 items-center justify-center overflow-hidden">
+                    <AnimatedWaveCanvas
+                        shape="blob"
+                        colors={['#06b6d4', '#8b5cf6', '#10b981']}
+                        background="transparent"
+                        className="w-full"
+                    />
                 </div>
             </div>
         </section>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useEffect } from 'react';
 
-const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape = 'blob' }) => {
+const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape = 'blob', background = '#020617' }) => {
     const canvasRef = useRef(null);
     const frameRef = useRef(null);
     const containerRef = useRef(null);
@@ -206,8 +206,12 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
         const animate = (time) => {
             const t = time * 0.001;
 
-            ctx.fillStyle = '#020617';
-            ctx.fillRect(0, 0, width, height);
+            if (background === 'transparent') {
+                ctx.clearRect(0, 0, width, height);
+            } else {
+                ctx.fillStyle = background;
+                ctx.fillRect(0, 0, width, height);
+            }
 
             const points = [];
 
@@ -282,13 +286,13 @@ const AnimatedWaveCanvas = ({ variant = 1, className = '', colors = null, shape 
             }
             window.removeEventListener('resize', handleResize);
         };
-    }, [variant, colors, shape]);
+    }, [variant, colors, shape, background]);
 
     return (
         <div
             ref={containerRef}
             className={className}
-            style={{ width: '100%', background: '#020617' }}
+            style={{ width: '100%', background: background }}
         >
             <canvas ref={canvasRef} style={{ display: 'block' }} />
         </div>

@@ -9,7 +9,7 @@ const CaseStudiesPage = () => {
                 <CaseStudiesHero />
             </div>
             <div className="case-studies-reveal-section">
-                <BrandMarquee text="WHY CHOOSE BYLT" className="case-studies-marquee pt-0 mb-0 md:mb-0" />
+                <BrandMarquee text="WHY CHOOSE BYLT" />
             </div>
             <WhyBylt />
             <CaseStudyCTA />

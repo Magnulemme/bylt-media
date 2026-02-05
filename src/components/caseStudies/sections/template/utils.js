@@ -120,7 +120,7 @@ export const useIconImage = (iconName, variant = 0) => {
 export const accentColors = ['#06b6d4', '#0ea5e9', '#14b8a6', '#10b981'];
 
 // Generate 3D wave background with dots - contemporary generative art style
-export const useWaveBackground = (variant = 0) => {
+export const useWaveBackground = (variant = 0, transparent = false) => {
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
@@ -129,9 +129,11 @@ export const useWaveBackground = (variant = 0) => {
         canvas.height = 250;
         const ctx = canvas.getContext('2d');
 
-        // Dark base
-        ctx.fillStyle = '#020617';
-        ctx.fillRect(0, 0, 500, 250);
+        // Dark base (skip if transparent)
+        if (!transparent) {
+            ctx.fillStyle = '#020617';
+            ctx.fillRect(0, 0, 500, 250);
+        }
 
         // 3-color gradients for each variant [start, mid, end]
         const gradients = [
@@ -244,18 +246,20 @@ export const useWaveBackground = (variant = 0) => {
             ctx.fill();
         });
 
-        // Add subtle glow with middle color
-        ctx.globalAlpha = 0.12;
-        const glowX = variant % 3 === 2 ? 370 : 300;
-        const glow = ctx.createRadialGradient(glowX, 125, 0, glowX, 125, 150);
-        glow.addColorStop(0, color2);
-        glow.addColorStop(1, 'transparent');
-        ctx.fillStyle = glow;
-        ctx.fillRect(0, 0, 500, 250);
+        // Add subtle glow with middle color (skip if transparent)
+        if (!transparent) {
+            ctx.globalAlpha = 0.12;
+            const glowX = variant % 3 === 2 ? 370 : 300;
+            const glow = ctx.createRadialGradient(glowX, 125, 0, glowX, 125, 150);
+            glow.addColorStop(0, color2);
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, 500, 250);
+        }
 
         ctx.globalAlpha = 1;
         setImageUrl(canvas.toDataURL('image/png'));
-    }, [variant]);
+    }, [variant, transparent]);
 
     return imageUrl;
 };

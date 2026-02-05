@@ -16,65 +16,73 @@ const CaseStudyTemplate = ({ study }) => {
     if (!study) return null;
 
     return (
-        <div className='overflow-hidden'>
-            <main style={{ background: '#020617' } }>
-            {/* Hero (ora include anche Project Overview) */}
-            <div className='px-4 case-study-page-hero '>
-            <CaseStudyHeroSection
-                data={study.hero}
-                imageUrl={study.imageUrl}
-                study={study}
-            />
-            </div>
-
-            {/* Content Section */}
-            <section className="relative z-10 max-w-(--breakpoint-outer) mx-auto">
-                <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
-                    <TheChallenge challenge={study.challenge} />
+        <div className='overflow-x-clip'>
+            <main style={{ background: '#020617' }}>
+                {/* Hero (ora include anche Project Overview) */}
+                <div className='px-4 case-study-page-hero'>
+                    <CaseStudyHeroSection
+                        data={study.hero}
+                        imageUrl={study.imageUrl}
+                        study={study}
+                    />
                 </div>
 
-                {/* Before BYLT - grafico che mostra il declino */}
-                <BeforeByltChart headline={study.beforeBylt?.headline || "Something had to change."} />
-
-                {/* Process + Solution con ShaderBackground continuo */}
-                <div className="relative overflow-hidden">
-                    <div className="absolute inset-0 z-0 h-full w-full">
-                        <ShaderBackgroundDirect />
-                    </div>
-                    <div className="relative">
-                        {/* Brand Marquee - usa breakpoint-outer */}
-                        <div className="case-study-marquee-wrapper">
-                            <BrandMarquee />
-                        </div>
-
-                        <div className="case-study-process-solution-wrapper max-w-(--breakpoint-content) mx-auto">
-                            <ProcessGrid process={study.process} description={study.processDescription} />
-                            <OurSolution solution={study.solution} />
-                        </div>
-                    </div>
+                {/* Before BYLT Marquee - Reveal Effect */}
+                <div className="case-study-reveal-section">
+                    <BrandMarquee text="BEFORE BYLT" />
                 </div>
 
-                {/* Brand Marquee reverse divider - usa breakpoint-outer */}
-                <div className="case-study-marquee-reverse-wrapper">
+                {/* The Challenge Section - z-index alto per scorrere sopra il marquee */}
+                <section className="case-study-challenge-section">
+                    <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
+                        <TheChallenge challenge={study.challenge} />
+                    </div>
+
+                    {/* Before BYLT - grafico che mostra il declino */}
+                    <BeforeByltChart headline={study.beforeBylt?.headline || "Something had to change."} />
+
+                    {/* Process + Solution con ShaderBackground continuo */}
+                    <div className="relative overflow-hidden">
+                        <div className="absolute inset-0 z-0 h-full w-full">
+                            <ShaderBackgroundDirect />
+                        </div>
+                        <div className="relative">
+                            {/* Brand Marquee - usa breakpoint-outer */}
+                            <div className="case-study-marquee-wrapper">
+                                <BrandMarquee />
+                            </div>
+
+                            <div className="case-study-process-solution-wrapper max-w-(--breakpoint-content) mx-auto">
+                                <ProcessGrid process={study.process} description={study.processDescription} />
+                                <OurSolution solution={study.solution} />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* THE BYLT EFFECT Marquee - Reveal Effect (z-index lower) */}
+                <div className="case-study-reveal-section-lower">
                     <BrandMarquee text="THE BYLT EFFECT" reverse />
                 </div>
 
-                <div className="case-study-results-wrapper max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
-                    <ResultsDashboard results={study.results} />
-                </div>
+                {/* Results Section - z-index alto per scorrere sopra il marquee */}
+                <section className="case-study-results-section">
+                    <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
+                        <ResultsDashboard results={study.results} />
+                    </div>
 
-                {/* After BYLT - grafico che mostra la crescita */}
-                <AfterByltChart headline={study.afterBylt?.headline} description={study.afterBylt?.description} />
-            </section>
+                    {/* After BYLT - grafico che mostra la crescita */}
+                    <AfterByltChart headline={study.afterBylt?.headline} description={study.afterBylt?.description} />
+                </section>
 
-            {/* CTA finale */}
-            <CTASectionCard
-                title={study.cta?.title || "Ready for results like these?"}
-                description={study.cta?.description || "Let's discuss how we can help grow your business with data-driven digital marketing."}
-                buttonText={study.cta?.buttonText || "Get Free Audit"}
-                buttonHref={study.cta?.buttonHref || "/contact"}
-            />
-        </main>
+                {/* CTA finale */}
+                <CTASectionCard
+                    title={study.cta?.title || "Ready for results like these?"}
+                    description={study.cta?.description || "Let's discuss how we can help grow your business with data-driven digital marketing."}
+                    buttonText={study.cta?.buttonText || "Get Free Audit"}
+                    buttonHref={study.cta?.buttonHref || "/contact"}
+                />
+            </main>
         </div>
     );
 };

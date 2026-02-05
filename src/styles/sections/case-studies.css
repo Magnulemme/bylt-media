@@ -63,7 +63,23 @@
 /* ========================================
    WHY BYLT SECTION
    Sezione con ComparisonTable, Quote, Process steps, Benefits
+   Importante: z-index alto per coprire la reveal section durante lo scroll
    ======================================== */
+
+/* WhyBylt Section - z-index alto per effetto reveal */
+.case-studies-why-bylt-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-studies-why-bylt-section {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
 
 /* CTA section spacing - !important per sovrascrivere py-12/py-24 di CTASectionCard */
 .case-studies-cta {
@@ -168,6 +184,7 @@
    ======================================== */
 
 .case-studies-reveal-section {
+  @apply relative overflow-hidden;
   position: sticky;
   bottom: 0;
   background: #020617;
@@ -219,6 +236,67 @@
 }
 
 /* ----------------------------------------
+   CASE STUDY REVEAL SECTION - Sticky reveal con clip-path
+   z-index: 1 per la prima, copre la seconda
+   ---------------------------------------- */
+.case-study-reveal-section {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 1;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-reveal-section {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* Variante con z-index più basso per la seconda reveal */
+.case-study-reveal-section-lower {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 0;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-reveal-section-lower {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY CHALLENGE SECTION - z-index alto per coprire reveal
+   ---------------------------------------- */
+.case-study-challenge-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+}
+
+/* ----------------------------------------
+   CASE STUDY RESULTS SECTION - z-index alto per coprire reveal
+   ---------------------------------------- */
+.case-study-results-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+}
+
+/* ----------------------------------------
    CASE STUDY TEMPLATE HERO - Page wrapper (come about-page-hero)
    ---------------------------------------- */
 .case-study-page-hero {
@@ -227,18 +305,6 @@
   z-index: 10;
 }
 
-/* Prevent layout shift from scrollbar appearing/disappearing */
-html:has(.case-study-page-hero) {
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-/* Force body to never overflow horizontally */
-body:has(.case-study-page-hero) {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100vw;
-}
 
 @media (min-width: 1024px) {
   .case-study-page-hero {
@@ -359,4 +425,5 @@ body:has(.case-study-page-hero) {
     padding-top: var(--spacing-padding-xl);
   }
 }
+
 

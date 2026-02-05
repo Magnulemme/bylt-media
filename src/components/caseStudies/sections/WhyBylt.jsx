@@ -48,10 +48,7 @@ const WhyBylt = () => {
     const { others, bylt } = whyByltContent;
 
     return (
-        <section
-            className="case-studies-why-bylt-section relative overflow-hidden"
-            style={{ background: '#020617' }}
-        >
+        <section className="case-studies-why-bylt-section">
             <div className="case-studies-why-bylt-container relative z-10">
                 {/* Section Header */}
                 <motion.div
