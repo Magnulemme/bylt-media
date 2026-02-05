@@ -1,27 +1,122 @@
-import React, { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import DitherProcessCard from '@/components/ui/DitherProcessCard';
-import FadeMask from '@/components/ui/FadeMask';
+'use client';
+
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
+import { Plus, Minus } from 'lucide-react';
+import { accentColors } from './utils';
 
 const DEFAULT_DESCRIPTION = "Every project follows a proven methodology. Here's how we approached this one.";
 
+const AccordionItem = ({ step, isOpen, onToggle, index }) => {
+    const accentColor = accentColors[index % accentColors.length];
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="border-b border-slate-700/60 last:border-b-0"
+        >
+            <button
+                onClick={onToggle}
+                className="w-full flex items-center justify-between gap-4 py-5 text-left transition-opacity hover:opacity-80"
+                aria-expanded={isOpen}
+            >
+                <div className="flex items-center gap-4">
+                    <span
+                        className="text-sm font-mono font-medium w-8 h-8 rounded-full flex items-center justify-center border"
+                        style={{
+                            color: isOpen ? accentColor : 'rgb(148 163 184)',
+                            borderColor: isOpen ? accentColor : 'rgb(51 65 85)',
+                            background: isOpen ? `${accentColor}15` : 'transparent'
+                        }}
+                    >
+                        {step.step}
+                    </span>
+                    <span className="heading-h4 text-white">{step.title}</span>
+                </div>
+                <motion.div
+                    className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full border transition-all"
+                    style={{
+                        borderColor: isOpen ? accentColor : 'rgb(51 65 85)',
+                        color: isOpen ? accentColor : 'rgb(148 163 184)'
+                    }}
+                >
+                    {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+                </motion.div>
+            </button>
+
+            <AnimatePresence initial={false}>
+                {isOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                    >
+                        <div className="pb-5 pl-12">
+                            {/* Description */}
+                            <p className="text-body mb-4">
+                                {step.description}
+                            </p>
+
+                            {/* Metrics tags */}
+                            {step.metrics && step.metrics.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                    {step.metrics.map((metric, i) => (
+                                        <span
+                                            key={i}
+                                            className="text-body-sm px-3 py-1.5 rounded-xl border"
+                                            style={{ color: accentColor, borderColor: `${accentColor}40` }}
+                                        >
+                                            {metric}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Details */}
+                            {step.details && step.details.length > 0 && (
+                                <ul className="space-y-2">
+                                    {step.details.map((detail, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-body-sm">
+                                            <div
+                                                className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
+                                                style={{ background: accentColor }}
+                                            />
+                                            {detail}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+};
+
 const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
-    const [openCard, setOpenCard] = useState(null);
+    const [openItems, setOpenItems] = useState({ 0: true });
 
     if (!process || process.length === 0) return null;
 
-    const toggleCard = (index) => {
-        setOpenCard(openCard === index ? null : index);
+    const toggleItem = (index) => {
+        setOpenItems(prev => ({
+            ...prev,
+            [index]: !prev[index]
+        }));
     };
 
     return (
         <section className="pb-padding-lg relative">
-            {/* Subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/[0.02] to-transparent pointer-events-none" />
-
-            {/* Section Header */}
-            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) relative mb-padding-md">
+            {/* Header */}
+            <div className="mb-padding-md">
                 <h2 className="heading-h1 text-white mb-4">The Process</h2>
                 {description && (
                     <p className="text-subheader max-w-2xl">
@@ -30,41 +125,16 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
                 )}
             </div>
 
-            {/* Mobile Swiper */}
-            <FadeMask fade="both" fadeSize={24} className="md:hidden relative z-10 pb-2">
-                <Swiper
-                    spaceBetween={12}
-                    slidesPerView="auto"
-                    slidesOffsetBefore={16}
-                    slidesOffsetAfter={16}
-                    className="process-swiper overflow-visible! py-1"
-                >
+            {/* Accordion Card */}
+            <div className="rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500/50 transition-colors overflow-hidden">
+                <div className="p-6">
                     {process.map((step, index) => (
-                        <SwiperSlide
-                            key={step.step}
-                            style={{ width: 'calc(100vw - 140px)' }}
-                            className="h-auto!"
-                        >
-                            <DitherProcessCard
-                                step={step}
-                                index={index}
-                                isMobile
-                            />
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            </FadeMask>
-
-            {/* Desktop Grid */}
-            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) relative">
-                <div className="hidden md:grid grid-cols-2 gap-6">
-                    {process.map((step, index) => (
-                        <DitherProcessCard
-                            key={step.step}
+                        <AccordionItem
+                            key={step.step || index}
                             step={step}
                             index={index}
-                            isOpen={openCard === index}
-                            onToggle={() => toggleCard(index)}
+                            isOpen={openItems[index] || false}
+                            onToggle={() => toggleItem(index)}
                         />
                     ))}
                 </div>

@@ -17,13 +17,15 @@ const CaseStudyTemplate = ({ study }) => {
 
     return (
         <div className='overflow-hidden'>
-            <main style={{ background: '#020617' }} className='service-page'>
+            <main style={{ background: '#020617' } }>
             {/* Hero (ora include anche Project Overview) */}
+            <div className='px-4 case-study-page-hero '>
             <CaseStudyHeroSection
                 data={study.hero}
                 imageUrl={study.imageUrl}
                 study={study}
             />
+            </div>
 
             {/* Content Section */}
             <section className="relative z-10 max-w-(--breakpoint-outer) mx-auto">

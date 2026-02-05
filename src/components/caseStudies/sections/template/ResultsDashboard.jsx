@@ -145,9 +145,9 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className={`flex flex-col sm:flex-row sm:items-center sm:gap-4 lg:flex-col lg:items-stretch lg:gap-0 2xl:flex-row 2xl:items-center 2xl:gap-8 ${className}`}>
-            {/* Wave: sopra su mobile e lg-xl, accanto su sm-md e 2xl+ */}
-            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto lg:mb-6 2xl:mx-0 2xl:mb-0">
+        <div ref={ref} className={`flex flex-col sm:flex-row sm:items-center sm:gap-4 lg:flex-col! lg:items-stretch! lg:gap-0! ${className}`}>
+            {/* Wave: sopra su mobile e lg, accanto su sm-md e xl+ */}
+            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto! lg:mb-6! xl:mx-0! xl:mb-0!">
                 <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
             </div>
             {/* Stats grid */}

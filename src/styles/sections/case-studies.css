@@ -219,6 +219,96 @@
 }
 
 /* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Page wrapper (come about-page-hero)
+   ---------------------------------------- */
+.case-study-page-hero {
+  @apply relative flex flex-col overflow-x-clip w-full;
+  background: #020617;
+  z-index: 10;
+}
+
+/* Prevent layout shift from scrollbar appearing/disappearing */
+html:has(.case-study-page-hero) {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Force body to never overflow horizontally */
+body:has(.case-study-page-hero) {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+@media (min-width: 1024px) {
+  .case-study-page-hero {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop));
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Section (come about-hero-section)
+   ---------------------------------------- */
+.case-study-hero-section {
+  @apply relative overflow-hidden flex flex-col;
+  z-index: 10;
+  background: #020617;
+  /* Use vh instead of dvh to prevent layout jumps from dynamic recalculation */
+  min-height: calc(100vh - 70px - 0.5rem - 0.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .case-study-hero-section {
+    min-height: calc(100vh - var(--navbar-height-desktop) - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Container (come about-hero-container)
+   ---------------------------------------- */
+.case-study-hero-container {
+  @apply relative z-20 mx-auto flex-1 flex flex-col justify-center;
+  max-width: 900px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 500px) {
+  .case-study-hero-container {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 640px) {
+  .case-study-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  }
+}
+
+@media (min-width: 768px) {
+  .case-study-hero-container {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-study-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
    BRAND MARQUEE WRAPPER - First (inside shader)
    ---------------------------------------- */
 .case-study-marquee-wrapper {

@@ -163,9 +163,9 @@ const ChallengeMetrics = ({ metrics }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className="flex flex-col sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col lg:items-stretch lg:gap-0 2xl:flex-row-reverse 2xl:items-center 2xl:gap-8">
-            {/* Wave: sopra su mobile e lg-xl, accanto su sm-md e 2xl+ */}
-            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto lg:mb-6 2xl:mx-0 2xl:mb-0">
+        <div ref={ref} className="flex flex-col sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col! lg:items-stretch! lg:gap-0!">
+            {/* Wave: sopra su mobile e lg+, accanto su sm-md */}
+            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto! lg:mb-6!">
                 <AnimatedWaveCanvas colors={['#ef4444', '#f97316', '#dc2626']} shape="arrow" />
             </div>
             {/* Stats grid */}

@@ -183,7 +183,7 @@ export const MovingBorderButton = ({
 
       {/* Moving border con CSS mask per mostrare solo l'anello */}
       <div
-        className="absolute inset-0 pointer-events-none p-[1px]"
+        className="absolute inset-0 pointer-events-none p-[1px] overflow-hidden"
         style={{
           borderRadius: computedBorderRadius,
           WebkitMask:

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
-import { motion, useInView } from 'motion/react';
+import React, { useState, useEffect, memo } from 'react';
+import { motion } from 'motion/react';
 import ShaderBackground from '@/components/home/ShaderBackground';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import { InfiniteMovingCards } from '@/components/ui/infinite-moving-cards';
@@ -9,178 +9,6 @@ const signalPageReady = () => {
     if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('hero-ready'));
     }
-};
-
-const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
-    const [currentStat, setCurrentStat] = useState(0);
-    const stats = data.stats || [];
-
-    useEffect(() => {
-        if (stats.length === 0) return;
-        const interval = setInterval(() => {
-            setCurrentStat((prev) => (prev + 1) % stats.length);
-        }, 3000);
-        return () => clearInterval(interval);
-    }, [stats.length]);
-
-    // Overview items dal study
-    const overviewItems = study ? [
-        { title: 'Client', value: study.client, iconName: 'User' },
-        { title: 'Industry', value: study.industry, iconName: 'Car' },
-        { title: 'Duration', value: study.overview?.duration || 'N/A', iconName: 'Clock' },
-        { title: 'Platforms', value: study.overview?.platforms || 'N/A', iconName: 'Globe' }
-    ] : [];
-
-    // Signal ready on mount
-    useEffect(() => {
-        signalPageReady();
-    }, []);
-
-    return (
-        <section className="relative overflow-hidden">
-            {/* ShaderBackground sempre visibile */}
-            <ShaderBackground />
-
-            {/* Content */}
-            <div className="relative z-20 px-(--margin-safe-x) pt-padding-lg pb-padding-lg">
-                <div className="max-w-(--breakpoint-content) mx-auto">
-                    {/* Headline + Subtitle + Stats - mobile e tablet (< 1024px) */}
-                    <div className="show-until-lg text-center max-w-4xl mx-auto px-4 mb-10">
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                            className="heading-page mb-6"
-                        >
-                            {data.headline.map((line, i) => (
-                                <span
-                                    key={i}
-                                    className={`block ${i === data.highlightIndex
-                                        ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
-                                        : 'text-white'
-                                        }`}
-                                >
-                                    {line}
-                                </span>
-                            ))}
-                        </motion.h1>
-
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-subheader max-w-2xl mx-auto mb-10"
-                        >
-                            {data.subtitle}
-                        </motion.p>
-
-                        {stats.length > 0 && (
-                            <StatsCarousel
-                                stats={stats}
-                                currentStat={currentStat}
-                                setCurrentStat={setCurrentStat}
-                            />
-                        )}
-                    </div>
-
-                    {/* Card con immagine come sfondo - mobile, tablet e desktop */}
-                    <div className="relative rounded-2xl overflow-hidden min-h-70 md:min-h-75 lg:min-h-125">
-                        {/* Immagine come sfondo - sempre visibile */}
-                        {imageUrl && (
-                            <div className="absolute inset-0">
-                                <img
-                                    src={imageUrl}
-                                    alt="Project showcase"
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/60 to-slate-950/80" />
-                            </div>
-                        )}
-
-                        {/* Content sovrapposto */}
-                        <div className="relative z-10 py-padding-lg lg:py-padding-xl">
-                            {/* Headline + Subtitle + Stats - solo desktop (>= 1024px) */}
-                            <div className="show-from-lg text-center max-w-4xl mx-auto px-4 mb-10">
-                                <motion.h1
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.1 }}
-                                    className="heading-page mb-6"
-                                >
-                                    {data.headline.map((line, i) => (
-                                        <span
-                                            key={i}
-                                            className={`block ${i === data.highlightIndex
-                                                ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
-                                                : 'text-white'
-                                                }`}
-                                        >
-                                            {line}
-                                        </span>
-                                    ))}
-                                </motion.h1>
-
-                                <motion.p
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.2 }}
-                                    className="text-subheader max-w-2xl mx-auto mb-10"
-                                >
-                                    {data.subtitle}
-                                </motion.p>
-
-                                {stats.length > 0 && (
-                                    <StatsCarousel
-                                        stats={stats}
-                                        currentStat={currentStat}
-                                        setCurrentStat={setCurrentStat}
-                                    />
-                                )}
-                            </div>
-
-                            {/* Overview info - tablet e desktop (dentro la card) */}
-                            {study && (
-                                <div className="hidden sm:block md:mt-padding-md lg:mt-padding-lg px-4">
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                                        {overviewItems.map((item) => (
-                                            <div key={item.title}>
-                                                <p className="text-label-sm mb-1">{item.title}</p>
-                                                <p className="text-body-lg text-white font-bold">{item.value}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* What We Did - Services */}
-                            {study?.services && (
-                                <WhatWeDid services={study.services} />
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Overview info - solo mobile (sotto la card) */}
-                    {study && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="sm:hidden mt-8 px-4"
-                        >
-                            <div className="grid grid-cols-2 gap-6 text-center">
-                                {overviewItems.map((item) => (
-                                    <div key={item.title}>
-                                        <p className="text-label-sm mb-1">{item.title}</p>
-                                        <p className="text-body-lg text-white font-bold">{item.value}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    )}
-                </div>
-            </div>
-        </section>
-    );
 };
 
 // Hook per rilevare mobile
@@ -197,14 +25,13 @@ const useIsMobile = (breakpoint = 640) => {
     return isMobile;
 };
 
-// Stat Card - memoized to prevent re-renders affecting border animation
+// Stat Card memoized per il carousel desktop
 const StatCard = memo(({ stat, index, currentStat, totalStats, onClick, isMobile }) => {
     const isActive = index === currentStat;
     const isPrevious = index === (currentStat - 1 + totalStats) % totalStats;
     const isNext = index === (currentStat + 1) % totalStats;
     const isSecondary = isPrevious || isNext;
 
-    // Calcola translateX in base alla posizione
     let translateX = 0;
     let scale = 1;
     let zIndex = 0;
@@ -215,7 +42,6 @@ const StatCard = memo(({ stat, index, currentStat, totalStats, onClick, isMobile
         scale = 1;
         zIndex = 20;
     } else if (isMobile) {
-        // Su mobile nascondi tutte le card non attive
         opacity = 0;
         scale = 0.5;
     } else if (isPrevious) {
@@ -288,11 +114,10 @@ const MobileStatCard = ({ stat }) => (
     </div>
 );
 
-// Stats Carousel sub-component
+// Stats Carousel
 const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
     const isMobile = useIsMobile();
 
-    // Su mobile usa InfiniteMovingCards
     if (isMobile) {
         return (
             <motion.div
@@ -306,20 +131,19 @@ const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
                     speed="25s"
                     pauseOnHover={true}
                     gap="gap-4"
-                    className="[mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]"
+                    className="[mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)] pb-2"
                     renderItem={(stat) => <MobileStatCard stat={stat} />}
                 />
             </motion.div>
         );
     }
 
-    // Su desktop mantieni il carousel originale
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid w-fit mx-auto"
+            className="grid mx-auto w-fit"
         >
             {stats.map((stat, index) => (
                 <StatCard
@@ -336,29 +160,193 @@ const StatsCarousel = ({ stats, currentStat, setCurrentStat }) => {
     );
 };
 
-// What We Did section
-const WhatWeDid = ({ services }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.3 });
+const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
+    const [currentStat, setCurrentStat] = useState(0);
+    const stats = data.stats || [];
+    const services = study?.services || [];
+    const isMobile = useIsMobile();
 
-    if (!services || services.length === 0) return null;
+    useEffect(() => {
+        if (stats.length === 0) return;
+        const interval = setInterval(() => {
+            setCurrentStat((prev) => (prev + 1) % stats.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [stats.length]);
+
+    useEffect(() => {
+        signalPageReady();
+        // Force scrollbar always visible to prevent layout shift
+        document.documentElement.style.overflowY = 'scroll';
+        return () => {
+            document.documentElement.style.overflowY = '';
+        };
+    }, []);
 
     return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12 text-center"
-        >
-            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
-                {services.map((service, index) => (
-                    <MovingBorderButton key={index} variant="tag" color="cyan" as="span">
-                        <p className="text-tag">{service}</p>
-                    </MovingBorderButton>
-                ))}
+            <section className="case-study-hero-section">
+                <ShaderBackground />
+
+            <div className="case-study-hero-container w-full">
+                {/* Single Hero Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="rounded-3xl border border-white/10 bg-slate-950 overflow-hidden"
+                        style={{ boxShadow: '8px 8px 0px rgba(34, 211, 238, 1)' }}
+                    >
+                        {/* Header Section */}
+                        <div className="p-6 md:p-10 lg:p-12 text-center border-b border-white/5">
+                            <motion.h1
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 }}
+                                className="heading-page mb-4"
+                            >
+                                {data.headline.map((line, i) => (
+                                    <span
+                                        key={i}
+                                        className={`block ${
+                                            i === data.highlightIndex
+                                                ? 'bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent'
+                                                : 'text-white'
+                                        }`}
+                                    >
+                                        {line}
+                                    </span>
+                                ))}
+                            </motion.h1>
+
+                            <motion.p
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.3 }}
+                                className="hidden sm:block text-subheader max-w-3xl mx-auto mb-6"
+                            >
+                                {data.subtitle}
+                            </motion.p>
+
+                            {/* Tags Section */}
+                            {services.length > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: 0.35 }}
+                                    className="sm:flex sm:flex-wrap sm:justify-center sm:gap-3 mb-6 sm:mb-0"
+                                >
+                                    {isMobile ? (
+                                        // Mobile: infinite carousel moving right (opposite to stats)
+                                        <InfiniteMovingCards
+                                            items={services.map((service, index) => ({
+                                                service,
+                                                color: ['cyan', 'purple', 'blue', 'pink', 'green'][index % 5]
+                                            }))}
+                                            direction="right"
+                                            speed="20s"
+                                            pauseOnHover={true}
+                                            gap="gap-3"
+                                            className="[mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]"
+                                            renderItem={(item) => (
+                                                <MovingBorderButton
+                                                    variant="tag"
+                                                    color={item.color}
+                                                    as="span"
+                                                >
+                                                    <p className="text-tag whitespace-nowrap">{item.service}</p>
+                                                </MovingBorderButton>
+                                            )}
+                                        />
+                                    ) : (
+                                        // Desktop: show all tags
+                                        services.map((service, index) => {
+                                            const colors = ['cyan', 'purple', 'blue', 'pink', 'green'];
+                                            const color = colors[index % colors.length];
+                                            return (
+                                                <MovingBorderButton
+                                                    key={index}
+                                                    variant="tag"
+                                                    color={color}
+                                                    as="span"
+                                                >
+                                                    <p className="text-tag">{service}</p>
+                                                </MovingBorderButton>
+                                            );
+                                        })
+                                    )}
+                                </motion.div>
+                            )}
+
+                            {/* Stats Carousel - mobile only, below tags */}
+                            {stats.length > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: 0.4 }}
+                                    className="sm:hidden"
+                                >
+                                    <StatsCarousel
+                                        stats={stats}
+                                        currentStat={currentStat}
+                                        setCurrentStat={setCurrentStat}
+                                    />
+                                </motion.div>
+                            )}
+                        </div>
+
+                        {/* Image Section with Stats Carousel Overlay */}
+                        <div className="relative">
+                            {/* Main Image */}
+                            <div className="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+                                {imageUrl ? (
+                                    <img
+                                        src={imageUrl}
+                                        alt="Project showcase"
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20" />
+                                )}
+                            </div>
+
+                            {/* Stats Carousel - centered on image, hidden on mobile */}
+                            {stats.length > 0 && (
+                                <div className="hidden sm:flex absolute inset-0 items-center justify-center">
+                                    <StatsCarousel
+                                        stats={stats}
+                                        currentStat={currentStat}
+                                        setCurrentStat={setCurrentStat}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+
+                {/* Project Info - Typography Style */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                    className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center place-items-center"
+                >
+                    {[
+                        { label: 'Client', value: study?.client },
+                        { label: 'Industry', value: study?.industry },
+                        { label: 'Duration', value: study?.overview?.duration },
+                        { label: 'Platforms', value: study?.overview?.platforms }
+                    ].filter(item => item.value).map((item, index) => (
+                        <div key={index}>
+                            <p className="text-xs text-white/50 uppercase tracking-[0.2em] mb-2">
+                                {item.label}
+                            </p>
+                            <p className="text-xl md:text-2xl font-bold text-white whitespace-nowrap">
+                                {item.value}
+                            </p>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
-        </motion.div>
+        </section>
     );
 };
 
