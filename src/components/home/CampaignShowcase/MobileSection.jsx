@@ -9,25 +9,36 @@ import { useScrollProgress } from './hooks/useScrollProgress';
 const DEBUG = true;
 const log = (...args) => DEBUG && console.log('📱 [MobileSection]', ...args);
 
-const useCardHeight = () => {
+const useCardHeight = (imageRef) => {
   const [cardHeight, setCardHeight] = useState('auto');
 
   useEffect(() => {
-    const calculateHeight = () => {
-      const viewportHeight = window.innerHeight;
-      const targetHeight = viewportHeight * 0.65;
-      const minHeight = 280;
-      const maxHeight = 500;
+    const measureImage = () => {
+      if (!imageRef?.current) return;
 
-      const finalHeight = Math.min(Math.max(targetHeight, minHeight), maxHeight);
-      log('useCardHeight:', { viewportHeight, targetHeight, finalHeight });
-      setCardHeight(`${finalHeight}px`);
+      const rect = imageRef.current.getBoundingClientRect();
+      if (rect.height > 0) {
+        log('useCardHeight (from image):', { imageHeight: rect.height });
+        setCardHeight(`${rect.height}px`);
+      }
     };
 
-    calculateHeight();
-    window.addEventListener('resize', calculateHeight);
-    return () => window.removeEventListener('resize', calculateHeight);
-  }, []);
+    // Misura dopo che l'immagine è caricata
+    const img = imageRef?.current;
+    if (img) {
+      if (img.complete) {
+        measureImage();
+      } else {
+        img.addEventListener('load', measureImage);
+      }
+    }
+
+    window.addEventListener('resize', measureImage);
+    return () => {
+      window.removeEventListener('resize', measureImage);
+      img?.removeEventListener('load', measureImage);
+    };
+  }, [imageRef]);
 
   return cardHeight;
 };
@@ -78,14 +89,15 @@ const useCenteredPosition = (cardRef, cardHeight) => {
 
 const MobileSection = ({ campaigns }) => {
   const stickyContentRef = useRef(null);
-  const cardHeight = useCardHeight();
+  const firstImageRef = useRef(null);
+  const cardHeight = useCardHeight(firstImageRef);
   const topPosition = useCenteredPosition(stickyContentRef, cardHeight);
 
   // Usa useScrollProgress per inizializzazione corretta con micro-scroll forzato
   const { containerRef, scrollYProgress, isReady } = useScrollProgress(true);
 
   return (
-    <div className="md:hidden mt-16">
+    <div className="md:hidden">
       {/* Container alto per dare spazio allo scroll */}
       <div
         ref={containerRef}
@@ -121,6 +133,7 @@ const MobileSection = ({ campaigns }) => {
                 total={campaigns.length}
                 scrollYProgress={scrollYProgress}
                 cardHeight={cardHeight}
+                imageRef={index === 0 ? firstImageRef : null}
               />
             ))}
           </div>
@@ -163,7 +176,7 @@ const MobileSection = ({ campaigns }) => {
   );
 };
 
-const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) => {
+const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight, imageRef }) => {
   const segmentSize = 1 / total;
   const start = index * segmentSize;
   const end = (index + 1) * segmentSize;
@@ -180,6 +193,7 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
         }}
       >
         <img
+          ref={imageRef}
           src={campaign.image}
           alt={campaign.label}
           className="w-[80vw] h-auto object-contain"
@@ -189,12 +203,12 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
     );
   }
 
-  // Container che cresce in altezza, finisce all'85% per mostrare l'immagine completa
+  // Reveal con clip-path: da nascosto (100% dall'alto) a visibile (0%)
   const revealEnd = start + (end - start) * 0.85;
-  const containerHeight = useTransform(
+  const clipTop = useTransform(
     scrollYProgress,
     [start, revealEnd],
-    ['0%', '100%']
+    [100, 0]
   );
 
   // Blur che va da 5px a 0px, finisce all'85% della transizione
@@ -207,40 +221,23 @@ const CampaignImage = ({ campaign, index, total, scrollYProgress, cardHeight }) 
 
   return (
     <motion.div
-      className="absolute flex items-end justify-center overflow-hidden"
+      className="absolute flex items-center justify-center"
       style={{
         zIndex: index + 1,
         width: '100%',
         height: '100%',
+        clipPath: useTransform(clipTop, (v) => `inset(${v}% 0 0 0)`),
       }}
     >
-      {/* Container interno che cresce */}
-      <motion.div
-        className="w-full overflow-hidden flex items-center justify-center"
+      {/* Immagine sempre centrata come la prima, rivelata dal basso con clip-path */}
+      <motion.img
+        src={campaign.image}
+        alt={campaign.label}
+        className="w-[80vw] h-auto object-contain"
         style={{
-          height: containerHeight,
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 5%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 5%)',
+          filter: useTransform(blurAmount, (v) => `blur(${v}px)`),
         }}
-      >
-        {/* Immagine sempre alla dimensione finale con blur */}
-        <motion.img
-          src={campaign.image}
-          alt={campaign.label}
-          className="w-[80vw] h-auto object-contain"
-          style={{
-            filter: useTransform(blurAmount, (v) => `blur(${v}px)`),
-            WebkitMaskImage: `url(${campaign.image})`,
-            maskImage: `url(${campaign.image})`,
-            WebkitMaskSize: 'contain',
-            maskSize: 'contain',
-            WebkitMaskPosition: 'center',
-            maskPosition: 'center',
-            WebkitMaskRepeat: 'no-repeat',
-            maskRepeat: 'no-repeat',
-          }}
-        />
-      </motion.div>
+      />
     </motion.div>
   );
 };

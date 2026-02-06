@@ -19,7 +19,7 @@
 /* Campaign Header - Container titolo (sotto le card), container pattern */
 .campaign-header {
   @apply w-full max-w-content mx-auto;
-  padding-top: var(--spacing-padding-md);
+  padding-top: var(--spacing-padding-sm);
   padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
   padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
 }

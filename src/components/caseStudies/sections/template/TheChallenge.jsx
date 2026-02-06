@@ -6,19 +6,17 @@ const TheChallenge = ({ challenge }) => {
     if (!challenge) return null;
 
     return (
-        <div className="mb-padding-md">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
-                {/* Colonna sinistra: titolo + content */}
+        <div>
+            {/* Row 1: Title+Desc | Stats */}
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-end">
                 <div>
                     <SectionHeader />
-                    <ChallengeDescription
-                        description={challenge.description}
-                        painPoints={challenge.painPoints}
-                    />
+                    <ChallengeDescription description={challenge.description} />
                 </div>
-                {/* Colonna destra: freccia + stats */}
                 <ChallengeMetrics metrics={challenge.metrics} />
             </div>
+            {/* Row 2: Pain Points in 2x2 grid */}
+            <PainPointsGrid painPoints={challenge.painPoints} />
         </div>
     );
 };
@@ -44,7 +42,7 @@ const SectionHeader = () => {
 };
 
 // Challenge Description sub-component
-const ChallengeDescription = ({ description, painPoints }) => {
+const ChallengeDescription = ({ description }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -55,26 +53,43 @@ const ChallengeDescription = ({ description, painPoints }) => {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.6 }}
         >
-            <p className="text-subheader mb-8">
+            <p className="text-subheader">
                 {description}
             </p>
-            <ul className="space-y-4">
-                {painPoints.map((point, index) => (
-                    <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="flex items-start gap-3"
-                    >
-                        <div className="shrink-0 w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center mt-0.5">
-                            <div className="w-2 h-2 bg-red-400 rounded-full" />
-                        </div>
-                        <span className="text-body">{point}</span>
-                    </motion.li>
-                ))}
-            </ul>
         </motion.div>
+    );
+};
+
+// Pain Points Grid sub-component
+const PainPointsGrid = ({ painPoints }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    if (!painPoints || painPoints.length === 0) return null;
+
+    return (
+        <motion.ul
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-2 gap-4 mt-8 md:mt-12"
+        >
+            {painPoints.map((point, index) => (
+                <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="flex items-start gap-3"
+                >
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-red-500/20 flex items-center justify-center mt-0.5">
+                        <div className="w-2 h-2 bg-red-400 rounded-full" />
+                    </div>
+                    <span className="text-body">{point}</span>
+                </motion.li>
+            ))}
+        </motion.ul>
     );
 };
 
@@ -163,13 +178,13 @@ const ChallengeMetrics = ({ metrics }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className="flex flex-col sm:flex-row-reverse sm:items-center sm:gap-4 lg:flex-col! lg:items-stretch! lg:gap-0!">
-            {/* Wave: sopra su mobile e lg+, accanto su sm-md */}
-            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto! lg:mb-6!">
+        <div ref={ref}>
+            {/* Wave: solo su desktop */}
+            <div className="hidden lg:block opacity-50 max-w-75 mx-auto mb-6">
                 <AnimatedWaveCanvas colors={['#ef4444', '#f97316', '#dc2626']} shape="arrow" />
             </div>
             {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 {metrics.map((metric, index) => (
                     <MetricItem
                         key={index}

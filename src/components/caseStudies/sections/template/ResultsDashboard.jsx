@@ -8,23 +8,21 @@ const ResultsDashboard = ({ results }) => {
 
     return (
         <div>
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
-                {/* Colonna sinistra: freccia + stats */}
-                <ResultsMetrics metrics={results.metrics} className="order-last lg:order-first" />
-                {/* Colonna destra: titolo + content */}
+            {/* Row 1: Stats | Title+Desc */}
+            <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-end">
+                <ResultsMetrics metrics={results.metrics} className="order-last md:order-first" />
                 <div>
-                    <ResultsDescription
-                        description={results.description}
-                        highlights={results.highlights}
-                    />
+                    <ResultsDescription description={results.description} />
                 </div>
             </div>
+            {/* Row 2: Highlights in 2x2 grid */}
+            <HighlightsGrid highlights={results.highlights} />
         </div>
     );
 };
 
-// Results Description sub-component (mirrored from TheChallenge)
-const ResultsDescription = ({ description, highlights }) => {
+// Results Description sub-component
+const ResultsDescription = ({ description }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -38,28 +36,43 @@ const ResultsDescription = ({ description, highlights }) => {
             <h2 className="heading-h1 text-white mb-6">
                 The Results
             </h2>
-            <p className="text-subheader mb-8">
+            <p className="text-subheader">
                 {description}
             </p>
-            {highlights && highlights.length > 0 && (
-                <ul className="space-y-4">
-                    {highlights.map((highlight, index) => (
-                        <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                            transition={{ duration: 0.4, delay: index * 0.1 }}
-                            className="flex items-start gap-3"
-                        >
-                            <div className="shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
-                                <Check className="w-3 h-3 text-emerald-400" />
-                            </div>
-                            <span className="text-body">{highlight}</span>
-                        </motion.li>
-                    ))}
-                </ul>
-            )}
         </motion.div>
+    );
+};
+
+// Highlights Grid sub-component
+const HighlightsGrid = ({ highlights }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+    if (!highlights || highlights.length === 0) return null;
+
+    return (
+        <motion.ul
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6 }}
+            className="grid md:grid-cols-2 gap-4 mt-8 md:mt-12"
+        >
+            {highlights.map((highlight, index) => (
+                <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    className="flex items-start gap-3"
+                >
+                    <div className="shrink-0 w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center mt-0.5">
+                        <Check className="w-3 h-3 text-emerald-400" />
+                    </div>
+                    <span className="text-body">{highlight}</span>
+                </motion.li>
+            ))}
+        </motion.ul>
     );
 };
 
@@ -145,13 +158,13 @@ const ResultsMetrics = ({ metrics, className = '' }) => {
     if (!metrics || metrics.length === 0) return null;
 
     return (
-        <div ref={ref} className={`flex flex-col sm:flex-row sm:items-center sm:gap-4 lg:flex-col! lg:items-stretch! lg:gap-0! ${className}`}>
-            {/* Wave: sopra su mobile e lg, accanto su sm-md e xl+ */}
-            <div className="opacity-50 sm:opacity-60 max-w-75 sm:max-w-100 mx-auto sm:mx-0 mb-6 sm:mb-0 lg:mx-auto! lg:mb-6! xl:mx-0! xl:mb-0!">
+        <div ref={ref} className={className}>
+            {/* Wave: solo su desktop */}
+            <div className="hidden lg:block opacity-50 max-w-75 mx-auto mb-6">
                 <AnimatedWaveCanvas colors={['#22c55e', '#16a34a', '#4ade80']} shape="growth" />
             </div>
             {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 {metrics.map((metric, index) => (
                     <MetricItem
                         key={metric.key || index}

@@ -15,6 +15,7 @@
   @apply flex items-center justify-end;
   gap: 0.75rem;
   margin-bottom: var(--spacing-padding-xs);
+  overflow: visible;
 }
 
 /* Bottoni navigazione mobile - stile brutalist coerente con desktop */
@@ -111,6 +112,7 @@
 .swiper-button-prev-services,
 .swiper-button-next-services {
   @apply w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border-2 border-cyan-400/30 flex items-center justify-center text-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/10;
+  overflow: visible;
 }
 
 .swiper-button-prev-desktop:hover,
@@ -118,6 +120,7 @@
 .swiper-button-prev-services:hover,
 .swiper-button-next-services:hover {
   @apply border-cyan-400/60 from-cyan-500/20 to-blue-500/20 scale-110 cursor-pointer;
+  overflow: visible;
 }
 
 /* Service Button Content - Container flex per contenuto button */

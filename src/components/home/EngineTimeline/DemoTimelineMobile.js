@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useTransform, useMotionValueEvent } from 'motion/react';
 import { BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, XAxis } from 'recharts';
 import { useScrollAnimation } from '../PerformanceMetrics/hooks/useScrollAnimation';
 import { useFadeMask } from '../PerformanceMetrics/hooks/useFadeMask';
 import { useCardHeight } from '../CampaignShowcase/hooks/useCardHeight';
+import { useCenteredPosition } from '../PerformanceMetrics/hooks/useCenteredPosition';
 import { processSteps, ditherStyles } from './constants';
 import { MovingBorderButton } from '@/components/ui/moving-border-button';
 import { DitherShader } from '@/components/ui/dither-shader';
@@ -317,7 +318,18 @@ const DemoTimelineMobile = () => {
         useScrollAnimation(true);
     const stickyContentRef = useRef(null);
     const maskImage = useFadeMask(isAtStart, isAtEnd, 32);
-    const { showText, stickyTop } = useCardHeight(stickyContentRef);
+    const { showText: showTextFromHook } = useCardHeight(stickyContentRef);
+    const topPosition = useCenteredPosition(stickyContentRef);
+
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+    useEffect(() => {
+        const checkWidth = () => setIsSmallScreen(window.innerWidth < 500);
+        checkWidth();
+        window.addEventListener('resize', checkWidth);
+        return () => window.removeEventListener('resize', checkWidth);
+    }, []);
+
+    const showText = isSmallScreen ? false : showTextFromHook;
 
     return (
         <div className="lg:hidden mobile-timeline-container">
@@ -332,11 +344,11 @@ const DemoTimelineMobile = () => {
             </div>
 
             {/* Scroll container */}
-            <div style={{ height: '400vh', position: 'relative' }} ref={containerRef}>
+            <div style={{ height: `${processSteps.length * 100}vh`, position: 'relative' }} ref={containerRef}>
                 <div
                     ref={stickyContentRef}
                     className="sticky flex flex-col"
-                    style={{ top: stickyTop, overflowX: 'clip', overflowY: 'visible' }}
+                    style={{ top: topPosition, overflowX: 'clip', overflowY: 'visible' }}
                 >
                     {/* Cards */}
                     <div className="w-full relative">

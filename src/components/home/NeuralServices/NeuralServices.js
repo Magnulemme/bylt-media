@@ -5,7 +5,7 @@ import CTASectionCard from '../../ui/CTASectionCard';
 import { Card, CardNumber, CardIcon, CardContent, CardTitle, CardSubtitle, CardDescription, CardCapabilities } from '../../ui/service-slider';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useProfiler } from '@/hooks/useProfiler';
 import { SERVICES } from './constants';
 import { SWIPER_STYLES } from './styles';
@@ -15,28 +15,71 @@ const NeuralServices = () => {
     useProfiler('NeuralServices [Swiper]');
     const swiperRef = useRef(null);
     const containerRef = useRef(null);
-    const lastCardRef = useRef(null);
-    const [allCardsVisible, setAllCardsVisible] = useState(false);
-    const [shouldApplyFade, setShouldApplyFade] = useState(false);
+    const transitionTimeoutRef = useRef(null);
+    const [fadeBasedOnVisibility, setFadeBasedOnVisibility] = useState(false);
+    const [fadeBasedOnTransition, setFadeBasedOnTransition] = useState(false);
 
-    // Check if all cards are visible
+    const shouldApplyFade = fadeBasedOnVisibility || fadeBasedOnTransition;
+
+    // Check if cards overflow using active slide's adjacent cards as bounds
+    const checkCardsVisibility = useCallback(() => {
+        if (!containerRef.current) {
+            console.log('[Visibility Check] No container ref');
+            return;
+        }
+
+        const isCoverflowMode = window.innerWidth >= 500;
+        if (!isCoverflowMode) {
+            console.log('[Visibility Check] Not coverflow mode, disabling fade');
+            setFadeBasedOnVisibility(false);
+            return;
+        }
+
+        const container = containerRef.current;
+        const containerRect = container.getBoundingClientRect();
+
+        // Find adjacent slides using Swiper's CSS classes
+        const prevSlide = container.querySelector('.swiper-slide-prev');
+        const nextSlide = container.querySelector('.swiper-slide-next');
+
+        console.log('[Visibility Check] Slides found:', {
+            prevSlide: !!prevSlide,
+            nextSlide: !!nextSlide
+        });
+
+        if (!prevSlide || !nextSlide) {
+            console.log('[Visibility Check] Missing slides, disabling fade');
+            setFadeBasedOnVisibility(false);
+            return;
+        }
+
+        const prevRect = prevSlide.getBoundingClientRect();
+        const nextRect = nextSlide.getBoundingClientRect();
+
+        // Small tolerance for rounding errors
+        const tolerance = 2;
+
+        // Check if prev card's left edge overflows container's left
+        const overflowsLeft = prevRect.left < containerRect.left - tolerance;
+        // Check if next card's right edge overflows container's right
+        const overflowsRight = nextRect.right > containerRect.right + tolerance;
+
+        const hasOverflow = overflowsLeft || overflowsRight;
+
+        console.log('[Visibility Check] Measurements:', {
+            containerLeft: containerRect.left,
+            containerRight: containerRect.right,
+            prevSlideLeft: prevRect.left,
+            nextSlideRight: nextRect.right,
+            overflowsLeft,
+            overflowsRight,
+            hasOverflow
+        });
+
+        setFadeBasedOnVisibility(hasOverflow);
+    }, []);
+
     useEffect(() => {
-        const checkCardsVisibility = () => {
-            if (!containerRef.current || !lastCardRef.current) return;
-
-            const containerRect = containerRef.current.getBoundingClientRect();
-            const lastCardRect = lastCardRef.current.getBoundingClientRect();
-            const lastCardVisible = lastCardRect.left >= containerRect.left - 8 - 2;
-
-            setAllCardsVisible(lastCardVisible);
-
-            const isCoverflowMode = window.innerWidth >= 500;
-            const isDesktop = window.innerWidth >= 1200;
-            const shouldFade = isCoverflowMode && (isDesktop ? !lastCardVisible : true);
-
-            setShouldApplyFade(shouldFade);
-        };
-
         checkCardsVisibility();
         window.addEventListener('resize', checkCardsVisibility);
         const timeoutId = setTimeout(checkCardsVisibility, 300);
@@ -45,7 +88,7 @@ const NeuralServices = () => {
             window.removeEventListener('resize', checkCardsVisibility);
             clearTimeout(timeoutId);
         };
-    }, []);
+    }, [checkCardsVisibility]);
 
     return (
         <>
@@ -61,10 +104,10 @@ const NeuralServices = () => {
             </div>
 
             {/* Services container */}
-            <div className="max-w-content mx-auto overflow-x-clip overflow-y-hidden">
+            <div className="max-w-content mx-auto overflow-x-clip overflow-y-visible">
                 <div className="relative overflow-visible -mx-4 md:mx-0">
                     {/* Navigation Buttons */}
-                    <div className="service-slider-nav-mobile relative z-10">
+                    <div className="service-slider-nav-mobile relative z-10 px-4">
                         <button
                             className="swiper-button-prev-services"
                             aria-label="Previous service"
@@ -88,14 +131,17 @@ const NeuralServices = () => {
                         className="relative swiper-3d-container"
                         style={{
                             perspective: '1200px',
-                            ...(shouldApplyFade ? {
-                                maskImage: window.innerWidth >= 1200
+                            maskImage: shouldApplyFade
+                                ? (window.innerWidth >= 1200
                                     ? 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)'
-                                    : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)',
-                                WebkitMaskImage: window.innerWidth >= 1200
+                                    : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)')
+                                : 'none',
+                            WebkitMaskImage: shouldApplyFade
+                                ? (window.innerWidth >= 1200
                                     ? 'linear-gradient(to right, transparent, black 120px, black calc(100% - 120px), transparent)'
-                                    : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)'
-                            } : {})
+                                    : 'linear-gradient(to right, transparent, black 96px, black calc(100% - 96px), transparent)')
+                                : 'none',
+                            transition: 'mask-image 0.4s ease-out, -webkit-mask-image 0.4s ease-out'
                         }}
                     >
                         <Swiper
@@ -136,6 +182,26 @@ const NeuralServices = () => {
                             onSwiper={(swiper) => {
                                 swiperRef.current = swiper;
                             }}
+                            onSlideChange={() => {
+                                console.log('[Slide Change]');
+                                if (window.innerWidth >= 500) {
+                                    // Clear any existing timeout
+                                    if (transitionTimeoutRef.current) {
+                                        clearTimeout(transitionTimeoutRef.current);
+                                    }
+
+                                    // Attiva il fade durante la transizione
+                                    setFadeBasedOnTransition(true);
+
+                                    // Disattiva il fade dopo la durata della transizione (400ms + buffer)
+                                    transitionTimeoutRef.current = setTimeout(() => {
+                                        console.log('[Transition Complete]');
+                                        setFadeBasedOnTransition(false);
+                                        // Ricalcola la visibilità
+                                        checkCardsVisibility();
+                                    }, 500);
+                                }
+                            }}
                             className="services-3d-swiper"
                         >
                             {SERVICES.map((item, index) => (
@@ -143,8 +209,7 @@ const NeuralServices = () => {
                                     {({ isActive }) => (
                                         <div className="w-full h-full flex items-center justify-center">
                                             <div
-                                                ref={index === SERVICES.length - 1 ? lastCardRef : null}
-                                                className="service-slide-content h-full"
+                                                className="service-slide-content h-full pb-2 pr-2"
                                                 onClick={() => {
                                                     if (!isActive && swiperRef.current) {
                                                         const realIndex = swiperRef.current.slides.findIndex(

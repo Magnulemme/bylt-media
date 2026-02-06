@@ -120,8 +120,7 @@
 
 /* Mobile Timeline Wrapper - Padding verticale per effetto sticky */
 .mobile-timeline-wrapper {
-  padding-top: var(--spacing-padding-sm);
-  padding-bottom: var(--spacing-padding-sm);
+
 }
 
 @media (min-width: 768px) {
