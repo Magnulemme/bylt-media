@@ -20,7 +20,7 @@ const AfterByltChart = ({ className, headline = "The momentum kept building.", d
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     return (
-        <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg", className)}>
+        <div className={cn("case-study-after-chart max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)", className)}>
             <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna sinistra: titolo + copy */}
                 <div>

@@ -6,11 +6,9 @@ const OurSolution = ({ solution }) => {
     if (!solution) return null;
 
     return (
-        <div className="py-padding-lg">
-            <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x)">
-                <SectionHeader description={solution.description} />
-                <PillarsGrid pillars={solution.pillars} />
-            </div>
+        <div className="case-study-solution-section">
+            <SectionHeader description={solution.description} />
+            <PillarsGrid pillars={solution.pillars} />
         </div>
     );
 };
@@ -210,13 +208,13 @@ const PillarCard = ({ pillar, index }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl border border-white/10 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 shadow-[6px_6px_0px_rgba(34,211,238,1)]"
+            className="group relative rounded-2xl border border-slate-700/60 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 shadow-[6px_6px_0px_rgba(34,211,238,1)]"
         >
+            {/* Glassmorphism background */}
+            <div className="absolute inset-0 bg-slate-950/10 backdrop-blur-xl" />
+
             {/* Animated Wave Background */}
             <AnimatedWaveCardCanvas variant={index} />
-
-            {/* Glassmorphism overlay */}
-            <div className="absolute inset-0 z-[5] bg-black/5" />
 
             {/* Content */}
             <div className="relative z-10 p-6">

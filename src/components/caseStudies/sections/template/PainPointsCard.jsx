@@ -18,7 +18,7 @@ const BeforeByltChart = ({ className, headline = "The numbers told the story.", 
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
     return (
-        <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) pt-0 pb-padding-lg", className)}>
+        <div className={cn("max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg md:py-padding-xl", className)}>
             <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna destra (su desktop): titolo + copy - order-last su mobile, order-first su lg per reverse */}
                 <div className="lg:order-last">

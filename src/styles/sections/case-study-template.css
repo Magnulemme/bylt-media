@@ -1,0 +1,259 @@
+/* ========================================
+   CASE STUDY TEMPLATE - SINGLE PAGE
+   Spacing: lg (mobile) → xl (desktop 768px+)
+   ======================================== */
+
+/* ----------------------------------------
+   RESPONSIVE VISIBILITY HELPERS
+   ---------------------------------------- */
+
+/* Show on mobile + tablet (< 1024px), hide on desktop */
+.show-until-lg {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .show-until-lg {
+    display: none;
+  }
+}
+
+/* Show only on desktop (>= 1024px) */
+.show-from-lg {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .show-from-lg {
+    display: block;
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY REVEAL SECTION - Sticky reveal con clip-path
+   z-index: 1 per la prima, copre la seconda
+   ---------------------------------------- */
+.case-study-reveal-section {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 1;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-reveal-section {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* Variante con z-index più basso per la seconda reveal */
+.case-study-reveal-section-lower {
+  @apply relative overflow-hidden;
+  position: sticky;
+  bottom: 0;
+  background: #020617;
+  z-index: 0;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+  padding-top: var(--spacing-padding-lg);
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-reveal-section-lower {
+    padding-top: var(--spacing-padding-xl);
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY CHALLENGE SECTION - z-index alto per coprire reveal
+   ---------------------------------------- */
+.case-study-challenge-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+}
+
+/* ----------------------------------------
+   CASE STUDY RESULTS SECTION - z-index alto per coprire reveal
+   ---------------------------------------- */
+.case-study-results-section {
+  position: relative;
+  overflow: hidden;
+  background: #020617;
+  z-index: 10;
+}
+
+/* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Page wrapper
+   ---------------------------------------- */
+.case-study-page-hero {
+  @apply relative flex flex-col overflow-x-clip w-full;
+  background: #020617;
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .case-study-page-hero {
+    min-height: 100dvh;
+    padding-top: calc(var(--navbar-height-desktop));
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Section
+   ---------------------------------------- */
+.case-study-hero-section {
+  @apply relative overflow-hidden flex flex-col;
+  z-index: 10;
+  background: #020617;
+  min-height: calc(100vh - 70px - 0.5rem - 0.5rem);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .case-study-hero-section {
+    min-height: calc(100vh - var(--navbar-height-desktop) - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* ----------------------------------------
+   CASE STUDY TEMPLATE HERO - Container
+   Layout diverso, padding specifici per hero
+   ---------------------------------------- */
+.case-study-hero-container {
+  @apply relative z-20 mx-auto flex-1 flex flex-col justify-center;
+  max-width: 1200px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: var(--spacing-padding-sm);
+  padding-bottom: var(--spacing-padding-sm);
+}
+
+@media (min-width: 500px) {
+  .case-study-hero-container {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 640px) {
+  .case-study-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  }
+}
+
+@media (min-width: 768px) {
+  .case-study-hero-container {
+    padding-top: var(--spacing-padding-md);
+    padding-bottom: var(--spacing-padding-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-study-hero-container {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+  }
+}
+
+/* ----------------------------------------
+   BRAND MARQUEE WRAPPER - First (inside shader)
+   ---------------------------------------- */
+.case-study-marquee-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-marquee-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   BRAND MARQUEE WRAPPER - Reverse (after shader)
+   ---------------------------------------- */
+.case-study-marquee-reverse-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-marquee-reverse-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   PROCESS + SOLUTION WRAPPER - After first marquee
+   ---------------------------------------- */
+.case-study-process-solution-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-process-solution-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   RESULTS WRAPPER - After reverse marquee
+   ---------------------------------------- */
+.case-study-results-wrapper {
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-results-wrapper {
+    padding-top: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   PROCESS GRID SECTION - pb per separare da OurSolution
+   ---------------------------------------- */
+.case-study-process-section {
+  position: relative;
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-process-section {
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   SOLUTION SECTION - pb (chiude lo shader)
+   ---------------------------------------- */
+.case-study-solution-section {
+  padding-bottom: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-solution-section {
+    padding-bottom: var(--spacing-padding-xl);
+  }
+}
+
+/* ----------------------------------------
+   AFTER BYLT CHART - pt per separare da ResultsDashboard
+   ---------------------------------------- */
+.case-study-after-chart {
+  position: relative;
+  padding-top: var(--spacing-padding-lg);
+}
+
+@media (min-width: 768px) {
+  .case-study-after-chart {
+    padding-top: var(--spacing-padding-xl);
+  }
+}

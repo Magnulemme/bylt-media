@@ -67,7 +67,7 @@ const AccordionItem = ({ step, isOpen, onToggle, index }) => {
 
                             {/* Metrics tags */}
                             {step.metrics && step.metrics.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mb-4">
+                                <div className="flex flex-wrap gap-2">
                                     {step.metrics.map((metric, i) => (
                                         <span
                                             key={i}
@@ -78,21 +78,6 @@ const AccordionItem = ({ step, isOpen, onToggle, index }) => {
                                         </span>
                                     ))}
                                 </div>
-                            )}
-
-                            {/* Details */}
-                            {step.details && step.details.length > 0 && (
-                                <ul className="space-y-2">
-                                    {step.details.map((detail, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-body-sm">
-                                            <div
-                                                className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
-                                                style={{ background: accentColor }}
-                                            />
-                                            {detail}
-                                        </li>
-                                    ))}
-                                </ul>
                             )}
                         </div>
                     </motion.div>
@@ -115,7 +100,7 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
     };
 
     return (
-        <section className="pb-padding-lg relative">
+        <section className="case-study-process-section">
             {/* Header */}
             <div className="mb-padding-md">
                 <h2 className="heading-h1 text-white mb-4">The Process</h2>
@@ -129,7 +114,7 @@ const ProcessGrid = ({ process, description = DEFAULT_DESCRIPTION }) => {
             {/* Accordion + Wave Canvas Grid */}
             <div className="grid grid-cols-1 laptop:grid-cols-2 gap-6 items-stretch">
                 {/* Accordion Card */}
-                <div className="laptop:order-1 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:border-cyan-500/30 hover:bg-white/[0.07] transition-all overflow-hidden shadow-[6px_6px_0px_rgba(34,211,238,1)]">
+                <div className="laptop:order-1 rounded-xl border border-slate-700/60  bg-white/10 backdrop-blur-xl hover:border-cyan-500/30 hover:bg-white/15 transition-all overflow-hidden shadow-[6px_6px_0px_rgba(34,211,238,1)]">
                     <div className="p-6">
                         {process.map((step, index) => (
                             <AccordionItem

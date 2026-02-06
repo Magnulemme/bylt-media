@@ -7,7 +7,7 @@ const ResultsDashboard = ({ results }) => {
     if (!results) return null;
 
     return (
-        <div className="pb-padding-lg">
+        <div>
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-18 xl:gap-24 2xl:gap-36 items-center">
                 {/* Colonna sinistra: freccia + stats */}
                 <ResultsMetrics metrics={results.metrics} className="order-last lg:order-first" />

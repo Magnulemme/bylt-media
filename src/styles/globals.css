@@ -179,6 +179,98 @@
   }
 
   /* ========================================
+     CONTAINER UTILITIES
+     Sistema unificato per padding orizzontali
+     ======================================== */
+
+  /* Container con max-width e padding responsive */
+  .container-content {
+    max-width: var(--breakpoint-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  }
+
+  @media (min-width: 640px) {
+    .container-content {
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-content {
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+  }
+
+  /* Solo padding, no max-width (per sezioni che non ne hanno bisogno) */
+  .container-padded {
+    padding-left: max(var(--margin-safe-x), var(--spacing-padding-xs));
+    padding-right: max(var(--margin-safe-x), var(--spacing-padding-xs));
+  }
+
+  @media (min-width: 640px) {
+    .container-padded {
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-sm));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-sm));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-padded {
+      padding-left: max(var(--margin-safe-x), var(--spacing-padding-md));
+      padding-right: max(var(--margin-safe-x), var(--spacing-padding-md));
+    }
+  }
+
+  /* Nessun padding - per marquee e elementi full-bleed */
+  .container-bleed {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Container con breakpoint-outer (per shader, sfondi) */
+  .container-outer {
+    max-width: var(--breakpoint-outer);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========================================
+     GUIDA UTILIZZO CONTAINER
+     ========================================
+
+     STRUTTURA PAGINA:
+     ┌─────────────────────────────────────────────────────────┐
+     │ <main className="px-4"> (padding globale 16px)          │
+     │  ┌───────────────────────────────────────────────────┐  │
+     │  │ Sezioni, Marquee, Shader (tutti con px-4 base)    │  │
+     │  │  ┌─────────────────────────────────────────────┐  │  │
+     │  │  │ .container-content (max-w + padding extra)  │  │  │
+     │  │  └─────────────────────────────────────────────┘  │  │
+     │  └───────────────────────────────────────────────────┘  │
+     └─────────────────────────────────────────────────────────┘
+
+     QUANDO USARE COSA:
+
+     1. px-4 su <main>
+        - Padding globale per tutta la pagina (16px)
+        - Garantisce bordi arrotondati visibili per shader/sezioni
+
+     2. .container-content
+        - Contenuto standard con max-width e padding responsive
+        - Uso: TheChallenge, OurSolution, ResultsDashboard
+
+     3. .container-padded
+        - Solo padding responsive, no max-width
+        - Uso: Sezioni che hanno già un parent con max-width
+
+     ======================================== */
+
+  /* ========================================
      DYNAMIC VIEWPORT HEIGHT UTILITIES
      Use dvh instead of vh for better mobile support
      ======================================== */
@@ -281,6 +373,7 @@
     @import "./sections/about.css";
     @import "./sections/service-page.css";
     @import "./sections/case-studies.css";
+    @import "./sections/case-study-template.css";
     @import "./sections/contact.css";
     @import "./sections/footer.css";
   }

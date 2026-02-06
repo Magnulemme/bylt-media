@@ -17,9 +17,9 @@ const CaseStudyTemplate = ({ study }) => {
 
     return (
         <div className='overflow-x-clip'>
-            <main style={{ background: '#020617' }}>
+            <main className="px-4" style={{ background: '#020617' }}>
                 {/* Hero (ora include anche Project Overview) */}
-                <div className='px-4 case-study-page-hero'>
+                <div className='case-study-page-hero'>
                     <CaseStudyHeroSection
                         data={study.hero}
                         imageUrl={study.imageUrl}
@@ -28,13 +28,13 @@ const CaseStudyTemplate = ({ study }) => {
                 </div>
 
                 {/* Before BYLT Marquee - Reveal Effect */}
-                <div className="case-study-reveal-section">
+                <div className="case-study-reveal-section ">
                     <BrandMarquee text="BEFORE BYLT" />
                 </div>
 
                 {/* The Challenge Section - z-index alto per scorrere sopra il marquee */}
                 <section className="case-study-challenge-section">
-                    <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
+                    <div className="container-content">
                         <TheChallenge challenge={study.challenge} />
                     </div>
 
@@ -48,11 +48,11 @@ const CaseStudyTemplate = ({ study }) => {
                         </div>
                         <div className="relative">
                             {/* Brand Marquee - usa breakpoint-outer */}
-                            <div className="case-study-marquee-wrapper">
+                            <div className="case-study-marquee-wrapper ">
                                 <BrandMarquee />
                             </div>
 
-                            <div className="case-study-process-solution-wrapper max-w-(--breakpoint-content) mx-auto">
+                            <div className="case-study-process-solution-wrapper container-content">
                                 <ProcessGrid process={study.process} description={study.processDescription} />
                                 <OurSolution solution={study.solution} />
                             </div>
@@ -61,13 +61,13 @@ const CaseStudyTemplate = ({ study }) => {
                 </section>
 
                 {/* THE BYLT EFFECT Marquee - Reveal Effect (z-index lower) */}
-                <div className="case-study-reveal-section-lower">
+                <div className="case-study-reveal-section-lower ">
                     <BrandMarquee text="THE BYLT EFFECT" reverse />
                 </div>
 
                 {/* Results Section - z-index alto per scorrere sopra il marquee */}
                 <section className="case-study-results-section">
-                    <div className="max-w-(--breakpoint-content) mx-auto px-(--margin-safe-x) py-padding-lg">
+                    <div className="container-content">
                         <ResultsDashboard results={study.results} />
                     </div>
 
