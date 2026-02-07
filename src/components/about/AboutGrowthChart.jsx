@@ -49,7 +49,7 @@ const AboutGrowthChart = ({ className = '' }) => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className={className}
         >
-            <div className="bg-transparent p-2">
+            <div className="rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500/50 transition-colors p-6">
                 {/* Header */}
                 <div className="mb-6">
                     <h4 className="text-lg font-semibold text-white mb-1">Typical Client Journey</h4>

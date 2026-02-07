@@ -139,9 +139,10 @@ export default function About() {
             <section className="about-apart-section">
                 <div className="about-apart-container">
                     {/* Accordion + Quote */}
-                    <div className="grid lg:grid-cols-2 gap-8 items-center mb-12">
+                    <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-12">
                         {/* Accordion */}
                         <FeaturesAccordion
+                            hasBorder={false}
                             headline="What Sets Us Apart"
                             description="We're not your typical agency. Here's what makes working with us different."
                             features={[

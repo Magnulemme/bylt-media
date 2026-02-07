@@ -85,7 +85,7 @@ const StatsGrid = ({
     oscillateAmplitude = 8,
     oscillateSpeed = 0.02
 }) => {
-    const isMobile = useIsMobile();
+    const isMobile = useIsMobile(1024);
 
     // Mobile: infinite moving cards
     if (isMobile) {

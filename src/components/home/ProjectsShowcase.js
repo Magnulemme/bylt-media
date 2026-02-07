@@ -255,20 +255,23 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                             {/* Card link - tutta l'area è cliccabile */}
                             <a
                                 href={project.link}
-                                className="group/card block rounded-lg overflow-hidden border-2 border-white/30 bg-white/5 backdrop-blur-sm transition-all duration-200 hover:translate-x-2 hover:translate-y-2 hover:shadow-[4px_4px_0px_rgba(34,211,238,0.5)] shadow-[6px_6px_0px_rgba(34,211,238,1)] hover:border-cyan-400/60"
+                                className="group/card block rounded-lg overflow-hidden border-2 border-white/30 bg-white/5 backdrop-blur-sm transition-all duration-200 hover:translate-x-2 hover:translate-y-2 hover:shadow-[4px_4px_0px_rgba(34,211,238,0.5)] shadow-[6px_6px_0px_rgba(34,211,238,1)] hover:border-cyan-400/60 relative"
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <div className="flex flex-col md:flex-row md:gap-10 md:p-6">
-                                    {/* Colonna 1: Image + Tags/Results (su md+) */}
+                                {/* Glass overlay effect */}
+                                <div className="absolute inset-0 bg-slate-950/10 backdrop-blur-[2px] pointer-events-none z-0" />
+
+                                <div className="flex flex-col md:flex-row md:gap-8 md:p-4 relative z-10">
+                                    {/* Colonna 1: Image + Tags + Results (su md-xl) */}
                                     <div className="md:w-80 shrink-0">
-                                        <div className="relative overflow-hidden aspect-[16/10] md:aspect-[4/3] border-b border-white/20 md:border md:rounded-lg">
+                                        <div className="relative overflow-hidden aspect-[16/10] md:aspect-[4/3] md:border md:rounded-lg">
                                             <img
                                                 src={project.image}
                                                 alt={project.name}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
-                                        {/* Results - sotto image su md-xl */}
+                                        {/* Stats - sotto image su md-xl */}
                                         <div className="hidden md:block xl:hidden mt-4">
                                             <div className="flex items-baseline gap-3">
                                                 <span className="text-2xl font-bold text-white tracking-tight">
@@ -279,44 +282,42 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                 </span>
                                             </div>
                                         </div>
+                                        {/* Tags - sotto stats su md-lg */}
+                                        <div className="hidden md:max-lg:flex flex-wrap items-center gap-2 mt-3">
+                                            <MovingBorderButton
+                                                as="span"
+                                                variant="tag"
+                                                color="cyan"
+                                                duration={2200}
+                                                className="text-xs font-semibold"
+                                            >
+                                                {project.category}
+                                            </MovingBorderButton>
+                                            <MovingBorderButton
+                                                as="span"
+                                                variant="tag"
+                                                color="purple"
+                                                duration={3000}
+                                                className="text-xs font-semibold"
+                                            >
+                                                {project.service}
+                                            </MovingBorderButton>
+                                        </div>
                                     </div>
 
                                     {/* Colonna 2: Descrizione + CTA (su md+) / Tutto su mobile */}
-                                    <div className="flex-1 flex flex-col justify-between p-4 md:p-0">
-                                        <div>
-                                            {/* Highlight stat + Tags - solo mobile */}
-                                            <div className="md:hidden">
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <span className="text-2xl font-bold text-white tracking-tight">
-                                                        {project.highlight}
-                                                    </span>
-                                                    <span className="text-xs text-cyan-400 uppercase tracking-wider">
-                                                        {project.highlightLabel}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-wrap items-center gap-2 mb-4">
-                                                    <MovingBorderButton
-                                                        as="span"
-                                                        variant="tag"
-                                                        color="cyan"
-                                                        duration={2200}
-                                                        className="text-xs font-semibold"
-                                                    >
-                                                        {project.category}
-                                                    </MovingBorderButton>
-                                                    <MovingBorderButton
-                                                        as="span"
-                                                        variant="tag"
-                                                        color="purple"
-                                                        duration={3000}
-                                                        className="text-xs font-semibold"
-                                                    >
-                                                        {project.service}
-                                                    </MovingBorderButton>
-                                                </div>
+                                    <div className="flex-1 flex flex-col p-4 md:p-0 xl:grid xl:grid-cols-2 xl:gap-6">
+                                        {/* Highlight stat + Tags - solo mobile */}
+                                        <div className="md:hidden">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <span className="text-2xl font-bold text-white tracking-tight">
+                                                    {project.highlight}
+                                                </span>
+                                                <span className="text-xs text-cyan-400 uppercase tracking-wider">
+                                                    {project.highlightLabel}
+                                                </span>
                                             </div>
-                                            {/* Tags + Results (xl+) - solo md+ */}
-                                            <div className="hidden md:flex flex-wrap items-center gap-2 mb-4">
+                                            <div className="flex flex-wrap items-center gap-2 mb-4">
                                                 <MovingBorderButton
                                                     as="span"
                                                     variant="tag"
@@ -335,25 +336,89 @@ const ProjectItem = React.memo(({ project, index, onHover, hoveredProject, isExp
                                                 >
                                                     {project.service}
                                                 </MovingBorderButton>
-                                                {/* Results inline con tags su xl+ */}
-                                                <div className="hidden xl:flex items-baseline gap-3 ml-auto">
-                                                    <span className="text-2xl font-bold text-white tracking-tight">
-                                                        {project.highlight}
-                                                    </span>
-                                                    <span className="text-xs text-cyan-400 uppercase tracking-wider">
-                                                        {project.highlightLabel}
-                                                    </span>
-                                                </div>
                                             </div>
-                                            <p className="text-body-lg text-white/80 md:mt-0 max-w-xl">
+                                            <p className="text-body-lg text-white/80 max-w-xl">
                                                 {project.description}
                                             </p>
+
+                                            <span className="inline-flex items-center gap-2 mt-4 text-base font-semibold text-white transition-colors duration-300 group-hover/card:text-cyan-400">
+                                                <span>Read Full Case Study</span>
+                                                <span className="transition-transform duration-300 group-hover/card:translate-x-1">→</span>
+                                            </span>
                                         </div>
 
-                                        <span className="inline-flex items-center gap-2 mt-6 text-base font-semibold text-white transition-colors duration-300 group-hover/card:text-cyan-400">
-                                            <span>Read Full Case Study</span>
-                                            <span className="transition-transform duration-300 group-hover/card:translate-x-1">→</span>
-                                        </span>
+                                        {/* Colonna 1 (md+): Titolo, Descrizione, CTA */}
+                                        <div className="hidden md:flex md:flex-col md:flex-1 xl:order-1">
+                                            {/* Titolo */}
+                                            <h4 className="text-xl font-bold text-white mb-3">
+                                                {project.name}
+                                            </h4>
+
+                                            <p className="text-body-lg text-white/80 max-w-xl">
+                                                {project.description}
+                                            </p>
+
+                                            <span className="inline-flex items-center gap-2 mt-4 text-base font-semibold text-white transition-colors duration-300 group-hover/card:text-cyan-400">
+                                                <span>Read Full Case Study</span>
+                                                <span className="transition-transform duration-300 group-hover/card:translate-x-1">→</span>
+                                            </span>
+
+                                            {/* Tags - in basso, stessa riga delle stats su lg, allineati a destra */}
+                                            <div className="hidden lg:flex xl:hidden flex-wrap items-center gap-2 mt-auto self-end">
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="cyan"
+                                                    duration={2200}
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.category}
+                                                </MovingBorderButton>
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="purple"
+                                                    duration={3000}
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.service}
+                                                </MovingBorderButton>
+                                            </div>
+                                        </div>
+
+                                        {/* Colonna 2 (xl+): Tags e Stats */}
+                                        <div className="hidden xl:flex xl:flex-col xl:gap-4 xl:order-2">
+                                            {/* Tags */}
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="cyan"
+                                                    duration={2200}
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.category}
+                                                </MovingBorderButton>
+                                                <MovingBorderButton
+                                                    as="span"
+                                                    variant="tag"
+                                                    color="purple"
+                                                    duration={3000}
+                                                    className="text-xs font-semibold"
+                                                >
+                                                    {project.service}
+                                                </MovingBorderButton>
+                                            </div>
+                                            {/* Stats */}
+                                            <div className="flex items-baseline gap-3">
+                                                <span className="text-2xl font-bold text-white tracking-tight">
+                                                    {project.highlight}
+                                                </span>
+                                                <span className="text-xs text-cyan-400 uppercase tracking-wider">
+                                                    {project.highlightLabel}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </a>

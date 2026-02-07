@@ -331,6 +331,15 @@ const DemoTimelineMobile = () => {
 
     const showText = isSmallScreen ? false : showTextFromHook;
 
+    // Ricalcola la posizione centrata quando showText cambia
+    useEffect(() => {
+        // Forza un ricalcolo del posizionamento dopo che il DOM si è aggiornato
+        const timer = setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 150);
+        return () => clearTimeout(timer);
+    }, [showText]);
+
     return (
         <div className="lg:hidden mobile-timeline-container">
             {/* Title */}
@@ -386,7 +395,7 @@ const DemoTimelineMobile = () => {
 
                     {/* Hook text inside sticky - shown conditionally */}
                     {showText && (
-                        <div className="campaign-header text-right">
+                        <div className="campaign-header text-right pb-8">
                             <h3 className="heading-h2 text-white">
                                 From Strategy to Scale
                             </h3>

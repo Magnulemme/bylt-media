@@ -24,7 +24,7 @@ const FeatureCard = ({ feature, index, variant, h, fullWidth }) => {
         >
             <div className="relative z-10">
                 {/* Title */}
-                <h4 className="mb-2 text-lg font-semibold" style={{ color: titleColor }}>
+                <h4 className="mb-2 text-xl font-semibold" style={{ color: titleColor }}>
                     {feature.title}
                 </h4>
                 {/* Description */}

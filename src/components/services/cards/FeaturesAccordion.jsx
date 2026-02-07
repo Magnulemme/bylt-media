@@ -53,7 +53,7 @@ const AccordionItem = ({ feature, isOpen, onToggle, index }) => {
     );
 };
 
-const FeaturesAccordion = ({ features, waveBackground, headerBackground, headline, description }) => {
+const FeaturesAccordion = ({ features, waveBackground, headerBackground, headline, description, hasBorder = true }) => {
     const [openItems, setOpenItems] = useState({ 0: true }); // First item open by default
 
     const toggleItem = (index) => {
@@ -64,7 +64,7 @@ const FeaturesAccordion = ({ features, waveBackground, headerBackground, headlin
     };
 
     return (
-        <div className="rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500/50 transition-colors overflow-hidden">
+        <div className={`rounded-xl bg-slate-950 overflow-hidden ${hasBorder ? 'border border-slate-800 hover:border-cyan-500/50 transition-colors' : ''}`}>
             {/* Header with background - contained within its own section */}
             <div className="relative overflow-hidden">
                 {/* Custom React component background (e.g., DitherShader) */}
@@ -87,8 +87,8 @@ const FeaturesAccordion = ({ features, waveBackground, headerBackground, headlin
                 {(waveBackground || headerBackground) && (
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-slate-950/40 to-slate-950/60 z-0" />
                 )}
-                <div className="relative z-10 p-6">
-                    <h2 className="heading-h2 text-white mb-3">
+                <div className={`relative z-10 ${hasBorder ? 'p-6' : ''}`}>
+                    <h2 className="heading-h1 text-white mb-3">
                         {headline}
                     </h2>
                     {description && (
@@ -100,7 +100,7 @@ const FeaturesAccordion = ({ features, waveBackground, headerBackground, headlin
             </div>
 
             {/* Accordion items - no wave background */}
-            <div className="px-6 pb-6">
+            <div className={hasBorder ? 'px-6 pb-6' : ''}>
                 {features.map((feature, index) => (
                     <AccordionItem
                         key={index}
