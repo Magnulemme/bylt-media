@@ -21,18 +21,16 @@ const checklistItems = [
 ];
 
 // Card content component
-const CardContent = ({ study, overlayOpacity }) => ( 
+const CardContent = ({ study, overlayOpacity }) => (
     <div
-        className="relative overflow-hidden rounded-2xl border border-white/10 group cursor-pointer"
+        className="relative rounded-2xl border border-slate-700/60 group cursor-pointer hover:border-cyan-500/30 transition-all duration-300 shadow-[6px_6px_0px_rgba(34,211,238,1)] hover:shadow-[8px_8px_0px_rgba(34,211,238,1)]"
         style={{
             backgroundColor: '#020617',
-            maskImage: 'radial-gradient(white, black)',
-            WebkitMaskImage: 'radial-gradient(white, black)',
             isolation: 'isolate',
         }}
     >
         {/* Image */}
-        <div className="relative aspect-square sm:aspect-[16/9] overflow-hidden">
+        <div className="relative aspect-square sm:aspect-[16/9] overflow-hidden rounded-t-2xl">
             <img
                 src={study.imageUrl}
                 alt={study.client}
@@ -119,8 +117,13 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
 
     const x = useTransform(
         scrollYProgress,
-        [cardStart, cardStart + segmentSize * 0.1, cardEnd],
-        isLastCard ? [0, 0, 0] : [0, 0, exitDirection * 1800]
+        index === 0
+            ? [cardStart, cardEnd]
+            : [cardStart, cardStart + segmentSize * 0.1, cardEnd],
+        isLastCard ? [0, 0, 0] :
+        index === 0
+            ? [0, exitDirection * 1800]
+            : [0, 0, exitDirection * 1800]
     );
 
     const y = useTransform(
@@ -140,32 +143,37 @@ const StackedCard = ({ study, index, totalCards, scrollYProgress }) => {
     );
 
     // Dark overlay for depth effect - dynamically updates as cards slide away
-    // Each time a card ahead slides away, this card's overlay decreases
+    // First 2 cards stay at 100% opacity, effect starts from the 3rd card onwards
     const progressSteps = [];
     const overlaySteps = [];
     for (let i = 0; i <= index; i++) {
         progressSteps.push(i * segmentSize);
-        overlaySteps.push(Math.max(0, (index - i) * 0.18));
+        // Subtract 1 to keep first 2 cards at full opacity
+        overlaySteps.push(Math.max(0, ((index - i) - 1) * 0.24));
     }
     const overlayOpacity = useTransform(scrollYProgress, progressSteps, overlaySteps);
 
     const zIndex = totalCards - index;
 
+    // Calculate opacity for the entire card (including shadow)
+    const cardOpacity = useTransform(overlayOpacity, [0, 1], [1, 0.3]);
+
     return (
         <Link href={study.link} passHref legacyBehavior>
             <motion.a
-                className="absolute inset-0 block overflow-hidden rounded-2xl"
+                className="absolute inset-0 block"
                 style={{
                     x,
                     y,
                     rotate,
                     zIndex,
+                    opacity: cardOpacity,
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
                     perspective: 1000,
                 }}
             >
-                <CardContent study={study} overlayOpacity={overlayOpacity} />
+                <CardContent study={study} overlayOpacity={null} />
             </motion.a>
         </Link>
     );
@@ -229,7 +237,7 @@ const CaseStudiesHero = () => {
     const scrollHeight = `${cardsToAnimate * 100}vh`;
 
     return (
-        <div style={{ overflow: 'clip' }}><div
+        <div style={{ overflowX: 'clip', overflowY: 'visible' }}><div
         className="relative sticky z-0 overflow-hidden rounded-2xl"
         style={{ top: '-12px', height: 'calc(100dvh + 24px)', background: '#020617' }}
     >
@@ -255,14 +263,14 @@ const CaseStudiesHero = () => {
             style={{ top: stickyTop }}
         >
             <div ref={stickyContentRef} className="flex flex-col">
-                <div className="relative mx-auto px-6 max-w-[min(768px,85vw)] md:max-w-[min(768px,90vw)]">
+                <div className="relative mx-auto px-6 max-w-[min(500px,80vw)] md:max-w-[min(650px,75vw)] lg:max-w-[min(768px,90vw)] pr-2 pb-2">
                     {/* Ghost card for height */}
                     <div ref={cardRef} className="invisible">
                         <CardContent study={showcaseStudies[0]} />
                     </div>
 
                     {/* Actual stacked cards */}
-                    <div className="absolute inset-y-0 left-6 right-6">
+                    <div className="absolute top-0 bottom-0 left-6 right-2">
                         {showcaseStudies.map((study, index) => (
                             <StackedCard
                                 key={study.id}
@@ -277,7 +285,7 @@ const CaseStudiesHero = () => {
 
                 {/* Title below cards - conditionally shown based on available space */}
                 {showText && (
-                    <div className="text-center pt-12 px-4 max-w-5xl mx-auto">
+                    <div className="text-center pt-16 px-4 max-w-5xl mx-auto">
                         <h3 className="heading-h2 text-white mb-3">
                             Results That Speak for Themselves
                         </h3>
