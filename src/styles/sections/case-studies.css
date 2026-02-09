@@ -72,13 +72,6 @@
   overflow: hidden;
   background: #020617;
   z-index: 10;
-  padding-top: var(--spacing-padding-lg);
-}
-
-@media (min-width: 768px) {
-  .case-studies-why-bylt-section {
-    padding-top: var(--spacing-padding-xl);
-  }
 }
 
 /* CTA section spacing - !important per sovrascrivere py-12/py-24 di CTASectionCard */

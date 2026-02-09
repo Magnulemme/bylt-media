@@ -1,7 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
+
+  // Next.js 16 - Cache Components & View Transitions
+  experimental: {
+    cacheComponents: true,
+    viewTransition: true,
+    cacheLife: {
+      default: {
+        stale: 3600, // 1 hour
+        revalidate: 900, // 15 minutes
+      },
+    },
+  },
+
   // SEO and Performance optimizations
   poweredByHeader: false, // Remove X-Powered-By header for security
   

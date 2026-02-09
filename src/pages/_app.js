@@ -7,6 +7,7 @@ import { loadNonCriticalCSS } from '../utils/loadCSS';
 import EnhancedCookieConsent from '@/components/EnhancedCookieConsent';
 import SplashScreen from '@/components/SplashScreen';
 import PageTransition from '@/components/PageTransition';
+import PersistentShaderBackground from '@/components/PersistentShaderBackground';
 import Lenis from 'lenis';
 
 // Load fonts with next/font - prevents FOUT and layout shift
@@ -49,11 +50,33 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      {/* Persistent Shader Background - rimane montato durante la navigazione */}
+      <PersistentShaderBackground
+        colors={{
+          color1: 0x1a1a2e,
+          color2: 0x16213e,
+          color3: 0x0f3460,
+        }}
+        className="fixed inset-0 z-0"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0,
+        }}
+      />
+
+      {/* SplashScreen al livello più alto per garantire z-index corretto */}
       <SplashScreen />
-      <PageTransition>
-        <Component {...pageProps} />
-      </PageTransition>
-      <EnhancedCookieConsent />
+
+      <div className="relative z-10">
+        <PageTransition>
+          <Component {...pageProps} />
+        </PageTransition>
+        <EnhancedCookieConsent />
+      </div>
     </div>
   );
 }

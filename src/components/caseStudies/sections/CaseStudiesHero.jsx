@@ -4,10 +4,12 @@ import Link from 'next/link';
 import ShaderBackgroundDirect from '../../home/ShaderBackgroundDirect';
 import { MovingBorderButton } from '../../ui/moving-border-button';
 import { caseStudiesData, heroContent } from '../constants';
-import { useCardCentering } from '../hooks/useCardCentering';
+import { useShowText } from '../hooks/useShowText';
+import { useCenteredPosition } from '../../home/PerformanceMetrics/hooks/useCenteredPosition';
+
 // Signal page ready for splash screen
 const signalPageReady = () => {
-    if (typeof window !== 'undefined' && window.location.pathname === '/casestudies') {
+    if (typeof window !== 'undefined' && window.location.pathname === '/case-studies') {
         window.dispatchEvent(new CustomEvent('hero-ready'));
     }
 };
@@ -63,7 +65,7 @@ const CardContent = ({ study, overlayOpacity }) => (
             </div>
 
             {/* Description */}
-            <p className="text-body-sm mb-6 line-clamp-2">
+            <p className="text-body-sm mb-6 line-clamp-2 max-md:hidden">
                 {study.description}
             </p>
 
@@ -184,13 +186,15 @@ const CaseStudiesHero = () => {
     const cardRef = useRef(null);
     const stickyRef = useRef(null);
     const stickyContentRef = useRef(null);
+    const textRef = useRef(null);
     const [cardHeight, setCardHeight] = useState(500);
     const [animationStartOffset, setAnimationStartOffset] = useState(0);
 
     const showcaseStudies = caseStudiesData;
 
-    // Calculate centering and text visibility
-    const { showText, stickyTop, stickyTopNumeric } = useCardCentering(stickyContentRef, cardHeight);
+    // Calculate text visibility and centering position
+    const showText = useShowText(cardRef, textRef, 200);
+    const topPosition = useCenteredPosition(stickyContentRef);
 
     // Use useLayoutEffect for measurements to prevent layout shift
     useLayoutEffect(() => {
@@ -215,8 +219,8 @@ const CaseStudiesHero = () => {
                 // Position of sticky container relative to section
                 const cardY = stickyRect.top - containerRect.top;
 
-                // Sticky point: use the calculated stickyTop from the hook
-                const stickyPoint = stickyTopNumeric;
+                // Sticky point: parse numeric value from topPosition
+                const stickyPoint = parseFloat(topPosition) || 0;
 
                 // Animation starts when card reaches its sticky position
                 setAnimationStartOffset(Math.max(0, cardY - stickyPoint));
@@ -226,7 +230,16 @@ const CaseStudiesHero = () => {
         calculateOffset();
         window.addEventListener('resize', calculateOffset);
         return () => window.removeEventListener('resize', calculateOffset);
-    }, [cardHeight, stickyTopNumeric]);
+    }, [cardHeight, topPosition]);
+
+    // Ricalcola la posizione centrata quando showText cambia
+    useLayoutEffect(() => {
+        // Forza un ricalcolo del posizionamento dopo che il DOM si è aggiornato
+        const timer = setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 150);
+        return () => clearTimeout(timer);
+    }, [showText]);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -237,12 +250,13 @@ const CaseStudiesHero = () => {
     const scrollHeight = `${cardsToAnimate * 100}vh`;
 
     return (
-        <div style={{ overflowX: 'clip', overflowY: 'visible' }}><div
-        className="relative sticky z-0 overflow-hidden rounded-2xl"
-        style={{ top: '-12px', height: 'calc(100dvh + 24px)', background: '#020617' }}
-    >
-        <ShaderBackgroundDirect onReady={signalPageReady} />
-    </div>
+        <div style={{ overflowX: 'clip', overflowY: 'visible' }}>
+            <div
+                className="relative sticky z-0 overflow-hidden rounded-2xl"
+                style={{ top: '-12px', height: 'calc(100dvh + 24px)', background: '#020617' }}
+            >
+                <ShaderBackgroundDirect onReady={signalPageReady} />
+            </div>
 <section ref={containerRef} className="relative" style={{ height: `calc(${scrollHeight} + ${cardHeight}px + 100vh)` }}>
     {/* Content container - positioned over shader */}
     <div className="relative z-10 h-full" style={{ marginTop: '-100dvh' }}>
@@ -260,17 +274,17 @@ const CaseStudiesHero = () => {
         <div
             ref={stickyRef}
             className="sticky"
-            style={{ top: stickyTop }}
+            style={{ top: topPosition }}
         >
             <div ref={stickyContentRef} className="flex flex-col">
-                <div className="relative mx-auto px-6 max-w-[min(500px,80vw)] md:max-w-[min(650px,75vw)] lg:max-w-[min(768px,90vw)] pr-2 pb-2">
+                <div className="relative mx-auto px-6 max-w-[min(500px,80vw)] md:max-w-[min(650px,75vw)] lg:max-w-[min(850px,90vw)] pr-2 pb-2">
                     {/* Ghost card for height */}
                     <div ref={cardRef} className="invisible">
                         <CardContent study={showcaseStudies[0]} />
                     </div>
 
                     {/* Actual stacked cards */}
-                    <div className="absolute top-0 bottom-0 left-6 right-2">
+                    <div className="absolute top-0 bottom-0 left-4 right-6">
                         {showcaseStudies.map((study, index) => (
                             <StackedCard
                                 key={study.id}
@@ -283,17 +297,26 @@ const CaseStudiesHero = () => {
                     </div>
                 </div>
 
-                {/* Title below cards - conditionally shown based on available space */}
-                {showText && (
-                    <div className="text-center pt-16 px-4 max-w-5xl mx-auto">
-                        <h3 className="heading-h2 text-white mb-3">
-                            Results That Speak for Themselves
-                        </h3>
-                        <p className="text-body">
-                            Every project is a partnership built on data, creativity, and measurable outcomes.
-                        </p>
-                    </div>
-                )}
+                {/* Title below cards - always rendered for measurements, but hidden if not enough space */}
+                <div
+                    ref={textRef}
+                    className="text-center px-4 max-w-5xl mx-auto mt-24 mb-16"
+                    style={{
+                        opacity: showText ? 1 : 0,
+                        pointerEvents: showText ? 'auto' : 'none',
+                        visibility: showText ? 'visible' : 'hidden',
+                        position: showText ? 'relative' : 'absolute',
+                        top: showText ? 'auto' : 0,
+                        left: showText ? 'auto' : 0,
+                    }}
+                >
+                    <h3 className="heading-h2 text-white mb-3">
+                        Results That Speak for Themselves
+                    </h3>
+                    <p className="text-body">
+                        Every project is a partnership built on data, creativity, and measurable outcomes.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -304,7 +327,7 @@ const CaseStudiesHero = () => {
 <div className="relative z-20 text-center pb-24 px-4 max-w-5xl mx-auto">
     {/* Title shown here when not enough space in sticky section */}
     {!showText && (
-        <div className="text-center pt-12 pb-16 md:pb-20 max-w-5xl mx-auto">
+        <div className="text-center pt-12 md:pt-24 pb-16 md:pb-20 max-w-5xl mx-auto">
             <h3 className="heading-h2 text-white mb-3">
                 Results That Speak for Themselves
             </h3>

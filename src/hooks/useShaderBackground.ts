@@ -100,16 +100,27 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
   }, [taskId, priority, targetFPS, enableVisibilityTracking]);
 
   // IntersectionObserver per lazy rendering
+  // Ottimizzato per Next.js 16 <Activity> component
   useEffect(() => {
     if (!enableVisibilityTracking || !containerRef.current) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         const isVisible = entry.isIntersecting;
+
+        // Next.js 16: quando il componente è in <Activity>,
+        // viene nascosto con display:none ma rimane montato.
+        // Pausiamo il rendering per risparmiare risorse.
         sharedRenderer.setTaskVisible(taskId, isVisible);
+
+        // Debug: log visibility changes (rimuovi in produzione)
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`[ShaderBackground ${taskId}] Visibility: ${isVisible}`);
+        }
       },
       {
-        threshold: visibilityThreshold,
+        // threshold: 0 rileva anche quando è completamente nascosto da display:none
+        threshold: [0, visibilityThreshold],
         rootMargin: "500px", // Pre-carica 500px prima che sia visibile
       }
     );
@@ -147,6 +158,35 @@ export function useShaderBackground(options: UseShaderBackgroundOptions = {}) {
 
     return () => {
       resizeObserver.disconnect();
+    };
+  }, [taskId]);
+
+  // Page Visibility API - pausa il rendering quando la tab non è visibile
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const isPageVisible = !document.hidden;
+
+      // Quando l'utente cambia tab, pausa il rendering
+      if (!isPageVisible) {
+        sharedRenderer.setTaskVisible(taskId, false);
+      } else {
+        // Riprendi solo se il container è effettivamente visibile
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+          sharedRenderer.setTaskVisible(taskId, isInViewport);
+        }
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[ShaderBackground ${taskId}] Page visibility: ${isPageVisible}`);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [taskId]);
 

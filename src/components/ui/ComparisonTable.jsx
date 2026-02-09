@@ -46,16 +46,34 @@ const ComparisonTable = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="md:hidden rounded-2xl border border-slate-700/50 overflow-hidden"
-                style={{ background: 'rgba(15, 23, 42, 0.8)' }}
+                className="md:hidden rounded-2xl overflow-hidden"
+                style={{
+                    background: 'rgba(15, 23, 42, 0.8)',
+                    border: '1px solid transparent',
+                    backgroundImage: 'linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), linear-gradient(90deg, rgba(244, 63, 94, 0.2), rgba(52, 211, 153, 0.2))',
+                    backgroundOrigin: 'border-box',
+                    backgroundClip: 'padding-box, border-box'
+                }}
             >
                 {/* Header row */}
                 <div className="grid grid-cols-2">
-                    <div className="p-4 text-center bg-rose-950/30 border-b border-rose-500/20">
-                        <span className="text-sm font-semibold text-slate-400">{others.title}</span>
+                    <div
+                        className="px-3 py-2.5 text-center bg-rose-950/20"
+                        style={{
+                            borderBottom: '1px solid transparent',
+                            borderImage: 'linear-gradient(90deg, rgba(244, 63, 94, 0.15), rgba(52, 211, 153, 0.05)) 1'
+                        }}
+                    >
+                        <span className="text-xs font-semibold text-slate-400">{others.title}</span>
                     </div>
-                    <div className="p-4 text-center bg-emerald-950/30 border-b border-emerald-500/20">
-                        <span className="text-sm font-semibold text-cyan-400">{bylt.title}</span>
+                    <div
+                        className="px-3 py-2.5 text-center bg-emerald-950/20"
+                        style={{
+                            borderBottom: '1px solid transparent',
+                            borderImage: 'linear-gradient(90deg, rgba(52, 211, 153, 0.05), rgba(52, 211, 153, 0.15)) 1'
+                        }}
+                    >
+                        <span className="text-xs font-semibold text-cyan-400">{bylt.title}</span>
                     </div>
                 </div>
 
@@ -67,15 +85,29 @@ const ComparisonTable = ({
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
-                        className="grid grid-cols-2 border-b border-slate-800/40"
+                        className="grid grid-cols-2"
+                        style={{
+                            borderBottom: index < others.items.length - 1 ? '1px solid transparent' : 'none',
+                            borderImage: index < others.items.length - 1 ? 'linear-gradient(90deg, rgba(244, 63, 94, 0.08), rgba(148, 163, 184, 0.08), rgba(52, 211, 153, 0.08)) 1' : 'none'
+                        }}
                     >
-                        <div className="p-4 flex items-start gap-2 bg-rose-950/10">
-                            <X className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" strokeWidth={2} />
-                            <span className="text-xs text-slate-400 leading-relaxed">{otherItem}</span>
+                        <div
+                            className="px-3 py-2.5 flex items-start gap-2"
+                            style={{
+                                background: 'linear-gradient(90deg, rgba(159, 18, 57, 0.08) 0%, rgba(15, 23, 42, 0.05) 100%)'
+                            }}
+                        >
+                            <X className="w-3.5 h-3.5 text-rose-500 mt-0.5 shrink-0" strokeWidth={2} />
+                            <span className="text-[11px] text-slate-400 leading-snug">{otherItem}</span>
                         </div>
-                        <div className="p-4 flex items-start gap-2 bg-emerald-950/10">
-                            <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" strokeWidth={2.5} />
-                            <span className="text-xs text-slate-200 leading-relaxed">{bylt.items[index]}</span>
+                        <div
+                            className="px-3 py-2.5 flex items-start gap-2"
+                            style={{
+                                background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.05) 0%, rgba(6, 78, 59, 0.08) 100%)'
+                            }}
+                        >
+                            <Check className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" strokeWidth={2.5} />
+                            <span className="text-[11px] text-slate-200 leading-snug">{bylt.items[index]}</span>
                         </div>
                     </motion.div>
                 ))}
@@ -83,19 +115,19 @@ const ComparisonTable = ({
                 {/* Stats row - Mobile */}
                 {(others.stats || bylt.stats) && (
                     <div className="grid grid-cols-2">
-                        <div className="p-4 bg-rose-950/20 flex flex-wrap justify-center gap-3">
+                        <div className="px-3 py-3 bg-rose-950/25 flex flex-wrap justify-center gap-2">
                             {others.stats?.map((stat, index) => (
                                 <div key={index} className="text-center">
-                                    <div className="text-base font-bold text-rose-400">{stat.value}</div>
-                                    <div className="text-[10px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                    <div className="text-sm font-bold text-rose-400">{stat.value}</div>
+                                    <div className="text-[9px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
-                        <div className="p-4 bg-emerald-950/20 flex flex-wrap justify-center gap-3">
+                        <div className="px-3 py-3 bg-emerald-950/25 flex flex-wrap justify-center gap-2">
                             {bylt.stats?.map((stat, index) => (
                                 <div key={index} className="text-center">
-                                    <div className="text-base font-bold text-emerald-400">{stat.value}</div>
-                                    <div className="text-[10px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                    <div className="text-sm font-bold text-emerald-400">{stat.value}</div>
+                                    <div className="text-[9px] text-slate-500 uppercase tracking-wider">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -145,7 +177,7 @@ const ComparisonTable = ({
                             {others.stats.map((stat, index) => (
                                 <div key={index} className="text-center">
                                     <div className="text-xl font-bold text-rose-400">{stat.value}</div>
-                                    <div className="text-xs text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                    <div className="text-label-sm">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
@@ -195,7 +227,7 @@ const ComparisonTable = ({
                             {bylt.stats.map((stat, index) => (
                                 <div key={index} className="text-center">
                                     <div className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">{stat.value}</div>
-                                    <div className="text-xs text-slate-500 uppercase tracking-wider">{stat.label}</div>
+                                    <div className="text-label-sm">{stat.label}</div>
                                 </div>
                             ))}
                         </div>
