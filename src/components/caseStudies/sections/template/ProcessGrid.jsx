@@ -5,11 +5,41 @@ import { motion, AnimatePresence, useInView } from 'motion/react';
 import { Plus, Minus } from 'lucide-react';
 import { accentColors } from './utils';
 import AnimatedWaveCanvas from '../../../services/sections/AnimatedWaveCanvas';
+import { DitherShader } from '../../../ui/dither-shader';
+import { ditherPatterns } from '../../../services/utils';
 
 const DEFAULT_DESCRIPTION = "Every project follows a proven methodology. Here's how we approached this one.";
 
+// Generate simple number image without gradients
+const useSimpleNumberImage = (number) => {
+    const [imageUrl, setImageUrl] = React.useState(null);
+
+    React.useEffect(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = 200;
+        const ctx = canvas.getContext('2d');
+
+        // Black background
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, 200, 200);
+
+        // White number - simple and clean
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 140px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(number.toString(), 100, 100);
+
+        setImageUrl(canvas.toDataURL('image/png'));
+    }, [number]);
+
+    return imageUrl;
+};
+
 const AccordionItem = ({ step, isOpen, onToggle, index }) => {
     const accentColor = accentColors[index % accentColors.length];
+    const numberImage = useSimpleNumberImage(step.step);
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -27,20 +57,29 @@ const AccordionItem = ({ step, isOpen, onToggle, index }) => {
                 aria-expanded={isOpen}
             >
                 <div className="flex items-center gap-4">
-                    <span
-                        className="text-sm font-mono font-medium w-8 h-8 rounded-full flex items-center justify-center border"
+                    <div
+                        className="relative w-12 h-12 rounded-lg overflow-hidden border-2 shrink-0"
                         style={{
-                            color: isOpen ? accentColor : 'rgb(148 163 184)',
                             borderColor: isOpen ? accentColor : 'rgb(51 65 85)',
-                            background: isOpen ? `${accentColor}15` : 'transparent'
                         }}
                     >
-                        {step.step}
-                    </span>
+                        {numberImage && (
+                            <DitherShader
+                                src={numberImage}
+                                colorMode="duotone"
+                                primaryColor="#020617"
+                                secondaryColor={accentColor}
+                                ditherMode={ditherPatterns[index % ditherPatterns.length]}
+                                gridSize={6}
+                                threshold={0.5}
+                                contrast={1.0}
+                            />
+                        )}
+                    </div>
                     <span className={`heading-h4 ${isOpen ? 'bg-linear-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent' : 'text-white'}`}>{step.title}</span>
                 </div>
                 <motion.div
-                    className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full border transition-all"
+                    className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full border transition-all"
                     style={{
                         borderColor: isOpen ? accentColor : 'rgb(51 65 85)',
                         color: isOpen ? accentColor : 'rgb(148 163 184)'

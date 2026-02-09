@@ -38,19 +38,13 @@
   background: #020617;
   z-index: 1;
   clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
-  padding-top: var(--spacing-padding-sm);
+  padding-top: var(--spacing-padding-md);
   padding-bottom: var(--spacing-padding-lg);
-}
-
-@media (min-width: 640px) {
-  .case-study-reveal-section {
-    padding-top: var(--spacing-padding-md);
-  }
 }
 
 @media (min-width: 768px) {
   .case-study-reveal-section {
-    padding-top: var(--spacing-padding-lg);
+    padding-top: var(--spacing-padding-xl);
     padding-bottom: var(--spacing-padding-xl);
   }
 }
@@ -181,18 +175,12 @@
    BRAND MARQUEE WRAPPER - First (inside shader)
    ---------------------------------------- */
 .case-study-marquee-wrapper {
-  padding-top: var(--spacing-padding-sm);
+  padding-top: var(--spacing-padding-lg);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .case-study-marquee-wrapper {
-    padding-top: var(--spacing-padding-md);
-  }
-}
-
-@media (min-width: 1024px) {
-  .case-study-marquee-wrapper {
-    padding-top: var(--spacing-padding-lg);
+    padding-top: var(--spacing-padding-xl);
   }
 }
 
@@ -200,18 +188,12 @@
    BRAND MARQUEE WRAPPER - Reverse (after shader)
    ---------------------------------------- */
 .case-study-marquee-reverse-wrapper {
-  padding-top: var(--spacing-padding-sm);
+  padding-top: var(--spacing-padding-lg);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .case-study-marquee-reverse-wrapper {
-    padding-top: var(--spacing-padding-md);
-  }
-}
-
-@media (min-width: 1024px) {
-  .case-study-marquee-reverse-wrapper {
-    padding-top: var(--spacing-padding-lg);
+    padding-top: var(--spacing-padding-xl);
   }
 }
 

@@ -339,7 +339,7 @@ const CaseStudyHeroSection = ({ data, imageUrl, study }) => {
                             <p className="text-xs text-white/50 uppercase tracking-[0.2em] mb-2">
                                 {item.label}
                             </p>
-                            <p className="text-xl md:text-2xl font-bold text-white whitespace-nowrap">
+                            <p className="text-xl md:text-2xl font-bold text-white sm:whitespace-nowrap">
                                 {item.value}
                             </p>
                         </div>

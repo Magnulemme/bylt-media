@@ -52,10 +52,10 @@ const ContactHero = () => {
 
                 <div className="relative z-20 text-white mx-auto px-4 flex-1 flex flex-col justify-center items-center contact-hero-container">
                     {/* Text + Octahedron side by side */}
-                    <div className="relative flex flex-col lg:flex-row gap-8 lg:gap-12 items-center mb-12 md:mb-16 lg:mb-20 px-4 md:px-6 lg:px-12">
+                    <div className="relative flex flex-col lg:flex-row gap-8 lg:gap-12 items-center max-md:mb-12 px-4 md:px-6 lg:px-12">
                         {/* Octahedron as background on mobile/tablet */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden opacity-30 pointer-events-none">
-                            <div className="w-[450px] h-[450px]">
+                            <div className="max-md:w-[95vw] max-md:h-[95vw] w-[450px] h-[450px] max-w-[450px] max-h-[450px]">
                                 <Octahedron3D />
                             </div>
                         </div>
@@ -72,7 +72,7 @@ const ContactHero = () => {
                         </div>
 
                         {/* Octahedron visible on desktop */}
-                        <div className="hidden lg:block relative h-[350px] aspect-square overflow-hidden shrink-0">
+                        <div className="hidden lg:block relative h-[420px] aspect-square overflow-hidden shrink-0">
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="w-[500px] h-[500px]">
                                     <Octahedron3D />

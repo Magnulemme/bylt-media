@@ -208,7 +208,7 @@ const PillarCard = ({ pillar, index }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-2xl border border-slate-700/60 overflow-hidden hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 shadow-[6px_6px_0px_rgba(34,211,238,1)]"
+            className="group relative rounded-2xl border border-slate-700/60 overflow-hidden hover:border-cyan-500/30 transition-[border-color,transform] duration-300 hover:-translate-y-1 shadow-[6px_6px_0px_rgba(34,211,238,1)]"
         >
             {/* Glassmorphism background */}
             <div className="absolute inset-0 bg-slate-950/10 backdrop-blur-xl" />
@@ -219,7 +219,7 @@ const PillarCard = ({ pillar, index }) => {
             {/* Content */}
             <div className="relative z-10 p-6">
                 <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                    className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
                     style={{
                         background: `linear-gradient(135deg, ${accentColor}20, ${accentColor}10)`,
                         boxShadow: `0 0 20px ${accentColor}10`
