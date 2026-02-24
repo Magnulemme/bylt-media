@@ -36,9 +36,9 @@ const MainCard = ({ service }) => {
 
             {/* Stats */}
             {service.details?.stats && (
-                <div className="relative z-10 grid grid-cols-3 gap-4 px-6 md:px-8 py-6 md:py-8">
-                    {service.details.stats.slice(0, 3).map((stat) => (
-                        <div key={stat.label} className="text-center">
+                <div className="relative z-10 grid grid-cols-2 min-[400px]:grid-cols-3 gap-4 px-6 md:px-8 py-6 md:py-8">
+                    {service.details.stats.slice(0, 3).map((stat, index) => (
+                        <div key={stat.label} className={`text-center${index === 2 ? ' hidden min-[400px]:block' : ''}`}>
                             <div className="text-2xl md:text-3xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                                 {stat.value}
                             </div>

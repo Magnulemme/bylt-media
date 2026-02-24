@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { FloatingNav } from './ui/floating-navbar';
-import { BackToTop } from './ui/back-to-top';
+import { MobileMenuFab } from './ui/back-to-top';
 import { MovingBorderButton } from './ui/moving-border-button';
 
 // Animation variants per staggered menu
@@ -53,6 +54,13 @@ const itemVariants = {
 const Navigation = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mobileAccordionOpen, setMobileAccordionOpen] = useState(null);
+    const pathname = usePathname();
+
+    // Chiudi il menu quando cambia la route (dopo la navigazione)
+    useEffect(() => {
+        setMobileMenuOpen(false);
+        setMobileAccordionOpen(null);
+    }, [pathname]);
 
     useEffect(() => {
         if (mobileMenuOpen) {
@@ -168,7 +176,6 @@ const Navigation = () => {
                                             <Link
                                                 href={item.href}
                                                 className="block text-center py-3 text-2xl font-semibold text-gray-200 hover:text-[#B8FFFA] transition-colors duration-300"
-                                                onClick={() => setMobileMenuOpen(false)}
                                             >
                                                 {item.name}
                                             </Link>
@@ -207,7 +214,6 @@ const Navigation = () => {
                                                                     <Link
                                                                         href={subItem.href}
                                                                         className="block py-2 text-base text-gray-400 hover:text-[#B8FFFA] transition-colors duration-200"
-                                                                        onClick={() => setMobileMenuOpen(false)}
                                                                     >
                                                                         {subItem.name}
                                                                     </Link>
@@ -234,7 +240,6 @@ const Navigation = () => {
                                         borderClassName="h-24 w-24 bg-[radial-gradient(circle,#06b6d4_20%,#3b82f6_40%,#8b5cf6_60%,transparent_80%)] opacity-100"
                                         className="border-2 border-slate-700/80 text-white font-bold text-base bg-slate-950"
                                         duration={2500}
-                                        onClick={() => setMobileMenuOpen(false)}
                                     >
                                         Get Free Audit
                                     </MovingBorderButton>
@@ -245,8 +250,14 @@ const Navigation = () => {
                 )}
             </AnimatePresence>
 
-            {/* Mobile: BackToTop button */}
-            <BackToTop />
+            {/* Mobile: Floating menu button */}
+            <MobileMenuFab
+                isOpen={mobileMenuOpen}
+                onToggle={() => {
+                    setMobileMenuOpen(!mobileMenuOpen);
+                    if (mobileMenuOpen) setMobileAccordionOpen(null);
+                }}
+            />
         </>
     );
 };

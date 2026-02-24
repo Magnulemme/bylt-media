@@ -3,35 +3,35 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 
-// Unica fonte di verità per la velocità di scroll (px/s)
 const SCROLL_SPEED_PX_PER_S = 50;
 
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
-  speed = "fast", // mantenuta per retrocompatibilità, ignorata internamente
+  speed = "fast",
   pauseOnHover = true,
   className,
-  renderItem, // (item, index) => JSX - custom render function
-  gap = "gap-6", // Tailwind gap class
-  useNestedMask = false, // true = struttura con wrapper esterno per mask (usata in StatsGrid)
-  oscillate = false, // Creative coding: y = sin(angle) oscillation effect
-  oscillateAmplitude = 8, // Amplitude in pixels
-  oscillateSpeed = 0.02, // Angular speed
+  renderItem,
+  gap = "gap-6",
+  useNestedMask = false,
+  oscillate = false,
+  oscillateAmplitude = 8,
+  oscillateSpeed = 0.02,
 }) => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
   const [ready, setReady] = useState(false);
+  const [repeatCount, setRepeatCount] = useState(2);
   const [offsets, setOffsets] = useState([]);
   const animationRef = useRef(null);
   const angleRef = useRef(0);
 
-  // Oscillation animation loop - wave effect with phase offset per item
+  // Oscillation animation loop
   useEffect(() => {
     if (!oscillate || !ready) return;
 
-    const totalItems = items.length * 2; // Original + clones
-    const phaseStep = (Math.PI * 2 * 0.5) / items.length; // 0.5 = half wave visible
+    const totalItems = items.length * repeatCount;
+    const phaseStep = (Math.PI * 2 * 0.5) / items.length;
 
     const animate = () => {
       angleRef.current += oscillateSpeed;
@@ -54,7 +54,7 @@ export const InfiniteMovingCards = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [oscillate, ready, items.length, oscillateAmplitude, oscillateSpeed]);
+  }, [oscillate, ready, items.length, repeatCount, oscillateAmplitude, oscillateSpeed]);
 
   const updateAnimation = useCallback(() => {
     if (!scrollerRef.current || !containerRef.current) return;
@@ -62,7 +62,18 @@ export const InfiniteMovingCards = ({
     const children = scrollerRef.current.children;
     if (children.length < items.length * 2) return;
 
-    // Misura la distanza esatta tra il primo item e il primo clone
+    const singleSetWidth =
+      children[items.length - 1].getBoundingClientRect().right -
+      children[0].getBoundingClientRect().left;
+
+    const containerWidth = containerRef.current.offsetWidth;
+    const needed = Math.ceil(containerWidth / singleSetWidth) + 1;
+
+    if (needed > repeatCount) {
+      setRepeatCount(needed);
+      return;
+    }
+
     const firstItem = children[0];
     const firstClone = children[items.length];
     const distance =
@@ -73,14 +84,13 @@ export const InfiniteMovingCards = ({
 
     containerRef.current.style.setProperty("--scroll-distance", `${distance}px`);
     containerRef.current.style.setProperty("--animation-duration", `${duration}s`);
-  }, [items.length]);
+  }, [items.length, repeatCount]);
 
   useEffect(() => {
     updateAnimation();
     setReady(true);
   }, [updateAnimation]);
 
-  // Ricalcola duration su resize (con debounce)
   useEffect(() => {
     if (!ready) return;
 
@@ -97,7 +107,6 @@ export const InfiniteMovingCards = ({
     };
   }, [ready, updateAnimation]);
 
-  // Update direction when prop changes
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.style.setProperty(
@@ -116,34 +125,25 @@ export const InfiniteMovingCards = ({
         ready && "animate-scroll",
         pauseOnHover && "hover:[animation-play-state:paused]"
       )}>
-      {/* Set originale */}
-      {items.map((item, idx) => (
-        <li
-          key={`a-${item.id || idx}`}
-          className="shrink-0 flex"
-          style={oscillate && offsets.length > 0 ? {
-            transform: `translateY(${offsets[idx]}px)`
-          } : undefined}
-        >
-          {renderItem(item, idx)}
-        </li>
-      ))}
-      {/* Set duplicato per loop seamless — React gestisce gli hook */}
-      {items.map((item, idx) => (
-        <li
-          key={`b-${item.id || idx}`}
-          className="shrink-0 flex"
-          style={oscillate && offsets.length > 0 ? {
-            transform: `translateY(${offsets[items.length + idx]}px)`
-          } : undefined}
-        >
-          {renderItem(item, idx)}
-        </li>
-      ))}
+      {Array.from({ length: repeatCount }).map((_, copyIdx) =>
+        items.map((item, idx) => {
+          const globalIdx = copyIdx * items.length + idx;
+          return (
+            <li
+              key={`${copyIdx}-${item.id || idx}`}
+              className="shrink-0 flex"
+              style={oscillate && offsets.length > 0
+                ? { transform: `translateY(${offsets[globalIdx]}px)` }
+                : undefined}
+            >
+              {renderItem(item, idx)}
+            </li>
+          );
+        })
+      )}
     </ul>
   );
 
-  // Struttura con wrapper esterno per mask (usata in StatsGrid)
   if (useNestedMask) {
     return (
       <div
@@ -161,7 +161,6 @@ export const InfiniteMovingCards = ({
     );
   }
 
-  // Struttura originale (mask sullo stesso div del containerRef)
   return (
     <div
       ref={containerRef}

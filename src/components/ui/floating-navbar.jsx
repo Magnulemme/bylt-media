@@ -122,7 +122,7 @@ export const FloatingNav = ({
 
             {item.subItems && (
               <div className={cn(
-                "absolute top-full left-0 mt-2 w-auto min-w-[700px] rounded-lg shadow-2xl ring-1 ring-gray-700/50 transition-all duration-300",
+                "absolute top-full left-0 mt-3 w-auto min-w-[700px] rounded-lg shadow-2xl ring-1 ring-gray-700/50 transition-all duration-300",
                 "bg-[#020617]",
                 activeDropdown === index ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2 pointer-events-none'
               )}>
@@ -270,7 +270,7 @@ export const FloatingNav = ({
       }}
     >
       <div className={cn(
-        "flex inset-x-0 mx-auto rounded-md shadow-2xl items-center justify-between px-6 py-3 max-w-6xl",
+        "flex inset-x-0 mx-6 xl:mx-auto rounded-md shadow-2xl items-center justify-between px-6 py-3 max-w-6xl",
         "bg-[#020617]",
         isFloating && "border border-gray-700/50",
         className

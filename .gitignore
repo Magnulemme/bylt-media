@@ -42,3 +42,7 @@ pensieri.txt
 
 # Documentation
 POST_MORTEM_*.md
+docs/
+
+# Deprecated files
+deprecated/
