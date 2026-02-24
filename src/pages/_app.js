@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import '@/styles/animations.css';
 import 'lenis/dist/lenis.css';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { loadNonCriticalCSS } from '../utils/loadCSS';
 import EnhancedCookieConsent from '@/components/EnhancedCookieConsent';
@@ -24,6 +25,19 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    const handleRouteChange = () => {
+      window.scrollTo(0, 0);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
+
   useEffect(() => {
     // Load non-critical CSS after the page has loaded
     loadNonCriticalCSS();

@@ -82,11 +82,15 @@ const Navigation = () => {
             }
         }
         return () => {
+            const savedScrollY = document.body.style.top;
             document.body.style.position = '';
             document.body.style.top = '';
             document.body.style.left = '';
             document.body.style.right = '';
             document.body.style.overflow = '';
+            if (savedScrollY) {
+                window.scrollTo(0, parseInt(savedScrollY || '0') * -1);
+            }
         };
     }, [mobileMenuOpen]);
 
